@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js build output
+.next/
+out/
+build
+dist
+
+# Temporary Page Renders (we keep public/images/extracted)
+public/images/pages/
+
+# Environment Variables
+.env
+.env*.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+*.pem
+Thumbs.db
