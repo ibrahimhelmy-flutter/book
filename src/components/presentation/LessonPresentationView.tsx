@@ -19,7 +19,8 @@ import {
   HelpCircle,
   Cpu,
   Target,
-  ListOrdered
+  ListOrdered,
+  LayoutGrid
 } from "lucide-react";
 
 interface Props {
@@ -41,18 +42,14 @@ interface SlideItem {
     headers: string[];
     rows: string[][];
   };
-  callout?: {
-    title: string;
-    content: string;
-  };
-  badge?: string;
+  badge: string;
 }
 
 export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [revealedLineIndex, setRevealedLineIndex] = useState<number>(0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [isDrawingActive, setIsDrawingActive] = useState<boolean>(false);
+  const [showSlideIndexDrawer, setShowSlideIndexDrawer] = useState<boolean>(false);
   const presentationContainerRef = useRef<HTMLDivElement | null>(null);
 
   // Build slides array from curriculum lesson data
@@ -69,18 +66,23 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       bullets: [
         `السؤال الجوهري: ${lesson.keyQuestion}`,
         `الفكرة الأساسية: ${lesson.coreIdea}`,
-        ...lesson.learningObjectives.map((obj, i) => `الهدف ${i + 1}: ${typeof obj === "string" ? obj : (obj as unknown as { text: string }).text}`),
+        ...lesson.learningObjectives.map(
+          (obj, i) =>
+            `الهدف ${i + 1}: ${
+              typeof obj === "string" ? obj : (obj as unknown as { text: string }).text
+            }`
+        ),
       ],
     });
 
     // 2. Key Concepts Glossary Slide
-    if (lesson.keyConcepts.length > 0) {
+    if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
       list.push({
         id: "slide-concepts",
         type: "concepts",
         title: "المفاهيم والمصطلحات الأساسية للدرس",
         subtitle: "Key Technical Vocabulary",
-        badge: "معجم المفاهيم",
+        badge: "معجم المفاهيم 📖",
         bullets: lesson.keyConcepts.map(
           (c) => `**${c.termAr}** ${c.termEn ? `(${c.termEn})` : ""}: ${c.definition}`
         ),
@@ -89,7 +91,6 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
     // 3. Lesson Sections Slides
     lesson.sections.forEach((sec, idx) => {
-      // Split content into clean bullet points
       const lines = sec.content
         .split("\n")
         .map((l) => l.trim())
@@ -100,7 +101,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         type: "section",
         title: sec.title,
         subtitle: `القسم ${idx + 1} من ${lesson.sections.length}`,
-        badge: "المحتوى العلمي",
+        badge: "المحتوى العلمي 💡",
         bullets: lines,
         image: sec.image,
         table: sec.table,
@@ -126,12 +127,12 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     }
 
     // 5. Solved Example Slide
-    if (lesson.solvedExample && lesson.solvedExample.items.length > 0) {
+    if (lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0) {
       const ex = lesson.solvedExample.items[0];
       list.push({
         id: "slide-example",
         type: "example",
-        title: "تطبيق محلول نموذجي",
+        title: "تطبيق محلول نموذجي مع خطوات التفكير",
         subtitle: "Model Solved Example",
         badge: "تطبيق عملي 📝",
         bullets: [
@@ -142,7 +143,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     }
 
     // 6. Summary Slide
-    if (lesson.summary.length > 0) {
+    if (lesson.summary && lesson.summary.length > 0) {
       list.push({
         id: "slide-summary",
         type: "summary",
@@ -164,8 +165,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     setRevealedLineIndex(0);
   }, [currentSlideIndex]);
 
-  // Next / Previous / Line Step controls
-  const handleNextLineOrSlide = useCallback(() => {
+  // Step-by-step next reveal or advance slide
+  const handleNextStep = useCallback(() => {
     if (revealedLineIndex < totalBullets - 1) {
       setRevealedLineIndex((prev) => prev + 1);
     } else if (currentSlideIndex < slides.length - 1) {
@@ -192,11 +193,14 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isDrawingActive && e.key !== "Escape") return;
+      // Don't trigger if user is typing in a text input
+      if (document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA") {
+        return;
+      }
 
       if (e.key === "ArrowLeft" || e.key === " ") {
         e.preventDefault();
-        handleNextLineOrSlide();
+        handleNextStep();
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
         handlePrevSlide();
@@ -207,7 +211,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleNextLineOrSlide, handlePrevSlide, isDrawingActive, isFullscreen]);
+  }, [handleNextStep, handlePrevSlide, isFullscreen]);
 
   // Fullscreen toggle
   const toggleFullscreen = () => {
@@ -229,20 +233,20 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       className={`relative w-full bg-slate-100 flex flex-col font-sans transition-all select-none ${
         isFullscreen
           ? "fixed inset-0 z-50 h-screen w-screen p-0 m-0 bg-slate-900"
-          : "rounded-3xl border border-slate-300 shadow-2xl overflow-hidden my-6 min-h-[640px]"
+          : "rounded-3xl border border-slate-300 shadow-2xl overflow-hidden my-6 min-h-[680px]"
       }`}
       dir="rtl"
     >
-      {/* Top Corporate Presentation Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between z-20">
-        {/* Slide Title & Badge */}
+      {/* Executive Clean Header */}
+      <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between z-40">
+        {/* Title & Badge */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+          <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-blue-500/20">
             {lesson.number}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+              <span className="text-xs font-bold text-blue-800 bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-200">
                 {currentSlide.badge}
               </span>
               <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
@@ -250,19 +254,28 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
               </h2>
             </div>
             {currentSlide.subtitle && (
-              <p className="text-[11px] text-slate-500 font-mono dir-ltr text-right">
+              <p className="text-[11px] text-slate-500 font-mono dir-ltr text-right mt-0.5">
                 {currentSlide.subtitle}
               </p>
             )}
           </div>
         </div>
 
-        {/* Action Controls & Navigation Indicator */}
+        {/* Slide Counter & Header Actions */}
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
-            {currentSlideIndex + 1} / {slides.length}
-          </span>
+          {/* Quick Slide Drawer Toggle */}
+          <button
+            onClick={() => setShowSlideIndexDrawer(!showSlideIndexDrawer)}
+            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="فهرس الشرائح"
+          >
+            <LayoutGrid className="w-3.5 h-3.5 text-blue-600" />
+            <span>
+              {currentSlideIndex + 1} / {slides.length}
+            </span>
+          </button>
 
+          {/* Fullscreen Button */}
           <button
             onClick={toggleFullscreen}
             className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
@@ -271,31 +284,64 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
 
+          {/* Exit Presentation */}
           {onExitPresentation && (
             <button
               onClick={onExitPresentation}
               className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors cursor-pointer"
             >
-              إغلاق العرض ✕
+              إغلاق ✕
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Slide Card Area (Pure Corporate White Aesthetic with Blue Accents) */}
+      {/* Slide Thumbnails Drawer Modal */}
+      {showSlideIndexDrawer && (
+        <div className="absolute top-14 left-6 z-50 bg-white border border-slate-200 rounded-2xl p-4 shadow-2xl w-80 max-h-[70vh] overflow-y-auto custom-scrollbar">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-3">
+            <span className="text-xs font-bold text-slate-900">فهرس شرائح الدرس</span>
+            <button
+              onClick={() => setShowSlideIndexDrawer(false)}
+              className="text-xs text-slate-400 hover:text-slate-700 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="space-y-1.5">
+            {slides.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  setCurrentSlideIndex(idx);
+                  setShowSlideIndexDrawer(false);
+                }}
+                className={`w-full text-right p-2.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                  currentSlideIndex === idx
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-slate-700 hover:bg-slate-100"
+                }`}
+              >
+                <div className="truncate flex-1">
+                  <span className="opacity-70 ml-1">{idx + 1}.</span> {s.title}
+                </div>
+                <span className="text-[10px] opacity-75">{s.badge}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Slide Card Area (Pure Corporate White Aesthetic) */}
       <div className="relative flex-1 bg-white p-6 sm:p-10 lg:p-12 flex flex-col justify-between overflow-y-auto custom-scrollbar">
-        {/* Drawing & Highlighting Annotation Overlay */}
-        <SlideAnnotationCanvas
-          slideIndex={currentSlideIndex}
-          isDrawingActive={isDrawingActive}
-          onToggleDrawing={() => setIsDrawingActive(!isDrawingActive)}
-        />
+        {/* Permanent, Always-Ready Vector Drawing & Highlighting Canvas */}
+        <SlideAnnotationCanvas slideIndex={currentSlideIndex} />
 
         {/* Slide Content Layout */}
-        <div className="relative z-10 max-w-5xl mx-auto w-full space-y-6">
+        <div className="relative z-10 max-w-4xl mx-auto w-full space-y-6 pb-20">
           {/* Section Diagram Image from PDF if available */}
           {currentSlide.image && (
-            <div className="mb-6 bg-slate-50 rounded-2xl p-3 border border-slate-200 shadow-sm flex flex-col items-center">
+            <div className="bg-slate-50/80 rounded-2xl p-3 border border-slate-200/90 shadow-sm flex flex-col items-center">
               <div className="max-h-72 flex items-center justify-center overflow-hidden rounded-xl bg-white border border-slate-200 p-2">
                 <img
                   src={currentSlide.image.src}
@@ -312,7 +358,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
           {/* Table Data Visualization if present */}
           {currentSlide.table && (
-            <div className="overflow-x-auto mb-6 rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
               <table className="w-full text-right text-xs">
                 <thead className="bg-blue-50 text-blue-900 font-bold border-b border-blue-200">
                   <tr>
@@ -339,7 +385,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
           )}
 
           {/* Smooth Line-by-Line Animated Bullet Points */}
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {currentSlide.bullets.map((bullet, idx) => {
               const isRevealed = idx <= revealedLineIndex;
               const isLatestRevealed = idx === revealedLineIndex;
@@ -350,12 +396,12 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                   className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all duration-500 ease-out ${
                     isRevealed
                       ? isLatestRevealed
-                        ? "bg-blue-50/80 border-blue-300 shadow-md scale-[1.01]"
-                        : "bg-slate-50/70 border-slate-200 shadow-sm"
+                        ? "bg-blue-50/90 border-blue-300 shadow-md scale-[1.01]"
+                        : "bg-slate-50/70 border-slate-200/80 shadow-sm"
                       : "opacity-0 translate-y-3 pointer-events-none"
                   }`}
                 >
-                  {/* Corporate Blue Dot / Bullet Icon */}
+                  {/* Corporate Blue Dot / Bullet Number */}
                   <div
                     className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold transition-colors ${
                       isLatestRevealed
@@ -376,12 +422,12 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
           </div>
         </div>
 
-        {/* Slide Bottom Control Dock */}
-        <div className="relative z-20 mt-8 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
-          {/* Line Step Controls */}
+        {/* Slide Bottom Action Bar */}
+        <div className="relative z-20 pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-white/95">
+          {/* Next Step / Reveal Bullet Controls */}
           <div className="flex items-center gap-2">
             <button
-              onClick={handleNextLineOrSlide}
+              onClick={handleNextStep}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all cursor-pointer hover:scale-105"
             >
               <span>
@@ -428,7 +474,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         </div>
       </div>
 
-      {/* Corporate Blue Slide Progress Bar */}
+      {/* Corporate Blue Progress Bar */}
       <div className="w-full bg-slate-200 h-1.5 z-20">
         <div
           className="bg-blue-600 h-full transition-all duration-300 shadow-sm"
