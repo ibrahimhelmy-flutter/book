@@ -7,7 +7,8 @@ import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { QuizEngine } from "../quiz/QuizEngine";
 import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight } from "lucide-react";
+import { LessonPresentationView } from "../presentation/LessonPresentationView";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
-  const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
+  const [activeTab, setActiveTab] = useState<"lesson" | "presentation" | "simulator" | "quiz" | "engineer">("lesson");
 
   return (
     <article className="max-w-5xl mx-auto px-4 py-8">
@@ -35,6 +36,17 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           }`}
         >
           <BookOpen className="w-4 h-4" /> نص الدرس والشرح
+        </button>
+
+        <button
+          onClick={() => setActiveTab("presentation")}
+          className={`flex-1 min-w-[140px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeTab === "presentation"
+              ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 font-extrabold"
+              : "text-blue-400 hover:text-white hover:bg-blue-950/40"
+          }`}
+        >
+          <Presentation className="w-4 h-4" /> شرائح العرض وقلم الرسم 📽️✏️
         </button>
 
         {lesson.simulatorId && (
@@ -72,6 +84,16 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           <CheckSquare className="w-4 h-4" /> تمارين واختبار الدرس 📝
         </button>
       </div>
+
+      {/* Interactive Slider & Freehand Annotation Presentation View */}
+      {activeTab === "presentation" && (
+        <div className="animate-fadeIn">
+          <LessonPresentationView
+            lesson={lesson}
+            onExitPresentation={() => setActiveTab("lesson")}
+          />
+        </div>
+      )}
 
       {/* Main Lesson View */}
       {activeTab === "lesson" && (
