@@ -10,6 +10,7 @@ import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
 import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool } from "lucide-react";
 import Link from "next/link";
+import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 
 interface Props {
   lesson: Lesson;
@@ -227,8 +228,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                     )}
                   </div>
 
-                  <div className="text-sm sm:text-base text-slate-300 leading-relaxed whitespace-pre-line">
-                    {sec.content}
+                  <div className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                    <EyeComfortText content={sec.content} theme="dark" />
                   </div>
 
                   {/* Section Diagram / Image from PDF if present */}
@@ -257,8 +258,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
                           <tr>
                             {sec.table.headers.map((h, i) => (
-                              <th key={i} className="p-3">
-                                {h}
+                              <th key={i} className="p-3 font-semibold text-slate-200">
+                                {formatInlineText(h, "dark")}
                               </th>
                             ))}
                           </tr>
@@ -268,7 +269,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                             <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
                               {row.map((cell, cIdx) => (
                                 <td key={cIdx} className="p-3 leading-relaxed">
-                                  {cell}
+                                  {formatInlineText(cell, "dark")}
                                 </td>
                               ))}
                             </tr>
@@ -284,21 +285,27 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
           {/* Key Concepts Dictionary Bar - Placed at bottom of content & before simulation */}
           {lesson.keyConcepts && lesson.keyConcepts.length > 0 && (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
+            <div className="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-6 shadow-xl">
               <h2 className="text-sm font-bold text-indigo-400 mb-4 flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
                 <span>المفاهيم والمصطلحات الأساسية للدرس:</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {lesson.keyConcepts.map((concept, i) => (
-                  <div key={i} className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-xs space-y-1">
+                  <div key={i} className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800/80 text-xs space-y-1.5 hover:border-indigo-500/30 transition-all">
                     <div className="flex justify-between items-center">
-                      <strong className="text-white font-bold text-sm">{concept.termAr}</strong>
+                      <span className="text-amber-100 font-bold text-xs sm:text-sm bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">
+                        {concept.termAr}
+                      </span>
                       {concept.termEn && (
-                        <span className="text-[11px] font-mono text-indigo-400 dir-ltr">{concept.termEn}</span>
+                        <span className="text-[11px] font-mono font-semibold text-sky-300 bg-sky-950/60 border border-sky-500/30 px-1.5 py-0.5 rounded-md dir-ltr">
+                          {concept.termEn}
+                        </span>
                       )}
                     </div>
-                    <p className="text-slate-300 leading-relaxed">{concept.definition}</p>
+                    <p className="text-slate-300 leading-relaxed text-xs pt-1">
+                      {formatInlineText(concept.definition, "dark")}
+                    </p>
                   </div>
                 ))}
               </div>
