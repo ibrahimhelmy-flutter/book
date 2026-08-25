@@ -150,6 +150,15 @@ export interface GlossaryTerm {
   category: "AI" | "Cybersecurity" | "WebDev" | "Design" | "General";
 }
 
+export interface AcronymTerm {
+  short: string;
+  fullEn: string;
+  fullAr: string;
+  descriptionAr: string;
+  category: "Hardware" | "AI" | "Cybersecurity" | "Networking" | "WebDev" | "Design" | "General";
+  lessonRef?: string;
+}
+
 export interface UserProgress {
   completedLessons: string[]; // lesson ids
   quizScores: Record<string, { score: number; total: number; date: string }>;

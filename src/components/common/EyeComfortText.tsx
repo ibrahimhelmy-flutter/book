@@ -1,4 +1,8 @@
-﻿import React from "react";
+"use client";
+
+import React from "react";
+import { getAcronym } from "@/data/acronyms";
+import { AcronymTooltip } from "./AcronymTooltip";
 
 interface EyeComfortTextProps {
   content: string;
@@ -7,10 +11,38 @@ interface EyeComfortTextProps {
 }
 
 /**
+ * Checks text segments and wraps known acronyms/shortcuts in AcronymTooltip
+ */
+function renderTextWithAcronyms(text: string, theme: "dark" | "light" = "dark") {
+  if (!text) return null;
+
+  // Split by potential acronym words: 2+ characters of letters/numbers/slashes/hyphens
+  const tokenRegex = /([A-Za-z0-9/_-]{2,})/g;
+  const parts = text.split(tokenRegex);
+
+  return parts.map((part, i) => {
+    if (!part) return null;
+    const acr = getAcronym(part);
+    if (acr) {
+      return (
+        <AcronymTooltip
+          key={i}
+          acronym={acr}
+          displayText={part}
+          theme={theme}
+        />
+      );
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
+}
+
+/**
  * Parses inline tokens:
  * - Bold text: **term**
  * - Inline code: `code`
  * - English technical terms in parentheses: (Term)
+ * - Auto-detected acronyms/shortcuts
  */
 function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
   const regex = /(\*\*[\s\S]+?\*\*|`[^`]+`|\([A-Za-z0-9\s/._+&#%-]{2,}\))/g;
@@ -28,7 +60,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
             key={index}
             className="font-bold text-blue-950 bg-blue-100/90 border border-blue-200 px-1.5 py-0.5 rounded-md mx-0.5 inline-block shadow-xs"
           >
-            {inner}
+            {renderTextWithAcronyms(inner, theme)}
           </strong>
         );
       }
@@ -37,7 +69,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
           key={index}
           className="font-bold text-amber-100 bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 rounded-md mx-0.5 inline-block shadow-sm hover:bg-amber-500/25 transition-colors"
         >
-          {inner}
+          {renderTextWithAcronyms(inner, theme)}
         </strong>
       );
     }
@@ -68,6 +100,17 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
     // 3. English Technical Terms in Parentheses
     if (part.startsWith("(") && part.endsWith(")") && part.length > 2) {
       const inner = part.slice(1, -1);
+      const acr = getAcronym(inner);
+      if (acr) {
+        return (
+          <span key={index} className="inline-flex items-center mx-0.5 align-baseline">
+            <span className="text-slate-500 font-mono text-xs select-none">(</span>
+            <AcronymTooltip acronym={acr} displayText={inner} theme={theme} />
+            <span className="text-slate-500 font-mono text-xs select-none">)</span>
+          </span>
+        );
+      }
+
       if (/^[A-Za-z0-9\s/._+&#%-]+$/.test(inner)) {
         if (theme === "light") {
           return (
@@ -75,7 +118,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
               key={index}
               className="font-mono text-xs font-semibold text-indigo-800 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
             >
-              {inner}
+              {renderTextWithAcronyms(inner, theme)}
             </span>
           );
         }
@@ -84,14 +127,18 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
             key={index}
             className="font-mono text-[11px] sm:text-xs font-semibold text-sky-300 bg-sky-950/60 border border-sky-500/30 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
           >
-            {inner}
+            {renderTextWithAcronyms(inner, theme)}
           </span>
         );
       }
     }
 
-    // Regular Text
-    return <React.Fragment key={index}>{part}</React.Fragment>;
+    // Regular Text with Acronym detection
+    return (
+      <React.Fragment key={index}>
+        {renderTextWithAcronyms(part, theme)}
+      </React.Fragment>
+    );
   });
 }
 
