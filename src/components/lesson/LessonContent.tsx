@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Lesson } from "@/types";
+import { Lesson, CalloutBox } from "@/types";
 import { LessonHeader } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
@@ -15,6 +15,88 @@ interface Props {
   lesson: Lesson;
   nextLesson?: { id: string; title: string; number: string; chapterId: string; slug: string };
   prevLesson?: { id: string; title: string; number: string; chapterId: string; slug: string };
+}
+
+function SectionNoteButton({ note }: { note: CalloutBox }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const getNoteBadge = () => {
+    switch (note.type) {
+      case "pause_and_reflect":
+        return {
+          icon: <Lightbulb className="w-4 h-4 text-amber-400" />,
+          btnClass: "bg-amber-500/15 hover:bg-amber-500/30 text-amber-300 border-amber-500/40 shadow-amber-950/40",
+          borderClass: "border-amber-500/40",
+          bgBadge: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+          label: "توقّف وفكّر",
+        };
+      case "important_note":
+        return {
+          icon: <AlertCircle className="w-4 h-4 text-blue-400" />,
+          btnClass: "bg-blue-500/15 hover:bg-blue-500/30 text-blue-300 border-blue-500/40 shadow-blue-950/40",
+          borderClass: "border-blue-500/40",
+          bgBadge: "bg-blue-500/20 text-blue-300 border-blue-500/40",
+          label: "ملحوظة مهمة",
+        };
+      case "enrichment":
+      case "pro_tip":
+      case "hint":
+      default:
+        return {
+          icon: <Sparkles className="w-4 h-4 text-purple-400" />,
+          btnClass: "bg-purple-500/15 hover:bg-purple-500/30 text-purple-300 border-purple-500/40 shadow-purple-950/40",
+          borderClass: "border-purple-500/40",
+          bgBadge: "bg-purple-500/20 text-purple-300 border-purple-500/40",
+          label: "لمحة خارج المنهج / تلميح",
+        };
+    }
+  };
+
+  const badge = getNoteBadge();
+
+  return (
+    <div className="relative inline-block text-right">
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold shadow-lg hover:scale-105 ${badge.btnClass}`}
+        title={note.title}
+        aria-label={note.title}
+      >
+        {badge.icon}
+        <span className="text-[11px] hidden md:inline">{badge.label}</span>
+      </button>
+
+      {/* Floating Popover on Hover/Click */}
+      <div
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        className={`absolute left-0 top-full mt-2 w-72 sm:w-96 max-w-[90vw] p-4 bg-slate-950/95 backdrop-blur-xl border ${badge.borderClass} rounded-2xl shadow-2xl z-50 transition-all duration-200 text-right ${
+          isOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2.5 mb-2.5">
+          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${badge.bgBadge}`}>
+            {badge.label}
+          </span>
+          <span className="text-xs font-bold text-white line-clamp-1">{note.title}</span>
+        </div>
+
+        <p className="text-xs text-slate-300 leading-relaxed font-normal mb-2.5 whitespace-pre-line">
+          {note.content}
+        </p>
+
+        {note.question && (
+          <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
+            <strong className="text-amber-400 block mb-1 font-bold text-[11px]">الإجابة والتحليل:</strong>
+            <p className="text-slate-300 leading-relaxed text-[11px] font-normal">{note.question}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
@@ -98,121 +180,130 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       {/* Main Lesson View */}
       {activeTab === "lesson" && (
         <div className="space-y-8 animate-fadeIn">
-          {/* Key Question & Learning Path */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white">
-              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs mb-2">
-                <HelpCircle className="w-4 h-4" />
-                <span>السؤال الرئيسي للدرس:</span>
-              </div>
-              <p className="text-sm font-semibold text-slate-100 leading-relaxed">
+          {/* Key Question & Learning Path - Compact Banner */}
+          <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-white flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs sm:text-sm">
+            <div className="flex items-start gap-2 flex-1">
+              <HelpCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <p className="text-slate-100 font-medium leading-relaxed">
+                <span className="text-amber-400 font-bold ml-1">السؤال الرئيسي:</span>
                 {lesson.keyQuestion}
               </p>
             </div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white">
-              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs mb-2">
-                <Sparkles className="w-4 h-4" />
-                <span>مسار التعلم (Learning Path):</span>
+            {lesson.learningPath?.current && (
+              <div className="flex items-start gap-2 md:max-w-xs border-t md:border-t-0 md:border-r border-slate-800 pt-2 md:pt-0 md:pr-3 text-slate-300 text-xs">
+                <Sparkles className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
+                <span>{lesson.learningPath.current}</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                {lesson.learningPath.current}
-              </p>
-            </div>
+            )}
           </div>
 
-          {/* Explore in Pairs */}
-          {lesson.exploreInPairs && (
-            <div className="bg-purple-950/30 border border-purple-500/30 rounded-2xl p-5 text-purple-200">
-              <div className="flex items-center gap-2 font-bold text-xs text-purple-400 mb-1.5">
-                <MessageSquare className="w-4 h-4" />
-                <span>استكشف في ثنائيات (نشاط تفاعلي تعاوني):</span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {lesson.exploreInPairs}
-              </p>
-            </div>
-          )}
-
-          {/* Key Concepts Dictionary Bar */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 className="text-sm font-bold text-indigo-400 mb-4 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span>المفاهيم والمصطلحات الأساسية للدرس:</span>
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {lesson.keyConcepts.map((concept, i) => (
-                <div key={i} className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-xs space-y-1">
-                  <div className="flex justify-between items-center">
-                    <strong className="text-white font-bold text-sm">{concept.termAr}</strong>
-                    {concept.termEn && (
-                      <span className="text-[11px] font-mono text-indigo-400 dir-ltr">{concept.termEn}</span>
-                    )}
-                  </div>
-                  <p className="text-slate-300 leading-relaxed">{concept.definition}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Detailed Sections */}
+          {/* Detailed Sections with In-Section Notes Button */}
           <div className="space-y-6">
-            {lesson.sections.map((sec) => (
-              <section key={sec.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg">
-                <h3 className="text-xl font-bold text-white border-b border-slate-800 pb-3">{sec.title}</h3>
-                <div className="text-sm sm:text-base text-slate-300 leading-relaxed whitespace-pre-line">
-                  {sec.content}
-                </div>
+            {lesson.sections.map((sec, secIdx) => {
+              const sectionNotes = [
+                ...(sec.notes || []),
+                ...(lesson.callouts || []).filter(
+                  (c) => c.sectionId === sec.id || (!c.sectionId && secIdx === 0)
+                ),
+              ];
 
-                {/* Section Diagram / Image from PDF if present */}
-                {sec.image && (
-                  <div className="my-5 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/80 p-2">
-                    <div className="relative rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center max-h-96">
-                      <img
-                        src={sec.image.src}
-                        alt={sec.image.alt || sec.image.caption}
-                        className="max-h-96 w-auto object-contain rounded-lg"
-                        loading="lazy"
-                      />
-                    </div>
-                    {sec.image.caption && (
-                      <p className="text-center text-xs text-slate-400 mt-2 font-medium">
-                        📷 {sec.image.caption}
-                      </p>
+              return (
+                <section
+                  key={sec.id}
+                  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg relative"
+                >
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
+                    <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
+                      {sec.title}
+                    </h3>
+
+                    {/* Simple Note / Hint / Outside-the-curriculum Icon Button */}
+                    {sectionNotes.length > 0 && (
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {sectionNotes.map((note) => (
+                          <SectionNoteButton key={note.id} note={note} />
+                        ))}
+                      </div>
                     )}
                   </div>
-                )}
 
-                {/* Section Table if present */}
-                {sec.table && (
-                  <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950">
-                    <table className="w-full text-right text-xs">
-                      <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
-                        <tr>
-                          {sec.table.headers.map((h, i) => (
-                            <th key={i} className="p-3">
-                              {h}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                        {sec.table.rows.map((row, rIdx) => (
-                          <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
-                            {row.map((cell, cIdx) => (
-                              <td key={cIdx} className="p-3 leading-relaxed">
-                                {cell}
-                              </td>
+                  <div className="text-sm sm:text-base text-slate-300 leading-relaxed whitespace-pre-line">
+                    {sec.content}
+                  </div>
+
+                  {/* Section Diagram / Image from PDF if present */}
+                  {sec.image && (
+                    <div className="my-5 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/80 p-2">
+                      <div className="relative rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center max-h-96">
+                        <img
+                          src={sec.image.src}
+                          alt={sec.image.alt || sec.image.caption}
+                          className="max-h-96 w-auto object-contain rounded-lg"
+                          loading="lazy"
+                        />
+                      </div>
+                      {sec.image.caption && (
+                        <p className="text-center text-xs text-slate-400 mt-2 font-medium">
+                          📷 {sec.image.caption}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Section Table if present */}
+                  {sec.table && (
+                    <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950">
+                      <table className="w-full text-right text-xs">
+                        <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
+                          <tr>
+                            {sec.table.headers.map((h, i) => (
+                              <th key={i} className="p-3">
+                                {h}
+                              </th>
                             ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </section>
-            ))}
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                          {sec.table.rows.map((row, rIdx) => (
+                            <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
+                              {row.map((cell, cIdx) => (
+                                <td key={cIdx} className="p-3 leading-relaxed">
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </section>
+              );
+            })}
           </div>
+
+          {/* Key Concepts Dictionary Bar - Placed at bottom of content & before simulation */}
+          {lesson.keyConcepts && lesson.keyConcepts.length > 0 && (
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
+              <h2 className="text-sm font-bold text-indigo-400 mb-4 flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                <span>المفاهيم والمصطلحات الأساسية للدرس:</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {lesson.keyConcepts.map((concept, i) => (
+                  <div key={i} className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-xs space-y-1">
+                    <div className="flex justify-between items-center">
+                      <strong className="text-white font-bold text-sm">{concept.termAr}</strong>
+                      {concept.termEn && (
+                        <span className="text-[11px] font-mono text-indigo-400 dir-ltr">{concept.termEn}</span>
+                      )}
+                    </div>
+                    <p className="text-slate-300 leading-relaxed">{concept.definition}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Embedded Simulator in Reading flow */}
           {lesson.simulatorId && (
@@ -220,34 +311,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               <SimulatorRenderer simulatorId={lesson.simulatorId} />
             </div>
           )}
-
-          {/* Callouts (Pause and Reflect, Important Notes) */}
-          <div className="space-y-4">
-            {lesson.callouts.map((callout) => (
-              <div
-                key={callout.id}
-                className={`p-5 rounded-2xl border ${
-                  callout.type === "pause_and_reflect"
-                    ? "bg-amber-950/20 border-amber-500/40 text-amber-200"
-                    : "bg-blue-950/20 border-blue-500/40 text-blue-200"
-                }`}
-              >
-                <div className="flex items-center gap-2 font-bold text-sm mb-2 text-white">
-                  <Lightbulb className="w-5 h-5 text-amber-400" />
-                  <span>{callout.title}</span>
-                </div>
-                <p className="text-xs sm:text-sm leading-relaxed text-slate-200 mb-2">
-                  {callout.content}
-                </p>
-                {callout.question && (
-                  <div className="p-3 bg-slate-950/70 rounded-xl border border-slate-800/80 text-xs text-slate-300">
-                    <strong className="text-amber-400 block mb-1">الإجابة والتحليل:</strong>
-                    {callout.question}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
 
           {/* Think Like an Engineer Workspace */}
           <ThinkLikeEngineer challenge={lesson.engineerChallenge} />

@@ -27,6 +27,7 @@ export interface LessonSection {
     description: string;
     caption: string;
   };
+  notes?: CalloutBox[];
   subsections?: {
     title: string;
     content: string;
@@ -36,10 +37,11 @@ export interface LessonSection {
 
 export interface CalloutBox {
   id: string;
-  type: "pause_and_reflect" | "important_note" | "key_terms" | "pro_tip";
+  type: "pause_and_reflect" | "important_note" | "key_terms" | "pro_tip" | "enrichment" | "hint";
   title: string;
   content: string;
   question?: string;
+  sectionId?: string;
 }
 
 export interface EngineerChallenge {
