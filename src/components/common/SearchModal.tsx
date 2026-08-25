@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import { GLOSSARY_DATA } from "@/data/glossary";
-import { Search, X, BookOpen, Layers, ArrowLeft } from "lucide-react";
+import { ACRONYMS_DATA } from "@/data/acronyms";
+import { Search, X, BookOpen, Layers, ArrowLeft, Zap } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -45,6 +46,14 @@ export function SearchModal({ isOpen, onClose }: Props) {
       g.termAr.includes(query) ||
       g.termEn.toLowerCase().includes(query.toLowerCase()) ||
       g.definitionAr.includes(query)
+  );
+
+  const filteredAcronyms = ACRONYMS_DATA.filter(
+    (a) =>
+      a.short.toLowerCase().includes(query.toLowerCase()) ||
+      a.fullEn.toLowerCase().includes(query.toLowerCase()) ||
+      a.fullAr.includes(query) ||
+      a.descriptionAr.includes(query)
   );
 
   return (
@@ -109,6 +118,32 @@ export function SearchModal({ isOpen, onClose }: Props) {
                 </div>
               )}
 
+              {/* Acronyms / Shortcuts matches */}
+              {filteredAcronyms.length > 0 && (
+                <div>
+                  <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider block mb-2 px-2 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-sky-400" />
+                    المختصرات والرموز التقنية ({filteredAcronyms.length}):
+                  </span>
+                  <div className="space-y-1.5">
+                    {filteredAcronyms.map((a, idx) => (
+                      <div key={idx} className="p-3 bg-slate-950/70 border border-sky-500/30 rounded-xl text-xs space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="px-2 py-0.5 bg-sky-500/20 text-sky-300 font-mono font-bold rounded-md">
+                            {a.short}
+                          </span>
+                          <span className="text-[11px] font-mono text-sky-200 font-semibold dir-ltr">
+                            {a.fullEn}
+                          </span>
+                        </div>
+                        <p className="text-amber-300 font-bold text-xs">{a.fullAr}</p>
+                        <p className="text-slate-300 text-[11px] leading-relaxed">{a.descriptionAr}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Glossary matches */}
               {filteredGlossary.length > 0 && (
                 <div>
@@ -129,7 +164,7 @@ export function SearchModal({ isOpen, onClose }: Props) {
                 </div>
               )}
 
-              {filteredLessons.length === 0 && filteredGlossary.length === 0 && (
+              {filteredLessons.length === 0 && filteredGlossary.length === 0 && filteredAcronyms.length === 0 && (
                 <div className="text-center py-8 text-xs text-slate-400">
                   لم يتم العثور على نتائج تطابق: "{query}"
                 </div>
