@@ -75,21 +75,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       ],
     });
 
-    // 2. Key Concepts Glossary Slide
-    if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
-      list.push({
-        id: "slide-concepts",
-        type: "concepts",
-        title: "المفاهيم والمصطلحات الأساسية للدرس",
-        subtitle: "Key Technical Vocabulary",
-        badge: "معجم المفاهيم 📖",
-        bullets: lesson.keyConcepts.map(
-          (c) => `**${c.termAr}** ${c.termEn ? `(${c.termEn})` : ""}: ${c.definition}`
-        ),
-      });
-    }
-
-    // 3. Lesson Sections Slides
+    // 2. Lesson Sections Slides
     lesson.sections.forEach((sec, idx) => {
       const lines = sec.content
         .split("\n")
@@ -107,6 +93,20 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         table: sec.table,
       });
     });
+
+    // 3. Key Concepts Glossary Slide - placed after content sections
+    if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
+      list.push({
+        id: "slide-concepts",
+        type: "concepts",
+        title: "المفاهيم والمصطلحات الأساسية للدرس",
+        subtitle: "Key Technical Vocabulary",
+        badge: "معجم المفاهيم 📖",
+        bullets: lesson.keyConcepts.map(
+          (c) => `**${c.termAr}** ${c.termEn ? `(${c.termEn})` : ""}: ${c.definition}`
+        ),
+      });
+    }
 
     // 4. Think Like an Engineer Slide
     if (lesson.engineerChallenge) {
