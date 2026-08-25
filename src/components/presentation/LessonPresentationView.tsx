@@ -22,6 +22,7 @@ import {
   ListOrdered,
   LayoutGrid
 } from "lucide-react";
+import { formatInlineText } from "../common/EyeComfortText";
 
 interface Props {
   lesson: Lesson;
@@ -414,7 +415,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
                   {/* Bullet Text */}
                   <div className="flex-1 text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
-                    {bullet}
+                    {formatInlineText(bullet, "light")}
                   </div>
                 </div>
               );
