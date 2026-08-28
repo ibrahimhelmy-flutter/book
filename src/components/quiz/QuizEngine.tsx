@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { QuestionItem } from "@/types";
 import { CheckCircle, XCircle, HelpCircle, Award, RotateCcw, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { saveQuizScore } from "@/lib/storage";
-import confetti from "canvas-confetti";
+import { fireConfetti } from "@/lib/confetti";
 
 interface Props {
   lessonId: string;
@@ -54,7 +54,7 @@ export function QuizEngine({ lessonId, questions }: Props) {
     saveQuizScore(lessonId, correctCount, totalQuestions);
 
     if (correctCount === totalQuestions || correctCount >= totalQuestions * 0.7) {
-      confetti({
+      fireConfetti({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },

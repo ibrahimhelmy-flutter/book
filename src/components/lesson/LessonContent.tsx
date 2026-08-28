@@ -101,7 +101,8 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 }
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
-  const [activeTab, setActiveTab] = useState<"lesson" | "presentation" | "simulator" | "quiz" | "engineer">("lesson");
+  const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
+  const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
 
   return (
     <article className="max-w-5xl mx-auto px-4 py-8">
@@ -119,17 +120,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           }`}
         >
           <BookOpen className="w-4 h-4" /> نص الدرس والشرح
-        </button>
-
-        <button
-          onClick={() => setActiveTab("presentation")}
-          className={`flex-1 min-w-[140px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-            activeTab === "presentation"
-              ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 font-extrabold"
-              : "text-blue-400 hover:text-white hover:bg-blue-950/40"
-          }`}
-        >
-          <Presentation className="w-4 h-4" /> شرائح العرض وقلم الرسم 📽️✏️
         </button>
 
         {lesson.simulatorId && (
@@ -168,14 +158,12 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         </button>
       </div>
 
-      {/* Interactive Slider & Freehand Annotation Presentation View */}
-      {activeTab === "presentation" && (
-        <div className="animate-fadeIn">
-          <LessonPresentationView
-            lesson={lesson}
-            onExitPresentation={() => setActiveTab("lesson")}
-          />
-        </div>
+      {/* Fullscreen Presentation Modal View */}
+      {isPresentationOpen && (
+        <LessonPresentationView
+          lesson={lesson}
+          onExitPresentation={() => setIsPresentationOpen(false)}
+        />
       )}
 
       {/* Main Lesson View */}
@@ -196,6 +184,31 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 <span>{lesson.learningPath.current}</span>
               </div>
             )}
+          </div>
+
+          {/* Presentation Launcher Banner in First Section / Top View */}
+          <div className="bg-gradient-to-r from-blue-950/70 via-indigo-950/50 to-slate-900 border border-blue-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center shrink-0 shadow-inner">
+                <Presentation className="w-6 h-6 text-blue-400 animate-pulse" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-extrabold text-white">
+                  جاهز لشرح أو مراجعة الدرس على البروجيكتور؟ 📽️
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  شرائح تفاعلية بملء الشاشة مع أدوات الرسم والتظليل، والسبورة الرقمية، ومساعد الذكاء الاصطناعي.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsPresentationOpen(true)}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95 shrink-0"
+            >
+              <Presentation className="w-4 h-4" />
+              <span>بدء العرض التقديمي (Full Screen)</span>
+            </button>
           </div>
 
           {/* Detailed Sections with In-Section Notes Button */}

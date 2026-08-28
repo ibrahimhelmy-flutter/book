@@ -1,22 +1,30 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import {
-  Pen,
-  Highlighter,
-  Eraser,
-  RotateCcw,
-  Trash2,
-  Download,
-  Type,
-  MousePointer2,
-  Sparkles,
-  Check,
-  Palette
-} from "lucide-react";
+import { Type } from "lucide-react";
+
+export type DrawToolType =
+  | "pointer"
+  | "pen"
+  | "highlighter"
+  | "laser"
+  | "arrow"
+  | "rect"
+  | "circle"
+  | "line"
+  | "text"
+  | "stamp"
+  | "eraser";
 
 export interface AnnotationCanvasProps {
   slideIndex: number;
+  activeTool?: DrawToolType;
+  color?: string;
+  size?: number;
+  undoRef?: React.MutableRefObject<(() => void) | null>;
+  redoRef?: React.MutableRefObject<(() => void) | null>;
+  clearRef?: React.MutableRefObject<(() => void) | null>;
+  downloadRef?: React.MutableRefObject<(() => void) | null>;
 }
 
 interface Point {
@@ -25,13 +33,14 @@ interface Point {
 }
 
 interface DrawStroke {
-  tool: "pen" | "highlighter" | "eraser";
+  tool: "pen" | "highlighter" | "eraser" | "arrow" | "rect" | "circle" | "line";
   color: string;
   size: number;
   points: Point[];
 }
 
 interface TextNote {
+  id: string;
   x: number;
   y: number;
   text: string;
@@ -39,20 +48,39 @@ interface TextNote {
   fontSize: number;
 }
 
-export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
+interface LaserPoint {
+  x: number;
+  y: number;
+  time: number;
+}
+
+export function SlideAnnotationCanvas({
+  slideIndex,
+  activeTool = "pointer",
+  color = "#2563eb",
+  size = 3.5,
+  undoRef,
+  redoRef,
+  clearRef,
+  downloadRef,
+}: AnnotationCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const laserCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Tools state - Pen is selected by default so writing is available all the time!
-  const [activeTool, setActiveTool] = useState<"pointer" | "pen" | "highlighter" | "eraser" | "text">("pen");
-  const [color, setColor] = useState<string>("#1e40af"); // Executive Royal Blue
-  const [size, setSize] = useState<number>(3.5);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [startPoint, setStartPoint] = useState<Point | null>(null);
 
-  // Persistent history across slide changes
+  // Persistent storage across slide navigation
   const strokesHistoryRef = useRef<Record<number, DrawStroke[]>>({});
   const undoStackRef = useRef<Record<number, DrawStroke[][]>>({});
+  const redoStackRef = useRef<Record<number, DrawStroke[][]>>({});
   const textNotesRef = useRef<Record<number, TextNote[]>>({});
+
+  // Laser Pointer trail
+  const laserTrailRef = useRef<LaserPoint[]>([]);
+  const laserAnimFrameRef = useRef<number | null>(null);
+  const [, setLaserCursorPos] = useState<Point | null>(null);
 
   // Active floating text note state
   const [activeTextInput, setActiveTextInput] = useState<{
@@ -61,24 +89,7 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
     text: string;
   } | null>(null);
 
-  // Executive corporate color palette
-  const presetColors = [
-    { name: "أزرق ملكي", value: "#1e40af" },
-    { name: "كحلي داكن", value: "#0f172a" },
-    { name: "أحمر احترافي", value: "#dc2626" },
-    { name: "أخضر زمردي", value: "#16a34a" },
-    { name: "أصفر تظليل", value: "#d97706" },
-    { name: "بنفسجي", value: "#7c3aed" },
-  ];
-
-  // Size presets
-  const sizePresets = [
-    { label: "دقيق", val: 2 },
-    { label: "متوسط", val: 4 },
-    { label: "عريض", val: 7 },
-  ];
-
-  // Redraw canvas with smooth quadratic Bézier curve interpolation
+  // Redraw main annotation canvas
   const redrawCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -87,7 +98,10 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const dpr = window.devicePixelRatio || 1;
     const rect = container.getBoundingClientRect();
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, rect.width, rect.height);
 
     const slideStrokes = strokesHistoryRef.current[slideIndex] || [];
@@ -101,89 +115,192 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
 
       if (stroke.tool === "highlighter") {
         ctx.strokeStyle = stroke.color;
-        ctx.globalAlpha = 0.35;
+        ctx.globalAlpha = 0.38;
         ctx.lineWidth = stroke.size * 5.5;
         ctx.globalCompositeOperation = "source-over";
       } else if (stroke.tool === "eraser") {
         ctx.globalCompositeOperation = "destination-out";
-        ctx.lineWidth = stroke.size * 6;
+        ctx.lineWidth = stroke.size * 8;
       } else {
         ctx.strokeStyle = stroke.color;
+        ctx.fillStyle = stroke.color;
         ctx.globalAlpha = 1.0;
         ctx.lineWidth = stroke.size;
         ctx.globalCompositeOperation = "source-over";
       }
 
-      ctx.beginPath();
-      if (stroke.points.length === 1) {
-        ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.size / 2, 0, Math.PI * 2);
-        ctx.fillStyle = stroke.color;
-        ctx.fill();
-      } else if (stroke.points.length === 2) {
-        ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-        ctx.lineTo(stroke.points[1].x, stroke.points[1].y);
+      const p0 = stroke.points[0];
+      const pLast = stroke.points[stroke.points.length - 1];
+
+      if (stroke.tool === "line") {
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(pLast.x, pLast.y);
         ctx.stroke();
-      } else {
-        ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-        for (let i = 1; i < stroke.points.length - 1; i++) {
-          const xc = (stroke.points[i].x + stroke.points[i + 1].x) / 2;
-          const yc = (stroke.points[i].y + stroke.points[i + 1].y) / 2;
-          ctx.quadraticCurveTo(stroke.points[i].x, stroke.points[i].y, xc, yc);
-        }
+      } else if (stroke.tool === "arrow") {
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(pLast.x, pLast.y);
+        ctx.stroke();
+
+        const angle = Math.atan2(pLast.y - p0.y, pLast.x - p0.x);
+        const headlen = 14 + stroke.size * 1.5;
+        ctx.beginPath();
+        ctx.moveTo(pLast.x, pLast.y);
         ctx.lineTo(
-          stroke.points[stroke.points.length - 1].x,
-          stroke.points[stroke.points.length - 1].y
+          pLast.x - headlen * Math.cos(angle - Math.PI / 6),
+          pLast.y - headlen * Math.sin(angle - Math.PI / 6)
+        );
+        ctx.moveTo(pLast.x, pLast.y);
+        ctx.lineTo(
+          pLast.x - headlen * Math.cos(angle + Math.PI / 6),
+          pLast.y - headlen * Math.sin(angle + Math.PI / 6)
         );
         ctx.stroke();
+      } else if (stroke.tool === "rect") {
+        ctx.beginPath();
+        const width = pLast.x - p0.x;
+        const height = pLast.y - p0.y;
+        ctx.strokeRect(p0.x, p0.y, width, height);
+      } else if (stroke.tool === "circle") {
+        ctx.beginPath();
+        const rx = Math.abs(pLast.x - p0.x) / 2;
+        const ry = Math.abs(pLast.y - p0.y) / 2;
+        const cx = (p0.x + pLast.x) / 2;
+        const cy = (p0.y + pLast.y) / 2;
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+        ctx.stroke();
+      } else {
+        ctx.beginPath();
+        if (stroke.points.length === 1) {
+          ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.size / 2, 0, Math.PI * 2);
+          ctx.fillStyle = stroke.color;
+          ctx.fill();
+        } else if (stroke.points.length === 2) {
+          ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+          ctx.lineTo(stroke.points[1].x, stroke.points[1].y);
+          ctx.stroke();
+        } else {
+          ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+          for (let i = 1; i < stroke.points.length - 1; i++) {
+            const xc = (stroke.points[i].x + stroke.points[i + 1].x) / 2;
+            const yc = (stroke.points[i].y + stroke.points[i + 1].y) / 2;
+            ctx.quadraticCurveTo(stroke.points[i].x, stroke.points[i].y, xc, yc);
+          }
+          ctx.lineTo(
+            stroke.points[stroke.points.length - 1].x,
+            stroke.points[stroke.points.length - 1].y
+          );
+          ctx.stroke();
+        }
       }
-
       ctx.restore();
     }
 
-    // Draw persistent text notes on this slide
+    // Render Text Notes
     const notes = textNotesRef.current[slideIndex] || [];
     for (const note of notes) {
       ctx.save();
-      ctx.font = `bold ${note.fontSize}px 'Cairo', sans-serif`;
+      ctx.font = `bold ${note.fontSize}px Cairo, sans-serif`;
       ctx.fillStyle = note.color;
+      ctx.direction = "rtl";
+      ctx.shadowColor = "rgba(0,0,0,0.5)";
+      ctx.shadowBlur = 4;
       ctx.fillText(note.text, note.x, note.y);
       ctx.restore();
     }
   }, [slideIndex]);
 
-  // Sync canvas dimensions with device pixel ratio
-  const syncCanvasSize = useCallback(() => {
+  // Handle Resize & HiDPI
+  const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
+    const laserCanvas = laserCanvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
-
-    const rect = container.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
+    if (!canvas || !laserCanvas || !container) return;
 
     const dpr = window.devicePixelRatio || 1;
+    const rect = container.getBoundingClientRect();
+
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
 
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.scale(dpr, dpr);
-      redrawCanvas();
-    }
+    laserCanvas.width = rect.width * dpr;
+    laserCanvas.height = rect.height * dpr;
+    laserCanvas.style.width = `${rect.width}px`;
+    laserCanvas.style.height = `${rect.height}px`;
+
+    redrawCanvas();
   }, [redrawCanvas]);
 
   useEffect(() => {
-    syncCanvasSize();
-    const handleResize = () => syncCanvasSize();
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [syncCanvasSize, slideIndex]);
+  }, [handleResize, slideIndex]);
 
+  // Laser Pointer Render Loop
+  useEffect(() => {
+    let active = true;
+
+    const renderLaser = () => {
+      if (!active) return;
+      const laserCanvas = laserCanvasRef.current;
+      const container = containerRef.current;
+      if (laserCanvas && container) {
+        const ctx = laserCanvas.getContext("2d");
+        if (ctx) {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = container.getBoundingClientRect();
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, rect.width, rect.height);
+
+          const now = performance.now();
+          const trail = laserTrailRef.current;
+          laserTrailRef.current = trail.filter((p) => now - p.time < 500);
+
+          for (let i = 0; i < laserTrailRef.current.length; i++) {
+            const p = laserTrailRef.current[i];
+            const age = now - p.time;
+            const alpha = Math.max(0, 1 - age / 500);
+            const radius = Math.max(2, (1 - age / 500) * 8);
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
+            ctx.shadowColor = "#ef4444";
+            ctx.shadowBlur = 12;
+            ctx.fill();
+          }
+
+          if (laserTrailRef.current.length > 0) {
+            const latest = laserTrailRef.current[laserTrailRef.current.length - 1];
+            ctx.beginPath();
+            ctx.arc(latest.x, latest.y, 7, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.shadowColor = "#ef4444";
+            ctx.shadowBlur = 16;
+            ctx.fill();
+          }
+        }
+      }
+      laserAnimFrameRef.current = requestAnimationFrame(renderLaser);
+    };
+
+    laserAnimFrameRef.current = requestAnimationFrame(renderLaser);
+
+    return () => {
+      active = false;
+      if (laserAnimFrameRef.current) cancelAnimationFrame(laserAnimFrameRef.current);
+    };
+  }, []);
+
+  // Coordinate normalizer
   const getCanvasCoords = (e: React.PointerEvent<HTMLCanvasElement>): Point => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
+    const container = containerRef.current;
+    if (!container) return { x: e.clientX, y: e.clientY };
+    const rect = container.getBoundingClientRect();
     return {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
@@ -195,70 +312,143 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
 
     const pt = getCanvasCoords(e);
 
+    if (activeTool === "laser") {
+      setLaserCursorPos(pt);
+      laserTrailRef.current.push({ x: pt.x, y: pt.y, time: performance.now() });
+      return;
+    }
+
     if (activeTool === "text") {
       setActiveTextInput({ x: pt.x, y: pt.y, text: "" });
       return;
     }
 
-    // Save previous state for undo
+    if (!strokesHistoryRef.current[slideIndex]) {
+      strokesHistoryRef.current[slideIndex] = [];
+    }
     if (!undoStackRef.current[slideIndex]) {
       undoStackRef.current[slideIndex] = [];
     }
-    const current = strokesHistoryRef.current[slideIndex] || [];
-    undoStackRef.current[slideIndex].push([...current]);
+
+    undoStackRef.current[slideIndex].push([...strokesHistoryRef.current[slideIndex]]);
+    redoStackRef.current[slideIndex] = [];
+
+    setIsDrawing(true);
+    setStartPoint(pt);
+
+    const strokeTool = activeTool === "stamp" ? "pen" : activeTool;
 
     const newStroke: DrawStroke = {
-      tool: activeTool,
+      tool: strokeTool,
       color,
       size,
       points: [pt],
     };
 
-    if (!strokesHistoryRef.current[slideIndex]) {
-      strokesHistoryRef.current[slideIndex] = [];
-    }
     strokesHistoryRef.current[slideIndex].push(newStroke);
-    setIsDrawing(true);
+    redrawCanvas();
 
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.setPointerCapture(e.pointerId);
+      try {
+        canvas.setPointerCapture(e.pointerId);
+      } catch {
+        // Ignore pointer capture errors if unsupported
+      }
     }
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isDrawing || activeTool === "pointer" || activeTool === "text") return;
     const pt = getCanvasCoords(e);
+
+    if (activeTool === "laser") {
+      setLaserCursorPos(pt);
+      laserTrailRef.current.push({ x: pt.x, y: pt.y, time: performance.now() });
+      return;
+    }
+
+    if (!isDrawing || activeTool === "pointer" || activeTool === "text" || activeTool === "stamp") return;
 
     const slideStrokes = strokesHistoryRef.current[slideIndex];
     if (!slideStrokes || slideStrokes.length === 0) return;
 
     const currentStroke = slideStrokes[slideStrokes.length - 1];
-    currentStroke.points.push(pt);
+
+    if (
+      currentStroke.tool === "line" ||
+      currentStroke.tool === "arrow" ||
+      currentStroke.tool === "rect" ||
+      currentStroke.tool === "circle"
+    ) {
+      currentStroke.points = [startPoint || currentStroke.points[0], pt];
+    } else {
+      currentStroke.points.push(pt);
+    }
 
     redrawCanvas();
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (activeTool === "laser") {
+      setIsDrawing(false);
+      return;
+    }
+
     if (isDrawing) {
       setIsDrawing(false);
+      setStartPoint(null);
+      redrawCanvas();
       const canvas = canvasRef.current;
-      if (canvas && canvas.hasPointerCapture(e.pointerId)) {
-        canvas.releasePointerCapture(e.pointerId);
+      if (canvas) {
+        try {
+          if (canvas.hasPointerCapture(e.pointerId)) {
+            canvas.releasePointerCapture(e.pointerId);
+          }
+        } catch {
+          // Ignore
+        }
       }
     }
   };
 
-  const handleUndo = () => {
-    const stack = undoStackRef.current[slideIndex];
-    if (stack && stack.length > 0) {
-      const prevState = stack.pop() || [];
-      strokesHistoryRef.current[slideIndex] = prevState;
+  const handlePointerLeave = () => {
+    if (activeTool === "laser") {
+      setLaserCursorPos(null);
+    }
+    if (isDrawing && activeTool !== "laser") {
+      setIsDrawing(false);
+      setStartPoint(null);
       redrawCanvas();
     }
   };
 
-  const handleClear = () => {
+  const handleUndo = useCallback(() => {
+    const stack = undoStackRef.current[slideIndex];
+    if (stack && stack.length > 0) {
+      const prevState = stack.pop() || [];
+      if (!redoStackRef.current[slideIndex]) {
+        redoStackRef.current[slideIndex] = [];
+      }
+      redoStackRef.current[slideIndex].push([...(strokesHistoryRef.current[slideIndex] || [])]);
+      strokesHistoryRef.current[slideIndex] = prevState;
+      redrawCanvas();
+    }
+  }, [slideIndex, redrawCanvas]);
+
+  const handleRedo = useCallback(() => {
+    const stack = redoStackRef.current[slideIndex];
+    if (stack && stack.length > 0) {
+      const nextState = stack.pop() || [];
+      if (!undoStackRef.current[slideIndex]) {
+        undoStackRef.current[slideIndex] = [];
+      }
+      undoStackRef.current[slideIndex].push([...(strokesHistoryRef.current[slideIndex] || [])]);
+      strokesHistoryRef.current[slideIndex] = nextState;
+      redrawCanvas();
+    }
+  }, [slideIndex, redrawCanvas]);
+
+  const handleClear = useCallback(() => {
     if (!undoStackRef.current[slideIndex]) {
       undoStackRef.current[slideIndex] = [];
     }
@@ -268,7 +458,25 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
     strokesHistoryRef.current[slideIndex] = [];
     textNotesRef.current[slideIndex] = [];
     redrawCanvas();
-  };
+  }, [slideIndex, redrawCanvas]);
+
+  const handleDownloadSnapshot = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = `slide_${slideIndex + 1}_annotations.png`;
+    link.href = dataUrl;
+    link.click();
+  }, [slideIndex]);
+
+  // Wire external refs
+  useEffect(() => {
+    if (undoRef) undoRef.current = handleUndo;
+    if (redoRef) redoRef.current = handleRedo;
+    if (clearRef) clearRef.current = handleClear;
+    if (downloadRef) downloadRef.current = handleDownloadSnapshot;
+  }, [undoRef, redoRef, clearRef, downloadRef, handleUndo, handleRedo, handleClear, handleDownloadSnapshot]);
 
   const handleSaveTextNote = () => {
     if (activeTextInput && activeTextInput.text.trim()) {
@@ -276,9 +484,10 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
         textNotesRef.current[slideIndex] = [];
       }
       textNotesRef.current[slideIndex].push({
+        id: `note-${Date.now()}`,
         x: activeTextInput.x,
         y: activeTextInput.y,
-        text: activeTextInput.text,
+        text: activeTextInput.text.trim(),
         color,
         fontSize: size * 4 + 14,
       });
@@ -287,224 +496,87 @@ export function SlideAnnotationCanvas({ slideIndex }: AnnotationCanvasProps) {
     setActiveTextInput(null);
   };
 
-  const handleDownloadSnapshot = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dataUrl = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = `slide_${slideIndex + 1}_annotations.png`;
-    link.href = dataUrl;
-    link.click();
+  const getCursorClass = () => {
+    switch (activeTool) {
+      case "pointer":
+        return "pointer-events-none";
+      case "laser":
+        return "cursor-none pointer-events-auto";
+      case "text":
+        return "cursor-text pointer-events-auto";
+      case "eraser":
+        return "cursor-cell pointer-events-auto";
+      default:
+        return "cursor-crosshair pointer-events-auto";
+    }
   };
 
   return (
     <div
       ref={containerRef}
       className={`absolute inset-0 z-30 transition-all ${
-        activeTool === "pointer"
-          ? "pointer-events-none"
-          : "pointer-events-auto cursor-crosshair"
+        activeTool === "pointer" ? "pointer-events-none" : "pointer-events-auto"
       }`}
     >
-      {/* High-Precision Vector Canvas */}
+      {/* Vector Drawing Canvas */}
       <canvas
         ref={canvasRef}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        className={`w-full h-full touch-none select-none ${
-          activeTool === "pointer" ? "pointer-events-none" : "pointer-events-auto"
-        }`}
+        onPointerLeave={handlePointerLeave}
+        className={`absolute inset-0 w-full h-full touch-none select-none ${getCursorClass()}`}
+      />
+
+      {/* Laser Layer Canvas */}
+      <canvas
+        ref={laserCanvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none touch-none select-none z-10"
       />
 
       {/* Floating Text Note Input Box */}
       {activeTextInput && (
         <div
-          className="absolute z-50 bg-white border-2 border-blue-600 rounded-xl p-2.5 shadow-2xl pointer-events-auto"
+          className="absolute z-50 bg-white dark:bg-slate-900 border-2 border-blue-600 rounded-2xl p-3 shadow-2xl pointer-events-auto animate-fadeIn"
           style={{
-            left: `${activeTextInput.x}px`,
-            top: `${activeTextInput.y}px`,
+            left: `${Math.max(10, Math.min(activeTextInput.x, (containerRef.current?.clientWidth || 500) - 260))}px`,
+            top: `${Math.max(10, Math.min(activeTextInput.y, (containerRef.current?.clientHeight || 500) - 100))}px`,
             transform: "translate(-10%, -50%)",
           }}
+          dir="rtl"
         >
+          <div className="flex items-center gap-1.5 mb-1.5 pb-1 border-b border-slate-100 dark:border-slate-800">
+            <Type className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">إضافة ملاحظة على الشريحة</span>
+          </div>
           <input
             type="text"
             autoFocus
             value={activeTextInput.text}
-            onChange={(e) =>
-              setActiveTextInput({ ...activeTextInput, text: e.target.value })
-            }
+            onChange={(e) => setActiveTextInput({ ...activeTextInput, text: e.target.value })}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSaveTextNote();
               if (e.key === "Escape") setActiveTextInput(null);
             }}
             placeholder="اكتب ملاحظة واضغط Enter..."
-            className="px-2.5 py-1 text-sm border-none outline-none font-bold text-slate-900 bg-transparent min-w-[220px]"
+            className="w-full px-3 py-1.5 text-sm font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 min-w-[240px]"
           />
-          <div className="flex justify-end gap-1.5 mt-1.5 border-t border-slate-100 pt-1.5">
+          <div className="flex justify-end gap-1.5 mt-2">
             <button
               onClick={() => setActiveTextInput(null)}
-              className="text-[11px] px-2.5 py-1 text-slate-500 hover:bg-slate-100 rounded-lg cursor-pointer font-semibold"
+              className="text-[11px] px-2.5 py-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg cursor-pointer font-bold"
             >
               إلغاء
             </button>
             <button
               onClick={handleSaveTextNote}
-              className="text-[11px] px-3 py-1 bg-blue-600 text-white rounded-lg font-bold cursor-pointer hover:bg-blue-700"
+              className="text-[11px] px-3 py-1 bg-blue-600 text-white rounded-lg font-bold cursor-pointer hover:bg-blue-700 transition-colors shadow-sm"
             >
               حفظ الملاحظة
             </button>
           </div>
         </div>
       )}
-
-      {/* Executive Clean Floating Annotation Dock (Always Accessible) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex items-center gap-2 p-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-2xl shadow-slate-900/10 transition-all">
-        {/* Pointer / Cursor Mode */}
-        <button
-          onClick={() => setActiveTool("pointer")}
-          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold ${
-            activeTool === "pointer"
-              ? "bg-slate-900 text-white shadow-sm"
-              : "text-slate-600 hover:bg-slate-100"
-          }`}
-          title="مؤشر عادي للتفاعل"
-        >
-          <MousePointer2 className="w-4 h-4" />
-          <span className="hidden sm:inline">مؤشر</span>
-        </button>
-
-        <div className="h-5 w-px bg-slate-200" />
-
-        {/* Pen Tool (Default) */}
-        <button
-          onClick={() => setActiveTool("pen")}
-          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold ${
-            activeTool === "pen"
-              ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
-              : "text-slate-700 hover:bg-slate-100"
-          }`}
-          title="قلم كتابة حر (نشط دائماً)"
-        >
-          <Pen className="w-4 h-4" />
-          <span className="hidden sm:inline">قلم</span>
-        </button>
-
-        {/* Highlighter Tool */}
-        <button
-          onClick={() => setActiveTool("highlighter")}
-          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold ${
-            activeTool === "highlighter"
-              ? "bg-amber-500 text-white shadow-md shadow-amber-500/20"
-              : "text-slate-700 hover:bg-slate-100"
-          }`}
-          title="قلم تظليل شفاف"
-        >
-          <Highlighter className="w-4 h-4" />
-          <span className="hidden sm:inline">تظليل</span>
-        </button>
-
-        {/* Text Note Tool */}
-        <button
-          onClick={() => setActiveTool("text")}
-          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold ${
-            activeTool === "text"
-              ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
-              : "text-slate-700 hover:bg-slate-100"
-          }`}
-          title="إضافة نص وملاحظة"
-        >
-          <Type className="w-4 h-4" />
-          <span className="hidden sm:inline">نص</span>
-        </button>
-
-        {/* Eraser Tool */}
-        <button
-          onClick={() => setActiveTool("eraser")}
-          className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1 text-xs font-bold ${
-            activeTool === "eraser"
-              ? "bg-rose-600 text-white shadow-md shadow-rose-500/20"
-              : "text-slate-700 hover:bg-slate-100"
-          }`}
-          title="ممحاة الرسم"
-        >
-          <Eraser className="w-4 h-4" />
-          <span className="hidden sm:inline">ممحاة</span>
-        </button>
-
-        <div className="h-5 w-px bg-slate-200" />
-
-        {/* 1-Click Preset Colors */}
-        <div className="flex items-center gap-1.5 px-1">
-          {presetColors.map((c) => (
-            <button
-              key={c.value}
-              onClick={() => {
-                setColor(c.value);
-                if (activeTool === "pointer" || activeTool === "eraser") {
-                  setActiveTool("pen");
-                }
-              }}
-              className={`w-5 h-5 rounded-full border-2 transition-transform cursor-pointer flex items-center justify-center ${
-                color === c.value
-                  ? "scale-125 border-slate-900 shadow-sm"
-                  : "border-transparent hover:scale-110 opacity-80 hover:opacity-100"
-              }`}
-              style={{ backgroundColor: c.value }}
-              title={c.name}
-            >
-              {color === c.value && <Check className="w-2.5 h-2.5 text-white drop-shadow-sm" />}
-            </button>
-          ))}
-        </div>
-
-        <div className="h-5 w-px bg-slate-200" />
-
-        {/* Stroke Thickness */}
-        <div className="flex items-center gap-1 px-1">
-          {sizePresets.map((sp) => (
-            <button
-              key={sp.val}
-              onClick={() => setSize(sp.val)}
-              className={`px-1.5 py-0.5 rounded-lg text-[11px] font-bold transition-colors cursor-pointer ${
-                size === sp.val ? "bg-slate-200 text-slate-900" : "text-slate-400 hover:text-slate-700"
-              }`}
-              title={`سمك الخط ${sp.label}`}
-            >
-              {sp.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="h-5 w-px bg-slate-200" />
-
-        {/* Undo */}
-        <button
-          onClick={handleUndo}
-          className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-          title="تراجع (Undo)"
-        >
-          <RotateCcw className="w-4 h-4" />
-        </button>
-
-        {/* Clear */}
-        <button
-          onClick={handleClear}
-          className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
-          title="مسح كل رسومات الشريحة"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
-
-        {/* Download Snapshot */}
-        <button
-          onClick={handleDownloadSnapshot}
-          className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-          title="حفظ الشريحة بالرسم كصورة PNG"
-        >
-          <Download className="w-4 h-4" />
-        </button>
-      </div>
     </div>
   );
 }

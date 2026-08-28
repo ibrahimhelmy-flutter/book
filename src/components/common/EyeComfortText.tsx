@@ -58,7 +58,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
         return (
           <strong
             key={index}
-            className="font-bold text-blue-950 bg-blue-100/90 border border-blue-200 px-1.5 py-0.5 rounded-md mx-0.5 inline-block shadow-xs"
+            className="font-black text-slate-950 bg-blue-50 border border-blue-300/80 px-1.5 py-0.5 rounded-md mx-0.5 inline-block shadow-xs"
           >
             {renderTextWithAcronyms(inner, theme)}
           </strong>

@@ -32,24 +32,27 @@ export function LessonHeader({ lesson }: Props) {
   };
 
   const handleTTSAudio = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("القارئ الصوتي غير مدعوم في هذا المتصفح.");
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
       return;
     }
 
-    if (isPlayingAudio) {
-      window.speechSynthesis.cancel();
+    try {
+      if (isPlayingAudio) {
+        window.speechSynthesis.cancel();
+        setIsPlayingAudio(false);
+      } else {
+        window.speechSynthesis.cancel();
+        const textToRead = `${lesson.title}. الفكرة الأساسية: ${lesson.coreIdea}. السؤال الرئيسي: ${lesson.keyQuestion}.`;
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = "ar-SA";
+        utterance.rate = 0.9;
+        utterance.onend = () => setIsPlayingAudio(false);
+        utterance.onerror = () => setIsPlayingAudio(false);
+        window.speechSynthesis.speak(utterance);
+        setIsPlayingAudio(true);
+      }
+    } catch {
       setIsPlayingAudio(false);
-    } else {
-      window.speechSynthesis.cancel();
-      const textToRead = `${lesson.title}. الفكرة الأساسية: ${lesson.coreIdea}. السؤال الرئيسي: ${lesson.keyQuestion}.`;
-      const utterance = new SpeechSynthesisUtterance(textToRead);
-      utterance.lang = "ar-SA";
-      utterance.rate = 0.9;
-      utterance.onend = () => setIsPlayingAudio(false);
-      utterance.onerror = () => setIsPlayingAudio(false);
-      window.speechSynthesis.speak(utterance);
-      setIsPlayingAudio(true);
     }
   };
 
