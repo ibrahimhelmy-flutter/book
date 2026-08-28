@@ -85,8 +85,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   // Presentation Modes: "slides" | "flow"
   const [presentationMode, setPresentationMode] = useState<"slides" | "flow">("slides");
 
-  // Presentation Themes: "light" | "dark"
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  // Presentation Themes: "light" | "dark" (Default is Light)
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   // Font Size Scaling: "normal" | "large" | "xlarge"
   const [fontSizeLevel] = useState<"normal" | "large" | "xlarge">("large");
@@ -1090,14 +1090,14 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                             : "opacity-0 translate-y-3 pointer-events-none"
                         }`}
                       >
-                        {/* High-visibility step badge number */}
-                        <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 text-sm sm:text-base font-black transition-all ${
-                            isLatestRevealed ? themeStyles.dotLatest : themeStyles.dotNormal
+                        {/* Subtle clean bullet point dot */}
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full shrink-0 mt-2.5 sm:mt-3 transition-all ${
+                            isLatestRevealed
+                              ? "bg-blue-600 ring-4 ring-blue-500/20 scale-125 shadow-xs"
+                              : "bg-slate-300 dark:bg-slate-700 opacity-60"
                           }`}
-                        >
-                          {idx + 1}
-                        </div>
+                        />
 
                         {/* Large, crystal-clear bullet text */}
                         <div className={`flex-1 ${fontStyles.bulletText}`}>
