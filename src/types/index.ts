@@ -179,3 +179,42 @@ export interface UserProfile {
   school?: string;
   avatar: string;
 }
+
+export interface SimulatorMeta {
+  id: string;
+  title: string;
+  category: string;
+  iconName?: string;
+  color?: string;
+  description: string;
+  lessonNumber?: string;
+  chapterNumber?: number;
+}
+
+export interface BookStats {
+  totalChapters: number;
+  totalLessons: number;
+  totalSimulators: number;
+  totalGlossaryTerms: number;
+  totalAcronyms: number;
+  totalExamQuestions: number;
+}
+
+export interface Book {
+  id: string;
+  slug: string;
+  title: string;
+  englishTitle: string;
+  stage: string;
+  grade: string;
+  term: string;
+  accreditation: string[];
+  description: string;
+  colorTheme?: string;
+  icon?: string;
+  chapters: Chapter[];
+  glossary?: GlossaryTerm[];
+  acronyms?: AcronymTerm[];
+  simulators?: SimulatorMeta[];
+}
+

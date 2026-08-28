@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X } from "lucide-react";
 import { SearchModal } from "../common/SearchModal";
+import { CURRENT_BOOK } from "@/data/books";
+import { BookSelector } from "../common/BookSelector";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -26,19 +28,20 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Clean Brand Title */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md group-hover:bg-indigo-500 transition-colors">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-                  <span>البرمجة والذكاء الاصطناعي</span>
-                  <span className="text-[11px] font-medium px-2 py-0.5 bg-slate-800 text-slate-300 rounded-md border border-slate-700">
-                    2 ثانوي
-                  </span>
+            <div className="flex items-center gap-3">
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md group-hover:bg-indigo-500 transition-colors">
+                  <Sparkles className="w-5 h-5" />
                 </div>
-              </div>
-            </Link>
+                <div className="text-right hidden sm:block">
+                  <div className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                    <span>{CURRENT_BOOK.title}</span>
+                  </div>
+                </div>
+              </Link>
+              
+              <BookSelector variant="compact" />
+            </div>
 
             {/* Clear, Minimal Navigation Links */}
             <nav className="hidden md:flex items-center gap-1.5">

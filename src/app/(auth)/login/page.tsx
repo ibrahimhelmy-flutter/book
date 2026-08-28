@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, Lock, Mail, ArrowLeft, ShieldCheck, User } from "lucide-react";
 import { saveProfile } from "@/lib/storage";
+import { CURRENT_BOOK } from "@/data/books";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,10 +17,10 @@ export default function LoginPage() {
     e.preventDefault();
     saveProfile({
       id: `user_${Date.now()}`,
-      name: role === "student" ? "طالب الثانوية العامة" : "أستاذ المادة",
+      name: role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة",
       email: email,
       role: role,
-      grade: "الصف الثاني الثانوي (بكالوريا)",
+      grade: CURRENT_BOOK.grade,
       school: "مدرسة المتفوقين للعلوم والتكنولوجيا",
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
@@ -36,7 +37,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-2xl font-black">تسجيل الدخول للمنهاج الرقمي</h1>
           <p className="text-xs text-slate-400">
-            مرحباً بك في منصة البرمجة والذكاء الاصطناعي (البكالوريا المصرية)
+            مرحباً بك في منصة {CURRENT_BOOK.title} ({CURRENT_BOOK.grade})
           </p>
         </div>
 

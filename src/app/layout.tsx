@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
+import { CURRENT_BOOK } from "@/data/books";
 
 export const metadata: Metadata = {
-  title: "البرمجة والذكاء الاصطناعي | الصف الثاني الثانوي (البكالوريا المصرية)",
-  description: "المنهج الرقمي التفاعلي المعتمد للبرمجة والذكاء الاصطناعي - الجزء الأول، وفق رؤية مصر 2030 بالتعاون مع البكالوريا الدولية (IB).",
-  keywords: ["الذكاء الاصطناعي", "الأمن السيبراني", "تطبيقات الويب", "تصميم الويب", "الثانوية العامة", "مصر"],
+  title: `${CURRENT_BOOK.title} | ${CURRENT_BOOK.grade} (${CURRENT_BOOK.term})`,
+  description: CURRENT_BOOK.description,
+  keywords: ["الذكاء الاصطناعي", "الأمن السيبراني", "تطبيقات الويب", "تصميم الويب", "الثانوية العامة", "مصر", CURRENT_BOOK.title, CURRENT_BOOK.grade],
 };
 
 export default function RootLayout({

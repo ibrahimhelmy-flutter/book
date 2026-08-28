@@ -1,9 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import { CURRICULUM_DATA } from "@/data/curriculum";
+import { CURRENT_BOOK, getBookStats } from "@/data/books";
+import { BookSelector } from "@/components/common/BookSelector";
 import { BookOpen, Sparkles, ShieldCheck, Globe, Palette, ArrowLeft, Award, CheckCircle, Cpu, Zap, Activity } from "lucide-react";
 
 export default function HomePage() {
+  const stats = getBookStats(CURRENT_BOOK);
+  const chapters = CURRENT_BOOK.chapters || [];
+  const firstChapter = chapters[0];
+  const firstLesson = firstChapter?.lessons?.[0];
+  const firstLessonHref = firstChapter && firstLesson ? `/chapters/${firstChapter.id}/${firstLesson.slug}` : "/chapters";
+
   const chapterIcons = {
     "chapter-1": Cpu,
     "chapter-2": ShieldCheck,
@@ -19,36 +26,41 @@ export default function HomePage() {
 
         <div className="max-w-6xl mx-auto relative z-10 text-center space-y-6">
           {/* Official Accreditation Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-mono">
-              وزارة التربية والتعليم والتعليم الفني 🇪🇬
-            </span>
-            <span className="px-3.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-bold font-mono">
-              Advised by International Baccalaureate (IB) 🌐
-            </span>
-            <span className="px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold font-mono">
-              رؤية مصر 2030 🚀
-            </span>
+          {CURRENT_BOOK.accreditation && CURRENT_BOOK.accreditation.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {CURRENT_BOOK.accreditation.map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-mono"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Dynamic Book Switcher Banner */}
+          <div className="flex justify-center">
+            <BookSelector variant="navbar" />
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-tight">
-            منهاج <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">البرمجة والذكاء الاصطناعي</span>
+            منهاج <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">{CURRENT_BOOK.title}</span>
             <br />
-            <span className="text-slate-200 text-2xl sm:text-4xl font-extrabold">الصف الثاني الثانوي (الجزء الأول)</span>
+            <span className="text-slate-200 text-2xl sm:text-4xl font-extrabold">{CURRENT_BOOK.grade} ({CURRENT_BOOK.term})</span>
           </h1>
 
           <p className="max-w-3xl mx-auto text-slate-300 text-sm sm:text-base leading-relaxed">
-            المنصة التفاعلية الرسمية المتكاملة لمحتوى الكتاب المدرسي لشهادة الثانوية المصرية.
-            تجمع بين المحاكيات الهندسية الحية، والتمارين المصححة آلياً، ونماذج امتحانات الثانوية العامة مع سلالم التصحيح النموذجية.
+            {CURRENT_BOOK.description}
           </p>
 
           {/* Quick CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link
-              href="/chapters/chapter-1/it-evolution-social-transformation"
+              href={firstLessonHref}
               className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 transition-all flex items-center gap-2 group"
             >
-              <span>ابدأ دراسة الدرس الأول (1-1)</span>
+              <span>ابدأ دراسة الدرس الأول ({firstLesson?.number || "1-1"})</span>
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             </Link>
 
@@ -57,7 +69,7 @@ export default function HomePage() {
               className="px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm transition-all flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4 text-purple-400" />
-              <span>معمل المحاكيات التفاعلية (8 تجارب)</span>
+              <span>معمل المحاكيات التفاعلية ({stats.totalSimulators} تجارب)</span>
             </Link>
 
             <Link
@@ -65,27 +77,27 @@ export default function HomePage() {
               className="px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm transition-all flex items-center gap-2"
             >
               <Award className="w-4 h-4 text-amber-400" />
-              <span>بنك أسئلة الامتحانات (6 درجات)</span>
+              <span>بنك أسئلة الامتحانات ({stats.totalExamQuestions} أسئلة)</span>
             </Link>
           </div>
 
-          {/* Highlights summary pills */}
+          {/* Highlights summary pills calculated 100% dynamically */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8">
             <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl">
-              <div className="text-2xl font-black text-indigo-400 font-mono">4 فصول</div>
-              <div className="text-xs text-slate-400 mt-0.5">شاملة لكامل الترم الأول</div>
+              <div className="text-2xl font-black text-indigo-400 font-mono">{stats.totalChapters} فصول</div>
+              <div className="text-xs text-slate-400 mt-0.5">شاملة لكامل {CURRENT_BOOK.term}</div>
             </div>
             <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl">
-              <div className="text-2xl font-black text-purple-400 font-mono">14 درساً</div>
+              <div className="text-2xl font-black text-purple-400 font-mono">{stats.totalLessons} درساً</div>
               <div className="text-xs text-slate-400 mt-0.5">مع أمثلة وتمارين وتطبيق</div>
             </div>
             <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl">
-              <div className="text-2xl font-black text-emerald-400 font-mono">8 محاكيات</div>
+              <div className="text-2xl font-black text-emerald-400 font-mono">{stats.totalSimulators} محاكيات</div>
               <div className="text-xs text-slate-400 mt-0.5">تجارب تفاعلية حية</div>
             </div>
             <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl">
-              <div className="text-2xl font-black text-pink-400 font-mono">100% معتمد</div>
-              <div className="text-xs text-slate-400 mt-0.5">تطابق تام مع كتاب الوزارة</div>
+              <div className="text-2xl font-black text-pink-400 font-mono">{stats.totalGlossaryTerms}+ مصطلح</div>
+              <div className="text-xs text-slate-400 mt-0.5">معجم المصطلحات المعتمدة</div>
             </div>
           </div>
         </div>
@@ -94,12 +106,12 @@ export default function HomePage() {
       {/* Chapters Grid Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center space-y-2 mb-12">
-          <h2 className="text-2xl sm:text-3xl font-black text-white">فصول المنهج الدراسي (الترم الأول)</h2>
+          <h2 className="text-2xl sm:text-3xl font-black text-white">فصول المنهج الدراسي ({CURRENT_BOOK.term})</h2>
           <p className="text-xs sm:text-sm text-slate-400">انقر على أي فصل أو درس للانتقال المباشر للمحتوى والشرح التفاعلي</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {CURRICULUM_DATA.map((chapter) => {
+          {chapters.map((chapter) => {
             const Icon = chapterIcons[chapter.id as keyof typeof chapterIcons] || BookOpen;
 
             return (
@@ -168,3 +180,4 @@ export default function HomePage() {
     </div>
   );
 }
+
