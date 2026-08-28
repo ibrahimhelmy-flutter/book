@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, Lock, Mail, User, School, ArrowLeft } from "lucide-react";
 import { saveProfile } from "@/lib/storage";
+import { CURRENT_BOOK } from "@/data/books";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,10 +19,10 @@ export default function RegisterPage() {
     e.preventDefault();
     saveProfile({
       id: `user_${Date.now()}`,
-      name: name || "طالب الثانوية العامة",
+      name: name || "طالب المرحلة الثانوية",
       email: email || "student@moe.edu.eg",
       role: role,
-      grade: "الصف الثاني الثانوي (بكالوريا)",
+      grade: CURRENT_BOOK.grade,
       school: school || "مدرسة المتفوقين للعلوم والتكنولوجيا",
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
@@ -38,7 +39,7 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-black">إنشاء حساب دراسي جديد</h1>
           <p className="text-xs text-slate-400">
-            انضم لمنصة منهاج البرمجة والذكاء الاصطناعي التفاعلية
+            انضم لمنصة {CURRENT_BOOK.title} التفاعلية ({CURRENT_BOOK.grade})
           </p>
         </div>
 

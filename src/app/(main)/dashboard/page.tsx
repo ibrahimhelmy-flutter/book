@@ -25,9 +25,9 @@ export default function DashboardPage() {
 
   if (!progress || !profile) return null;
 
-  const totalLessons = 14;
+  const totalLessons = CURRICULUM_DATA.reduce((acc, ch) => acc + (ch.lessons ? ch.lessons.length : 0), 0) || 1;
   const completedCount = progress.completedLessons.length;
-  const progressPercent = Math.round((completedCount / totalLessons) * 100);
+  const progressPercent = Math.min(100, Math.round((completedCount / totalLessons) * 100));
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();

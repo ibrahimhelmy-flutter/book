@@ -1,4 +1,5 @@
 import { UserProgress, UserProfile } from "@/types";
+import { CURRENT_BOOK } from "@/data/books";
 
 const PROGRESS_STORAGE_KEY = "egyptian_curriculum_progress_v1";
 const PROFILE_STORAGE_KEY = "egyptian_curriculum_profile_v1";
@@ -16,10 +17,10 @@ const defaultProgress: UserProgress = {
 
 const defaultProfile: UserProfile = {
   id: "user_student_1",
-  name: "طالب الثانوية العامة",
+  name: "طالب المرحلة الثانوية",
   email: "student@moe.edu.eg",
   role: "student",
-  grade: "الصف الثاني الثانوي (بكالوريا)",
+  grade: CURRENT_BOOK.grade,
   school: "مدرسة المتفوقين للعلوم والتكنولوجيا (STEM)",
   avatar: "🎓",
 };

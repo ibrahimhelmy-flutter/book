@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CURRICULUM_DATA } from "@/data/curriculum";
@@ -10,12 +10,17 @@ import { getStoredProgress } from "@/lib/storage";
 export function Sidebar() {
   const pathname = usePathname();
   const [completedList, setCompletedList] = useState<string[]>([]);
-  const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>({
-    "chapter-1": true,
-    "chapter-2": true,
-    "chapter-3": true,
-    "chapter-4": true,
+  const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    CURRICULUM_DATA.forEach((ch) => {
+      initial[ch.id] = true;
+    });
+    return initial;
   });
+
+  const totalLessons = useMemo(() => {
+    return CURRICULUM_DATA.reduce((acc, ch) => acc + (ch.lessons ? ch.lessons.length : 0), 0);
+  }, []);
 
   useEffect(() => {
     const p = getStoredProgress();
@@ -34,7 +39,7 @@ export function Sidebar() {
           <span className="font-bold text-xs text-white uppercase tracking-wider">فهرس المنهج الدراسي</span>
         </div>
         <span className="text-[11px] font-mono text-slate-400">
-          {completedList.length} / 14 منجز
+          {completedList.length} / {totalLessons} منجز
         </span>
       </div>
 

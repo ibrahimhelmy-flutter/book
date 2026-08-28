@@ -336,63 +336,81 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           <ThinkLikeEngineer challenge={lesson.engineerChallenge} />
 
           {/* Applied Task Box */}
-          <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 text-white shadow-xl my-6">
-            <div className="flex items-center gap-2.5 font-bold text-sm text-indigo-400 mb-2">
-              <FileCheck className="w-5 h-5" />
-              <span>{lesson.appliedTask.title}</span>
-            </div>
-            <p className="text-xs text-slate-400 mb-2">{lesson.appliedTask.scenario}</p>
-            <p className="text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed mb-4">
-              {lesson.appliedTask.prompt}
-            </p>
-            {lesson.appliedTask.sampleAnswer && (
-              <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs leading-relaxed text-slate-300">
-                <strong className="text-emerald-400 block mb-1">نموذج الإجابة المقترحة:</strong>
-                {lesson.appliedTask.sampleAnswer}
+          {lesson.appliedTask && (
+            <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 text-white shadow-xl my-6">
+              <div className="flex items-center gap-2.5 font-bold text-sm text-indigo-400 mb-2">
+                <FileCheck className="w-5 h-5" />
+                <span>{lesson.appliedTask.title || "تطبيق عملي"}</span>
               </div>
-            )}
-          </div>
+              {lesson.appliedTask.scenario && (
+                <p className="text-xs text-slate-400 mb-2">{lesson.appliedTask.scenario}</p>
+              )}
+              <p className="text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed mb-4">
+                {lesson.appliedTask.prompt}
+              </p>
+              {lesson.appliedTask.sampleAnswer && (
+                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs leading-relaxed text-slate-300">
+                  <strong className="text-emerald-400 block mb-1">نموذج الإجابة المقترحة:</strong>
+                  {lesson.appliedTask.sampleAnswer}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Solved Examples */}
-          <SolvedExampleAccordion example={lesson.solvedExample} />
+          {lesson.solvedExample && <SolvedExampleAccordion example={lesson.solvedExample} />}
 
           {/* Main Question Official Answer */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-2">
-            <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
-              <HelpCircle className="w-5 h-5" />
-              <span>إجابة السؤال الرئيسي المعتمدة:</span>
+          {lesson.mainQuestionAnswer && (
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-2">
+              <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+                <HelpCircle className="w-5 h-5" />
+                <span>إجابة السؤال الرئيسي المعتمدة:</span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {lesson.mainQuestionAnswer}
+              </p>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              {lesson.mainQuestionAnswer}
-            </p>
-          </div>
+          )}
 
           {/* Lesson Summary & Flashcard Takeaway */}
-          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-white">
-            <h3 className="font-bold text-base text-amber-400 mb-3 flex items-center gap-2">
-              <span>⭐ خلاصة وتذكرة الدرس:</span>
-            </h3>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
-              {lesson.summary.map((sumItem, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-amber-400 font-bold">•</span>
-                  <span>{sumItem}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {lesson.summary && (
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-white">
+              <h3 className="font-bold text-base text-amber-400 mb-3 flex items-center gap-2">
+                <span>⭐ خلاصة وتذكرة الدرس:</span>
+              </h3>
+              {Array.isArray(lesson.summary) ? (
+                <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
+                  {lesson.summary.map((sumItem, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-amber-400 font-bold">•</span>
+                      <span>{sumItem}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{lesson.summary}</p>
+              )}
+            </div>
+          )}
 
           {/* Challenge Yourself Box */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
-              <span className="text-xs font-bold text-purple-400 block mb-1">⭐ تأمل ذاتي:</span>
-              <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.reflect}</p>
+          {lesson.challengeYourself && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {lesson.challengeYourself.reflect && (
+                <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
+                  <span className="text-xs font-bold text-purple-400 block mb-1">⭐ تأمل ذاتي:</span>
+                  <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.reflect}</p>
+                </div>
+              )}
+              {lesson.challengeYourself.challenge && (
+                <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
+                  <span className="text-xs font-bold text-pink-400 block mb-1">⚡ تحدّ نفسك:</span>
+                  <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.challenge}</p>
+                </div>
+              )}
             </div>
-            <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
-              <span className="text-xs font-bold text-pink-400 block mb-1">⚡ تحدّ نفسك:</span>
-              <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.challenge}</p>
-            </div>
-          </div>
+          )}
 
           {/* Embedded Quiz Engine */}
           <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
