@@ -275,6 +275,6 @@ export function EyeComfortText({
   );
 }
 
-export function formatInlineText(text: string, theme: "dark" | "light" = "dark") {
+export function formatInlineText(text: string, theme: "dark" | "light" = "light") {
   return renderInlineTokens(text, theme);
 }
