@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { Type } from "lucide-react";
+import { Check, Trash2, X } from "lucide-react";
 
 export type DrawToolType =
   | "pointer"
@@ -39,13 +39,13 @@ interface DrawStroke {
   points: Point[];
 }
 
-interface TextNote {
+export interface TextNote {
   id: string;
   x: number;
   y: number;
   text: string;
   color: string;
-  fontSize: number;
+  isEditing?: boolean;
 }
 
 interface LaserPoint {
@@ -75,19 +75,18 @@ export function SlideAnnotationCanvas({
   const strokesHistoryRef = useRef<Record<number, DrawStroke[]>>({});
   const undoStackRef = useRef<Record<number, DrawStroke[][]>>({});
   const redoStackRef = useRef<Record<number, DrawStroke[][]>>({});
-  const textNotesRef = useRef<Record<number, TextNote[]>>({});
+
+  // Dynamic interactive Text Notes state (Clean, minimalist text-only notes)
+  const [notesBySlide, setNotesBySlide] = useState<Record<number, TextNote[]>>({});
+  const currentSlideNotes = notesBySlide[slideIndex] || [];
+
+  // Dragging note state
+  const [draggingNoteId, setDraggingNoteId] = useState<string | null>(null);
 
   // Laser Pointer trail
   const laserTrailRef = useRef<LaserPoint[]>([]);
   const laserAnimFrameRef = useRef<number | null>(null);
   const [, setLaserCursorPos] = useState<Point | null>(null);
-
-  // Active floating text note state
-  const [activeTextInput, setActiveTextInput] = useState<{
-    x: number;
-    y: number;
-    text: string;
-  } | null>(null);
 
   // Redraw main annotation canvas
   const redrawCanvas = useCallback(() => {
@@ -196,19 +195,6 @@ export function SlideAnnotationCanvas({
       }
       ctx.restore();
     }
-
-    // Render Text Notes
-    const notes = textNotesRef.current[slideIndex] || [];
-    for (const note of notes) {
-      ctx.save();
-      ctx.font = `bold ${note.fontSize}px Cairo, sans-serif`;
-      ctx.fillStyle = note.color;
-      ctx.direction = "rtl";
-      ctx.shadowColor = "rgba(0,0,0,0.5)";
-      ctx.shadowBlur = 4;
-      ctx.fillText(note.text, note.x, note.y);
-      ctx.restore();
-    }
   }, [slideIndex]);
 
   // Handle Resize & HiDPI
@@ -297,7 +283,7 @@ export function SlideAnnotationCanvas({
   }, []);
 
   // Coordinate normalizer
-  const getCanvasCoords = (e: React.PointerEvent<HTMLCanvasElement>): Point => {
+  const getCanvasCoords = (e: React.PointerEvent<HTMLCanvasElement | HTMLDivElement>): Point => {
     const container = containerRef.current;
     if (!container) return { x: e.clientX, y: e.clientY };
     const rect = container.getBoundingClientRect();
@@ -318,8 +304,25 @@ export function SlideAnnotationCanvas({
       return;
     }
 
+    // Instant Simple Text Note Creation
     if (activeTool === "text") {
-      setActiveTextInput({ x: pt.x, y: pt.y, text: "" });
+      const container = containerRef.current;
+      const cWidth = container?.clientWidth || 600;
+      const cHeight = container?.clientHeight || 500;
+
+      const newNote: TextNote = {
+        id: `note-${Date.now()}`,
+        x: Math.max(10, Math.min(pt.x, cWidth - 220)),
+        y: Math.max(10, Math.min(pt.y, cHeight - 60)),
+        text: "",
+        color: color,
+        isEditing: true,
+      };
+
+      setNotesBySlide((prev) => ({
+        ...prev,
+        [slideIndex]: [...(prev[slideIndex] || []), newNote],
+      }));
       return;
     }
 
@@ -456,19 +459,38 @@ export function SlideAnnotationCanvas({
     undoStackRef.current[slideIndex].push([...current]);
 
     strokesHistoryRef.current[slideIndex] = [];
-    textNotesRef.current[slideIndex] = [];
+    setNotesBySlide((prev) => ({ ...prev, [slideIndex]: [] }));
     redrawCanvas();
   }, [slideIndex, redrawCanvas]);
 
   const handleDownloadSnapshot = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // Composite notes onto snapshot
+    const dpr = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      const notes = notesBySlide[slideIndex] || [];
+      for (const note of notes) {
+        if (!note.text.trim()) continue;
+        ctx.save();
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.font = "bold 16px Cairo, sans-serif";
+        ctx.fillStyle = note.color;
+        ctx.direction = "rtl";
+        ctx.fillText(note.text, note.x, note.y);
+        ctx.restore();
+      }
+    }
+
     const dataUrl = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = `slide_${slideIndex + 1}_annotations.png`;
     link.href = dataUrl;
     link.click();
-  }, [slideIndex]);
+    redrawCanvas();
+  }, [slideIndex, notesBySlide, redrawCanvas]);
 
   // Wire external refs
   useEffect(() => {
@@ -478,22 +500,85 @@ export function SlideAnnotationCanvas({
     if (downloadRef) downloadRef.current = handleDownloadSnapshot;
   }, [undoRef, redoRef, clearRef, downloadRef, handleUndo, handleRedo, handleClear, handleDownloadSnapshot]);
 
-  const handleSaveTextNote = () => {
-    if (activeTextInput && activeTextInput.text.trim()) {
-      if (!textNotesRef.current[slideIndex]) {
-        textNotesRef.current[slideIndex] = [];
+  // Reliable Note Drag & Click-to-Edit
+  const startDragNote = (e: React.PointerEvent, note: TextNote) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const originX = note.x;
+    const originY = note.y;
+    let hasMoved = false;
+    setDraggingNoteId(note.id);
+
+    const onMove = (moveEv: PointerEvent) => {
+      const dx = moveEv.clientX - startX;
+      const dy = moveEv.clientY - startY;
+
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+        hasMoved = true;
       }
-      textNotesRef.current[slideIndex].push({
-        id: `note-${Date.now()}`,
-        x: activeTextInput.x,
-        y: activeTextInput.y,
-        text: activeTextInput.text.trim(),
-        color,
-        fontSize: size * 4 + 14,
-      });
-      redrawCanvas();
-    }
-    setActiveTextInput(null);
+
+      if (hasMoved) {
+        const container = containerRef.current;
+        const rect = container?.getBoundingClientRect() || { width: 800, height: 600 };
+        const newX = Math.max(10, Math.min(originX + dx, rect.width - 150));
+        const newY = Math.max(10, Math.min(originY + dy, rect.height - 40));
+
+        setNotesBySlide((prev) => ({
+          ...prev,
+          [slideIndex]: (prev[slideIndex] || []).map((n) =>
+            n.id === note.id ? { ...n, x: newX, y: newY } : n
+          ),
+        }));
+      }
+    };
+
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      setDraggingNoteId(null);
+
+      // If user simply clicked without dragging, enter Edit mode!
+      if (!hasMoved) {
+        setNotesBySlide((prev) => ({
+          ...prev,
+          [slideIndex]: (prev[slideIndex] || []).map((n) =>
+            n.id === note.id ? { ...n, isEditing: true } : n
+          ),
+        }));
+      }
+    };
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  };
+
+  const handleSaveNote = (noteId: string) => {
+    setNotesBySlide((prev) => {
+      const slideNotes = prev[slideIndex] || [];
+      const note = slideNotes.find((n) => n.id === noteId);
+      if (!note || !note.text.trim()) {
+        return {
+          ...prev,
+          [slideIndex]: slideNotes.filter((n) => n.id !== noteId),
+        };
+      }
+      return {
+        ...prev,
+        [slideIndex]: slideNotes.map((n) =>
+          n.id === noteId ? { ...n, isEditing: false } : n
+        ),
+      };
+    });
+  };
+
+  const handleDeleteNote = (noteId: string) => {
+    setNotesBySlide((prev) => ({
+      ...prev,
+      [slideIndex]: (prev[slideIndex] || []).filter((n) => n.id !== noteId),
+    }));
   };
 
   const getCursorClass = () => {
@@ -515,7 +600,9 @@ export function SlideAnnotationCanvas({
     <div
       ref={containerRef}
       className={`absolute inset-0 z-30 transition-all ${
-        activeTool === "pointer" ? "pointer-events-none" : "pointer-events-auto"
+        activeTool === "pointer" && currentSlideNotes.length === 0
+          ? "pointer-events-none"
+          : "pointer-events-auto"
       }`}
     >
       {/* Vector Drawing Canvas */}
@@ -534,49 +621,110 @@ export function SlideAnnotationCanvas({
         className="absolute inset-0 w-full h-full pointer-events-none touch-none select-none z-10"
       />
 
-      {/* Floating Text Note Input Box */}
-      {activeTextInput && (
-        <div
-          className="absolute z-50 bg-white dark:bg-slate-900 border-2 border-blue-600 rounded-2xl p-3 shadow-2xl pointer-events-auto animate-fadeIn"
-          style={{
-            left: `${Math.max(10, Math.min(activeTextInput.x, (containerRef.current?.clientWidth || 500) - 260))}px`,
-            top: `${Math.max(10, Math.min(activeTextInput.y, (containerRef.current?.clientHeight || 500) - 100))}px`,
-            transform: "translate(-10%, -50%)",
-          }}
-          dir="rtl"
-        >
-          <div className="flex items-center gap-1.5 mb-1.5 pb-1 border-b border-slate-100 dark:border-slate-800">
-            <Type className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">إضافة ملاحظة على الشريحة</span>
-          </div>
-          <input
-            type="text"
-            autoFocus
-            value={activeTextInput.text}
-            onChange={(e) => setActiveTextInput({ ...activeTextInput, text: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSaveTextNote();
-              if (e.key === "Escape") setActiveTextInput(null);
+      {/* Clean, Simple, Text-Only Floating Notes (Click to Edit, Drag to Move) */}
+      {currentSlideNotes.map((note) => {
+        const isDraggingThis = draggingNoteId === note.id;
+
+        return (
+          <div
+            key={note.id}
+            style={{
+              left: `${note.x}px`,
+              top: `${note.y}px`,
+              position: "absolute",
+              zIndex: 50,
             }}
-            placeholder="اكتب ملاحظة واضغط Enter..."
-            className="w-full px-3 py-1.5 text-sm font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 min-w-[240px]"
-          />
-          <div className="flex justify-end gap-1.5 mt-2">
-            <button
-              onClick={() => setActiveTextInput(null)}
-              className="text-[11px] px-2.5 py-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg cursor-pointer font-bold"
-            >
-              إلغاء
-            </button>
-            <button
-              onClick={handleSaveTextNote}
-              className="text-[11px] px-3 py-1 bg-blue-600 text-white rounded-lg font-bold cursor-pointer hover:bg-blue-700 transition-colors shadow-sm"
-            >
-              حفظ الملاحظة
-            </button>
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="pointer-events-auto select-none"
+            dir="rtl"
+          >
+            {note.isEditing ? (
+              /* Inline Edit Mode with Instant Delete and Save */
+              <div
+                className="flex items-center gap-1.5 bg-white/95 dark:bg-slate-900/95 border-2 rounded-2xl p-1.5 shadow-2xl backdrop-blur-md animate-fadeIn"
+                style={{ borderColor: note.color }}
+              >
+                <input
+                  type="text"
+                  autoFocus
+                  value={note.text}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setNotesBySlide((prev) => ({
+                      ...prev,
+                      [slideIndex]: (prev[slideIndex] || []).map((n) =>
+                        n.id === note.id ? { ...n, text: val } : n
+                      ),
+                    }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleSaveNote(note.id);
+                    }
+                    if (e.key === "Escape") {
+                      if (!note.text.trim()) {
+                        handleDeleteNote(note.id);
+                      } else {
+                        handleSaveNote(note.id);
+                      }
+                    }
+                  }}
+                  placeholder="اكتب ملاحظة واضغط Enter..."
+                  className="text-sm sm:text-base font-bold bg-transparent outline-none px-2 py-1 min-w-[160px] max-w-[280px]"
+                  style={{ color: note.color }}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleSaveNote(note.id)}
+                  className="p-1.5 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 cursor-pointer transition-colors"
+                  title="حفظ الملاحظة (Enter)"
+                >
+                  <Check className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteNote(note.id)}
+                  className="p-1.5 rounded-lg hover:bg-rose-100 dark:hover:bg-rose-950/50 text-rose-500 cursor-pointer transition-colors"
+                  title="حذف الملاحظة"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              /* Simple, Clean Text View: Click to Edit, Drag to Move */
+              <div
+                onPointerDown={(e) => startDragNote(e, note)}
+                className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-transparent hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white/80 dark:hover:bg-slate-900/80 hover:shadow-md transition-all cursor-grab active:cursor-grabbing select-none ${
+                  isDraggingThis ? "scale-105 opacity-90 shadow-xl cursor-grabbing" : ""
+                }`}
+                title="انقر للتعديل • اسحب لتغيير الموضع"
+              >
+                <span
+                  className="text-sm sm:text-base font-black leading-relaxed whitespace-pre-wrap tracking-wide drop-shadow-xs"
+                  style={{ color: note.color }}
+                >
+                  {note.text || "ملاحظة"}
+                </span>
+
+                {/* Quick Delete on Hover */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteNote(note.id);
+                  }}
+                  className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-rose-100 dark:hover:bg-rose-950/60 text-slate-400 hover:text-rose-500 transition-opacity cursor-pointer ml-1"
+                  title="حذف الملاحظة"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })}
     </div>
   );
 }
