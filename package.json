@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
+    "clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); } catch(e) {}\"",
+    "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); } catch(e) {}\" && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
