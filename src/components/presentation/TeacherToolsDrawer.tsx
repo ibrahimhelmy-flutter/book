@@ -27,6 +27,8 @@ interface TeacherToolsDrawerProps {
   currentSlideTitle: string;
   totalSlides: number;
   slideType: string;
+  engineerModelAnswer?: string;
+  solvedExampleModelAnswer?: string;
 }
 
 export function TeacherToolsDrawer({
@@ -36,6 +38,8 @@ export function TeacherToolsDrawer({
   currentSlideTitle,
   totalSlides,
   slideType,
+  engineerModelAnswer,
+  solvedExampleModelAnswer,
 }: TeacherToolsDrawerProps) {
   const [activeTab, setActiveTab] = useState<"timer" | "randomizer" | "notes" | "shortcuts">("timer");
 
@@ -163,6 +167,7 @@ export function TeacherToolsDrawer({
             "لا تكشف الإجابة فوراً، بل اطلب من الطلاب تحليل السؤال أولاً واستبعاد الخيارات الخاطئة.",
             "اشرح لماذا كانت الإجابة الصحيحة هي الأنسب مع التعليل العلمي.",
             "نبّه على الأخطاء الشائعة التي يقع فيها الطلاب في هذا النوع من المسائل.",
+            ...(solvedExampleModelAnswer ? [`الإجابة والتعليل النموذجي المعتمد:\n${solvedExampleModelAnswer}`] : []),
           ],
           prompt: "توجيه: 'ما هي الكلمة المفتاحية في نص المسألة التي تدلنا على الحل مباشرة؟'",
         };
@@ -396,6 +401,44 @@ export function TeacherToolsDrawer({
                 <strong className="text-indigo-300 block mb-1">💡 مقترح تفاعلي لإشعال الحصة:</strong>
                 <p className="leading-relaxed">{notes.prompt}</p>
               </div>
+
+              {slideType === "engineer" && engineerModelAnswer && (
+                <div className="p-4 bg-emerald-950/40 rounded-2xl border border-emerald-500/40 text-xs text-emerald-100 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <strong className="text-emerald-300 flex items-center gap-1.5 font-bold">
+                      <Sparkles className="w-4 h-4 text-emerald-400" />
+                      <span>الإجابة والقرار الهندسي النموذجي المعتمد للمعلم:</span>
+                    </strong>
+                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
+                      نموذج الإجابة
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 pt-1 text-slate-200 font-medium leading-relaxed">
+                    {engineerModelAnswer.split("\n").map((line, idx) => (
+                      <p key={idx}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {slideType === "example" && solvedExampleModelAnswer && (
+                <div className="p-4 bg-teal-950/40 rounded-2xl border border-teal-500/40 text-xs text-teal-100 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <strong className="text-teal-300 flex items-center gap-1.5 font-bold">
+                      <Sparkles className="w-4 h-4 text-teal-400" />
+                      <span>سلم التصحيح والحل النموذجي للشريحة:</span>
+                    </strong>
+                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/30 font-bold">
+                      حل معتمد
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 pt-1 text-slate-200 font-medium leading-relaxed">
+                    {solvedExampleModelAnswer.split("\n").map((line, idx) => (
+                      <p key={idx}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

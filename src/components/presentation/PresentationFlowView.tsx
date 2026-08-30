@@ -138,7 +138,11 @@ export function PresentationFlowView({
               badgeText: "text-amber-300",
               gradient: "from-amber-600 to-orange-600",
             },
-            details: lesson.engineerChallenge.steps.map((st) => `خطوة ${st.number} (${st.title}): ${st.description}`),
+            details: [
+              ...lesson.engineerChallenge.steps.map((st) => `خطوة ${st.number} (${st.title}): ${st.description}`),
+              ...(lesson.engineerChallenge.hint ? [`💡 توجيه هندسي: ${lesson.engineerChallenge.hint}`] : []),
+              ...(lesson.engineerChallenge.modelAnswer ? [`🏆 الإجابة النموذجية والقرار المعتمد: ${lesson.engineerChallenge.modelAnswer}`] : []),
+            ],
           },
         ]
       : []),
@@ -162,10 +166,11 @@ export function PresentationFlowView({
               badgeText: "text-teal-300",
               gradient: "from-teal-600 to-emerald-600",
             },
-            details: [
-              `المسألة: ${lesson.solvedExample.items[0]?.question}`,
-              `التفسير: ${lesson.solvedExample.items[0]?.explanation}`,
-            ],
+            details: lesson.solvedExample.items.map((item, idx) => [
+              `المسألة (${idx + 1}): ${item.question}`,
+              `🏆 الإجابة النموذجية المعتمدة: ${typeof item.correctAnswer === "string" ? item.correctAnswer : JSON.stringify(item.correctAnswer)}`,
+              `💡 خطوات الحل والتعليل العلمي: ${item.explanation}`,
+            ]).flat(),
           },
         ]
       : []),
