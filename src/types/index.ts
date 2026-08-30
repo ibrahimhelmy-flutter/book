@@ -55,6 +55,7 @@ export interface EngineerChallenge {
     options?: string[];
   }[];
   hint: string;
+  modelAnswer?: string;
 }
 
 export interface AppliedTask {

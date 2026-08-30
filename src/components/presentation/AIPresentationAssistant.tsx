@@ -27,7 +27,8 @@ import {
   BookOpen,
   Compass,
   ArrowRight,
-  Workflow
+  Workflow,
+  BookOpenCheck,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
@@ -273,9 +274,9 @@ export function AIPresentationAssistant({
         type: "scenario",
         categoryLabel: `${lesson.engineerChallenge.title} ⚙️`,
         question: `السيناريو الهندسي الواقعي: ${lesson.engineerChallenge.scenario}\n\nخطوات اتخاذ القرار المطلوبة:\n${lesson.engineerChallenge.steps.map((st) => `• الخطوة ${st.number} (${st.title}): ${st.description}`).join("\n")}`,
-        correctAnswer: "القرار الهندسي المنهجي المستند للأدلة",
-        explanation: `التوجيه الهندسي الموصى به: ${lesson.engineerChallenge.hint}`,
-        teacherDiscussionPrompt: "قسّم الطلاب إلى فرق عمل هندسية مصغرة لاقتراح حلول موازنة بين الفعالية والأمان والتكلفة.",
+        correctAnswer: lesson.engineerChallenge.modelAnswer || "القرار الهندسي المنهجي المستند للأدلة والبيانات",
+        explanation: `${lesson.engineerChallenge.modelAnswer ? `الإجابة والتحليل الهندسي النموذجي المعتمد:\n${lesson.engineerChallenge.modelAnswer}\n\n` : ""}التوجيه الهندسي الموصى به: ${lesson.engineerChallenge.hint}`,
+        teacherDiscussionPrompt: "قسّم الطلاب إلى فرق عمل هندسية مصغرة لاقتراح حلول موازنة بين الفعالية والأمان والتكلفة، ثم استعرض الإجابة والقرار النموذجي.",
       });
     }
 
@@ -743,6 +744,50 @@ export function AIPresentationAssistant({
                           <div>
                             <strong className="text-emerald-300 block text-[11px]">{st.title}</strong>
                             <span className="text-[11px] text-slate-400 leading-relaxed">{st.description}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {lesson.engineerChallenge.modelAnswer && (
+                      <div className="p-3 bg-emerald-950/30 rounded-xl border border-emerald-500/30 space-y-1.5 text-xs text-slate-200">
+                        <div className="flex items-center gap-1.5 font-bold text-emerald-300 text-[11px]">
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>الإجابة والقرار النموذجي المعتمد:</span>
+                        </div>
+                        <div className="text-[11px] leading-relaxed text-slate-300 space-y-1">
+                          {lesson.engineerChallenge.modelAnswer.split("\n").map((line, idx) => (
+                            <p key={idx}>{line}</p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Solved Examples Model Answers in Study Guide */}
+                {lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0 && (
+                  <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 hover:border-teal-500/40 transition-all">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                        سلم الحلول النموذجية
+                      </span>
+                      <BookOpenCheck className="w-4 h-4 text-teal-400" />
+                    </div>
+                    <h4 className="text-sm font-bold text-white">
+                      {lesson.solvedExample.title} ({lesson.solvedExample.items.length} تمارين)
+                    </h4>
+                    <div className="space-y-2 text-xs">
+                      {lesson.solvedExample.items.map((item, idx) => (
+                        <div key={idx} className="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5">
+                          <strong className="text-slate-200 block text-[11px]">
+                            {idx + 1}. {item.question}
+                          </strong>
+                          <div className="p-2.5 bg-teal-950/40 rounded-lg border border-teal-500/20 text-teal-200 text-[11px] space-y-1">
+                            <span className="font-bold block text-teal-300">
+                              🏆 الإجابة النموذجية: {typeof item.correctAnswer === "string" ? item.correctAnswer.toUpperCase() : JSON.stringify(item.correctAnswer)}
+                            </span>
+                            <span className="text-slate-300 block leading-relaxed">{item.explanation}</span>
                           </div>
                         </div>
                       ))}
