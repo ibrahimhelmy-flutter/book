@@ -70,15 +70,15 @@ export function TeacherWhiteboardModal({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Background style: white, chalkboard, math grid, dot grid, ruled
-  const [boardTheme, setBoardTheme] = useState<"white" | "chalkboard" | "grid" | "dots" | "ruled">("white");
+  // Background style: white, chalkboard, math grid, dot grid, ruled (Default is chalkboard)
+  const [boardTheme, setBoardTheme] = useState<"white" | "chalkboard" | "grid" | "dots" | "ruled">("chalkboard");
 
   // Tools state
   const [activeTool, setActiveTool] = useState<
     "pointer" | "pen" | "highlighter" | "eraser" | "line" | "arrow" | "rect" | "circle" | "text" | "sticky" | "stamp"
   >("pen");
 
-  const [color, setColor] = useState<string>("#1e40af");
+  const [color, setColor] = useState<string>("#ffffff");
   const [size, setSize] = useState<number>(3.5);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [startPoint, setStartPoint] = useState<Point | null>(null);

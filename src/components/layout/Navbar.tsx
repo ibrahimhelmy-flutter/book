@@ -13,6 +13,17 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Automatically scroll to the very top on every screen navigation
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (document.documentElement) {
+      document.documentElement.scrollTop = 0;
+    }
+    if (document.body) {
+      document.body.scrollTop = 0;
+    }
+  }, [pathname]);
+
   const navLinks = [
     { href: "/", label: "الرئيسية", icon: BookOpen },
     { href: "/simulators", label: "المحاكيات التفاعلية", icon: Sparkles },

@@ -104,6 +104,13 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
 
+  // Automatically scroll to top when changing tabs or lessons
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [lesson.id, activeTab]);
+
   return (
     <article className="max-w-5xl mx-auto px-4 py-8">
       {/* Lesson Header with TTS, Bookmark, and Objectives */}
