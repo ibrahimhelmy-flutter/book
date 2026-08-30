@@ -85,8 +85,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   // Presentation Modes: "slides" | "flow"
   const [presentationMode, setPresentationMode] = useState<"slides" | "flow">("slides");
 
-  // Presentation Themes: "light" | "dark" (Default is Light)
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  // Presentation Themes: "light" | "dark" (Default is Dark)
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   // Font Size Scaling: "normal" | "large" | "xlarge"
   const [fontSizeLevel] = useState<"normal" | "large" | "xlarge">("large");
