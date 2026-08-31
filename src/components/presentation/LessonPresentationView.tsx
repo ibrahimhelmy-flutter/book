@@ -861,14 +861,14 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       {/* 1. Floating Fixed Top Bar (Outside zoom area, never scales) */}
       <div className="fixed top-3 left-3 right-3 sm:left-6 sm:right-6 z-50 flex items-center justify-between pointer-events-none select-none">
         {/* Right side: Lesson badge, number, slide title, slide drawer */}
-        <div className={`flex items-center gap-2 sm:gap-3 p-1.5 px-3 rounded-2xl border backdrop-blur-xl shadow-2xl max-w-[55vw] sm:max-w-md pointer-events-auto ${themeStyles.floatingPill}`}>
+        <div className={`flex items-center gap-2 sm:gap-3 p-1.5 px-3 sm:px-4 rounded-2xl border backdrop-blur-xl shadow-2xl pointer-events-auto max-w-[70vw] sm:max-w-2xl ${themeStyles.floatingPill}`}>
           <span className="shrink-0 px-2.5 py-0.5 rounded-xl bg-blue-600 text-white font-black text-xs shadow-xs">
             {lesson.number}
           </span>
           <span className="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/20 hidden md:inline-block">
             {currentSlide.badge}
           </span>
-          <h1 className="text-xs sm:text-sm font-extrabold tracking-tight truncate text-slate-900 dark:text-white">
+          <h1 className="text-xs sm:text-sm font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight break-words">
             {currentSlide.title}
           </h1>
           <button
@@ -1003,10 +1003,10 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                       : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                 >
-                  <div className="truncate flex-1">
+                  <div className="flex-1 leading-normal">
                     <span className="opacity-70 ml-1">{originalIndex + 1}.</span> {s.title}
                   </div>
-                  <span className="text-[10px] opacity-75">{s.badge}</span>
+                  <span className="text-[10px] opacity-75 shrink-0 mr-2">{s.badge}</span>
                 </button>
               );
             })}
@@ -1053,6 +1053,18 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                 transition: isPanning ? "none" : "transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1)",
               }}
             >
+              {/* Prominent Full Slide Title & Badge Header (Shows complete slide title inside canvas) */}
+              {currentSlide.type !== "intro" && (
+                <div className="flex items-center gap-3 pb-3 border-b-2 border-slate-200/80 dark:border-slate-800/80 animate-fadeIn">
+                  <span className="px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/30 text-xs sm:text-sm font-black shrink-0 shadow-xs">
+                    {currentSlide.badge}
+                  </span>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-relaxed">
+                    {currentSlide.title}
+                  </h2>
+                </div>
+              )}
+
               {/* 1. Intro Slide: Enhanced Question & Learning Path */}
               {currentSlide.type === "intro" && (
                 <div className="space-y-6 animate-fadeIn">
