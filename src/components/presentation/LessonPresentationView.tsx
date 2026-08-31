@@ -48,6 +48,8 @@ import {
   BookOpenCheck,
   CheckCircle2,
   FileCheck,
+  Target,
+  Lightbulb,
 } from "lucide-react";
 import { formatInlineText } from "../common/EyeComfortText";
 
@@ -82,8 +84,12 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   const [showSlideIndexDrawer, setShowSlideIndexDrawer] = useState<boolean>(false);
   const [searchSlideQuery, setSearchSlideQuery] = useState<string>("");
 
-  // Smooth Zoom State
+  // Smooth Zoom & Panning State (50% to 400%)
   const [zoomLevel, setZoomLevel] = useState<number>(1.0);
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState<boolean>(false);
+  const [showZoomMenu, setShowZoomMenu] = useState<boolean>(false);
+  const panStartRef = useRef<{ x: number; y: number; originX: number; originY: number } | null>(null);
 
   // Presentation Modes: "slides" | "flow"
   const [presentationMode, setPresentationMode] = useState<"slides" | "flow">("slides");
@@ -119,18 +125,184 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
   const presentationContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // Smooth zoom handlers
+  // Smooth zoom handlers (50% to 400%)
   const handleZoomIn = useCallback(() => {
-    setZoomLevel((prev) => Math.min(2.2, +(prev + 0.15).toFixed(2)));
+    setZoomLevel((prev) => Math.min(4.0, +(prev + (prev >= 2.0 ? 0.5 : 0.25)).toFixed(2)));
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setZoomLevel((prev) => Math.max(0.7, +(prev - 0.15).toFixed(2)));
+    setZoomLevel((prev) => Math.max(0.5, +(prev - (prev > 2.0 ? 0.5 : 0.25)).toFixed(2)));
   }, []);
 
   const handleZoomReset = useCallback(() => {
     setZoomLevel(1.0);
+    setPanOffset({ x: 0, y: 0 });
+    setShowZoomMenu(false);
   }, []);
+
+  const handleSetZoom = useCallback((zoom: number) => {
+    setZoomLevel(Math.max(0.5, Math.min(4.0, +zoom.toFixed(2))));
+    if (zoom === 1.0) {
+      setPanOffset({ x: 0, y: 0 });
+    }
+    setShowZoomMenu(false);
+  }, []);
+
+  // Reset pan offset when slide changes
+  useEffect(() => {
+    setPanOffset({ x: 0, y: 0 });
+  }, [currentSlideIndex]);
+
+  // Viewport Pan/Drag handlers to move page anywhere
+  const handleViewportPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const isInteractive = (e.target as HTMLElement).closest(
+      "button, input, textarea, a, select, [role='button'], [data-no-pan]"
+    );
+    if (isInteractive) return;
+
+    if (activeDrawTool === "pointer" || e.button === 1) {
+      panStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        originX: panOffset.x,
+        originY: panOffset.y,
+      };
+      setIsPanning(true);
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  const handleViewportPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isPanning || !panStartRef.current) return;
+    const dx = e.clientX - panStartRef.current.x;
+    const dy = e.clientY - panStartRef.current.y;
+    setPanOffset({
+      x: Math.round(panStartRef.current.originX + dx),
+      y: Math.round(panStartRef.current.originY + dy),
+    });
+  };
+
+  const handleViewportPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (isPanning) {
+      setIsPanning(false);
+      panStartRef.current = null;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  // Dedicated Non-Passive Wheel & Gesture Listener to stop browser page-zoom on trackpad pinch
+  useEffect(() => {
+    const handleWheelCapture = (e: WheelEvent) => {
+      // 1. Touchpad Pinch or Ctrl + Wheel -> Scale zoom of slide ONLY
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Continuous smooth zoom delta proportional to touchpad pinch intensity
+        const zoomDelta = -e.deltaY * 0.005;
+        setZoomLevel((prev) => {
+          const next = +(prev + zoomDelta).toFixed(3);
+          return Math.max(0.5, Math.min(4.0, next));
+        });
+      }
+      // 2. Touchpad 2-finger Pan or regular wheel scroll when zoomed/panned
+      else if (zoomLevel > 1.0 || panOffset.x !== 0 || panOffset.y !== 0) {
+        const target = e.target as HTMLElement;
+        if (target && target.closest("[data-scrollable], .overflow-y-auto")) {
+          return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+        setPanOffset((prev) => ({
+          x: Math.round(prev.x - (e.shiftKey ? e.deltaY : e.deltaX)),
+          y: Math.round(prev.y - (e.shiftKey ? 0 : e.deltaY)),
+        }));
+      }
+    };
+
+    // Prevent browser zoom with Ctrl + (+/- / 0)
+    const handleKeyDownCapture = (e: KeyboardEvent) => {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        (e.key === "+" || e.key === "=" || e.key === "-" || e.key === "_" || e.key === "0")
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key === "+" || e.key === "=") handleZoomIn();
+        else if (e.key === "-" || e.key === "_") handleZoomOut();
+        else if (e.key === "0") handleZoomReset();
+      }
+    };
+
+    // Safari Gesture events for trackpad pinch
+    const handleGesture = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    // Touch pinch-to-zoom support for mobile/touchscreen trackpads
+    let touchStartDistance = 0;
+    let touchStartZoom = zoomLevel;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchStartDistance = Math.hypot(dx, dy);
+        touchStartZoom = zoomLevel;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && touchStartDistance > 0) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const scaleFactor = dist / touchStartDistance;
+        setZoomLevel(Math.max(0.5, Math.min(4.0, +(touchStartZoom * scaleFactor).toFixed(2))));
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        touchStartDistance = 0;
+      }
+    };
+
+    // Attach with { passive: false, capture: true } on window and document to intercept before browser engine zoom
+    window.addEventListener("wheel", handleWheelCapture, { passive: false, capture: true });
+    document.addEventListener("wheel", handleWheelCapture, { passive: false, capture: true });
+    window.addEventListener("keydown", handleKeyDownCapture, { capture: true });
+    window.addEventListener("gesturestart", handleGesture, { passive: false, capture: true });
+    window.addEventListener("gesturechange", handleGesture, { passive: false, capture: true });
+    window.addEventListener("gestureend", handleGesture, { passive: false, capture: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: false, capture: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false, capture: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", handleWheelCapture, { capture: true });
+      document.removeEventListener("wheel", handleWheelCapture, { capture: true });
+      window.removeEventListener("keydown", handleKeyDownCapture, { capture: true });
+      window.removeEventListener("gesturestart", handleGesture, { capture: true });
+      window.removeEventListener("gesturechange", handleGesture, { capture: true });
+      window.removeEventListener("gestureend", handleGesture, { capture: true });
+      window.removeEventListener("touchstart", handleTouchStart, { capture: true });
+      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [zoomLevel, panOffset, handleZoomIn, handleZoomOut, handleZoomReset]);
 
   // Theme toggle: Light / Dark
   const toggleTheme = () => {
@@ -464,6 +636,24 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         return;
       }
 
+      // Undo / Redo Shortcuts: Ctrl + Z / Cmd + Z, Ctrl + Y / Cmd + Y
+      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "z" || e.code === "KeyZ")) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.shiftKey) {
+          if (redoRef.current) redoRef.current();
+        } else {
+          if (undoRef.current) undoRef.current();
+        }
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "y" || e.code === "KeyY")) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (redoRef.current) redoRef.current();
+        return;
+      }
+
       // Zoom Shortcuts: + / = to zoom in, - to zoom out, 0 to reset
       if (e.key === "+" || e.key === "=") {
         e.preventDefault();
@@ -656,15 +846,23 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   return (
     <div
       ref={presentationContainerRef}
-      className={`fixed inset-0 z-50 h-screen w-screen flex flex-col font-sans select-none overflow-hidden ${themeStyles.container}`}
+      className={`fixed inset-0 z-50 h-screen w-screen flex flex-col font-sans select-none overflow-hidden touch-none ${themeStyles.container}`}
+      style={{ touchAction: "none" }}
       dir="rtl"
     >
-      {/* 1. Top Right Floating Title Island */}
-      <div className="fixed top-3 right-4 sm:right-6 z-40 flex items-center gap-2 pointer-events-auto">
+      {/* 0. Top Progress Bar */}
+      <div className="fixed top-0 inset-x-0 h-1 bg-slate-200/50 dark:bg-slate-800 shrink-0 overflow-hidden z-50 pointer-events-none">
         <div
-          className={`flex items-center gap-2 sm:gap-3 p-1.5 px-3 rounded-2xl border backdrop-blur-xl shadow-2xl max-w-[55vw] sm:max-w-md ${themeStyles.floatingPill}`}
-        >
-          <span className="shrink-0 px-2 py-0.5 rounded-lg bg-blue-600 text-white font-black text-xs shadow-xs">
+          className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-300"
+          style={{ width: `${((currentSlideIndex + 1) / slides.length) * 100}%` }}
+        />
+      </div>
+
+      {/* 1. Floating Fixed Top Bar (Outside zoom area, never scales) */}
+      <div className="fixed top-3 left-3 right-3 sm:left-6 sm:right-6 z-50 flex items-center justify-between pointer-events-none select-none">
+        {/* Right side: Lesson badge, number, slide title, slide drawer */}
+        <div className={`flex items-center gap-2 sm:gap-3 p-1.5 px-3 rounded-2xl border backdrop-blur-xl shadow-2xl max-w-[55vw] sm:max-w-md pointer-events-auto ${themeStyles.floatingPill}`}>
+          <span className="shrink-0 px-2.5 py-0.5 rounded-xl bg-blue-600 text-white font-black text-xs shadow-xs">
             {lesson.number}
           </span>
           <span className="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/20 hidden md:inline-block">
@@ -675,49 +873,18 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
           </h1>
           <button
             onClick={() => setShowSlideIndexDrawer(!showSlideIndexDrawer)}
-            className="px-2 py-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+            className="px-2 py-1 rounded-lg bg-slate-200/80 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
             title="فهرس جميع الشرائح"
           >
-            <LayoutGrid className="w-3 h-3 text-blue-500" />
+            <LayoutGrid className="w-3.5 h-3.5 text-blue-500" />
             <span>
               {currentSlideIndex + 1}/{slides.length}
             </span>
           </button>
         </div>
-      </div>
 
-      {/* 2. Top Left Floating Actions Island */}
-      <div className="fixed top-3 left-4 sm:left-6 z-40 flex items-center gap-1.5 pointer-events-auto">
-        <div
-          className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl ${themeStyles.floatingPill}`}
-        >
-          {/* Smooth Zoom Controls */}
-          <div className="flex items-center bg-slate-200/60 dark:bg-slate-800/80 p-0.5 rounded-xl">
-            <button
-              onClick={handleZoomOut}
-              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer"
-              title="تصغير الشاشة (-)"
-            >
-              <ZoomOut className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleZoomReset}
-              className="px-1.5 py-0.5 text-[11px] font-mono font-bold text-slate-700 dark:text-slate-300 hover:text-blue-500 transition-colors cursor-pointer"
-              title="إعادة ضبط الحجم الطبيعي 100% (0)"
-            >
-              {Math.round(zoomLevel * 100)}%
-            </button>
-            <button
-              onClick={handleZoomIn}
-              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer"
-              title="تكبير الشاشة (+)"
-            >
-              <ZoomIn className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className={`h-4 w-px mx-0.5 hidden sm:block ${themeStyles.divider}`} />
-
+        {/* Left side: Header Actions */}
+        <div className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl pointer-events-auto ${themeStyles.floatingPill}`}>
           {/* Mode Switcher: Slides vs Flow */}
           <button
             onClick={() => setPresentationMode(presentationMode === "slides" ? "flow" : "slides")}
@@ -847,17 +1014,22 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         </div>
       )}
 
-      {/* 3. Main Slide Presentation View Area with Smooth Zoom and Clean Focus */}
+      {/* 3. Main Slide Presentation View Area with Smooth Zoom (50%-400%) and Free Panning */}
       {presentationMode === "slides" ? (
         <main
-          className={`relative flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar flex flex-col justify-between pt-16 sm:pt-20 pb-20 sm:pb-24 ${themeStyles.slideCard}`}
-          onWheel={(e) => {
-            if (e.ctrlKey) {
-              e.preventDefault();
-              if (e.deltaY < 0) handleZoomIn();
-              else handleZoomOut();
-            }
-          }}
+          className={`relative flex-1 w-full h-full overflow-hidden select-none flex flex-col justify-center pt-16 sm:pt-20 pb-20 sm:pb-24 ${
+            themeStyles.slideCard
+          } ${
+            activeDrawTool === "pointer"
+              ? isPanning
+                ? "cursor-grabbing"
+                : "cursor-grab"
+              : ""
+          }`}
+          onPointerDown={handleViewportPointerDown}
+          onPointerMove={handleViewportPointerMove}
+          onPointerUp={handleViewportPointerUp}
+          onPointerCancel={handleViewportPointerUp}
         >
           {/* Slide Annotation Canvas */}
           <SlideAnnotationCanvas
@@ -871,12 +1043,14 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
             downloadRef={downloadRef}
           />
 
-          {/* Smooth Zoom Scaled Slide Content Container */}
-          <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-12 py-8 sm:py-12 flex-1 flex flex-col justify-center">
+          {/* Smooth Zoom Scaled & Panned Slide Content Container */}
+          <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-12 py-8 sm:py-12 flex-1 flex flex-col justify-center pointer-events-none">
             <div
-              className="w-full space-y-6 transition-transform duration-250 ease-out origin-top"
+              className="w-full space-y-6 will-change-transform pointer-events-auto"
               style={{
-                transform: `scale(${zoomLevel})`,
+                transform: `translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoomLevel})`,
+                transformOrigin: "center center",
+                transition: isPanning ? "none" : "transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1)",
               }}
             >
               {/* 1. Intro Slide: Enhanced Question & Learning Path */}
@@ -1041,6 +1215,212 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                       })}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {/* 1. Intro Slide: Clean, Simple & High-Impact Horizontal Layout */}
+              {currentSlide.type === "intro" && (
+                <div className="space-y-5 animate-fadeIn">
+                  {/* Top Horizontal Row: Key Question & Core Idea Side-by-Side */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+                    {/* 1.1 Key Question Card (السؤال الجوهري) */}
+                    <div
+                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md flex flex-col justify-between ${
+                        theme === "light"
+                          ? "bg-gradient-to-br from-blue-50/95 via-sky-50/70 to-white border-blue-300 text-blue-950 shadow-blue-500/5"
+                          : "bg-gradient-to-br from-blue-950/40 via-slate-900 to-sky-950/40 border-blue-500/40 text-blue-100 shadow-blue-950/20"
+                      } ${
+                        revealedLineIndex === 0
+                          ? theme === "light"
+                            ? "ring-2 ring-blue-400/50 scale-[1.01]"
+                            : "ring-2 ring-blue-500/50 scale-[1.01]"
+                          : "opacity-95"
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span
+                            className={`text-xs font-black px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
+                              theme === "light"
+                                ? "bg-blue-100 text-blue-900 border-blue-200"
+                                : "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                            }`}
+                          >
+                            <HelpCircle className="w-3.5 h-3.5" />
+                            <span>السؤال الجوهري المحفّز ❓</span>
+                          </span>
+                          <button
+                            onClick={() => speakText(lesson.keyQuestion)}
+                            className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
+                              theme === "light"
+                                ? "hover:bg-blue-100 text-blue-700"
+                                : "hover:bg-slate-800 text-blue-400"
+                            }`}
+                            title="استماع للسؤال الجوهري"
+                          >
+                            <Volume2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p
+                          className={`font-black text-base sm:text-lg lg:text-xl leading-relaxed ${
+                            theme === "light" ? "text-blue-950" : "text-white"
+                          }`}
+                        >
+                          {lesson.keyQuestion}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-3 border-t border-blue-200/60 dark:border-blue-900/50 flex items-center justify-between text-xs text-blue-600 dark:text-blue-400 font-semibold">
+                        <span>نقطة الانطلاق والتفكير الصفي</span>
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                    </div>
+
+                    {/* 1.2 Core Idea Card (الفكرة الأساسية) */}
+                    <div
+                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md flex flex-col justify-between ${
+                        theme === "light"
+                          ? "bg-gradient-to-br from-indigo-50/95 via-purple-50/70 to-white border-indigo-300 text-indigo-950 shadow-indigo-500/5"
+                          : "bg-gradient-to-br from-indigo-950/40 via-slate-900 to-purple-950/40 border-indigo-500/40 text-indigo-100 shadow-indigo-950/20"
+                      } ${
+                        revealedLineIndex >= 1
+                          ? revealedLineIndex === 1
+                            ? theme === "light"
+                              ? "ring-2 ring-indigo-400/50 scale-[1.01]"
+                              : "ring-2 ring-indigo-500/50 scale-[1.01]"
+                            : "opacity-95"
+                          : "opacity-60"
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span
+                            className={`text-xs font-black px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
+                              theme === "light"
+                                ? "bg-indigo-100 text-indigo-900 border-indigo-200"
+                                : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
+                            }`}
+                          >
+                            <Lightbulb className="w-3.5 h-3.5" />
+                            <span>الفكرة الأساسية والمحورية 💡</span>
+                          </span>
+                          <button
+                            onClick={() => speakText(lesson.coreIdea)}
+                            className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
+                              theme === "light"
+                                ? "hover:bg-indigo-100 text-indigo-700"
+                                : "hover:bg-slate-800 text-indigo-400"
+                            }`}
+                            title="استماع للفكرة الأساسية"
+                          >
+                            <Volume2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p
+                          className={`font-black text-base sm:text-lg lg:text-xl leading-relaxed ${
+                            theme === "light" ? "text-indigo-950" : "text-white"
+                          }`}
+                        >
+                          {lesson.coreIdea}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-3 border-t border-indigo-200/60 dark:border-indigo-900/50 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
+                        <span>الجوهر المعرفي المستهدف</span>
+                        <Compass className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Horizontal Row: Learning Objectives (نواتج التعلم المستهدفة) */}
+                  {lesson.learningObjectives && lesson.learningObjectives.length > 0 && (
+                    <div
+                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md ${
+                        theme === "light"
+                          ? "bg-white/95 border-emerald-300 text-slate-900 shadow-emerald-500/5"
+                          : "bg-slate-900/90 border-emerald-500/30 text-white shadow-emerald-950/20"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-4">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-9 h-9 rounded-2xl flex items-center justify-center font-bold ${
+                              theme === "light"
+                                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                                : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                            }`}
+                          >
+                            <Target className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <span
+                              className={`text-xs font-black uppercase tracking-wide ${
+                                theme === "light" ? "text-emerald-700" : "text-emerald-400"
+                              }`}
+                            >
+                              أهداف ونواتج التعلم المستهدفة:
+                            </span>
+                            <h4
+                              className={`text-sm sm:text-base font-black ${
+                                theme === "light" ? "text-slate-900" : "text-white"
+                              }`}
+                            >
+                              ما سيكتسبه الطالب بنهاية هذا الدرس ({lesson.learningObjectives.length} أهداف)
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Horizontal Grid of Learning Objective Cards */}
+                      <div
+                        className={`grid grid-cols-1 ${
+                          lesson.learningObjectives.length === 2
+                            ? "md:grid-cols-2"
+                            : lesson.learningObjectives.length >= 3
+                              ? "md:grid-cols-3"
+                              : "grid-cols-1"
+                        } gap-3.5`}
+                      >
+                        {lesson.learningObjectives.map((obj, i) => {
+                          const objText =
+                            typeof obj === "string" ? obj : (obj as unknown as { text: string }).text;
+                          const objStepIndex = 2 + i;
+                          const isRevealed = objStepIndex <= revealedLineIndex;
+                          const isLatest = objStepIndex === revealedLineIndex;
+
+                          return (
+                            <div
+                              key={i}
+                              className={`p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 flex items-start gap-3 ${
+                                isRevealed
+                                  ? isLatest
+                                    ? theme === "light"
+                                      ? "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-md scale-[1.02] ring-2 ring-emerald-400/30"
+                                      : "bg-emerald-950/60 border-emerald-400 text-emerald-100 font-bold shadow-md scale-[1.02] ring-1 ring-emerald-400"
+                                    : theme === "light"
+                                      ? "bg-slate-50/90 border-slate-200 text-slate-800"
+                                      : "bg-slate-950/80 border-slate-800 text-slate-200"
+                                  : "opacity-40 translate-y-1"
+                              }`}
+                            >
+                              <span
+                                className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shrink-0 mt-0.5 ${
+                                  isRevealed && isLatest
+                                    ? "bg-emerald-600 text-white shadow-xs"
+                                    : theme === "light"
+                                      ? "bg-emerald-100 text-emerald-900 border border-emerald-200"
+                                      : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                                }`}
+                              >
+                                {i + 1}
+                              </span>
+                              <p className="flex-1 text-xs sm:text-sm leading-relaxed font-bold">
+                                {formatInlineText(objText, theme === "light" ? "light" : "dark")}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1572,7 +1952,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
               )}
 
               {/* Standard Progressive Bullet Points (For Sections, Summary, Custom Slides) */}
-              {currentSlide.type !== "concepts" && currentSlide.type !== "engineer" && currentSlide.type !== "example" && (
+              {currentSlide.type !== "intro" && currentSlide.type !== "concepts" && currentSlide.type !== "engineer" && currentSlide.type !== "example" && (
                 <div className="space-y-4">
                   {currentSlide.bullets.map((bullet, idx) => {
                     const isRevealed = idx <= revealedLineIndex;
@@ -1625,10 +2005,16 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         </main>
       )}
 
-      {/* 3. Floating Bottom Island Toolbar (Snug at the very bottom) */}
-      <div className="fixed bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1.5 sm:gap-2.5 pointer-events-auto max-w-[98vw]">
-        {/* Right Nav Island: Prev Slide / Step */}
-        <div className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl ${themeStyles.floatingPill}`}>
+      {/* 3. Fixed Bottom Docked Bar (Pinned to the exact bottom edge) */}
+      <footer
+        className={`fixed bottom-0 inset-x-0 w-full z-50 h-14 sm:h-16 px-3 sm:px-6 border-t backdrop-blur-xl transition-colors flex items-center justify-between select-none shadow-2xl ${
+          theme === "light"
+            ? "bg-white/95 border-slate-200 text-slate-900 shadow-md"
+            : "bg-slate-900/95 border-slate-800 text-white shadow-2xl"
+        }`}
+      >
+        {/* Right side: Prev Slide / Prev Step + Zoom Controls */}
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <button
             onClick={handlePrevSlideDirect}
             disabled={currentSlideIndex === 0}
@@ -1646,11 +2032,84 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
           >
             <ChevronRight className="w-4.5 h-4.5" />
           </button>
+
+          <div className={`h-5 w-px mx-0.5 sm:mx-1 ${themeStyles.divider}`} />
+
+          {/* Smooth Zoom Controls (50% to 400%) */}
+          <div className="relative flex items-center bg-slate-200/60 dark:bg-slate-800/80 p-0.5 rounded-xl">
+            <button
+              onClick={handleZoomOut}
+              disabled={zoomLevel <= 0.5}
+              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              title="تصغير الشاشة إلى 50% (-)"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => setShowZoomMenu((prev) => !prev)}
+              className="px-1.5 py-0.5 text-[11px] font-mono font-bold text-slate-700 dark:text-slate-300 hover:text-blue-500 hover:bg-white/80 dark:hover:bg-slate-700 rounded-md transition-colors cursor-pointer flex items-center gap-0.5"
+              title="خيارات التكبير (50% - 400%) • انقر للاختيار"
+            >
+              <span>{Math.round(zoomLevel * 100)}%</span>
+              <ChevronDown className="w-3 h-3 opacity-60" />
+            </button>
+            <button
+              onClick={handleZoomIn}
+              disabled={zoomLevel >= 4.0}
+              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              title="تكبير الشاشة حتى 400% (+)"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Quick Reset Button if Zoomed or Panned */}
+            {(zoomLevel !== 1.0 || panOffset.x !== 0 || panOffset.y !== 0) && (
+              <button
+                onClick={handleZoomReset}
+                className="p-1 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/60 transition-colors cursor-pointer ml-0.5"
+                title="إعادة ضبط الحجم الطبيعي 100% والموضع (0)"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            )}
+
+            {/* Zoom Presets Dropdown */}
+            {showZoomMenu && (
+              <div
+                className="absolute bottom-full mb-2.5 right-0 py-1 px-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-300 dark:border-slate-700 rounded-xl shadow-2xl z-50 min-w-[120px] text-xs font-bold space-y-0.5 animate-fadeIn"
+                dir="rtl"
+              >
+                {[0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0].map((preset) => (
+                  <button
+                    key={preset}
+                    onClick={() => handleSetZoom(preset)}
+                    className={`w-full px-2.5 py-1 text-right flex items-center justify-between rounded-lg transition-colors cursor-pointer ${
+                      Math.abs(zoomLevel - preset) < 0.01
+                        ? "bg-blue-600 text-white"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    }`}
+                  >
+                    <span>{Math.round(preset * 100)}%</span>
+                    {preset === 1.0 && <span className="text-[10px] opacity-75">(100%)</span>}
+                  </button>
+                ))}
+                <div className="border-t border-slate-200 dark:border-slate-800 my-1 pt-1">
+                  <button
+                    onClick={handleZoomReset}
+                    className="w-full px-2.5 py-1 text-right flex items-center gap-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>إعادة ضبط الحجم والموضع</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Center Drawing Tools Island */}
-        <div className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl ${themeStyles.floatingPill}`}>
-          {/* Pointer Mode */}
+        {/* Center: Drawing Tools Toolbar */}
+        <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar max-w-[50vw] sm:max-w-none px-1">
+          {/* Pointer / Drag Mode */}
           <button
             onClick={() => setActiveDrawTool("pointer")}
             className={`p-2 rounded-xl transition-all cursor-pointer ${
@@ -1658,7 +2117,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                 ? themeStyles.activeTool
                 : themeStyles.inactiveTool
             }`}
-            title="مؤشر عادي للتفاعل (V)"
+            title="مؤشر التفاعل وسحب الصفحة في أي اتجاه (V)"
           >
             <MousePointer2 className="w-4.5 h-4.5" />
           </button>
@@ -1876,8 +2335,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
           </button>
         </div>
 
-        {/* Left Nav Island: Next Step / Slide / Reveal / AutoPlay */}
-        <div className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl ${themeStyles.floatingPill}`}>
+        {/* Left side: Next Step / Slide / Reveal / AutoPlay */}
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           <span className="text-xs font-mono font-bold px-2 hidden lg:inline-block opacity-80">
             {revealedLineIndex + 1}/{totalSteps}
           </span>
@@ -1926,7 +2385,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
             <ChevronsLeft className="w-4.5 h-4.5" />
           </button>
         </div>
-      </div>
+      </footer>
 
       {/* Progress Bar along the very bottom */}
       <div className="fixed bottom-0 inset-x-0 bg-slate-800/40 h-1 z-50 pointer-events-none">

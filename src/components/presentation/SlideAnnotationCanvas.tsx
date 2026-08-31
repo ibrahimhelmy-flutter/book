@@ -426,6 +426,9 @@ export function SlideAnnotationCanvas({
   };
 
   const handleUndo = useCallback(() => {
+    if (!strokesHistoryRef.current[slideIndex]) {
+      strokesHistoryRef.current[slideIndex] = [];
+    }
     const stack = undoStackRef.current[slideIndex];
     if (stack && stack.length > 0) {
       const prevState = stack.pop() || [];
@@ -434,6 +437,13 @@ export function SlideAnnotationCanvas({
       }
       redoStackRef.current[slideIndex].push([...(strokesHistoryRef.current[slideIndex] || [])]);
       strokesHistoryRef.current[slideIndex] = prevState;
+      redrawCanvas();
+    } else if (strokesHistoryRef.current[slideIndex].length > 0) {
+      if (!redoStackRef.current[slideIndex]) {
+        redoStackRef.current[slideIndex] = [];
+      }
+      redoStackRef.current[slideIndex].push([...strokesHistoryRef.current[slideIndex]]);
+      strokesHistoryRef.current[slideIndex].pop();
       redrawCanvas();
     }
   }, [slideIndex, redrawCanvas]);
@@ -499,6 +509,33 @@ export function SlideAnnotationCanvas({
     if (clearRef) clearRef.current = handleClear;
     if (downloadRef) downloadRef.current = handleDownloadSnapshot;
   }, [undoRef, redoRef, clearRef, downloadRef, handleUndo, handleRedo, handleClear, handleDownloadSnapshot]);
+
+  // Global Keyboard listener for Ctrl+Z (Undo) and Ctrl+Y (Redo)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA" || target?.isContentEditable) {
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "z" || e.code === "KeyZ")) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.shiftKey) {
+          handleRedo();
+        } else {
+          handleUndo();
+        }
+      } else if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "y" || e.code === "KeyY")) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleRedo();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleUndo, handleRedo]);
 
   // Reliable Note Drag & Click-to-Edit
   const startDragNote = (e: React.PointerEvent, note: TextNote) => {
