@@ -11,6 +11,7 @@ import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
+import { getAssetPath } from "@/lib/utils";
 
 interface Props {
   lesson: Lesson;
@@ -257,7 +258,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                     <div className="my-5 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/80 p-2">
                       <div className="relative rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center max-h-96">
                         <img
-                          src={sec.image.src}
+                          src={getAssetPath(sec.image.src)}
                           alt={sec.image.alt || sec.image.caption}
                           className="max-h-96 w-auto object-contain rounded-lg"
                           loading="lazy"

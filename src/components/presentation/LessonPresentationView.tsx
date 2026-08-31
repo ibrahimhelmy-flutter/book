@@ -52,6 +52,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { formatInlineText } from "../common/EyeComfortText";
+import { getAssetPath } from "@/lib/utils";
 
 interface Props {
   lesson: Lesson;
@@ -1143,7 +1144,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                 <div className="bg-white/80 dark:bg-slate-900/80 rounded-3xl p-4 border border-slate-200 dark:border-slate-800 shadow-md flex flex-col items-center backdrop-blur-sm">
                   <div className="max-h-84 flex items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 shadow-inner">
                     <img
-                      src={currentSlide.image.src}
+                      src={getAssetPath(currentSlide.image.src)}
                       alt={currentSlide.image.caption}
                       className="max-h-76 w-auto object-contain rounded-lg"
                       loading="lazy"
