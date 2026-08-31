@@ -72,22 +72,22 @@ export function AcronymTooltip({
       </span>
 
       {/* Floating Tooltip displaying just full English name */}
-      <div
+      <span
         role="tooltip"
-        className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-slate-900/98 backdrop-blur-md border border-sky-500/40 rounded-xl shadow-2xl z-50 text-left dir-ltr whitespace-nowrap max-w-[85vw] transition-all duration-150 pointer-events-none ${
+        className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-slate-900/98 backdrop-blur-md border border-sky-500/40 rounded-xl shadow-2xl z-50 text-left dir-ltr whitespace-nowrap max-w-[85vw] transition-all duration-150 pointer-events-none block ${
           isVisible
             ? "opacity-100 visible translate-y-0 scale-100"
             : "opacity-0 invisible translate-y-1 scale-95"
         }`}
       >
         {/* Tooltip Arrow */}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-solid border-t-slate-900 border-t-6 border-x-transparent border-x-6 border-b-0" />
+        <span className="block absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-solid border-t-slate-900 border-t-6 border-x-transparent border-x-6 border-b-0" />
 
         {/* English Full Name Only */}
-        <span className="text-xs sm:text-sm font-mono font-bold text-sky-200 tracking-wide select-none drop-shadow-sm">
+        <span className="text-xs sm:text-sm font-mono font-bold text-sky-200 tracking-wide select-none drop-shadow-sm block">
           {acronym.fullEn}
         </span>
-      </div>
+      </span>
     </span>
   );
 }
