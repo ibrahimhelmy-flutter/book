@@ -2,6 +2,38 @@ import { AcronymTerm } from "@/types";
 
 export const ACRONYMS_DATA: AcronymTerm[] = [
   {
+    "short": "ENIAC",
+    "fullAr": "الحاسوب والمكامل العددي الإلكتروني",
+    "fullEn": "Electronic Numerical Integrator and Computer",
+    "descriptionAr": "أول حاسوب إلكتروني رقمي للأغراض العامة، استُخدم في الأربعينيات للحسابات العلمية والعسكرية واعتمد على الصمامات المفرغة.",
+    "category": "Hardware",
+    "lessonRef": "1-1"
+  },
+  {
+    "short": "CPU",
+    "fullAr": "وحدة المعالجة المركزية",
+    "fullEn": "Central Processing Unit",
+    "descriptionAr": "المعالج الرئيسي في الحاسوب المسؤول عن تنفيذ الأوامر ومعالجة البيانات والعمليات الحسابية والمنطقية.",
+    "category": "Hardware",
+    "lessonRef": "1-1"
+  },
+  {
+    "short": "IC",
+    "fullAr": "الدائرة المتكاملة",
+    "fullEn": "Integrated Circuit",
+    "descriptionAr": "شريحة إلكترونية دقيقة تحتوي على آلاف أو ملايين الترانزستورات والمكونات الإلكترونية.",
+    "category": "Hardware",
+    "lessonRef": "1-1"
+  },
+  {
+    "short": "QR",
+    "fullAr": "رمز الاستجابة السريعة",
+    "fullEn": "Quick Response Code",
+    "descriptionAr": "رمز شريطي ثنائي الأبعاد يُقرأ بالكاميرا للوصول السريع للمعلومات والمواقع والدفع الإلكتروني.",
+    "category": "General",
+    "lessonRef": "1-1"
+  },
+  {
     "short": "IT",
     "fullAr": "تكنولوجيا المعلومات",
     "fullEn": "Information Technology",
@@ -240,6 +272,134 @@ export const ACRONYMS_DATA: AcronymTerm[] = [
     "descriptionAr": "دورة التحسين المستمر التكرارية المستخدمة لتطوير المواقع والعمليات.",
     "category": "Design",
     "lessonRef": "4-4"
+  },
+  {
+    "short": "UI",
+    "fullAr": "واجهة المستخدم",
+    "fullEn": "User Interface",
+    "descriptionAr": "العناصر البصرية والتفاعلية التي يتعامل معها المستخدم مباشرة في النظام أو الموقع.",
+    "category": "Design",
+    "lessonRef": "4-1"
+  },
+  {
+    "short": "UX",
+    "fullAr": "تجربة المستخدم",
+    "fullEn": "User Experience",
+    "descriptionAr": "مجمل الانطباع وسهولة الاستخدام والقيمة التي يشعر بها المستخدم أثناء تفاعله مع المنتج الرقمي.",
+    "category": "Design",
+    "lessonRef": "4-1"
+  },
+  {
+    "short": "CTR",
+    "fullAr": "معدل النقر إلى الظهور",
+    "fullEn": "Click-Through Rate",
+    "descriptionAr": "النسبة المئوية لعدد النقرات على رابط أو زر مقارنة بإجمالي عدد مرات ظهوره.",
+    "category": "Design",
+    "lessonRef": "4-3"
+  },
+  {
+    "short": "NLP",
+    "fullAr": "معالجة اللغة الطبيعية",
+    "fullEn": "Natural Language Processing",
+    "descriptionAr": "فرع من الذكاء الاصطناعي يركز على تمكين الحواسيب من فهم النصوص البشرية وتفسيرها وتوليدها.",
+    "category": "AI",
+    "lessonRef": "1-2"
+  },
+  {
+    "short": "IP",
+    "fullAr": "بروتوكول الإنترنت / عنوان IP",
+    "fullEn": "Internet Protocol",
+    "descriptionAr": "المعرف الرقمي الفريد المخصص لكل جهاز متصل بالشبكة لنقل وتوجيه البيانات.",
+    "category": "Networking",
+    "lessonRef": "2-2"
+  },
+  {
+    "short": "SQL",
+    "fullAr": "لغة الاستعلامات البنيوية",
+    "fullEn": "Structured Query Language",
+    "descriptionAr": "لغة قياسية لإدارة واستعلام قواعد البيانات العلائقية والتعامل مع جداولها.",
+    "category": "WebDev",
+    "lessonRef": "3-1"
+  },
+  {
+    "short": "URL",
+    "fullAr": "محدد موقع الموارد الموحد (رابط الويب)",
+    "fullEn": "Uniform Resource Locator",
+    "descriptionAr": "العنوان الإلكتروني الفريد المستخدم للوصول إلى صفحات الويب والمستندات عبر الإنترنت.",
+    "category": "WebDev",
+    "lessonRef": "3-2"
+  },
+  {
+    "short": "SSL",
+    "fullAr": "طبقة المنافذ الآمنة",
+    "fullEn": "Secure Sockets Layer",
+    "descriptionAr": "بروتوكول أمني سابق لتشفير الاتصالات على الويب تطور لاحقًا إلى بروتوكول TLS الحديث.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "OTP",
+    "fullAr": "كلمة المرور لمرة واحدة",
+    "fullEn": "One-Time Password",
+    "descriptionAr": "رمز أمان مؤقت صالح لعملية دخول أو معاملة واحدة لتعزيز أمان الحسابات.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "SMS",
+    "fullAr": "خدمة الرسائل القصيرة",
+    "fullEn": "Short Message Service",
+    "descriptionAr": "خدمة إرسال رسائل نصية قصيرة عبر شبكات الاتصال وتُستخدم غالبًا في إرسال رموز التحقق.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "PIN",
+    "fullAr": "رقم التعريف الشخصي",
+    "fullEn": "Personal Identification Number",
+    "descriptionAr": "رمز سري رقمي يُستخدم للمصادقة وتأكيد هوية حامل البطاقة أو الحساب.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "DOM",
+    "fullAr": "نموذج كائن المستند",
+    "fullEn": "Document Object Model",
+    "descriptionAr": "هيكل شجري يمثل عناصر صفحة الويب ويتيح لـ JavaScript تعديل المحتوى والتصميم ديناميكيًا.",
+    "category": "WebDev",
+    "lessonRef": "3-3"
+  },
+  {
+    "short": "AJAX",
+    "fullAr": "جافا سكريبت غير المتزامنة وXML",
+    "fullEn": "Asynchronous JavaScript and XML",
+    "descriptionAr": "تقنية تسمح بتحديث أجزاء من صفحة الويب وتبادل البيانات في الخلفية دون إعادة تحميل كامل الصفحة.",
+    "category": "WebDev",
+    "lessonRef": "3-3"
+  },
+  {
+    "short": "AES",
+    "fullAr": "معيار التشفير المتقدم",
+    "fullEn": "Advanced Encryption Standard",
+    "descriptionAr": "خوارزمية تشفير متناظر معتمدة عالميًا لحماية البيانات الحساسة بمفاتيح 128 أو 256 بت.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "SHA",
+    "fullAr": "خوارزمية التجزئة الآمنة",
+    "fullEn": "Secure Hash Algorithm",
+    "descriptionAr": "دالة تجزئة رياضية أحادية الاتجاه تُستخدم للتحقق من سلامة البيانات والتوقيعات الرقمية.",
+    "category": "Cybersecurity",
+    "lessonRef": "2-1"
+  },
+  {
+    "short": "RDP",
+    "fullAr": "بروتوكول سطح المكتب البعيد",
+    "fullEn": "Remote Desktop Protocol",
+    "descriptionAr": "بروتوكول يتيح للمستخدم الاتصال بحاسوب آخر والتحكم في واجهة سطحه عن بُعد عبر الشبكة.",
+    "category": "Networking",
+    "lessonRef": "2-2"
   }
 ];
 

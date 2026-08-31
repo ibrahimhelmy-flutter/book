@@ -2,6 +2,26 @@ import { GlossaryTerm } from "@/types";
 
 export const GLOSSARY_DATA: GlossaryTerm[] = [
   {
+    "id": "g-eniac",
+    "termAr": "حاسوب إينياك",
+    "termEn": "ENIAC - Electronic Numerical Integrator and Computer",
+    "definitionAr": "أول حاسوب إلكتروني رقمي عام للأغراض العلمية والعسكرية، تميز بالاعتماد على الصمامات المفرغة في الأربعينيات والستينيات.",
+    "definitionEn": "The first programmable, electronic, general-purpose digital computer completed in 1945.",
+    "chapterId": "chapter-1",
+    "lessonNumber": "1-1",
+    "category": "General"
+  },
+  {
+    "id": "g-cpu",
+    "termAr": "وحدة المعالجة المركزية",
+    "termEn": "CPU - Central Processing Unit",
+    "definitionAr": "المعالج والمكون الأساسي في الحاسوب المسؤول عن معالجة التعليمات والبيانات وإجراء الحسابات.",
+    "definitionEn": "The primary component of a computer that executes instructions and processes data.",
+    "chapterId": "chapter-1",
+    "lessonNumber": "1-1",
+    "category": "General"
+  },
+  {
     "id": "g-moore-s-law",
     "termAr": "قانون مور",
     "termEn": "Moore's Law",

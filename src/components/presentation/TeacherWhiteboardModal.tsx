@@ -258,15 +258,17 @@ export function TeacherWhiteboardModal({
         return;
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "z" || e.code === "KeyZ")) {
         e.preventDefault();
+        e.stopPropagation();
         if (e.shiftKey) {
           handleRedo();
         } else {
           handleUndo();
         }
-      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+      } else if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "y" || e.code === "KeyY")) {
         e.preventDefault();
+        e.stopPropagation();
         handleRedo();
       } else if (e.key === "Escape") {
         e.preventDefault();
@@ -419,12 +421,18 @@ export function TeacherWhiteboardModal({
   };
 
   const handleUndo = () => {
-    if (undoStackRef.current.length === 0) return;
-    const prevState = undoStackRef.current.pop() || [];
-    redoStackRef.current.push([...strokesRef.current]);
-    strokesRef.current = prevState;
-    redraw();
-    setForceRender((v) => v + 1);
+    if (undoStackRef.current.length > 0) {
+      const prevState = undoStackRef.current.pop() || [];
+      redoStackRef.current.push([...strokesRef.current]);
+      strokesRef.current = prevState;
+      redraw();
+      setForceRender((v) => v + 1);
+    } else if (strokesRef.current.length > 0) {
+      redoStackRef.current.push([...strokesRef.current]);
+      strokesRef.current.pop();
+      redraw();
+      setForceRender((v) => v + 1);
+    }
   };
 
   const handleRedo = () => {
