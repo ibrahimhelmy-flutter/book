@@ -1055,8 +1055,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
               }}
             >
               {/* Prominent Full Slide Title & Badge Header (Shows complete slide title inside canvas) */}
-              {currentSlide.type !== "intro" && (
-                <div className="flex items-center gap-3 pb-3 border-b-2 border-slate-200/80 dark:border-slate-800/80 animate-fadeIn">
+              <div className="flex items-center justify-between gap-3 pb-3 border-b-2 border-slate-200/80 dark:border-slate-800/80 animate-fadeIn">
+                <div className="flex items-center gap-3">
                   <span className="px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/30 text-xs sm:text-sm font-black shrink-0 shadow-xs">
                     {currentSlide.badge}
                   </span>
@@ -1064,80 +1064,12 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                     {currentSlide.title}
                   </h2>
                 </div>
-              )}
-
-              {/* 1. Intro Slide: Enhanced Question & Learning Path */}
-              {currentSlide.type === "intro" && (
-                <div className="space-y-6 animate-fadeIn">
-                  <div
-                    className={`p-6 sm:p-8 rounded-3xl border-2 flex items-start gap-4 shadow-lg backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-white border-blue-300 text-slate-950 shadow-md"
-                        : "bg-blue-500/10 border-blue-500/30 text-white"
-                    }`}
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 ${
-                        theme === "light"
-                          ? "bg-blue-50 border border-blue-200 text-blue-600"
-                          : "bg-blue-600/20 border border-blue-500/40 text-blue-400"
-                      }`}
-                    >
-                      <HelpCircle className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h3
-                        className={`text-xs sm:text-sm font-bold mb-1.5 uppercase tracking-wide ${
-                          theme === "light" ? "text-blue-800" : "text-blue-300"
-                        }`}
-                      >
-                        السؤال الجوهري للدرس:
-                      </h3>
-                      <p
-                        className={`text-xl sm:text-3xl font-black leading-relaxed ${
-                          theme === "light" ? "text-slate-950" : "text-white"
-                        }`}
-                      >
-                        {lesson.keyQuestion}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div
-                    className={`p-6 sm:p-7 rounded-3xl border-2 flex items-start gap-4 shadow-md backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-white border-indigo-200 text-slate-900 shadow-sm"
-                        : "bg-indigo-500/10 border-indigo-500/30 text-slate-200"
-                    }`}
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 ${
-                        theme === "light"
-                          ? "bg-indigo-50 border border-indigo-200 text-indigo-600"
-                          : "bg-indigo-600/20 border border-indigo-500/40 text-indigo-400"
-                      }`}
-                    >
-                      <Sparkles className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h4
-                        className={`text-xs sm:text-sm font-bold mb-1 uppercase tracking-wide ${
-                          theme === "light" ? "text-indigo-800" : "text-indigo-300"
-                        }`}
-                      >
-                        الفكرة الأساسية ومسار التعلم:
-                      </h4>
-                      <p
-                        className={`text-lg sm:text-xl font-bold leading-relaxed ${
-                          theme === "light" ? "text-slate-800" : "text-slate-200"
-                        }`}
-                      >
-                        {lesson.coreIdea}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
+                {currentSlide.subtitle && (
+                  <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-500 dir-ltr hidden sm:inline-block">
+                    {currentSlide.subtitle}
+                  </span>
+                )}
+              </div>
 
               {/* Section Diagram Image from PDF if available */}
               {currentSlide.image && (
