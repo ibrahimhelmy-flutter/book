@@ -9,7 +9,8 @@
     "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); } catch(e) {}\" && next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "npx tsx src/core/tests/engine.test.ts"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

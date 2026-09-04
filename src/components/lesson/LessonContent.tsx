@@ -8,6 +8,7 @@ import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { QuizEngine } from "../quiz/QuizEngine";
 import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
 import { LessonPresentationView } from "../presentation/LessonPresentationView";
+import { LessonConceptMap } from "./LessonConceptMap";
 import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
@@ -232,7 +233,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               return (
                 <section
                   key={sec.id}
-                  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg relative"
+                  id={sec.id}
+                  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
                 >
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
                     <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
@@ -304,33 +306,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             })}
           </div>
 
-          {/* Key Concepts Dictionary Bar - Placed at bottom of content & before simulation */}
+          {/* Interactive Lesson Schematic & Concept Map */}
           {lesson.keyConcepts && lesson.keyConcepts.length > 0 && (
-            <div className="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-              <h2 className="text-sm font-bold text-indigo-400 mb-4 flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                <span>المفاهيم والمصطلحات الأساسية للدرس:</span>
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {lesson.keyConcepts.map((concept, i) => (
-                  <div key={i} className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800/80 text-xs space-y-1.5 hover:border-indigo-500/30 transition-all">
-                    <div className="flex justify-between items-center">
-                      <span className="text-amber-100 font-bold text-xs sm:text-sm bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                        {concept.termAr}
-                      </span>
-                      {concept.termEn && (
-                        <span className="text-[11px] font-mono font-semibold text-sky-300 bg-sky-950/60 border border-sky-500/30 px-1.5 py-0.5 rounded-md dir-ltr">
-                          {concept.termEn}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-slate-300 leading-relaxed text-xs pt-1">
-                      {formatInlineText(concept.definition, "dark")}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <LessonConceptMap lesson={lesson} />
           )}
 
           {/* Embedded Simulator in Reading flow */}

@@ -704,19 +704,14 @@ export function AIPresentationAssistant({
                     <h4 className="text-sm font-bold text-white">
                       المفاهيم والمصطلحات المركزية ({lesson.keyConcepts.length} مفاهيم)
                     </h4>
-                    <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-2 max-h-56 overflow-y-auto custom-scrollbar">
+                    <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar">
                       {lesson.keyConcepts.map((c, cIdx) => (
                         <div
                           key={cIdx}
-                          className="p-2.5 rounded-lg bg-indigo-950/60 border border-indigo-500/30 text-xs text-indigo-200 space-y-1"
+                          className="px-3 py-1.5 rounded-lg bg-indigo-950/60 border border-indigo-500/30 text-xs text-indigo-200 flex items-center gap-1.5"
                         >
-                          <div className="flex items-center justify-between font-bold text-white">
-                            <span>{c.termAr}</span>
-                            {c.termEn && <span className="text-[10px] text-indigo-300 font-mono">{c.termEn}</span>}
-                          </div>
-                          <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
-                            {c.definition}
-                          </p>
+                          <span className="font-bold text-white">{c.termAr}</span>
+                          {c.termEn && <span className="text-[10px] text-sky-300 font-mono">({c.termEn})</span>}
                         </div>
                       ))}
                     </div>

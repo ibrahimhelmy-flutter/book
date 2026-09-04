@@ -52,3 +52,31 @@
   direction: ltr;
   text-align: left;
 }
+
+/* Print Styles for Official Exam Booklets and Answer Sheets */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+
+  header, nav, aside, .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .print\:border-black {
+    border-color: #000000 !important;
+  }
+
+  .print\:break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}

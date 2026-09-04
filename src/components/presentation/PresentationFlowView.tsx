@@ -102,9 +102,9 @@ export function PresentationFlowView({
             id: "flow-concepts",
             slideTargetIndex: lesson.sections.length + 1,
             stageNumber: lesson.sections.length + 2,
-            stageName: "المصطلحات والمفاهيم",
-            title: "معجم المفاهيم والروابط العلمية للدرس",
-            description: `يشمل ${lesson.keyConcepts.length} مفاهيم ومصطلحات أساسية باللغتين العربية والإنجليزية.`,
+            stageName: "خريطة المفاهيم",
+            title: "خريطة المفاهيم والروابط الهيكلية للدرس",
+            description: `يشمل ${lesson.keyConcepts.length} مفاهيم ومصطلحات موزعة على محاور الدرس.`,
             icon: <BookOpen className="w-5 h-5" />,
             colorTheme: {
               bg: "bg-purple-950/40 hover:bg-purple-950/70",
@@ -114,7 +114,9 @@ export function PresentationFlowView({
               badgeText: "text-purple-300",
               gradient: "from-purple-600 to-pink-600",
             },
-            details: lesson.keyConcepts.map((c) => `${c.termAr} (${c.termEn || ""}): ${c.definition.slice(0, 80)}...`),
+            details: lesson.keyConcepts.map((c) =>
+              c.termEn ? `${c.termAr} (${c.termEn})` : c.termAr
+            ),
           },
         ]
       : []),

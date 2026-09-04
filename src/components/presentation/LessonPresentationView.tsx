@@ -50,6 +50,7 @@ import {
   FileCheck,
   Target,
   Lightbulb,
+  GitBranch,
 } from "lucide-react";
 import { formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -97,6 +98,9 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
 
   // Presentation Themes: "light" | "dark" (Default is Dark)
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  // Concept Map slide display mode: "tree" | "cards"
+  const [conceptSlideMode, setConceptSlideMode] = useState<"tree" | "cards">("tree");
 
   // Font Size Scaling: "normal" | "large" | "xlarge"
   const [fontSizeLevel] = useState<"normal" | "large" | "xlarge">("large");
@@ -325,6 +329,39 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     }
   };
 
+  // Map key concepts to lesson sections for the concept map presentation slide
+  const presentationConceptMapping = useMemo(() => {
+    const map: Record<string, typeof lesson.keyConcepts> = {};
+    const unassigned: typeof lesson.keyConcepts = [];
+
+    lesson.sections.forEach((s) => (map[s.id] = []));
+
+    (lesson.keyConcepts || []).forEach((c) => {
+      let matched = false;
+      const termArClean = c.termAr.replace(/[()]/g, "").trim().toLowerCase();
+      const termWords = termArClean.split(/\s+/).filter((w) => w.length > 2);
+      const termEnClean = (c.termEn || "").replace(/[()]/g, "").trim().toLowerCase();
+
+      for (const sec of lesson.sections) {
+        const text = (sec.title + " " + (sec.content || "")).toLowerCase();
+        const hasAr =
+          text.includes(termArClean) ||
+          (termWords.length > 0 && termWords.every((w) => text.includes(w)));
+        const hasEn = termEnClean && text.includes(termEnClean);
+
+        if (hasAr || hasEn) {
+          map[sec.id].push(c);
+          matched = true;
+          break;
+        }
+      }
+
+      if (!matched) unassigned.push(c);
+    });
+
+    return { map, unassigned };
+  }, [lesson]);
+
   // Build master slides array from curriculum lesson data
   const baseSlides: SlideItem[] = useMemo(() => {
     const list: SlideItem[] = [];
@@ -367,16 +404,16 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       });
     });
 
-    // 3. Key Concepts Glossary Slide
+    // 3. Lesson Concept Map & Technical Vocabulary Slide
     if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
       list.push({
         id: "slide-concepts",
         type: "concepts",
-        title: "المفاهيم والمصطلحات الأساسية للدرس",
-        subtitle: "Key Technical Vocabulary",
-        badge: "معجم المفاهيم 📖",
-        bullets: lesson.keyConcepts.map(
-          (c) => `**${c.termAr}** ${c.termEn ? `(${c.termEn})` : ""}: ${c.definition}`
+        title: "خريطة المفاهيم والروابط الهيكلية للدرس",
+        subtitle: "Lesson Concept Map & Technical Architecture",
+        badge: "خريطة الدرس 🗺️",
+        bullets: lesson.keyConcepts.map((c) =>
+          c.termEn ? `${c.termAr} (${c.termEn})` : c.termAr
         ),
       });
     }
@@ -476,13 +513,14 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       const targetSlide = slides[slideIdx];
       if (!targetSlide) return 1;
       if (targetSlide.type === "concepts" && lesson.keyConcepts && lesson.keyConcepts.length > 0) {
-        return lesson.keyConcepts.length;
+        const extraGroup = presentationConceptMapping.unassigned.length > 0 ? 1 : 0;
+        return lesson.sections.length + 1 + extraGroup;
       }
       const bCount = targetSlide.bullets.length;
       const rCount = targetSlide.table ? targetSlide.table.rows.length : 0;
       return Math.max(1, bCount + rCount);
     },
-    [slides, lesson.keyConcepts]
+    [slides, lesson.keyConcepts, lesson.sections, presentationConceptMapping]
   );
 
   // Total steps for current slide
@@ -1369,67 +1407,310 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                 </div>
               )}
 
-              {/* Concepts Slide: Interactive Concept Cards with Audio TTS */}
+              {/* Concepts Slide: Enhanced Interactive Lesson Concept Map & Architecture */}
               {currentSlide.type === "concepts" && lesson.keyConcepts && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  {lesson.keyConcepts.map((concept, cIdx) => {
-                    const isRevealed = cIdx <= revealedLineIndex;
-                    const isLatest = cIdx === revealedLineIndex;
-
-                    return (
-                      <div
-                        key={cIdx}
-                        className={`p-6 rounded-3xl border-2 transition-all duration-300 space-y-3 ${
-                          isRevealed
-                            ? isLatest
-                              ? theme === "light"
-                                ? "bg-white border-purple-600 shadow-xl ring-2 ring-purple-400/20 scale-[1.02]"
-                                : "bg-purple-500/15 border-purple-500 shadow-xl scale-[1.02]"
-                              : theme === "light"
-                                ? "bg-white/95 border-purple-200 shadow-xs opacity-95"
-                                : "bg-purple-500/10 border-purple-500/30 opacity-90"
-                            : "opacity-0 translate-y-4 pointer-events-none"
+                <div className="space-y-6 pt-1 animate-fadeIn">
+                  {/* Slide Top Sub-bar with View Switcher & Reveal All */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-3 border-slate-700/60">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-xs font-bold px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
+                          theme === "light"
+                            ? "bg-indigo-50 text-indigo-900 border-indigo-200"
+                            : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
                         }`}
                       >
-                        <div className="flex items-center justify-between">
-                          <span
-                            className={`font-black text-sm sm:text-base px-3.5 py-1.5 rounded-xl border ${
-                              theme === "light"
-                                ? "bg-purple-50 text-purple-950 border-purple-200"
-                                : "text-purple-300 bg-purple-500/20 border-purple-500/30"
+                        <GitBranch className="w-3.5 h-3.5" />
+                        <span>خريطة الدرس التخطيطية 🗺️</span>
+                      </span>
+                      <span
+                        className={`text-xs ${
+                          theme === "light" ? "text-slate-600" : "text-slate-400"
+                        }`}
+                      >
+                        ترابط بصري يجمع الفكرة الأساسية بمحاور الدرس والمفاهيم العلمية ({lesson.keyConcepts.length} مفاهيم)
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      {/* View Mode Toggle */}
+                      <div
+                        className={`p-1 rounded-xl border flex items-center gap-1 text-xs ${
+                          theme === "light" ? "bg-slate-100 border-slate-300" : "bg-slate-950 border-slate-800"
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setConceptSlideMode("tree")}
+                          className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            conceptSlideMode === "tree"
+                              ? "bg-indigo-600 text-white shadow-md"
+                              : theme === "light"
+                              ? "text-slate-600 hover:text-slate-900"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          <GitBranch className="w-3.5 h-3.5" />
+                          <span>مخطط المحاور الشجري</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setConceptSlideMode("cards")}
+                          className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            conceptSlideMode === "cards"
+                              ? "bg-indigo-600 text-white shadow-md"
+                              : theme === "light"
+                              ? "text-slate-600 hover:text-slate-900"
+                              : "text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          <LayoutGrid className="w-3.5 h-3.5" />
+                          <span>بطاقات المصطلحات</span>
+                        </button>
+                      </div>
+
+                      {/* Reveal All Button */}
+                      <button
+                        type="button"
+                        onClick={() => setRevealedLineIndex(totalSteps - 1)}
+                        className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                          theme === "light"
+                            ? "bg-white hover:bg-slate-50 border-slate-300 text-slate-700"
+                            : "bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-200"
+                        }`}
+                        title="كشف كامل عناصر الخريطة على البروجيكتور"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <span>كشف الكل ⚡</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 1. ROOT NODE: Core Idea (الفكرة الأساسية للدرس) */}
+                  <div className="max-w-3xl mx-auto">
+                    <div
+                      className={`p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 text-center space-y-2 relative shadow-xl ${
+                        revealedLineIndex === 0
+                          ? theme === "light"
+                            ? "bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-500 ring-4 ring-indigo-400/20 scale-[1.01]"
+                            : "bg-gradient-to-r from-indigo-950/80 via-slate-950 to-purple-950/80 border-indigo-500 ring-4 ring-indigo-500/20 scale-[1.01]"
+                          : theme === "light"
+                          ? "bg-white border-slate-200"
+                          : "bg-slate-950/90 border-slate-800"
+                      }`}
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold">
+                          <Lightbulb className="w-4 h-4" />
+                          <span>الفكرة الأساسية للدرس</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => speakText(lesson.coreIdea)}
+                          className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-amber-400 transition-colors"
+                          title="استماع للفكرة الأساسية"
+                        >
+                          <Volume2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <p
+                        className={`font-bold leading-relaxed ${
+                          theme === "light" ? "text-slate-900" : "text-slate-100"
+                        } ${fontStyles.conceptText}`}
+                      >
+                        {lesson.coreIdea}
+                      </p>
+                    </div>
+
+                    {/* Central Connector Line */}
+                    <div className="w-0.5 h-5 bg-gradient-to-b from-indigo-500 to-slate-700 mx-auto" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 mx-auto -mt-1 ring-4 ring-slate-900" />
+                  </div>
+
+                  {/* 2. VIEW MODE: Tree Schematic Grid */}
+                  {conceptSlideMode === "tree" && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                      {lesson.sections.map((sec, sIdx) => {
+                        const concepts = presentationConceptMapping.map[sec.id] || [];
+                        const stepIdx = sIdx + 1;
+                        const isRevealed = stepIdx <= revealedLineIndex || revealedLineIndex >= totalSteps - 1;
+                        const isFocused = stepIdx === revealedLineIndex;
+
+                        return (
+                          <div
+                            key={sec.id}
+                            className={`p-5 rounded-3xl border-2 transition-all duration-300 space-y-3 flex flex-col justify-between ${
+                              isRevealed
+                                ? isFocused
+                                  ? theme === "light"
+                                    ? "bg-white border-indigo-600 shadow-xl ring-4 ring-indigo-400/20 scale-[1.02]"
+                                    : "bg-indigo-950/40 border-indigo-400 shadow-xl ring-4 ring-indigo-500/30 scale-[1.02]"
+                                  : theme === "light"
+                                  ? "bg-white/95 border-slate-200 shadow-xs"
+                                  : "bg-slate-950/80 border-slate-800 shadow-md"
+                                : "opacity-30 blur-[0.5px] scale-98"
                             }`}
                           >
-                            {concept.termAr}
+                            <div>
+                              <div className="flex items-center justify-between mb-2">
+                                <span
+                                  className={`font-black text-xs px-2.5 py-1 rounded-lg border ${
+                                    theme === "light"
+                                      ? "bg-indigo-50 text-indigo-900 border-indigo-200"
+                                      : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
+                                  }`}
+                                >
+                                  المحور {sIdx + 1}
+                                </span>
+                                <span
+                                  className={`text-[11px] font-semibold ${
+                                    theme === "light" ? "text-slate-500" : "text-slate-400"
+                                  }`}
+                                >
+                                  {concepts.length} مفاهيم
+                                </span>
+                              </div>
+
+                              <h4
+                                className={`font-bold leading-snug ${
+                                  theme === "light" ? "text-slate-900" : "text-white"
+                                } ${fontStyles.bulletText}`}
+                              >
+                                {sec.title}
+                              </h4>
+                            </div>
+
+                            {/* Section Concepts Badges */}
+                            <div className="pt-3 border-t border-slate-700/60 space-y-2">
+                              {concepts.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                  {concepts.map((c, cIdx) => (
+                                    <div
+                                      key={cIdx}
+                                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs transition-all ${
+                                        theme === "light"
+                                          ? "bg-slate-50 border-slate-300 text-slate-800 shadow-xs hover:border-indigo-400"
+                                          : "bg-slate-900/90 border-slate-700 text-slate-100 hover:border-amber-400/60"
+                                      }`}
+                                    >
+                                      <span className="font-bold text-amber-300">{c.termAr}</span>
+                                      {c.termEn && (
+                                        <div className="flex items-center gap-1">
+                                          <span className="font-mono text-[11px] text-sky-400 dir-ltr">
+                                            ({c.termEn})
+                                          </span>
+                                          <button
+                                            type="button"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              speakText(c.termEn || "");
+                                            }}
+                                            className="p-0.5 rounded hover:bg-slate-700 text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
+                                            title="نطق المصطلح بالإنجليزية"
+                                          >
+                                            <Volume2 className="w-3.5 h-3.5" />
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <p
+                                  className={`text-xs italic ${
+                                    theme === "light" ? "text-slate-500" : "text-slate-400"
+                                  }`}
+                                >
+                                  محور تطبيقي وشرح مفصل للموضوع.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Unassigned Concepts Card if any */}
+                      {presentationConceptMapping.unassigned.length > 0 && (
+                        <div
+                          className={`p-5 rounded-3xl border-2 space-y-3 ${
+                            theme === "light"
+                              ? "bg-white border-slate-200"
+                              : "bg-slate-950/80 border-slate-800"
+                          }`}
+                        >
+                          <span
+                            className={`font-black text-xs px-2.5 py-1 rounded-lg border ${
+                              theme === "light"
+                                ? "bg-amber-50 text-amber-900 border-amber-200"
+                                : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                            }`}
+                          >
+                            مفاهيم عامة تابعة للدرس
                           </span>
-                          {concept.termEn && (
-                            <div className="flex items-center gap-1.5">
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {presentationConceptMapping.unassigned.map((c, cIdx) => (
                               <span
-                                className={`text-xs sm:text-sm font-mono font-bold dir-ltr ${
-                                  theme === "light" ? "text-indigo-800" : "text-sky-300"
+                                key={cIdx}
+                                className={`px-2.5 py-1 rounded-lg border text-xs font-semibold ${
+                                  theme === "light"
+                                    ? "bg-slate-50 border-slate-300 text-slate-800"
+                                    : "bg-slate-900 border-slate-700 text-slate-200"
                                 }`}
                               >
-                                {concept.termEn}
+                                {c.termAr} {c.termEn ? `(${c.termEn})` : ""}
                               </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 3. VIEW MODE: Vocabulary Cards Grid */}
+                  {conceptSlideMode === "cards" && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 pt-1">
+                      {lesson.keyConcepts.map((concept, cIdx) => (
+                        <div
+                          key={cIdx}
+                          className={`p-4 rounded-2xl border-2 transition-all space-y-2 ${
+                            theme === "light"
+                              ? "bg-white border-slate-200 shadow-xs hover:border-indigo-400"
+                              : "bg-slate-950/80 border-slate-800 hover:border-indigo-500/50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-sm sm:text-base text-amber-300">
+                              {concept.termAr}
+                            </span>
+                            {concept.termEn && (
                               <button
+                                type="button"
                                 onClick={() => speakText(concept.termEn || "")}
-                                className="p-1.5 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 hover:text-blue-600 cursor-pointer transition-colors"
-                                title="نطق المصطلح بالإنجليزية"
+                                className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
+                                title="نطق المصطلح"
                               >
                                 <Volume2 className="w-4 h-4" />
                               </button>
-                            </div>
+                            )}
+                          </div>
+                          {concept.termEn && (
+                            <p className="text-xs font-mono text-sky-400 dir-ltr text-right">
+                              {concept.termEn}
+                            </p>
                           )}
                         </div>
-                        <p
-                          className={`leading-relaxed font-semibold ${
-                            theme === "light" ? "text-slate-800" : "text-slate-300"
-                          } ${fontStyles.conceptText}`}
-                        >
-                          {concept.definition}
-                        </p>
-                      </div>
-                    );
-                  })}
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Slide Footnote */}
+                  <div
+                    className={`text-center text-xs pt-3 border-t border-slate-800/80 font-medium ${
+                      theme === "light" ? "text-slate-500" : "text-slate-400"
+                    }`}
+                  >
+                    💡 خريطة الدرس والمفاهيم مطابقة تماماً لكتاب الوزارة الرسمي لمادة البرمجة والذكاء الاصطناعي.
+                  </div>
                 </div>
               )}
 
