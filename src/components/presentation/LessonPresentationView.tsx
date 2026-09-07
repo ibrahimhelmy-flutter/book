@@ -62,7 +62,7 @@ interface Props {
 
 export interface SlideItem {
   id: string;
-  type: "intro" | "concepts" | "section" | "engineer" | "example" | "summary" | "ai_question";
+  type: "intro" | "concepts" | "section" | "engineer" | "example" | "summary" | "ai_question" | "callout" | "applied_task";
   title: string;
   subtitle?: string;
   bullets: string[];
@@ -385,24 +385,94 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       ],
     });
 
-    // 2. Lesson Sections Slides
+    // 2. Lesson Sections Slides (Full lesson explanation with comfortable pacing & smart chunking)
     lesson.sections.forEach((sec, idx) => {
       const lines = sec.content
         .split("\n")
         .map((l) => l.trim())
         .filter((l) => l.length > 0);
 
-      list.push({
-        id: `slide-sec-${sec.id}`,
-        type: "section",
-        title: sec.title,
-        subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
-        badge: "المحتوى العلمي 💡",
-        bullets: lines,
-        image: sec.image,
-        table: sec.table,
-      });
+      if (sec.image) {
+        // Slide with Diagram
+        if (lines.length > 1) {
+          // Slide A: Visual Diagram + Core Key Takeaway
+          list.push({
+            id: `slide-sec-${sec.id}-img`,
+            type: "section",
+            title: sec.title,
+            subtitle: `المحور العلمي ${idx + 1} — المخطط والتحليل البصري`,
+            badge: "الشكل والمخطط 📊",
+            bullets: [lines[0]],
+            image: sec.image,
+            table: sec.table,
+          });
+
+          // Slide B: Deep Dive Technical Concepts
+          list.push({
+            id: `slide-sec-${sec.id}-detail`,
+            type: "section",
+            title: sec.title,
+            subtitle: `المحور العلمي ${idx + 1} — الشرح والتحليل المعمق`,
+            badge: "المحتوى العلمي 💡",
+            bullets: lines.slice(1),
+          });
+        } else {
+          list.push({
+            id: `slide-sec-${sec.id}`,
+            type: "section",
+            title: sec.title,
+            subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
+            badge: "المحتوى العلمي 💡",
+            bullets: lines,
+            image: sec.image,
+            table: sec.table,
+          });
+        }
+      } else if (lines.length > 3) {
+        // Chunk long section into comfortable slices of 2-3 bullets
+        const chunkSize = 2;
+        const totalParts = Math.ceil(lines.length / chunkSize);
+        for (let p = 0; p < totalParts; p++) {
+          const chunkLines = lines.slice(p * chunkSize, (p + 1) * chunkSize);
+          list.push({
+            id: `slide-sec-${sec.id}-p${p + 1}`,
+            type: "section",
+            title: `${sec.title} (${p + 1}/${totalParts})`,
+            subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
+            badge: "المحتوى العلمي 💡",
+            bullets: chunkLines,
+            table: p === 0 ? sec.table : undefined,
+          });
+        }
+      } else {
+        list.push({
+          id: `slide-sec-${sec.id}`,
+          type: "section",
+          title: sec.title,
+          subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
+          badge: "المحتوى العلمي 💡",
+          bullets: lines,
+          table: sec.table,
+        });
+      }
     });
+
+    // 3. Interactive Pause & Reflect Slides ("توقّف وفكّر" بعد انتهاء شرح محاور الدرس)
+    if (lesson.callouts && lesson.callouts.length > 0) {
+      lesson.callouts.forEach((c, cIdx) => {
+        list.push({
+          id: `slide-callout-${c.id}`,
+          type: "callout",
+          title: c.title,
+          subtitle: `محطة تفاعلية (${cIdx + 1}/${lesson.callouts.length}) — مناقشة صفية بعد انتهاء شرح الدرس 💡`,
+          badge: "توقّف وفكّر 💡",
+          bullets: [
+            c.question ? c.question : c.title,
+            ...c.content.split("\n").map((l) => l.trim()).filter((l) => l.length > 0),
+          ],
+        });
+      });
+    }
 
     // 3. Lesson Concept Map & Technical Vocabulary Slide
     if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
@@ -418,7 +488,25 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       });
     }
 
-    // 4. Think Like an Engineer Slide
+    // 4. Applied Task Slide (طبّق ما تعلمته)
+    if (lesson.appliedTask) {
+      list.push({
+        id: "slide-applied-task",
+        type: "applied_task",
+        title: lesson.appliedTask.title,
+        subtitle: "تطبيق مهام واقعية وميدانية",
+        badge: "طبّق ما تعلمته 🌍",
+        bullets: [
+          `السيناريو الواقعي: ${lesson.appliedTask.scenario}`,
+          `المطلوب: ${lesson.appliedTask.prompt}`,
+          ...(lesson.appliedTask.sampleAnswer
+            ? [`💡 الحل والتحليل النموذجي: ${lesson.appliedTask.sampleAnswer}`]
+            : []),
+        ],
+      });
+    }
+
+    // 5. Think Like an Engineer Slide
     if (lesson.engineerChallenge) {
       const bullets = [
         `السيناريو الواقعي: ${lesson.engineerChallenge.scenario}`,
@@ -441,7 +529,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       });
     }
 
-    // 5. Solved Example Slides
+    // 6. Solved Example Slides
     if (lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0) {
       lesson.solvedExample.items.forEach((ex, exIdx) => {
         const bullets: string[] = [
@@ -474,16 +562,35 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
       });
     }
 
-    // 6. Summary Slide
+    // 7. Summary Slide (Comfortable Multi-Slide Takeaways & Golden Rules)
     if (lesson.summary && lesson.summary.length > 0) {
-      list.push({
-        id: "slide-summary",
-        type: "summary",
-        title: "ملخص الدرس والخلاصة التعليمية",
-        subtitle: "Key Takeaways & Summary",
-        badge: "الخلاصة 🎯",
-        bullets: lesson.summary,
-      });
+      if (lesson.summary.length > 3) {
+        list.push({
+          id: "slide-summary-1",
+          type: "summary",
+          title: "ملخص الدرس والخلاصة التعليمية (1/2)",
+          subtitle: "Key Takeaways & Core Concepts",
+          badge: "الخلاصة 🎯",
+          bullets: lesson.summary.slice(0, 2),
+        });
+        list.push({
+          id: "slide-summary-2",
+          type: "summary",
+          title: "ملخص الدرس والوصايا الذهبية (2/2)",
+          subtitle: "Key Takeaways & Golden Rules",
+          badge: "الوصايا الذهبية 🏆",
+          bullets: lesson.summary.slice(2),
+        });
+      } else {
+        list.push({
+          id: "slide-summary",
+          type: "summary",
+          title: "ملخص الدرس والخلاصة التعليمية والوصايا",
+          subtitle: "Key Takeaways & Summary",
+          badge: "الخلاصة 🎯",
+          bullets: lesson.summary,
+        });
+      }
     }
 
     return list;
@@ -2177,8 +2284,198 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                 </div>
               )}
 
+              {/* 5. Callout (Pause & Reflect) Slide: Interactive Classroom Thinking Stop */}
+              {currentSlide.type === "callout" && (
+                <div className="space-y-6 animate-fadeIn">
+                  <div
+                    className={`p-6 sm:p-8 rounded-3xl border-2 transition-all shadow-xl backdrop-blur-sm ${
+                      theme === "light"
+                        ? "bg-amber-50/90 border-amber-300 text-amber-950 shadow-amber-500/10"
+                        : "bg-amber-950/40 border-amber-500/50 text-amber-100 shadow-amber-950/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold shrink-0 ${
+                          theme === "light"
+                            ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30"
+                            : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+                        }`}
+                      >
+                        <Lightbulb className="w-6 h-6 animate-pulse" />
+                      </div>
+                      <div>
+                        <span
+                          className={`text-xs font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-full ${
+                            theme === "light"
+                              ? "bg-amber-100 text-amber-900 border border-amber-300"
+                              : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                          }`}
+                        >
+                          محطة تفاعلية — توقّف وفكّر 💡
+                        </span>
+                        <h3
+                          className={`text-xl sm:text-2xl font-black mt-1 ${
+                            theme === "light" ? "text-amber-950" : "text-white"
+                          }`}
+                        >
+                          {currentSlide.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {currentSlide.bullets.length > 0 && (
+                      <div
+                        className={`p-5 sm:p-6 rounded-2xl border-2 transition-all duration-300 ${
+                          theme === "light"
+                            ? "bg-white/95 border-amber-400 text-slate-900 shadow-md"
+                            : "bg-slate-900/90 border-amber-500/60 text-white shadow-inner"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-amber-600 dark:text-amber-400 block mb-1">
+                          💡 سؤال التفكير والمناقشة الصفي:
+                        </span>
+                        <p className="text-lg sm:text-xl lg:text-2xl font-black leading-relaxed">
+                          {formatInlineText(currentSlide.bullets[0], theme === "light" ? "light" : "dark")}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {currentSlide.bullets.length > 1 && (
+                    <div className="space-y-3.5">
+                      {currentSlide.bullets.slice(1).map((bullet, bIdx) => {
+                        const actualIdx = bIdx + 1;
+                        const isRevealed = actualIdx <= revealedLineIndex;
+                        const isLatest = actualIdx === revealedLineIndex;
+
+                        return (
+                          <div
+                            key={bIdx}
+                            className={`flex items-start gap-4 p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 ${
+                              isRevealed
+                                ? isLatest
+                                  ? themeStyles.bulletLatest
+                                  : themeStyles.bulletNormal
+                                : "opacity-0 translate-y-3 pointer-events-none"
+                            }`}
+                          >
+                            <span
+                              className={`w-3 h-3 rounded-full shrink-0 mt-2.5 transition-all ${
+                                isLatest
+                                  ? "bg-amber-500 ring-4 ring-amber-500/20 scale-125"
+                                  : "bg-slate-400 opacity-60"
+                              }`}
+                            />
+                            <div className={`flex-1 ${fontStyles.bulletText}`}>
+                              {formatInlineText(bullet, theme === "light" ? "light" : "dark")}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 6. Applied Task Slide: Realistic Scenario & Analysis */}
+              {currentSlide.type === "applied_task" && (
+                <div className="space-y-6 animate-fadeIn">
+                  <div
+                    className={`p-6 sm:p-8 rounded-3xl border-2 transition-all shadow-xl backdrop-blur-sm ${
+                      theme === "light"
+                        ? "bg-emerald-50/90 border-emerald-300 text-emerald-950 shadow-emerald-500/10"
+                        : "bg-emerald-950/40 border-emerald-500/50 text-emerald-100 shadow-emerald-950/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold shrink-0 ${
+                          theme === "light"
+                            ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
+                            : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                        }`}
+                      >
+                        <Target className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <span
+                          className={`text-xs font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-full ${
+                            theme === "light"
+                              ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
+                              : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                          }`}
+                        >
+                          تطبيق عملي واقعي 🌍
+                        </span>
+                        <h3
+                          className={`text-xl sm:text-2xl font-black mt-1 ${
+                            theme === "light" ? "text-emerald-950" : "text-white"
+                          }`}
+                        >
+                          {currentSlide.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {currentSlide.bullets.length > 0 && (
+                      <div
+                        className={`p-5 rounded-2xl border-2 transition-all ${
+                          theme === "light"
+                            ? "bg-white/95 border-emerald-200 text-slate-900 shadow-xs"
+                            : "bg-slate-900/90 border-slate-800 text-white"
+                        }`}
+                      >
+                        <p className="text-base sm:text-lg font-bold leading-relaxed">
+                          {formatInlineText(currentSlide.bullets[0], theme === "light" ? "light" : "dark")}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {currentSlide.bullets.length > 1 && (
+                    <div className="space-y-3.5">
+                      {currentSlide.bullets.slice(1).map((bullet, bIdx) => {
+                        const actualIdx = bIdx + 1;
+                        const isRevealed = actualIdx <= revealedLineIndex;
+                        const isLatest = actualIdx === revealedLineIndex;
+
+                        return (
+                          <div
+                            key={bIdx}
+                            className={`flex items-start gap-4 p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 ${
+                              isRevealed
+                                ? isLatest
+                                  ? themeStyles.bulletLatest
+                                  : themeStyles.bulletNormal
+                                : "opacity-0 translate-y-3 pointer-events-none"
+                            }`}
+                          >
+                            <span
+                              className={`w-3 h-3 rounded-full shrink-0 mt-2.5 transition-all ${
+                                isLatest
+                                  ? "bg-emerald-500 ring-4 ring-emerald-500/20 scale-125"
+                                  : "bg-slate-400 opacity-60"
+                              }`}
+                            />
+                            <div className={`flex-1 ${fontStyles.bulletText}`}>
+                              {formatInlineText(bullet, theme === "light" ? "light" : "dark")}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Standard Progressive Bullet Points (For Sections, Summary, Custom Slides) */}
-              {currentSlide.type !== "intro" && currentSlide.type !== "concepts" && currentSlide.type !== "engineer" && currentSlide.type !== "example" && (
+              {currentSlide.type !== "intro" &&
+                currentSlide.type !== "concepts" &&
+                currentSlide.type !== "engineer" &&
+                currentSlide.type !== "example" &&
+                currentSlide.type !== "callout" &&
+                currentSlide.type !== "applied_task" && (
                 <div className="space-y-4">
                   {currentSlide.bullets.map((bullet, idx) => {
                     const isRevealed = idx <= revealedLineIndex;
@@ -2221,6 +2518,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
         <main className="flex-1 p-6 sm:p-10 overflow-y-auto custom-scrollbar pb-28">
           <PresentationFlowView
             lesson={lesson}
+            slides={slides}
             onSelectSlide={(targetIdx) => {
               setCurrentSlideIndex(targetIdx);
               setRevealedLineIndex(0);
