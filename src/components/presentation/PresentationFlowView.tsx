@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Lesson } from "@/types";
+import { SlideItem } from "./LessonPresentationView";
 import {
   HelpCircle,
   BookOpen,
@@ -18,11 +19,14 @@ import {
   ChevronLeft,
   Compass,
   CheckCircle2,
-  FileCheck
+  FileCheck,
+  Target,
+  Wrench
 } from "lucide-react";
 
 interface PresentationFlowViewProps {
   lesson: Lesson;
+  slides?: SlideItem[];
   onSelectSlide: (slideIndex: number) => void;
   currentSlideIndex: number;
 }
@@ -48,13 +52,110 @@ interface FlowNode {
 
 export function PresentationFlowView({
   lesson,
+  slides,
   onSelectSlide,
   currentSlideIndex,
 }: PresentationFlowViewProps) {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
-  // Construct Pedagogical Flow Stages
-  const flowStages: FlowNode[] = [
+  // Construct Pedagogical Flow Stages dynamically from slides if provided
+  const flowStages: FlowNode[] = (slides && slides.length > 0)
+    ? slides.map((slide, idx) => {
+        let icon: React.ReactNode = <Layers className="w-5 h-5" />;
+        let colorTheme = {
+          bg: "bg-indigo-950/40 hover:bg-indigo-950/70",
+          border: "border-indigo-500/40",
+          text: "text-indigo-300",
+          badge: "bg-indigo-500/20",
+          badgeText: "text-indigo-300",
+          gradient: "from-indigo-600 to-purple-600",
+        };
+
+        if (slide.type === "intro") {
+          icon = <Compass className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-blue-950/40 hover:bg-blue-950/70",
+            border: "border-blue-500/40",
+            text: "text-blue-300",
+            badge: "bg-blue-500/20",
+            badgeText: "text-blue-300",
+            gradient: "from-blue-600 to-indigo-600",
+          };
+        } else if (slide.type === "callout") {
+          icon = <Lightbulb className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-amber-950/40 hover:bg-amber-950/70",
+            border: "border-amber-500/40",
+            text: "text-amber-300",
+            badge: "bg-amber-500/20",
+            badgeText: "text-amber-300",
+            gradient: "from-amber-600 to-orange-600",
+          };
+        } else if (slide.type === "applied_task") {
+          icon = <Target className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-emerald-950/40 hover:bg-emerald-950/70",
+            border: "border-emerald-500/40",
+            text: "text-emerald-300",
+            badge: "bg-emerald-500/20",
+            badgeText: "text-emerald-300",
+            gradient: "from-emerald-600 to-teal-600",
+          };
+        } else if (slide.type === "concepts") {
+          icon = <BookOpen className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-purple-950/40 hover:bg-purple-950/70",
+            border: "border-purple-500/40",
+            text: "text-purple-300",
+            badge: "bg-purple-500/20",
+            badgeText: "text-purple-300",
+            gradient: "from-purple-600 to-pink-600",
+          };
+        } else if (slide.type === "engineer") {
+          icon = <Wrench className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-orange-950/40 hover:bg-orange-950/70",
+            border: "border-orange-500/40",
+            text: "text-orange-300",
+            badge: "bg-orange-500/20",
+            badgeText: "text-orange-300",
+            gradient: "from-orange-600 to-amber-600",
+          };
+        } else if (slide.type === "example") {
+          icon = <FileCheck className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-teal-950/40 hover:bg-teal-950/70",
+            border: "border-teal-500/40",
+            text: "text-teal-300",
+            badge: "bg-teal-500/20",
+            badgeText: "text-teal-300",
+            gradient: "from-teal-600 to-emerald-600",
+          };
+        } else if (slide.type === "summary") {
+          icon = <Sparkles className="w-5 h-5" />;
+          colorTheme = {
+            bg: "bg-emerald-950/40 hover:bg-emerald-950/70",
+            border: "border-emerald-500/40",
+            text: "text-emerald-300",
+            badge: "bg-emerald-500/20",
+            badgeText: "text-emerald-300",
+            gradient: "from-emerald-600 to-teal-600",
+          };
+        }
+
+        return {
+          id: `flow-${slide.id}`,
+          slideTargetIndex: idx,
+          stageNumber: idx + 1,
+          stageName: slide.badge,
+          title: slide.title,
+          description: slide.subtitle || (slide.bullets[0] ? slide.bullets[0].slice(0, 130) + "..." : ""),
+          icon,
+          colorTheme,
+          details: slide.bullets.slice(0, 3),
+        };
+      })
+    : [
     // 1. Exploration & Key Question
     {
       id: "flow-intro",
