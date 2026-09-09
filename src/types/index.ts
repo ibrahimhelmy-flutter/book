@@ -3,16 +3,29 @@ export interface LearningObjective {
   text: string;
 }
 
+export type ContentOrigin = "official" | "explanation" | "example" | "activity";
+
+export interface ContentProvenance {
+  origin: ContentOrigin;
+  sourceBook?: string;
+  page?: number | string;
+  canonicalId?: string;
+}
+
 export interface KeyConcept {
   termAr: string;
   termEn?: string;
   definition: string;
+  origin?: ContentOrigin;
+  provenance?: ContentProvenance;
 }
 
 export interface LessonSection {
   id: string;
   title: string;
   content: string;
+  origin?: ContentOrigin;
+  provenance?: ContentProvenance;
   table?: {
     headers: string[];
     rows: string[][];

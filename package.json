@@ -7,10 +7,16 @@
     "dev:turbo": "next dev --turbopack",
     "clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); } catch(e) {}\"",
     "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); } catch(e) {}\" && next dev",
-    "build": "next build",
+    "prebuild": "node scripts/audit-canonical-fidelity.mjs && node scripts/validate-curriculum-compliance.mjs",
+    "build": "pnpm run prebuild && next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npx tsx src/core/tests/engine.test.ts"
+    "test": "npx tsx src/core/tests/engine.test.ts",
+    "build:data": "node scripts/build-all-data.mjs",
+    "audit:canonical": "node scripts/audit-canonical-fidelity.mjs",
+    "audit:questions": "node scripts/audit-question-bank.mjs",
+    "audit:text": "node scripts/audit-textual-fidelity.mjs",
+    "validate:compliance": "node scripts/validate-curriculum-compliance.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
