@@ -237,9 +237,22 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                   className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
                 >
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
-                    <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
-                      {sec.title}
-                    </h3>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
+                        {sec.title}
+                      </h3>
+                      {sec.origin === "explanation" ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
+                          <span>💡</span>
+                          <span>شرح وتوضيح إثرائي</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                          <span>📘</span>
+                          <span>نص كتاب الوزارة المعتمد</span>
+                        </span>
+                      )}
+                    </div>
 
                     {/* Simple Note / Hint / Outside-the-curriculum Icon Button */}
                     {sectionNotes.length > 0 && (
