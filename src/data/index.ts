@@ -4,3 +4,4 @@ export * from "./glossary";
 export * from "./acronyms";
 export * from "./simulators";
 export * from "./books";
+export * from "./deep-questions";

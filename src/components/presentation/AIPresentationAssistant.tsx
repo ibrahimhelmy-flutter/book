@@ -29,8 +29,10 @@ import {
   ArrowRight,
   Workflow,
   BookOpenCheck,
+  Flame,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
+import { get50DeepQuestionsForLesson, DeepChallengingQuestion } from "@/data/deep-questions";
 
 interface AIPresentationAssistantProps {
   lesson: Lesson;
@@ -69,6 +71,12 @@ export function AIPresentationAssistant({
   onClose,
 }: AIPresentationAssistantProps) {
   const [activeMode, setActiveMode] = useState<"questions" | "diagrams" | "custom_prompt">("questions");
+
+  // --- HARD 50 QUESTIONS & CURRICULUM QUESTIONS SUB-TAB STATE ---
+  const [questionTab, setQuestionTab] = useState<"hard_50" | "curriculum">("hard_50");
+  const [deepQuestionIndex, setDeepQuestionIndex] = useState<number>(0);
+  const [deepSelectedAnswer, setDeepSelectedAnswer] = useState<number | null>(null);
+  const [deepShowExplanation, setDeepShowExplanation] = useState<boolean>(false);
 
   // --- AI QUESTION GENERATOR STATE ---
   const [selectedAnswer, setSelectedAnswer] = useState<number | string | null>(null);
@@ -345,6 +353,44 @@ export function AIPresentationAssistant({
     setCurrentQuestionIndex((prev) => (prev - 1 + generatedQuestions.length) % generatedQuestions.length);
   };
 
+  // --- 50 HARD QUESTIONS HOOKS & HANDLERS ---
+  const hard50Questions = useMemo<DeepChallengingQuestion[]>(() => {
+    return get50DeepQuestionsForLesson(lesson);
+  }, [lesson]);
+
+  const activeDeepQuestion = hard50Questions[deepQuestionIndex] || hard50Questions[0];
+
+  const handleSelectDeepAnswer = (ansIdx: number) => {
+    setDeepSelectedAnswer(ansIdx);
+    setDeepShowExplanation(true);
+
+    if (ansIdx === activeDeepQuestion.correctAnswer) {
+      fireConfetti({
+        particleCount: 55,
+        spread: 65,
+        origin: { y: 0.7 },
+      });
+    }
+  };
+
+  const handleNextDeepQuestion = () => {
+    setDeepSelectedAnswer(null);
+    setDeepShowExplanation(false);
+    setDeepQuestionIndex((prev) => (prev + 1) % hard50Questions.length);
+  };
+
+  const handlePrevDeepQuestion = () => {
+    setDeepSelectedAnswer(null);
+    setDeepShowExplanation(false);
+    setDeepQuestionIndex((prev) => (prev - 1 + hard50Questions.length) % hard50Questions.length);
+  };
+
+  const handleJumpToDeepQuestion = (idx: number) => {
+    setDeepSelectedAnswer(null);
+    setDeepShowExplanation(false);
+    setDeepQuestionIndex(idx);
+  };
+
   // Custom AI Diagram Generator
   const handleGenerateCustomDiagram = () => {
     if (!customPrompt.trim()) return;
@@ -478,12 +524,12 @@ export function AIPresentationAssistant({
             onClick={() => setActiveMode("questions")}
             className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
               activeMode === "questions"
-                ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                ? "bg-gradient-to-r from-amber-600 via-orange-600 to-indigo-600 text-white shadow-md shadow-orange-600/20"
                 : "text-slate-400 hover:text-white hover:bg-slate-800"
             }`}
           >
-            <HelpCircle className="w-4 h-4" />
-            <span>أسئلة صفية تفاعلية من المنهج ({generatedQuestions.length})</span>
+            <Flame className="w-4 h-4 text-amber-300" />
+            <span>بنك الأسئلة والتحديات (50 سؤالاً عميقاً + المنهج)</span>
           </button>
 
           <button
@@ -516,175 +562,465 @@ export function AIPresentationAssistant({
           {/* 1. QUESTIONS MODE */}
           {activeMode === "questions" && (
             <div className="space-y-6">
-              {/* Question Navigation Header */}
-              <div className="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                    {activeQuestion.categoryLabel}
+              {/* Question Sub-Mode Tabs */}
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800">
+                <button
+                  onClick={() => setQuestionTab("hard_50")}
+                  className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
+                    questionTab === "hard_50"
+                      ? "bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-lg shadow-orange-600/30 ring-1 ring-amber-400"
+                      : "text-slate-400 hover:text-amber-300 hover:bg-slate-900"
+                  }`}
+                >
+                  <Flame className="w-4 h-4 text-amber-300 animate-pulse" />
+                  <span>🔥 قسم الـ 50 سؤالاً الصعب (قياس الفهم العميق)</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 text-[11px] font-black border border-amber-400/30">
+                    50 سؤال
                   </span>
-                  <span className="text-xs text-slate-400">
-                    سؤال {currentQuestionIndex + 1} من {generatedQuestions.length}
-                  </span>
-                </div>
+                </button>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handlePrevQuestion}
-                    className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                    <span>السابق</span>
-                  </button>
-                  <button
-                    onClick={handleNextQuestion}
-                    className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    <span>التالي</span>
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                </div>
+                <button
+                  onClick={() => setQuestionTab("curriculum")}
+                  className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    questionTab === "curriculum"
+                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                      : "text-slate-400 hover:text-white hover:bg-slate-900"
+                  }`}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>📚 أسئلة المنهج التفاعلية ({generatedQuestions.length})</span>
+                </button>
               </div>
 
-              {/* Active Question Box */}
-              <div className="p-6 bg-slate-950/80 rounded-2xl border border-slate-800 space-y-5">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
-                    ؟
-                  </div>
-                  <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
-                    {activeQuestion.question}
-                  </h4>
-                </div>
-
-                {/* Options List (For MCQ & True/False) */}
-                {activeQuestion.options && activeQuestion.options.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    {activeQuestion.options.map((opt, oIdx) => {
-                      const isChosen = selectedAnswer === oIdx;
-                      const isCorrect = oIdx === activeQuestion.correctAnswer;
-                      const showResult = showAnswerExplanation;
-
-                      let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700";
-                      if (showResult) {
-                        if (isCorrect) {
-                          btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold shadow-lg shadow-emerald-950/50";
-                        } else if (isChosen && !isCorrect) {
-                          btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200";
-                        } else {
-                          btnStyle = "bg-slate-950/60 border-slate-900 text-slate-600 opacity-60";
-                        }
-                      }
-
-                      return (
-                        <button
-                          key={oIdx}
-                          onClick={() => handleSelectAnswer(oIdx)}
-                          className={`p-4 rounded-xl border text-right text-xs sm:text-sm font-medium transition-all flex items-start gap-3 cursor-pointer ${btnStyle}`}
-                        >
-                          <span className="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 shrink-0 mt-0.5">
-                            {String.fromCharCode(65 + oIdx)}
-                          </span>
-                          <span className="flex-1 leading-relaxed">{opt}</span>
-                          {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
-                          {showResult && isChosen && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Scenario Model Answer Box */}
-                {activeQuestion.type === "scenario" && (
-                  <div className="pt-2">
-                    {!showAnswerExplanation ? (
-                      <button
-                        onClick={() => setShowAnswerExplanation(true)}
-                        className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-600/30"
-                      >
-                        <Eye className="w-4 h-4" />
-                        <span>كشف توجيهات المناقشة والإجابة النموذجية للمعلم</span>
-                      </button>
-                    ) : (
-                      <div className="p-4 bg-slate-900 border border-amber-500/40 rounded-2xl space-y-3">
-                        <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
-                          <Lightbulb className="w-4 h-4" />
-                          <span>التوجيه والتحليل العلمي النموذجي:</span>
+              {/* A. 50 HARD QUESTIONS SECTION */}
+              {questionTab === "hard_50" && (
+                <div className="space-y-5 animate-fadeIn">
+                  {/* Banner & 1 to 50 Rapid Jump Pill Navigation */}
+                  <div className="p-4 bg-slate-950 rounded-2xl border border-amber-500/30 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2.5">
+                        <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                          <Flame className="w-5 h-5 text-amber-400" />
+                        </span>
+                        <div>
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <span>بنك الـ 50 سؤالاً الصعب لقياس الفهم العميق والتمايز</span>
+                            <span className="text-xs text-amber-400 font-mono px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20">
+                              (سؤال {activeDeepQuestion.index} من 50)
+                            </span>
+                          </h4>
+                          <p className="text-[11px] text-slate-400 mt-0.5">
+                            مستوى متقدم يقيس التحليل واستكشاف الأخطاء لدرس: <strong className="text-slate-200">{lesson.number} - {lesson.title}</strong>
+                          </p>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium whitespace-pre-line">
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={handlePrevDeepQuestion}
+                          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                          <span>السابق</span>
+                        </button>
+                        <button
+                          onClick={handleNextDeepQuestion}
+                          className="p-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-md shadow-orange-600/30"
+                        >
+                          <span>التالي</span>
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 1 to 50 Numbered Pill Rapid-Jump Selector Grid */}
+                    <div className="pt-2 border-t border-slate-800/80">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+                          <Compass className="w-3.5 h-3.5 text-amber-400" />
+                          <span>الانتقال السريع لأي سؤال من الأسئلة الـ 50:</span>
+                        </span>
+                        <span className="text-[10px] text-amber-300/80">
+                          اضغط على الرقم للقفز مباشرة للسؤال
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto custom-scrollbar p-1.5 bg-slate-900/90 rounded-xl border border-slate-800">
+                        {hard50Questions.map((q, qIdx) => {
+                          const isCurrent = qIdx === deepQuestionIndex;
+                          return (
+                            <button
+                              key={q.id}
+                              onClick={() => handleJumpToDeepQuestion(qIdx)}
+                              className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+                                isCurrent
+                                  ? "bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 font-black shadow-lg shadow-amber-500/40 ring-2 ring-amber-300 scale-110 z-10"
+                                  : "bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40"
+                              }`}
+                              title={`سؤال ${q.index}: ${q.title}`}
+                            >
+                              {q.index}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Active Question Box */}
+                  <div className="p-6 bg-slate-950/90 rounded-2xl border border-slate-800 space-y-5 shadow-xl">
+                    {/* Badges & Meta */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+                        <Flame className="w-3.5 h-3.5 text-amber-400" />
+                        <span>سؤال {activeDeepQuestion.index} من 50 (صعوبة عالية)</span>
+                      </span>
+
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center gap-1.5">
+                        <Cpu className="w-3.5 h-3.5 text-purple-400" />
+                        <span>مستوى التفكير: {activeDeepQuestion.cognitiveLevel}</span>
+                      </span>
+
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>قياس الفهم العميق</span>
+                      </span>
+                    </div>
+
+                    {/* Question Topic */}
+                    <div className="text-xs font-bold text-slate-400">
+                      محور السؤال: <span className="text-slate-200">{activeDeepQuestion.title}</span>
+                    </div>
+
+                    {/* Scenario (if exists) */}
+                    {activeDeepQuestion.scenario && (
+                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed space-y-1.5">
+                        <div className="flex items-center gap-1.5 text-amber-400 font-bold text-xs">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <span>السيناريو الواقعي / السياق الهندسي:</span>
+                        </div>
+                        <p className="font-medium text-slate-300">{activeDeepQuestion.scenario}</p>
+                      </div>
+                    )}
+
+                    {/* Question Statement */}
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-base shrink-0 mt-0.5 shadow-md shadow-orange-600/30">
+                        ؟
+                      </div>
+                      <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
+                        {activeDeepQuestion.question}
+                      </h4>
+                    </div>
+
+                    {/* 4 Interactive Options */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      {activeDeepQuestion.options.map((opt, oIdx) => {
+                        const isChosen = deepSelectedAnswer === oIdx;
+                        const isCorrect = oIdx === activeDeepQuestion.correctAnswer;
+                        const showResult = deepShowExplanation;
+
+                        let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850 hover:border-amber-500/40";
+                        if (showResult) {
+                          if (isCorrect) {
+                            btnStyle = "bg-emerald-950/90 border-emerald-500 text-emerald-100 font-bold shadow-lg shadow-emerald-950/60 ring-1 ring-emerald-400";
+                          } else if (isChosen && !isCorrect) {
+                            btnStyle = "bg-rose-950/90 border-rose-500 text-rose-100 font-medium ring-1 ring-rose-400";
+                          } else {
+                            btnStyle = "bg-slate-950/60 border-slate-900 text-slate-600 opacity-50";
+                          }
+                        }
+
+                        return (
+                          <button
+                            key={oIdx}
+                            onClick={() => handleSelectDeepAnswer(oIdx)}
+                            className={`p-4 rounded-xl border text-right text-xs sm:text-sm font-medium transition-all flex items-start gap-3 cursor-pointer ${btnStyle}`}
+                          >
+                            <span className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-200 shrink-0 mt-0.5 border border-slate-700">
+                              {String.fromCharCode(65 + oIdx)}
+                            </span>
+                            <span className="flex-1 leading-relaxed">{opt}</span>
+                            {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
+                            {showResult && isChosen && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Reveal Button if not answered yet */}
+                    {!deepShowExplanation && (
+                      <div className="pt-2 flex items-center gap-2">
+                        <button
+                          onClick={() => setDeepShowExplanation(true)}
+                          className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors border border-amber-500/20"
+                        >
+                          <Eye className="w-4 h-4" />
+                          <span>كشف الإجابة والتحليل العلمي للمعلم مباشرة 👁️</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Pedagogical Explanation & Misconception Trap Card */}
+                    {deepShowExplanation && (
+                      <div className="mt-4 space-y-3 animate-fadeIn">
+                        {/* 1. Scientific Depth Explanation */}
+                        <div className="p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 space-y-2">
+                          <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
+                            <Sparkles className="w-4 h-4 text-indigo-400" />
+                            <span>🎯 التفسير والعمق العلمي المعتمد:</span>
+                          </div>
+                          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+                            {activeDeepQuestion.depthExplanation}
+                          </p>
+                        </div>
+
+                        {/* 2. Misconception Trap Alert */}
+                        <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-2">
+                          <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                            <AlertTriangle className="w-4 h-4 text-amber-400" />
+                            <span>⚠️ الفخ المفاهيمي الشائع (لماذا يقع الطلاب في الإجابات الخاطئة؟):</span>
+                          </div>
+                          <p className="text-xs sm:text-sm text-amber-200/90 leading-relaxed font-medium">
+                            {activeDeepQuestion.misconceptionTrap}
+                          </p>
+                        </div>
+
+                        {/* 3. Teacher Classroom Discussion Prompt */}
+                        {activeDeepQuestion.teacherDiscussionPrompt && (
+                          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-xs text-slate-300">
+                            <div className="flex items-center gap-1.5 font-bold text-emerald-400 text-xs">
+                              <Lightbulb className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>💡 إرشاد المعلم لتحفيز النقاش الصفي:</span>
+                            </div>
+                            <p className="text-slate-300 leading-relaxed">
+                              {activeDeepQuestion.teacherDiscussionPrompt}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setDeepSelectedAnswer(null);
+                          setDeepShowExplanation(false);
+                        }}
+                        className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        <span>إعادة تعيين السؤال</span>
+                      </button>
+
+                      {onAddCustomSlide && (
+                        <button
+                          onClick={() => {
+                            onAddCustomSlide({
+                              title: `تحدي صفي عميق: سؤال ${activeDeepQuestion.index}`,
+                              badge: `🔥 فهم عميق (${activeDeepQuestion.cognitiveLevel})`,
+                              bullets: [
+                                ...(activeDeepQuestion.scenario ? [`السيناريو: ${activeDeepQuestion.scenario}`] : []),
+                                `السؤال: ${activeDeepQuestion.question}`,
+                                ...activeDeepQuestion.options.map((o, idx) => `(${String.fromCharCode(65 + idx)}) ${o}`),
+                                `الإجابة والتفسير: ${activeDeepQuestion.depthExplanation}`,
+                                `الفخ المفاهيمي: ${activeDeepQuestion.misconceptionTrap}`,
+                              ],
+                            });
+                            onClose();
+                          }}
+                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-orange-600/30"
+                        >
+                          <PlusCircle className="w-3.5 h-3.5" />
+                          <span>إدراج هذا التحدي كشريحة في العرض 🖥️</span>
+                        </button>
+                      )}
+                    </div>
+
+                    <span className="text-xs text-amber-400/80 font-medium">
+                      🔥 50 سؤالاً تقيس الفهم العميق والتحليل المتقدم لهذا الدرس بالكامل
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* B. CURRICULUM QUESTIONS SECTION */}
+              {questionTab === "curriculum" && (
+                <div className="space-y-6 animate-fadeIn">
+                  {/* Question Navigation Header */}
+                  <div className="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                        {activeQuestion.categoryLabel}
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        سؤال {currentQuestionIndex + 1} من {generatedQuestions.length}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={handlePrevQuestion}
+                        className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                        <span>السابق</span>
+                      </button>
+                      <button
+                        onClick={handleNextQuestion}
+                        className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        <span>التالي</span>
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Active Question Box */}
+                  <div className="p-6 bg-slate-950/80 rounded-2xl border border-slate-800 space-y-5">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                        ؟
+                      </div>
+                      <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
+                        {activeQuestion.question}
+                      </h4>
+                    </div>
+
+                    {/* Options List (For MCQ & True/False) */}
+                    {activeQuestion.options && activeQuestion.options.length > 0 && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        {activeQuestion.options.map((opt, oIdx) => {
+                          const isChosen = selectedAnswer === oIdx;
+                          const isCorrect = oIdx === activeQuestion.correctAnswer;
+                          const showResult = showAnswerExplanation;
+
+                          let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700";
+                          if (showResult) {
+                            if (isCorrect) {
+                              btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold shadow-lg shadow-emerald-950/50";
+                            } else if (isChosen && !isCorrect) {
+                              btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200";
+                            } else {
+                              btnStyle = "bg-slate-950/60 border-slate-900 text-slate-600 opacity-60";
+                            }
+                          }
+
+                          return (
+                            <button
+                              key={oIdx}
+                              onClick={() => handleSelectAnswer(oIdx)}
+                              className={`p-4 rounded-xl border text-right text-xs sm:text-sm font-medium transition-all flex items-start gap-3 cursor-pointer ${btnStyle}`}
+                            >
+                              <span className="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 shrink-0 mt-0.5">
+                                {String.fromCharCode(65 + oIdx)}
+                              </span>
+                              <span className="flex-1 leading-relaxed">{opt}</span>
+                              {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
+                              {showResult && isChosen && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Scenario Model Answer Box */}
+                    {activeQuestion.type === "scenario" && (
+                      <div className="pt-2">
+                        {!showAnswerExplanation ? (
+                          <button
+                            onClick={() => setShowAnswerExplanation(true)}
+                            className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-600/30"
+                          >
+                            <Eye className="w-4 h-4" />
+                            <span>كشف توجيهات المناقشة والإجابة النموذجية للمعلم</span>
+                          </button>
+                        ) : (
+                          <div className="p-4 bg-slate-900 border border-amber-500/40 rounded-2xl space-y-3">
+                            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                              <Lightbulb className="w-4 h-4" />
+                              <span>التوجيه والتحليل العلمي النموذجي:</span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium whitespace-pre-line">
+                              {activeQuestion.explanation}
+                            </p>
+                            {activeQuestion.teacherDiscussionPrompt && (
+                              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-amber-300">
+                                <strong>💡 اقتراح لإدارة النقاش في الفصل: </strong>
+                                {activeQuestion.teacherDiscussionPrompt}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Explanation & Misconception Alert Banner */}
+                    {showAnswerExplanation && activeQuestion.type !== "scenario" && (
+                      <div className="mt-4 p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 space-y-2.5 animate-fadeIn">
+                        <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
+                          <Sparkles className="w-4 h-4 text-indigo-400" />
+                          <span>الشرح والتفسير العلمي المعتمد:</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                           {activeQuestion.explanation}
                         </p>
+
                         {activeQuestion.teacherDiscussionPrompt && (
-                          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-amber-300">
-                            <strong>💡 اقتراح لإدارة النقاش في الفصل: </strong>
+                          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-indigo-200">
+                            <strong>💡 إرشاد المعلم: </strong>
                             {activeQuestion.teacherDiscussionPrompt}
                           </div>
                         )}
                       </div>
                     )}
                   </div>
-                )}
 
-                {/* Explanation & Misconception Alert Banner */}
-                {showAnswerExplanation && activeQuestion.type !== "scenario" && (
-                  <div className="mt-4 p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 space-y-2.5 animate-fadeIn">
-                    <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
-                      <Sparkles className="w-4 h-4 text-indigo-400" />
-                      <span>الشرح والتفسير العلمي المعتمد:</span>
+                  {/* Actions Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedAnswer(null);
+                          setShowAnswerExplanation(false);
+                        }}
+                        className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        <span>إعادة تعيين السؤال</span>
+                      </button>
+
+                      {onAddCustomSlide && (
+                        <button
+                          onClick={() => {
+                            onAddCustomSlide({
+                              title: `تحدي صفي: ${activeQuestion.question.slice(0, 50)}...`,
+                              badge: "سؤال تفاعلي 🤖",
+                              bullets: [
+                                `السؤال: ${activeQuestion.question}`,
+                                ...(activeQuestion.options?.map((o, idx) => `خيار (${String.fromCharCode(65 + idx)}): ${o}`) || []),
+                                `الإجابة والتفسير: ${activeQuestion.explanation}`,
+                              ],
+                            });
+                            onClose();
+                          }}
+                          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-600/30"
+                        >
+                          <PlusCircle className="w-3.5 h-3.5" />
+                          <span>إدراج السؤال كشريحة في العرض</span>
+                        </button>
+                      )}
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                      {activeQuestion.explanation}
-                    </p>
 
-                    {activeQuestion.teacherDiscussionPrompt && (
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-indigo-200">
-                        <strong>💡 إرشاد المعلم: </strong>
-                        {activeQuestion.teacherDiscussionPrompt}
-                      </div>
-                    )}
+                    <span className="text-xs text-slate-400">
+                      🎯 مستخرج بالكامل من قاعدة بيانات المنهج والكتاب المدرسي المعتمد
+                    </span>
                   </div>
-                )}
-              </div>
-
-              {/* Actions Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setSelectedAnswer(null);
-                      setShowAnswerExplanation(false);
-                    }}
-                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>إعادة تعيين السؤال</span>
-                  </button>
-
-                  {onAddCustomSlide && (
-                    <button
-                      onClick={() => {
-                        onAddCustomSlide({
-                          title: `تحدي صفي: ${activeQuestion.question.slice(0, 50)}...`,
-                          badge: "سؤال تفاعلي 🤖",
-                          bullets: [
-                            `السؤال: ${activeQuestion.question}`,
-                            ...(activeQuestion.options?.map((o, idx) => `خيار (${String.fromCharCode(65 + idx)}): ${o}`) || []),
-                            `الإجابة والتفسير: ${activeQuestion.explanation}`,
-                          ],
-                        });
-                        onClose();
-                      }}
-                      className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-600/30"
-                    >
-                      <PlusCircle className="w-3.5 h-3.5" />
-                      <span>إدراج السؤال كشريحة في العرض</span>
-                    </button>
-                  )}
                 </div>
-
-                <span className="text-xs text-slate-400">
-                  🎯 مستخرج بالكامل من قاعدة بيانات المنهج والكتاب المدرسي المعتمد
-                </span>
-              </div>
+              )}
             </div>
           )}
 
