@@ -151,7 +151,7 @@ export function QuizEngine({ lessonId, questions }: Props) {
   }, [questions]);
 
   return (
-    <div className="w-full max-w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl my-8 box-border min-w-0">
+    <div className="w-full max-w-full bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-6 md:p-8 text-white shadow-2xl my-8 box-border min-w-0">
       {/* Header Banner */}
       <div className="w-full flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6">
         <div className="flex items-center gap-3">
@@ -613,28 +613,28 @@ export function QuizEngine({ lessonId, questions }: Props) {
           })()}
 
           {/* Navigation Controls */}
-          <div className="w-full flex flex-wrap justify-between items-center gap-3 pt-6 border-t border-slate-800">
+          <div className="w-full flex justify-between items-center gap-2.5 pt-6 border-t border-slate-800">
             <button
               disabled={safeIndex === 0}
               onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200"
+              className="flex-1 sm:flex-initial justify-center px-4 sm:px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200"
             >
-              <ChevronRight className="w-4 h-4" /> السؤال السابق
+              <ChevronRight className="w-4 h-4 shrink-0" /> <span className="truncate">السؤال السابق</span>
             </button>
 
             {safeIndex < totalQuestions - 1 ? (
               <button
                 onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
-                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25"
+                className="flex-1 sm:flex-initial justify-center px-4 sm:px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25"
               >
-                السؤال التالي <ChevronLeft className="w-4 h-4" />
+                <span className="truncate">السؤال التالي</span> <ChevronLeft className="w-4 h-4 shrink-0" />
               </button>
             ) : (
               <button
                 onClick={handleFinishQuiz}
-                className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white scale-105"
+                className="flex-1 sm:flex-initial justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white"
               >
-                <Sparkles className="w-4 h-4" /> تسليم الإجابات وعرض النتيجة
+                <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">تسليم الإجابات والنتيجة</span>
               </button>
             )}
           </div>

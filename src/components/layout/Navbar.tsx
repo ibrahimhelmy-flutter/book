@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X } from "lucide-react";
 import { SearchModal } from "../common/SearchModal";
+import { LessonsIndexDrawer } from "../common/LessonsIndexDrawer";
 import { CURRENT_BOOK } from "@/data/books";
 import { BookSelector } from "../common/BookSelector";
 
@@ -12,6 +13,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isIndexOpen, setIsIndexOpen] = useState(false);
 
   // Automatically scroll to the very top on every screen navigation
   React.useEffect(() => {
@@ -88,13 +90,17 @@ export function Navbar() {
                 <span className="hidden sm:inline text-slate-400">بحث...</span>
               </button>
 
-              {/* Profile / Dashboard Quick Link */}
-              <Link
-                href="/dashboard"
-                className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
+              {/* Lessons Index Drawer Launcher (Replaces 'حسابي') */}
+              <button
+                type="button"
+                onClick={() => setIsIndexOpen(true)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-600/15 hover:bg-indigo-600/25 border border-indigo-500/30 text-indigo-300 hover:text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                title="فتح فهرس الدروس والمنهج"
+                aria-label="فهرس الدروس"
               >
-                <span>حسابي 🎓</span>
-              </Link>
+                <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+                <span className="hidden sm:inline">فهرس الدروس</span>
+              </button>
 
               {/* Mobile Menu Button */}
               <button
@@ -110,6 +116,19 @@ export function Navbar() {
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-slate-800 bg-slate-950 p-3 space-y-1">
+            {/* Direct Quick Index in Mobile Menu */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsIndexOpen(true);
+              }}
+              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-indigo-300 bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-500/30 text-right cursor-pointer"
+            >
+              <BookOpen className="w-4 h-4 text-indigo-400" />
+              <span>فهرس المنهج والدروس 📚</span>
+            </button>
+
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -130,6 +149,9 @@ export function Navbar() {
           </div>
         )}
       </header>
+
+      {/* Lessons Index Drawer */}
+      <LessonsIndexDrawer isOpen={isIndexOpen} onClose={() => setIsIndexOpen(false)} />
 
       {/* Search Modal */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

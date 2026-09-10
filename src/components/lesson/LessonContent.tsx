@@ -118,54 +118,57 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   return (
     <article className="max-w-5xl mx-auto px-4 py-8">
       {/* Lesson Header with TTS, Bookmark, and Objectives */}
-      <LessonHeader lesson={lesson} />
+      <LessonHeader
+        lesson={lesson}
+        onOpenPresentation={() => setIsPresentationOpen(true)}
+      />
 
       {/* Interactive Tabs Ribbon for Quick Jumping */}
-      <div className="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg mb-8 flex flex-wrap gap-1">
+      <div className="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg mb-8 grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
         <button
           onClick={() => setActiveTab("lesson")}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
             activeTab === "lesson"
               ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
               : "text-slate-400 hover:text-white hover:bg-slate-900"
           }`}
         >
-          <BookOpen className="w-4 h-4" /> نص الدرس والشرح
+          <BookOpen className="w-4 h-4 shrink-0" /> <span className="truncate">نص الدرس والشرح</span>
         </button>
 
         {lesson.simulatorId && (
           <button
             onClick={() => setActiveTab("simulator")}
-            className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               activeTab === "simulator"
                 ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
                 : "text-slate-400 hover:text-white hover:bg-slate-900"
             }`}
           >
-            <Sparkles className="w-4 h-4" /> المحاكي التفاعلي ⚡
+            <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">المحاكي التفاعلي ⚡</span>
           </button>
         )}
 
         <button
           onClick={() => setActiveTab("engineer")}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
             activeTab === "engineer"
               ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30"
               : "text-slate-400 hover:text-white hover:bg-slate-900"
           }`}
         >
-          <Lightbulb className="w-4 h-4" /> فكر كمهندس ⚙️
+          <Lightbulb className="w-4 h-4 shrink-0" /> <span className="truncate">فكر كمهندس ⚙️</span>
         </button>
 
         <button
           onClick={() => setActiveTab("quiz")}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
             activeTab === "quiz"
               ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
               : "text-slate-400 hover:text-white hover:bg-slate-900"
           }`}
         >
-          <CheckSquare className="w-4 h-4" /> تمارين واختبار الدرس 📝
+          <CheckSquare className="w-4 h-4 shrink-0" /> <span className="truncate">تمارين واختبار الدرس 📝</span>
         </button>
       </div>
 
@@ -197,8 +200,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             )}
           </div>
 
-          {/* Presentation Launcher Banner in First Section / Top View */}
-          <div className="bg-gradient-to-r from-blue-950/70 via-indigo-950/50 to-slate-900 border border-blue-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+          {/* Presentation Launcher Banner in First Section / Top View (Hidden on mobile phones, visible on tablets/desktops) */}
+          <div className="hidden md:flex bg-gradient-to-r from-blue-950/70 via-indigo-950/50 to-slate-900 border border-blue-500/40 rounded-2xl p-4 sm:p-5 flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
             <div className="flex items-center gap-3.5">
               <div className="w-11 h-11 rounded-2xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center shrink-0 shadow-inner">
                 <Presentation className="w-6 h-6 text-blue-400 animate-pulse" />
@@ -236,7 +239,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 <section
                   key={sec.id}
                   id={sec.id}
-                  className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
+                  className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 md:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
                 >
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
                     <div className="flex flex-wrap items-center gap-2.5">
@@ -291,8 +294,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
                   {/* Section Table if present */}
                   {sec.table && (
-                    <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950">
-                      <table className="w-full text-right text-xs">
+                    <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950 custom-scrollbar">
+                      <table className="w-full min-w-[420px] text-right text-xs">
                         <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
                           <tr>
                             {sec.table.headers.map((h, i) => (
@@ -506,35 +509,35 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       )}
 
       {/* Bottom Navigation between Lessons */}
-      <footer className="flex justify-between items-center gap-4 mt-12 pt-6 border-t border-slate-800">
+      <footer className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-12 pt-6 border-t border-slate-800">
         {prevLesson ? (
           <Link
             href={`/chapters/${prevLesson.chapterId}/${prevLesson.slug}`}
-            className="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-right transition-all flex items-center gap-3 group"
+            className="flex-1 p-3.5 sm:p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-right transition-all flex items-center gap-3 group"
           >
-            <ArrowRight className="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform" />
-            <div>
+            <ArrowRight className="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform shrink-0" />
+            <div className="min-w-0">
               <span className="text-[11px] text-slate-500 block">الدرس السابق ({prevLesson.number})</span>
-              <span className="text-xs sm:text-sm font-bold text-white">{prevLesson.title}</span>
+              <span className="text-xs sm:text-sm font-bold text-white truncate block">{prevLesson.title}</span>
             </div>
           </Link>
         ) : (
-          <div></div>
+          <div className="hidden sm:block flex-1" />
         )}
 
         {nextLesson ? (
           <Link
             href={`/chapters/${nextLesson.chapterId}/${nextLesson.slug}`}
-            className="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-left transition-all flex items-center gap-3 group"
+            className="flex-1 p-3.5 sm:p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-left transition-all flex items-center justify-end gap-3 group"
           >
-            <div>
+            <div className="min-w-0 text-right sm:text-left">
               <span className="text-[11px] text-slate-500 block">الدرس التالي ({nextLesson.number})</span>
-              <span className="text-xs sm:text-sm font-bold text-white">{nextLesson.title}</span>
+              <span className="text-xs sm:text-sm font-bold text-white truncate block">{nextLesson.title}</span>
             </div>
-            <ArrowLeft className="w-5 h-5 text-indigo-400 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="w-5 h-5 text-indigo-400 group-hover:-translate-x-1 transition-transform shrink-0" />
           </Link>
         ) : (
-          <div></div>
+          <div className="hidden sm:block flex-1" />
         )}
       </footer>
     </article>

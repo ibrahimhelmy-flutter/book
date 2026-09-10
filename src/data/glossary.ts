@@ -1724,7 +1724,7 @@ export const GLOSSARY_DATA: GlossaryTerm[] = [
     "contentOrigin": "official"
   },
   {
-    "id": "g-accessibility",
+    "id": "g-digital-accessibility",
     "termAr": "إمكانية الوصول الرقمي",
     "termEn": "Accessibility",
     "definitionAr": "تصميم المحتوى والواجهة بحيث يمكن لأصحاب القدرات والاحتياجات المختلفة استخدامها بمن فيهم ذوو الإعاقة.",
