@@ -12,8 +12,9 @@ out/
 build
 dist
 
-# Temporary Page Renders (we keep public/images/extracted)
+# Temporary Page Renders & Runtime Web Diagrams (Single Source of Truth in book-sources/term-1/04-extracted-diagrams)
 public/images/pages/
+public/images/extracted
 
 # Environment Variables
 .env
