@@ -14,7 +14,7 @@ function safeWriteFileSync(filePath, content) {
       attempts++;
       if (attempts >= 5) throw e;
       const end = Date.now() + 60;
-      while (Date.now() < end) {}
+      while (Date.now() < end) { }
     }
   }
 }
