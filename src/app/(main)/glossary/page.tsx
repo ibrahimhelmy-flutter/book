@@ -142,9 +142,9 @@ export default function GlossaryPage() {
       {/* View 1: Main Glossary Terms */}
       {activeTab === "terms" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fadeIn">
-          {filteredTerms.map((term) => (
+          {filteredTerms.map((term, idx) => (
             <div
-              key={term.id}
+              key={`${term.id}-${term.chapterId || idx}`}
               className="p-6 bg-slate-900/80 hover:bg-slate-800/80 border border-slate-800 rounded-2xl transition-all shadow-lg flex flex-col justify-between group"
             >
               <div>

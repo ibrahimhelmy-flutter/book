@@ -266,14 +266,14 @@ export function DeepComprehensionViewer({ lesson }: Props) {
 
       {/* 3. Cognitive Level Filter Pills */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5 shrink-0">
             <Filter className="w-3.5 h-3.5 text-purple-400" />
             <span>تصفية حسب المستوى الإدراكي ومجال الفهم:</span>
           </span>
 
           {/* Search Box */}
-          <div className="relative w-48 sm:w-64">
+          <div className="relative w-full sm:w-64">
             <Search className="w-3.5 h-3.5 text-slate-500 absolute right-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -283,7 +283,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 setCurrentIndex(0);
               }}
               placeholder="ابحث في نصوص الأسئلة..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pr-9 pl-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pr-9 pl-3 py-2 sm:py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
             />
           </div>
         </div>
@@ -363,7 +363,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
 
       {/* 5. Main Active Question Card */}
       {currentQ ? (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-6 md:p-8 space-y-6 shadow-2xl relative overflow-hidden">
           {/* Top Metadata Row */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
             <div className="flex flex-wrap items-center gap-2">
