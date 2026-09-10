@@ -14,8 +14,9 @@ import { ImportBookUseCase } from "../application/use-cases/ImportBookUseCase";
 import { Book } from "../domain/entities/Book";
 import { Question } from "../domain/entities/Question";
 
-// Curriculum Data Import
+// Curriculum Data & Book Import
 import { CURRICULUM_DATA } from "@/data/curriculum";
+import { PRIMARY_BOOK } from "@/data/books";
 import { getAllCommitteeQuestions } from "@/lib/exam-generator/committeeBank";
 
 export interface ExamEngineContainer {
@@ -41,24 +42,24 @@ export function getExamEngineContainer(): ExamEngineContainer {
     return containerInstance;
   }
 
-  // 1. Build Primary Book entity from curriculum data (Data-driven)
-  const primaryBookId = "it-secondary-2";
+  // 1. Build Primary Book entity from canonical book data (Data-driven)
+  const primaryBookId = PRIMARY_BOOK.id;
   const primaryBook: Book = {
     id: primaryBookId,
-    slug: "programming-and-ai",
-    title: "البرمجة والذكاء الاصطناعي — الصف الثاني الثانوي",
-    englishTitle: "Programming and Artificial Intelligence",
+    slug: PRIMARY_BOOK.slug,
+    title: PRIMARY_BOOK.title,
+    englishTitle: PRIMARY_BOOK.englishTitle,
     subjectId: "programming-ai",
-    subjectNameAr: "البرمجة والذكاء الاصطناعي",
+    subjectNameAr: PRIMARY_BOOK.title.split("—")[0].trim(),
     gradeId: "secondary-2",
-    gradeNameAr: "الصف الثاني الثانوي (بكالوريا مصرية)",
-    term: "الفصل الدراسي الأول",
+    gradeNameAr: PRIMARY_BOOK.grade,
+    term: PRIMARY_BOOK.term,
     curriculumId: "egyptian-national-curriculum-2026",
     language: "ar",
-    description: "كتاب الوزارة الرسمي لمادة البرمجة والذكاء الاصطناعي لطلاب الصف الثاني الثانوي الترم الأول.",
+    description: PRIMARY_BOOK.description,
     version: "2026.1",
-    colorTheme: "from-indigo-600 via-purple-600 to-pink-600",
-    icon: "Cpu",
+    colorTheme: PRIMARY_BOOK.colorTheme,
+    icon: PRIMARY_BOOK.icon,
     chapters: CURRICULUM_DATA.map((ch) => ({
       id: ch.id,
       bookId: primaryBookId,

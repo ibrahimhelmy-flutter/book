@@ -106,11 +106,12 @@ export function QuestionBankExplorer() {
               }}
               className="w-full bg-slate-950 text-xs text-white p-2.5 rounded-xl border border-slate-700"
             >
-              <option value="ALL">جميع الفصول (4 فصول)</option>
-              <option value="chapter-1">الفصل 1: تكنولوجيا المعلومات والمجتمع</option>
-              <option value="chapter-2">الفصل 2: الأمن السيبراني</option>
-              <option value="chapter-3">الفصل 3: تطبيقات الويب</option>
-              <option value="chapter-4">الفصل 4: تصميم الويب والوسائط</option>
+              <option value="ALL">جميع الفصول ({CURRICULUM_DATA.length} فصول)</option>
+              {CURRICULUM_DATA.map((ch) => (
+                <option key={ch.id} value={ch.id}>
+                  الفصل {ch.number}: {ch.title}
+                </option>
+              ))}
             </select>
           </div>
 

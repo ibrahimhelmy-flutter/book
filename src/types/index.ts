@@ -12,12 +12,24 @@ export interface ContentProvenance {
   canonicalId?: string;
 }
 
+export interface ProvenanceSource {
+  term: number;
+  pages: number[];
+  primaryPage?: number;
+  lessonId?: string;
+  sourceType: string;
+  pageFiles?: string[];
+}
+
 export interface KeyConcept {
+  id?: string;
   termAr: string;
   termEn?: string;
   definition: string;
+  contentOrigin?: "official" | "authored";
   origin?: ContentOrigin;
   provenance?: ContentProvenance;
+  source?: ProvenanceSource;
 }
 
 export interface LessonSection {
@@ -26,6 +38,7 @@ export interface LessonSection {
   content: string;
   origin?: ContentOrigin;
   provenance?: ContentProvenance;
+  source?: ProvenanceSource;
   table?: {
     headers: string[];
     rows: string[][];
@@ -42,9 +55,12 @@ export interface LessonSection {
   };
   notes?: CalloutBox[];
   subsections?: {
+    id: string;
     title: string;
     content: string;
-    items?: string[];
+    origin?: ContentOrigin;
+    provenance?: ContentProvenance;
+    source?: ProvenanceSource;
   }[];
 }
 
@@ -98,12 +114,15 @@ export interface QuestionItem {
   type: "mcq" | "true_false" | "fill_blank" | "matching" | "essay";
   category: "check_understanding" | "read_and_answer" | "practice" | "exam_style";
   questionText: string;
+  contentOrigin?: "official" | "authored";
+  conceptIds?: string[];
   options?: { id: string; text: string }[];
   matchingPairs?: { id: string; left: string; right: string }[];
   correctAnswer: string | string[] | Record<string, string>;
   explanation?: string;
   marks?: number;
   rubricCriteria?: string[];
+  source?: ProvenanceSource;
 }
 
 export interface Lesson {
@@ -115,6 +134,8 @@ export interface Lesson {
   title: string;
   englishTitle: string;
   pageRange: string; // e.g. "4 - 11"
+  contentOrigin?: "official" | "authored";
+  source?: ProvenanceSource;
   learningObjectives: string[];
   coreIdea: string;
   keyQuestion: string;
@@ -150,6 +171,7 @@ export interface Chapter {
   icon: string;
   pageStart: number;
   pageEnd: number;
+  contentOrigin?: "official" | "authored";
   lessons: Lesson[];
 }
 
@@ -162,6 +184,8 @@ export interface GlossaryTerm {
   chapterId: string;
   lessonNumber: string;
   category: "AI" | "Cybersecurity" | "WebDev" | "Design" | "General";
+  contentOrigin?: "official" | "authored";
+  source?: ProvenanceSource;
 }
 
 export interface AcronymTerm {
@@ -171,6 +195,7 @@ export interface AcronymTerm {
   descriptionAr: string;
   category: "Hardware" | "AI" | "Cybersecurity" | "Networking" | "WebDev" | "Design" | "General";
   lessonRef?: string;
+  contentOrigin?: "official" | "authored";
 }
 
 export interface UserProgress {
@@ -203,6 +228,9 @@ export interface SimulatorMeta {
   description: string;
   lessonNumber?: string;
   chapterNumber?: number;
+  contentOrigin?: "official" | "authored";
+  conceptIds?: string[];
+  source?: ProvenanceSource;
 }
 
 export interface BookStats {

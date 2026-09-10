@@ -1,12 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { getSources } from './sources-config.mjs';
+
+const sources = getSources('term-1');
 
 function computeHash(str) {
   return crypto.createHash('sha256').update(str.trim()).digest('hex').slice(0, 12);
 }
 
-const fullText = JSON.parse(fs.readFileSync('Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json', 'utf8'));
+const rawTextPath = fs.existsSync(sources.rawFullTextFile) ? sources.rawFullTextFile : 'Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json';
+const fullText = JSON.parse(fs.readFileSync(rawTextPath, 'utf8'));
 
 // Lesson page range definitions from the official TOC
 const LESSON_DEFS = [
@@ -293,11 +297,13 @@ const baselineSpec = {
   relationships: allRelationships
 };
 
-const outputPath = path.resolve('src/data/curriculum-baseline-spec.json');
-fs.writeFileSync(outputPath, JSON.stringify(baselineSpec, null, 2), 'utf-8');
+const canonicalOutputPath = sources.canonicalBaselineSpec;
+const jsonStr = JSON.stringify(baselineSpec, null, 2);
+
+fs.writeFileSync(canonicalOutputPath, jsonStr, 'utf-8');
 
 console.log(`✅ Baseline extraction completed successfully!`);
-console.log(`Saved canonical baseline to: ${outputPath}`);
+console.log(`Saved canonical baseline to: ${canonicalOutputPath}`);
 console.log(`Total Lessons: ${baselineLessons.length}`);
 console.log(`Total Relationships: ${allRelationships.length}`);
 

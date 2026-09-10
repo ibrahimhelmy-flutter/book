@@ -1,12 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { chapter1 } from './chapters/chapter1.mjs';
-import { chapter2 } from './chapters/chapter2.mjs';
-import { chapter3 } from './chapters/chapter3.mjs';
-import { chapter4 } from './chapters/chapter4.mjs';
+import { chapter1 } from '../book-sources/term-1/06-build-modules/chapter1.mjs';
+import { chapter2 } from '../book-sources/term-1/06-build-modules/chapter2.mjs';
+import { chapter3 } from '../book-sources/term-1/06-build-modules/chapter3.mjs';
+import { chapter4 } from '../book-sources/term-1/06-build-modules/chapter4.mjs';
+import { getSources } from './sources-config.mjs';
 
+const sources = getSources('term-1');
 const allChapters = [chapter1, chapter2, chapter3, chapter4];
-const baseDir = path.resolve('curriculum/official');
+const baseDir = sources.officialLessonsDir;
 
 console.log('Building Official Canonical Curriculum Source in:', baseDir);
 

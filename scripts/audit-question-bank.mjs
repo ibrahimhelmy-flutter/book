@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { getSources } from './sources-config.mjs';
 
-const bookJsonPath = path.resolve('book.json');
+const sources = getSources('term-1');
+const bookJsonPath = fs.existsSync(sources.canonicalBookFile) ? sources.canonicalBookFile : path.resolve('book.json');
 if (!fs.existsSync(bookJsonPath)) {
   console.error('❌ book.json not found');
   process.exit(1);

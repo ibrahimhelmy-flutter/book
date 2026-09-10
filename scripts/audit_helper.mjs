@@ -1,10 +1,14 @@
 import fs from 'fs';
+import { getSources } from './sources-config.mjs';
+
+const sources = getSources('term-1');
 
 // Let's create a tool to read each lesson from curriculum.ts
 const currContent = fs.readFileSync('src/data/curriculum.ts', 'utf8');
 
 // Let's also load fullText
-const fullText = JSON.parse(fs.readFileSync('Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json', 'utf8'));
+const rawPath = fs.existsSync(sources.rawFullTextFile) ? sources.rawFullTextFile : 'Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json';
+const fullText = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
 
 // Function to get book text for a page range
 export function getBookText(startPage, endPage) {

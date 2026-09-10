@@ -1,6 +1,9 @@
 import fs from 'fs';
+import { getSources } from './sources-config.mjs';
 
-const fullText = JSON.parse(fs.readFileSync('Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json', 'utf8'));
+const sources = getSources('term-1');
+const rawPath = fs.existsSync(sources.rawFullTextFile) ? sources.rawFullTextFile : 'Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json';
+const fullText = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
 
 console.log('Total pages in extracted text:', fullText.length);
 

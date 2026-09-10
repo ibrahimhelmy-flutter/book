@@ -53,6 +53,8 @@ export interface ClassificationData {
   items: { item: string; category: string }[];
 }
 
+import { ProvenanceSource } from "@/types";
+
 export interface CommitteeQuestion {
   id: string;
   chapterId: string;
@@ -84,6 +86,10 @@ export interface CommitteeQuestion {
   keywords: string[];
   isCrossLesson?: boolean;
   connectedLessons?: string[];
+  contentOrigin?: "official" | "authored";
+  questionOrigin?: "specialized-committee-style" | "curriculum-end-exercise" | "official-exam";
+  conceptIds?: string[];
+  source?: ProvenanceSource;
 }
 
 export interface ExamGenerationConfig {
