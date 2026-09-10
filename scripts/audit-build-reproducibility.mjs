@@ -39,6 +39,9 @@ console.log('  1️⃣ Executing Build Pass #1...');
 execSync('node scripts/build-all-data.mjs', { stdio: 'pipe' });
 const pass1Hashes = getFileHashes();
 
+// Settle file handles on Windows
+Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 150);
+
 // Pass 2
 console.log('  2️⃣ Executing Build Pass #2 (Verification)...');
 execSync('node scripts/build-all-data.mjs', { stdio: 'pipe' });

@@ -4,6 +4,21 @@ import { getSources } from './sources-config.mjs';
 
 const sources = getSources('term-1');
 
+function safeWriteFileSync(filePath, content) {
+  let attempts = 0;
+  while (attempts < 5) {
+    try {
+      fs.writeFileSync(filePath, content, 'utf-8');
+      return;
+    } catch (e) {
+      attempts++;
+      if (attempts >= 5) throw e;
+      const end = Date.now() + 60;
+      while (Date.now() < end) {}
+    }
+  }
+}
+
 console.log('🏗️ Building application data from Canonical Source of Truth (Term 1)...');
 
 // 1. Read directly from Authoritative Canonical book.json
@@ -29,7 +44,7 @@ import { Chapter } from "@/types";
 
 export const CURRICULUM_DATA: Chapter[] = ${JSON.stringify(chapters, null, 2)};
 `;
-fs.writeFileSync(path.resolve('src/data/curriculum.ts'), curriculumTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/curriculum.ts'), curriculumTsContent, 'utf-8');
 console.log('  ✅ Generated src/data/curriculum.ts');
 
 // 3. Generate src/data/glossary.ts
@@ -42,7 +57,7 @@ import { GlossaryTerm } from "@/types";
 
 export const GLOSSARY_DATA: GlossaryTerm[] = ${JSON.stringify(glossaryItems, null, 2)};
 `;
-fs.writeFileSync(path.resolve('src/data/glossary.ts'), glossaryTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/glossary.ts'), glossaryTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/glossary.ts (${glossaryItems.length} verified terms)`);
 
 // 4. Generate src/data/acronyms.ts
@@ -60,7 +75,7 @@ export function getAcronym(term: string): AcronymTerm | undefined {
   return ACRONYMS_DATA.find((a) => a.short.toUpperCase() === cleanTerm);
 }
 `;
-fs.writeFileSync(path.resolve('src/data/acronyms.ts'), acronymsTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/acronyms.ts'), acronymsTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/acronyms.ts (${acronyms.length} verified acronyms)`);
 
 // 5. Generate src/data/simulators.ts from canonical simulators.json
@@ -73,7 +88,7 @@ import { SimulatorMeta } from "@/types";
 
 export const SIMULATORS_DATA: SimulatorMeta[] = ${JSON.stringify(simulators, null, 2)};
 `;
-fs.writeFileSync(path.resolve('src/data/simulators.ts'), simulatorsTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/simulators.ts'), simulatorsTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/simulators.ts (${simulators.length} simulators)`);
 
 // 6. Generate src/data/committee-questions.ts from canonical committee-questions.json
@@ -86,7 +101,7 @@ import { CommitteeQuestion } from "@/lib/exam-generator/types";
 
 export const SPECIALIZED_COMMITTEE_QUESTIONS: CommitteeQuestion[] = ${JSON.stringify(committeeQuestions, null, 2)};
 `;
-fs.writeFileSync(path.resolve('src/data/committee-questions.ts'), committeeTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/committee-questions.ts'), committeeTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/committee-questions.ts (${committeeQuestions.length} questions)`);
 
 // 7. Generate src/data/deep-questions/ from canonical deep-questions/*.json
@@ -124,7 +139,7 @@ import { DeepChallengingQuestion } from "./types";
 
 export const CHAPTER_${chNum}_DEEP_QUESTIONS: Record<string, DeepChallengingQuestion[]> = ${JSON.stringify(questions, null, 2)};
 `;
-  fs.writeFileSync(path.join(targetDeepQuestionsDir, `chapter-${chNum}.ts`), chContent, 'utf-8');
+  safeWriteFileSync(path.join(targetDeepQuestionsDir, `chapter-${chNum}.ts`), chContent, 'utf-8');
   chapterImports.push(`import { CHAPTER_${chNum}_DEEP_QUESTIONS } from "./chapter-${chNum}";`);
   chapterSpreads.push(`  ...CHAPTER_${chNum}_DEEP_QUESTIONS,`);
 }
@@ -220,7 +235,7 @@ export function get50DeepQuestionsForLesson(lessonIdentifier: string | { id: str
   }));
 }
 `;
-fs.writeFileSync(path.join(targetDeepQuestionsDir, 'index.ts'), deepIndexContent, 'utf-8');
+safeWriteFileSync(path.join(targetDeepQuestionsDir, 'index.ts'), deepIndexContent, 'utf-8');
 console.log(`  ✅ Generated src/data/deep-questions/ (${deepJsonFiles.length} chapter files, ${totalDeepQ} questions, and dynamic index.ts)`);
 
 // 8. Generate src/data/books.ts (Fully data-driven from book.json meta)
@@ -294,26 +309,53 @@ export function getBookStats(book: Book = CURRENT_BOOK): BookStats {
   };
 }
 `;
-fs.writeFileSync(path.resolve('src/data/books.ts'), booksTsContent, 'utf-8');
+safeWriteFileSync(path.resolve('src/data/books.ts'), booksTsContent, 'utf-8');
 console.log('  ✅ Generated src/data/books.ts');
 
-// 9. Runtime Asset Synchronization (public/images/extracted)
+// 9. Runtime Web Diagram Link (Single Source of Truth: book-sources/term-1/04-extracted-diagrams)
 const runtimeDiagramsDir = path.resolve('public', 'images', 'extracted');
 if (fs.existsSync(sources.diagrams)) {
-  if (!fs.existsSync(runtimeDiagramsDir)) {
-    fs.mkdirSync(runtimeDiagramsDir, { recursive: true });
+  const imagesDir = path.resolve('public', 'images');
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
   }
-  const sourceDiagrams = fs.readdirSync(sources.diagrams);
-  let syncedCount = 0;
-  sourceDiagrams.forEach(file => {
-    const dest = path.join(runtimeDiagramsDir, file);
-    if (!fs.existsSync(dest)) {
-      fs.copyFileSync(path.join(sources.diagrams, file), dest);
-      syncedCount++;
+
+  let isLinked = false;
+  if (fs.existsSync(runtimeDiagramsDir)) {
+    try {
+      const stats = fs.lstatSync(runtimeDiagramsDir);
+      if (stats.isSymbolicLink()) {
+        isLinked = true;
+      } else {
+        // Remove duplicated physical directory to enforce single source of truth
+        fs.rmSync(runtimeDiagramsDir, { recursive: true, force: true });
+        isLinked = false;
+      }
+    } catch {
+      isLinked = false;
     }
-  });
-  if (syncedCount > 0) {
-    console.log(`  🔄 Synchronized ${syncedCount} runtime web diagrams to public/images/extracted/`);
+  }
+
+  if (!isLinked) {
+    try {
+      const linkType = process.platform === 'win32' ? 'junction' : 'dir';
+      fs.symlinkSync(sources.diagrams, runtimeDiagramsDir, linkType);
+      console.log(`  🔗 Linked single source of diagrams: public/images/extracted -> 04-extracted-diagrams (zero duplication)`);
+    } catch (linkErr) {
+      console.warn(`  ⚠️ Symlink creation fallback to sync: ${linkErr.message}`);
+      if (!fs.existsSync(runtimeDiagramsDir)) {
+        fs.mkdirSync(runtimeDiagramsDir, { recursive: true });
+      }
+      const sourceDiagrams = fs.readdirSync(sources.diagrams);
+      sourceDiagrams.forEach(file => {
+        const dest = path.join(runtimeDiagramsDir, file);
+        if (!fs.existsSync(dest)) {
+          fs.copyFileSync(path.join(sources.diagrams, file), dest);
+        }
+      });
+    }
+  } else {
+    console.log(`  ✅ Verified single source of truth for diagrams (04-extracted-diagrams, 0 duplicate bytes).`);
   }
 }
 
