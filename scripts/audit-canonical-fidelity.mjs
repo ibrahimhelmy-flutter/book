@@ -1,9 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { normalizeText, compareCanonicalText } from './text-normalization.mjs';
+import { getSources } from './sources-config.mjs';
 
-const canonicalDir = path.resolve('curriculum/official');
-const bookJsonPath = path.resolve('book.json');
+const sources = getSources('term-1');
+const canonicalDir = fs.existsSync(sources.officialLessonsDir) ? sources.officialLessonsDir : path.resolve('curriculum/official');
+const bookJsonPath = fs.existsSync(sources.canonicalBookFile) ? sources.canonicalBookFile : path.resolve('book.json');
 
 if (!fs.existsSync(canonicalDir)) {
   console.error('❌ Error: Canonical directory not found at', canonicalDir);

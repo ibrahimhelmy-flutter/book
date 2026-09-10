@@ -1,14 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { chapter1 } from './chapters/chapter1.mjs';
-import { chapter2 } from './chapters/chapter2.mjs';
-import { chapter3 } from './chapters/chapter3.mjs';
-import { chapter4 } from './chapters/chapter4.mjs';
+import { sources } from './sources-config.mjs';
+import { chapter1 } from '../book-sources/term-1/06-build-modules/chapter1.mjs';
+import { chapter2 } from '../book-sources/term-1/06-build-modules/chapter2.mjs';
+import { chapter3 } from '../book-sources/term-1/06-build-modules/chapter3.mjs';
+import { chapter4 } from '../book-sources/term-1/06-build-modules/chapter4.mjs';
 
 const allChapters = [chapter1, chapter2, chapter3, chapter4];
 const allLessons = allChapters.flatMap(c => c.lessons);
 
-const specPath = path.resolve('src/data/curriculum-baseline-spec.json');
+const specPath = sources.canonicalBaselineSpec;
 if (!fs.existsSync(specPath)) {
   console.error(`Error: Baseline spec not found at ${specPath}. Run extract-textbook-baseline.mjs first.`);
   process.exit(1);

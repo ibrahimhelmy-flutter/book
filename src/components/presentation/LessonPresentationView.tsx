@@ -62,7 +62,7 @@ interface Props {
 
 export interface SlideItem {
   id: string;
-  type: "intro" | "concepts" | "section" | "engineer" | "example" | "summary" | "ai_question" | "callout" | "applied_task";
+  type: "intro" | "concepts" | "section" | "engineer" | "example" | "summary" | "callout" | "applied_task";
   title: string;
   subtitle?: string;
   bullets: string[];
@@ -920,7 +920,7 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     onExitPresentation,
   ]);
 
-  // Add custom AI question slide handler
+  // Add custom AI diagram/concept slide handler
   const handleAddCustomSlide = (slideData: {
     title: string;
     badge: string;
@@ -928,9 +928,9 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   }) => {
     const newSlide: SlideItem = {
       id: `slide-ai-custom-${Date.now()}`,
-      type: "ai_question",
+      type: "section",
       title: slideData.title,
-      subtitle: "AI Generated Classroom Challenge",
+      subtitle: "مخطط مفاهيمي إضافي للشرح والعرض",
       badge: slideData.badge,
       bullets: slideData.bullets,
     };

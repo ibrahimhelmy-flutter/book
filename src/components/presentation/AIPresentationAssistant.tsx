@@ -1,38 +1,19 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Lesson, QuestionItem, KeyConcept, SolvedExampleItem, CalloutBox } from "@/types";
-import { GLOSSARY_DATA } from "@/data/glossary";
-import { ACRONYMS_DATA } from "@/data/acronyms";
+import { Lesson } from "@/types";
 import {
   Sparkles,
-  HelpCircle,
-  CheckCircle2,
-  XCircle,
-  RefreshCw,
-  Lightbulb,
-  Award,
   Layers,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  PlusCircle,
   Zap,
   Cpu,
-  ShieldCheck,
   Globe,
   Palette,
   Send,
-  AlertTriangle,
-  BookOpen,
-  Compass,
-  ArrowRight,
+  RefreshCw,
   Workflow,
   BookOpenCheck,
-  Flame,
 } from "lucide-react";
-import { fireConfetti } from "@/lib/confetti";
-import { get50DeepQuestionsForLesson, DeepChallengingQuestion } from "@/data/deep-questions";
 
 interface AIPresentationAssistantProps {
   lesson: Lesson;
@@ -49,18 +30,6 @@ interface AIPresentationAssistantProps {
   onClose: () => void;
 }
 
-interface GeneratedQuestion {
-  id: string;
-  type: "mcq" | "true_false" | "scenario";
-  categoryLabel: string;
-  question: string;
-  options?: string[];
-  correctAnswer: number | string; // index or string
-  explanation: string;
-  misconceptionAlert?: string;
-  teacherDiscussionPrompt?: string;
-}
-
 export function AIPresentationAssistant({
   lesson,
   currentSlideTitle,
@@ -70,18 +39,7 @@ export function AIPresentationAssistant({
   onAddCustomSlide,
   onClose,
 }: AIPresentationAssistantProps) {
-  const [activeMode, setActiveMode] = useState<"questions" | "diagrams" | "custom_prompt">("questions");
-
-  // --- HARD 50 QUESTIONS & CURRICULUM QUESTIONS SUB-TAB STATE ---
-  const [questionTab, setQuestionTab] = useState<"hard_50" | "curriculum">("hard_50");
-  const [deepQuestionIndex, setDeepQuestionIndex] = useState<number>(0);
-  const [deepSelectedAnswer, setDeepSelectedAnswer] = useState<number | null>(null);
-  const [deepShowExplanation, setDeepShowExplanation] = useState<boolean>(false);
-
-  // --- AI QUESTION GENERATOR STATE ---
-  const [selectedAnswer, setSelectedAnswer] = useState<number | string | null>(null);
-  const [showAnswerExplanation, setShowAnswerExplanation] = useState<boolean>(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [activeMode, setActiveMode] = useState<"diagrams" | "custom_prompt">("diagrams");
 
   // --- AI DIAGRAM & VISUALIZER STATE ---
   const [customPrompt, setCustomPrompt] = useState<string>("");
@@ -92,398 +50,72 @@ export function AIPresentationAssistant({
     connections: { from: string; to: string; label: string }[];
   } | null>(null);
 
-  // Helper to get fallback distractor terms from central glossary and key concepts
-  const allConceptDistractors = useMemo(() => {
-    const fromLesson = (lesson.keyConcepts || []).map(
-      (c) => c.termAr + (c.termEn ? ` (${c.termEn})` : "")
-    );
-    const fromGlossary = GLOSSARY_DATA.map(
-      (g) => g.termAr + (g.termEn ? ` (${g.termEn})` : "")
-    );
-    return Array.from(new Set([...fromLesson, ...fromGlossary]));
-  }, [lesson.keyConcepts]);
-
-  // Generate dynamic, comprehensive question bank from the single source of truth (lesson in src/data)
-  const generatedQuestions = useMemo<GeneratedQuestion[]>(() => {
-    const list: GeneratedQuestion[] = [];
-    const contentText = (currentSlideBullets || []).join(" ").toLowerCase();
-
-    // 1. Transform Lesson Question Items (MCQ, True/False, Fill in Blank, Essay)
-    if (lesson.questions && lesson.questions.length > 0) {
-      lesson.questions.forEach((q: QuestionItem, idx: number) => {
-        if (q.type === "mcq" && q.options && q.options.length > 0) {
-          // Parse correct answer index
-          let correctIdx = 0;
-          if (typeof q.correctAnswer === "string") {
-            const lower = q.correctAnswer.toLowerCase().trim();
-            if (lower === "a" || lower === "أ") correctIdx = 0;
-            else if (lower === "b" || lower === "ب") correctIdx = 1;
-            else if (lower === "c" || lower === "ج") correctIdx = 2;
-            else if (lower === "d" || lower === "د") correctIdx = 3;
-            else {
-              const matchedIdx = q.options.findIndex((opt) => opt.id === q.correctAnswer || opt.text === q.correctAnswer);
-              if (matchedIdx !== -1) correctIdx = matchedIdx;
-              else {
-                const parsed = parseInt(lower, 10);
-                if (!isNaN(parsed) && parsed >= 0 && parsed < q.options.length) correctIdx = parsed;
-              }
-            }
-          }
-
-          list.push({
-            id: `cur-q-${q.id || idx}`,
-            type: "mcq",
-            categoryLabel: `سؤال منهجي (${q.category === "check_understanding" ? "تحقق من الفهم" : q.category === "exam_style" ? "نمط امتحاني" : "تطبيق وممارسة"})`,
-            question: q.questionText,
-            options: q.options.map((opt) => opt.text),
-            correctAnswer: correctIdx,
-            explanation: q.explanation || "الإجابة النموذجية المعتمدة وفق المعايير القياسية لمنهج الكتاب المدرسي.",
-            teacherDiscussionPrompt: "اسأل الطلاب عن سبب استبعاد الخيارات الأخرى قبل تأكيد الإجابة الصحيحة.",
-          });
-        } else if (q.type === "true_false") {
-          let correctIdx = 0;
-          const ansStr = String(q.correctAnswer).toLowerCase();
-          if (ansStr === "false" || ansStr === "خطأ" || ansStr === "خاطئة" || ansStr === "no" || ansStr === "لا") {
-            correctIdx = 1;
-          }
-
-          list.push({
-            id: `cur-tf-${q.id || idx}`,
-            type: "true_false",
-            categoryLabel: "تحقق صواب أو خطأ — الكتاب المدرسي",
-            question: q.questionText,
-            options: ["صح (صواب)", "خطأ (غير صحيح)"],
-            correctAnswer: correctIdx,
-            explanation: q.explanation || "وفقاً لمحتوى الدرس والمفاهيم العلمية المعتمدة في المنهج.",
-          });
-        } else if (q.type === "fill_blank") {
-          // Convert fill_blank into interactive multi-choice using curriculum concepts
-          const correctText = String(q.correctAnswer);
-          const distractors = allConceptDistractors
-            .filter((term) => !term.includes(correctText) && !correctText.includes(term.split(" ")[0]))
-            .slice(0, 3);
-
-          const opts = [correctText, ...distractors];
-          const shiftedOpts = idx % 2 === 1 && opts.length === 4 ? [opts[1], opts[0], opts[2], opts[3]] : opts;
-          const finalCorrectIdx = shiftedOpts.indexOf(correctText);
-
-          list.push({
-            id: `cur-fb-${q.id || idx}`,
-            type: "mcq",
-            categoryLabel: "إكمال الفراغ والمصطلحات الأساسية",
-            question: q.questionText,
-            options: shiftedOpts,
-            correctAnswer: finalCorrectIdx !== -1 ? finalCorrectIdx : 0,
-            explanation: q.explanation ? `${q.explanation} (الإجابة الصحيحة: ${correctText})` : `الإجابة الصحيحة هي: ${correctText}`,
-          });
-        } else if (q.type === "essay") {
-          list.push({
-            id: `cur-essay-${q.id || idx}`,
-            type: "scenario",
-            categoryLabel: "نقاش صفي وتفكير نقدي 🧠",
-            question: q.questionText,
-            correctAnswer: "مناقشة مفتوحة مع التوجيه العلمي",
-            explanation: q.explanation || (q.rubricCriteria && q.rubricCriteria.length > 0 ? `معايير التقييم والإجابة النموذجية:\n• ${q.rubricCriteria.join("\n• ")}` : "قم بتحليل المشكلة الهندسية وتقديم مبررات علمية مدعومة بالأدلة."),
-            teacherDiscussionPrompt: "اطلب من فريقين في الصف تقديم رؤى متباينة، ثم لخّص المعيار الهندسي المعتمد.",
-          });
-        }
-      });
-    }
-
-    // 2. Transform Solved Examples from Central Data
-    if (lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0) {
-      lesson.solvedExample.items.forEach((item: SolvedExampleItem, sIdx: number) => {
-        if (item.type === "mcq" && item.options) {
-          let cIdx = 0;
-          if (typeof item.correctAnswer === "string") {
-            const lower = item.correctAnswer.toLowerCase();
-            if (lower === "a" || lower === "أ") cIdx = 0;
-            else if (lower === "b" || lower === "ب") cIdx = 1;
-            else if (lower === "c" || lower === "ج") cIdx = 2;
-            else if (lower === "d" || lower === "د") cIdx = 3;
-            else {
-              const f = item.options.findIndex((o) => o.id === item.correctAnswer || o.text === item.correctAnswer);
-              if (f !== -1) cIdx = f;
-            }
-          }
-
-          list.push({
-            id: `cur-se-mcq-${item.id || sIdx}`,
-            type: "mcq",
-            categoryLabel: "مثال محلول وتطبيق نموذجي 📝",
-            question: item.question,
-            options: item.options.map((o) => o.text),
-            correctAnswer: cIdx,
-            explanation: item.explanation,
-            teacherDiscussionPrompt: "استعرض خطوات التفكير المنطقي التي تقود للإجابة الصحيحة.",
-          });
-        } else if (item.type === "true_false") {
-          const isFalse = String(item.correctAnswer).toLowerCase().includes("false") || String(item.correctAnswer).includes("خطأ");
-          list.push({
-            id: `cur-se-tf-${item.id || sIdx}`,
-            type: "true_false",
-            categoryLabel: "مثال محلول: صواب أو خطأ",
-            question: item.question,
-            options: ["صح", "خطأ"],
-            correctAnswer: isFalse ? 1 : 0,
-            explanation: item.explanation,
-          });
-        }
-      });
-    }
-
-    // 3. Transform Formative Callouts (Pause & Reflect, Pro Tips, Important Notes)
-    if (lesson.callouts && lesson.callouts.length > 0) {
-      lesson.callouts.forEach((callout: CalloutBox, cIdx: number) => {
-        if (callout.type === "pause_and_reflect" || callout.question || callout.type === "important_note") {
-          list.push({
-            id: `cur-callout-${callout.id || cIdx}`,
-            type: "scenario",
-            categoryLabel: callout.title || "وقفة تأمل وتفكير صفي 💡",
-            question: callout.content,
-            correctAnswer: "التفسير العلمي المعتمد",
-            explanation: callout.question || callout.content,
-            teacherDiscussionPrompt: "اطرح هذا التساؤل على الطلاب لمدة دقيقة واحدة في مجموعات ثنائية قبل عرض الشرح.",
-          });
-        }
-      });
-    }
-
-    // 4. Transform Key Concepts into Definition Recall Assessments
-    if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
-      lesson.keyConcepts.forEach((concept: KeyConcept, kIdx: number) => {
-        const correctLabel = concept.termAr + (concept.termEn ? ` (${concept.termEn})` : "");
-        const distractors = allConceptDistractors
-          .filter((t) => t !== correctLabel && !t.includes(concept.termAr))
-          .slice(0, 3);
-
-        const options = [correctLabel, ...distractors];
-        const rotated = options.length === 4
-          ? [options[(kIdx) % 4], options[(kIdx + 1) % 4], options[(kIdx + 2) % 4], options[(kIdx + 3) % 4]]
-          : options;
-        const correctIndex = rotated.indexOf(correctLabel);
-
-        list.push({
-          id: `cur-concept-${kIdx}`,
-          type: "mcq",
-          categoryLabel: "معجم المصطلحات والمفاهيم الأساسية 📖",
-          question: `ما هو المصطلح العلمي المطابق للتعريف: "${concept.definition}"؟`,
-          options: rotated,
-          correctAnswer: correctIndex !== -1 ? correctIndex : 0,
-          explanation: `المصطلح الصحيح هو ${concept.termAr} ${concept.termEn ? `(${concept.termEn})` : ""}. وهو مفهوم رئيسي ورد في هذا الدرس.`,
-        });
-      });
-    }
-
-    // 5. Transform Engineer Challenge into Practical Decision Challenge
-    if (lesson.engineerChallenge) {
-      list.push({
-        id: "cur-eng-challenge",
-        type: "scenario",
-        categoryLabel: `${lesson.engineerChallenge.title} ⚙️`,
-        question: `السيناريو الهندسي الواقعي: ${lesson.engineerChallenge.scenario}\n\nخطوات اتخاذ القرار المطلوبة:\n${lesson.engineerChallenge.steps.map((st) => `• الخطوة ${st.number} (${st.title}): ${st.description}`).join("\n")}`,
-        correctAnswer: lesson.engineerChallenge.modelAnswer || "القرار الهندسي المنهجي المستند للأدلة والبيانات",
-        explanation: `${lesson.engineerChallenge.modelAnswer ? `الإجابة والتحليل الهندسي النموذجي المعتمد:\n${lesson.engineerChallenge.modelAnswer}\n\n` : ""}التوجيه الهندسي الموصى به: ${lesson.engineerChallenge.hint}`,
-        teacherDiscussionPrompt: "قسّم الطلاب إلى فرق عمل هندسية مصغرة لاقتراح حلول موازنة بين الفعالية والأمان والتكلفة، ثم استعرض الإجابة والقرار النموذجي.",
-      });
-    }
-
-    // 6. Slide-Context Prioritization: Put matching questions to the front if relevant to current slide
-    if (list.length > 0 && contentText) {
-      list.sort((a, b) => {
-        const aMatch = a.question.toLowerCase().includes(contentText.slice(0, 20)) || a.categoryLabel.includes(currentSlideTitle);
-        const bMatch = b.question.toLowerCase().includes(contentText.slice(0, 20)) || b.categoryLabel.includes(currentSlideTitle);
-        if (aMatch && !bMatch) return -1;
-        if (!aMatch && bMatch) return 1;
-        return 0;
-      });
-    }
-
-    // Fallback if list is empty for any reason
-    if (list.length === 0) {
-      list.push({
-        id: "fallback-1",
-        type: "mcq",
-        categoryLabel: `سؤال استيعاب على: ${currentSlideTitle}`,
-        question: `بناءً على المفاهيم المشروحة في (${currentSlideTitle})، ما هو الاستنتاج التقني الأبرز؟`,
-        options: [
-          "تطبيق المفاهيم المطروحة يتطلب موازنة دقيقة بين الأداء والتكلفة والأمان",
-          "الأنظمة التقليدية القديمة تتفوق في جميع المعايير على المنظومات الحديثة",
-          "لا توجد أي معايير قياسية أو بروتوكولات تحكم هذا المفهوم في الصناعة",
-          "الاعتماد الكامل على المعالجة اليدوية أفضل من الأتمتة والذكاء الاصطناعي",
-        ],
-        correctAnswer: 0,
-        explanation: "الهدف التعليمي الأساسي هو فهم كيفية تطبيق أفضل الممارسات والمعايير المعتمدة في بيئة العمل الواقعية.",
-      });
-    }
-
-    return list;
-  }, [lesson, currentSlideBullets, currentSlideTitle, allConceptDistractors]);
-
-  const activeQuestion = generatedQuestions[currentQuestionIndex] || generatedQuestions[0];
-
-  // Handle Answer Selection
-  const handleSelectAnswer = (ansIdx: number | string) => {
-    setSelectedAnswer(ansIdx);
-    setShowAnswerExplanation(true);
-
-    const isCorrect =
-      typeof activeQuestion.correctAnswer === "number"
-        ? ansIdx === activeQuestion.correctAnswer
-        : ansIdx === activeQuestion.correctAnswer;
-
-    if (isCorrect) {
-      fireConfetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.7 },
-      });
-    }
-  };
-
-  const handleNextQuestion = () => {
-    setSelectedAnswer(null);
-    setShowAnswerExplanation(false);
-    setCurrentQuestionIndex((prev) => (prev + 1) % generatedQuestions.length);
-  };
-
-  const handlePrevQuestion = () => {
-    setSelectedAnswer(null);
-    setShowAnswerExplanation(false);
-    setCurrentQuestionIndex((prev) => (prev - 1 + generatedQuestions.length) % generatedQuestions.length);
-  };
-
-  // --- 50 HARD QUESTIONS HOOKS & HANDLERS ---
-  const hard50Questions = useMemo<DeepChallengingQuestion[]>(() => {
-    return get50DeepQuestionsForLesson(lesson);
+  // Dynamic suggestion prompts based on the current lesson
+  const suggestionPrompts = useMemo(() => {
+    const fromConcepts = (lesson.keyConcepts || []).map((c) => `اشرح معمارية: ${c.termAr}`);
+    const fromSections = (lesson.sections || []).map((s) => `مخطط تدفق لمفهوم: ${s.title}`);
+    const defaultList = [
+      "مخطط هرمي للعلاقة بين مفاهيم الدرس",
+      "خريطة ذهنية لخطوات الحل الهندسي",
+      "مقارنة بصرية بين البدائل والخيارات التقنية",
+      "دورة حياة معالجة البيانات وتدفق العمليات",
+    ];
+    return Array.from(new Set([...fromConcepts, ...fromSections, ...defaultList])).slice(0, 4);
   }, [lesson]);
 
-  const activeDeepQuestion = hard50Questions[deepQuestionIndex] || hard50Questions[0];
-
-  const handleSelectDeepAnswer = (ansIdx: number) => {
-    setDeepSelectedAnswer(ansIdx);
-    setDeepShowExplanation(true);
-
-    if (ansIdx === activeDeepQuestion.correctAnswer) {
-      fireConfetti({
-        particleCount: 55,
-        spread: 65,
-        origin: { y: 0.7 },
-      });
-    }
-  };
-
-  const handleNextDeepQuestion = () => {
-    setDeepSelectedAnswer(null);
-    setDeepShowExplanation(false);
-    setDeepQuestionIndex((prev) => (prev + 1) % hard50Questions.length);
-  };
-
-  const handlePrevDeepQuestion = () => {
-    setDeepSelectedAnswer(null);
-    setDeepShowExplanation(false);
-    setDeepQuestionIndex((prev) => (prev - 1 + hard50Questions.length) % hard50Questions.length);
-  };
-
-  const handleJumpToDeepQuestion = (idx: number) => {
-    setDeepSelectedAnswer(null);
-    setDeepShowExplanation(false);
-    setDeepQuestionIndex(idx);
-  };
-
-  // Custom AI Diagram Generator
+  // Handle custom generative diagram
   const handleGenerateCustomDiagram = () => {
     if (!customPrompt.trim()) return;
     setIsGeneratingCustomDiagram(true);
 
     setTimeout(() => {
-      const promptLower = customPrompt.toLowerCase();
-      
-      const matchedConcept = (lesson.keyConcepts || []).find((c) =>
-        promptLower.includes(c.termAr.toLowerCase()) || (c.termEn && promptLower.includes(c.termEn.toLowerCase()))
-      );
+      const p = customPrompt.trim();
+      const nodes = [
+        {
+          id: "1",
+          label: "مرحلة الإدخال وتجميع البيانات",
+          desc: `استقبال المتغيرات والمدخلات التقنية المحددة لـ (${p.slice(0, 30)}).`,
+          icon: "📥",
+          color: "from-blue-600 to-cyan-600",
+        },
+        {
+          id: "2",
+          label: "المعالجة وتطبيق الخوارزميات",
+          desc: "تنفيذ منطق المعالجة واستخراج الأنماط وفق المعايير القياسية المعتمدة.",
+          icon: "⚙️",
+          color: "from-indigo-600 to-purple-600",
+        },
+        {
+          id: "3",
+          label: "التحقق وتأكيد الأمان",
+          desc: "فحص مخرجات المعالجة والتأكد من مطابقتها لضوابط الموثوقية.",
+          icon: "🛡️",
+          color: "from-amber-600 to-orange-600",
+        },
+        {
+          id: "4",
+          label: "المخرجات والتطبيق النهائي",
+          desc: "تقديم القرارات والتنبؤات النهائية في بيئة التشغيل المستهدفة.",
+          icon: "🚀",
+          color: "from-emerald-600 to-teal-600",
+        },
+      ];
 
-      let generated;
+      const connections = [
+        { from: "1", to: "2", label: "تمرير البيانات المهيكلة" },
+        { from: "2", to: "3", label: "نتائج التحليل الأولي" },
+        { from: "3", to: "4", label: "اعتماد القرار النهائي" },
+      ];
 
-      if (promptLower.includes("أمن") || promptLower.includes("تشفير") || promptLower.includes("security") || promptLower.includes("tls") || promptLower.includes("هجوم")) {
-        generated = {
-          title: `مخطط المنظومة الأمنية: ${customPrompt}`,
-          nodes: [
-            { id: "1", label: "مستخدم / جهاز العميل", desc: "مصادقة متعددة العوامل MFA والتحقق من الهوية", icon: "👤", color: "from-blue-500 to-indigo-600" },
-            { id: "2", label: "جدار الحماية وبوابة التشفير", desc: "تصفية وفحص الحزم وتطبيق مصافحة TLS 1.3", icon: "🛡️", color: "from-amber-500 to-orange-600" },
-            { id: "3", label: "خادم التطبيقات والسياسات", desc: "تطبيق معمارية انعدام الثقة (Zero Trust)", icon: "⚡", color: "from-purple-500 to-pink-600" },
-            { id: "4", label: "قاعدة البيانات المشفرة", desc: "تشفير AES-256 أثناء السكون والحركة والتخزين", icon: "🔒", color: "from-emerald-500 to-teal-600" },
-          ],
-          connections: [
-            { from: "1", to: "2", label: "طلب اتصال آمن ومصادقة مشفرة" },
-            { from: "2", to: "3", label: "فحص الصلاحيات وسلامة الحزم" },
-            { from: "3", to: "4", label: "استعلام معقم ومصرح بقاعدة البيانات" },
-          ],
-        };
-      } else if (promptLower.includes("ذكاء") || promptLower.includes("ai") || promptLower.includes("تعلم") || promptLower.includes("عصبية") || promptLower.includes("بيانات")) {
-        generated = {
-          title: `دورة معالجة الذكاء الاصطناعي: ${customPrompt}`,
-          nodes: [
-            { id: "1", label: "جمع وهندسة البيانات", desc: "استخراج البيانات وتنظيفها والتطبيع (Normalization)", icon: "📥", color: "from-sky-500 to-blue-600" },
-            { id: "2", label: "استخراج وتجهيز الميزات", desc: "تحويل المدخلات إلى مصفوفات ومتجهات رقمية", icon: "⚙️", color: "from-amber-500 to-yellow-600" },
-            { id: "3", label: "تدريب الخوارزمية / الشبكة", desc: "تعديل الأوزان الرياضية وتقليل دالة الخسارة (Loss)", icon: "🧠", color: "from-indigo-500 to-purple-600" },
-            { id: "4", label: "الاستدلال والتقييم الفوري", desc: "إخراج التنبؤ الذكي وقياس الدقة (Accuracy/F1)", icon: "🚀", color: "from-emerald-500 to-green-600" },
-          ],
-          connections: [
-            { from: "1", to: "2", label: "تمرير مصفوفات البيانات النظيفة" },
-            { from: "2", to: "3", label: "تغذية طبقات المعالجة بالأوزان" },
-            { from: "3", to: "4", label: "نموذج مدرب جاهز للاستدلال والقرار" },
-          ],
-        };
-      } else if (promptLower.includes("تصميم") || promptLower.includes("crap") || promptLower.includes("واجهة") || promptLower.includes("web") || promptLower.includes("ويب")) {
-        generated = {
-          title: `هندسة التصميم وتطوير الويب: ${customPrompt}`,
-          nodes: [
-            { id: "1", label: "تحليل تجربة المستخدم (UX)", desc: "تحديد مسار المستخدم وبنية المحتوى والشاشات", icon: "🎯", color: "from-blue-500 to-indigo-600" },
-            { id: "2", label: "تطبيق مبادئ التصميم (CRAP)", desc: "التباين، التكرار، المحاذاة، والتقارب البصري", icon: "🎨", color: "from-purple-500 to-pink-600" },
-            { id: "3", label: "بناء واجهة المستخدم (UI/CSS)", desc: "تصميم متجاوب وتنسيق العناصر والخطوط المريحة", icon: "💻", color: "from-amber-500 to-orange-600" },
-            { id: "4", label: "اختبار سهولة الوصول والأداء", desc: "معايير WCAG وسرعة الاستجابة على جميع الأجهزة", icon: "✨", color: "from-emerald-500 to-teal-600" },
-          ],
-          connections: [
-            { from: "1", to: "2", label: "مخططات هيكلية (Wireframes)" },
-            { from: "2", to: "3", label: "تصاميم نهائية متسقة بصرياً" },
-            { from: "3", to: "4", label: "كود برمجي تفاعلي جاهز للنشر" },
-          ],
-        };
-      } else {
-        generated = {
-          title: matchedConcept ? `المسار الهندسي لمفهوم (${matchedConcept.termAr})` : `مخطط المعالجة والتدفق: ${customPrompt}`,
-          nodes: [
-            { id: "1", label: "مرحلة المدخلات والتحليل", desc: "تحديد المتطلبات التقنية والأهداف التعليمية المعتمدة", icon: "🎯", color: "from-blue-500 to-cyan-600" },
-            { id: "2", label: "مرحلة المعالجة والمنطق", desc: matchedConcept ? matchedConcept.definition.slice(0, 50) + "..." : "تطبيق الخوارزميات والمعايير القياسية في بيئة التنفيذ", icon: "⚙️", color: "from-indigo-500 to-blue-700" },
-            { id: "3", label: "مرحلة التحقق والضبط", desc: "اختبار المخرجات والتأكد من تلبية معايير الأمان والكفاءة", icon: "🔍", color: "from-amber-500 to-orange-600" },
-            { id: "4", label: "المخرجات والإنتاج النهائي", desc: "تسليم حل رقمي متكامل ومستقر وقابل للتوسع", icon: "✨", color: "from-emerald-500 to-teal-600" },
-          ],
-          connections: [
-            { from: "1", to: "2", label: "بيانات متطلبات دقيقة ومحددة" },
-            { from: "2", to: "3", label: "نتائج المعالجة للاختبار والتقييم" },
-            { from: "3", to: "4", label: "اعتماد الجودة والانتقال للإنتاج" },
-          ],
-        };
-      }
+      setGeneratedCustomDiagram({
+        title: `مخطط المعمارية البصرية: ${p}`,
+        nodes,
+        connections,
+      });
 
-      setGeneratedCustomDiagram(generated);
       setIsGeneratingCustomDiagram(false);
     }, 600);
   };
-
-  // Quick suggestion prompts dynamically extracted from current lesson concepts
-  const suggestionPrompts = useMemo(() => {
-    const fromConcepts = (lesson.keyConcepts || []).slice(0, 3).map((c) => `كيف يعمل ${c.termAr} في الأنظمة الحديثة؟`);
-    const fromSections = (lesson.sections || []).slice(0, 2).map((s) => `مخطط تدفق: ${s.title}`);
-    const defaultList = [
-      "آلية مصافحة TLS Handshake",
-      "بنية شبكات Zero-Trust",
-      "كيف تعمل الشبكة العصبية",
-      "مبادئ التصميم البصري CRAP",
-    ];
-    return Array.from(new Set([...fromConcepts, ...fromSections, ...defaultList])).slice(0, 4);
-  }, [lesson]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fadeIn" dir="rtl">
@@ -500,7 +132,7 @@ export function AIPresentationAssistant({
                   ذكاء اصطناعي تفاعلي 🤖
                 </span>
                 <h3 className="text-base sm:text-lg font-bold text-white">
-                  مساعد المعلم الذكي: بنك الأسئلة والمخططات البصرية
+                  مساعد المعلم الذكي: المخططات البصرية والتحليل المفاهيمي
                 </h3>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -521,18 +153,6 @@ export function AIPresentationAssistant({
         {/* Mode Selector Tabs */}
         <div className="flex border-b border-slate-800 bg-slate-950/50 p-2 gap-2">
           <button
-            onClick={() => setActiveMode("questions")}
-            className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-              activeMode === "questions"
-                ? "bg-gradient-to-r from-amber-600 via-orange-600 to-indigo-600 text-white shadow-md shadow-orange-600/20"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
-            }`}
-          >
-            <Flame className="w-4 h-4 text-amber-300" />
-            <span>بنك الأسئلة والتحديات (50 سؤالاً عميقاً + المنهج)</span>
-          </button>
-
-          <button
             onClick={() => setActiveMode("diagrams")}
             className={`flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
               activeMode === "diagrams"
@@ -541,7 +161,7 @@ export function AIPresentationAssistant({
             }`}
           >
             <Layers className="w-4 h-4" />
-            <span>المخططات والمفاهيم البصرية للدرس</span>
+            <span>المخططات والمفاهيم البصرية للدرس 📊</span>
           </button>
 
           <button
@@ -559,472 +179,7 @@ export function AIPresentationAssistant({
 
         {/* Main Content Body */}
         <div className="flex-1 p-6 overflow-y-auto custom-scrollbar">
-          {/* 1. QUESTIONS MODE */}
-          {activeMode === "questions" && (
-            <div className="space-y-6">
-              {/* Question Sub-Mode Tabs */}
-              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800">
-                <button
-                  onClick={() => setQuestionTab("hard_50")}
-                  className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
-                    questionTab === "hard_50"
-                      ? "bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 text-white shadow-lg shadow-orange-600/30 ring-1 ring-amber-400"
-                      : "text-slate-400 hover:text-amber-300 hover:bg-slate-900"
-                  }`}
-                >
-                  <Flame className="w-4 h-4 text-amber-300 animate-pulse" />
-                  <span>🔥 قسم الـ 50 سؤالاً الصعب (قياس الفهم العميق)</span>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 text-[11px] font-black border border-amber-400/30">
-                    50 سؤال
-                  </span>
-                </button>
-
-                <button
-                  onClick={() => setQuestionTab("curriculum")}
-                  className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                    questionTab === "curriculum"
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
-                      : "text-slate-400 hover:text-white hover:bg-slate-900"
-                  }`}
-                >
-                  <BookOpen className="w-4 h-4" />
-                  <span>📚 أسئلة المنهج التفاعلية ({generatedQuestions.length})</span>
-                </button>
-              </div>
-
-              {/* A. 50 HARD QUESTIONS SECTION */}
-              {questionTab === "hard_50" && (
-                <div className="space-y-5 animate-fadeIn">
-                  {/* Banner & 1 to 50 Rapid Jump Pill Navigation */}
-                  <div className="p-4 bg-slate-950 rounded-2xl border border-amber-500/30 space-y-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-2.5">
-                        <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                          <Flame className="w-5 h-5 text-amber-400" />
-                        </span>
-                        <div>
-                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                            <span>بنك الـ 50 سؤالاً الصعب لقياس الفهم العميق والتمايز</span>
-                            <span className="text-xs text-amber-400 font-mono px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20">
-                              (سؤال {activeDeepQuestion.index} من 50)
-                            </span>
-                          </h4>
-                          <p className="text-[11px] text-slate-400 mt-0.5">
-                            مستوى متقدم يقيس التحليل واستكشاف الأخطاء لدرس: <strong className="text-slate-200">{lesson.number} - {lesson.title}</strong>
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={handlePrevDeepQuestion}
-                          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                          <span>السابق</span>
-                        </button>
-                        <button
-                          onClick={handleNextDeepQuestion}
-                          className="p-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shadow-md shadow-orange-600/30"
-                        >
-                          <span>التالي</span>
-                          <ChevronLeft className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 1 to 50 Numbered Pill Rapid-Jump Selector Grid */}
-                    <div className="pt-2 border-t border-slate-800/80">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
-                          <Compass className="w-3.5 h-3.5 text-amber-400" />
-                          <span>الانتقال السريع لأي سؤال من الأسئلة الـ 50:</span>
-                        </span>
-                        <span className="text-[10px] text-amber-300/80">
-                          اضغط على الرقم للقفز مباشرة للسؤال
-                        </span>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto custom-scrollbar p-1.5 bg-slate-900/90 rounded-xl border border-slate-800">
-                        {hard50Questions.map((q, qIdx) => {
-                          const isCurrent = qIdx === deepQuestionIndex;
-                          return (
-                            <button
-                              key={q.id}
-                              onClick={() => handleJumpToDeepQuestion(qIdx)}
-                              className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 ${
-                                isCurrent
-                                  ? "bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 font-black shadow-lg shadow-amber-500/40 ring-2 ring-amber-300 scale-110 z-10"
-                                  : "bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40"
-                              }`}
-                              title={`سؤال ${q.index}: ${q.title}`}
-                            >
-                              {q.index}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Active Question Box */}
-                  <div className="p-6 bg-slate-950/90 rounded-2xl border border-slate-800 space-y-5 shadow-xl">
-                    {/* Badges & Meta */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
-                        <Flame className="w-3.5 h-3.5 text-amber-400" />
-                        <span>سؤال {activeDeepQuestion.index} من 50 (صعوبة عالية)</span>
-                      </span>
-
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center gap-1.5">
-                        <Cpu className="w-3.5 h-3.5 text-purple-400" />
-                        <span>مستوى التفكير: {activeDeepQuestion.cognitiveLevel}</span>
-                      </span>
-
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>قياس الفهم العميق</span>
-                      </span>
-                    </div>
-
-                    {/* Question Topic */}
-                    <div className="text-xs font-bold text-slate-400">
-                      محور السؤال: <span className="text-slate-200">{activeDeepQuestion.title}</span>
-                    </div>
-
-                    {/* Scenario (if exists) */}
-                    {activeDeepQuestion.scenario && (
-                      <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-amber-400 font-bold text-xs">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span>السيناريو الواقعي / السياق الهندسي:</span>
-                        </div>
-                        <p className="font-medium text-slate-300">{activeDeepQuestion.scenario}</p>
-                      </div>
-                    )}
-
-                    {/* Question Statement */}
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-base shrink-0 mt-0.5 shadow-md shadow-orange-600/30">
-                        ؟
-                      </div>
-                      <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
-                        {activeDeepQuestion.question}
-                      </h4>
-                    </div>
-
-                    {/* 4 Interactive Options */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      {activeDeepQuestion.options.map((opt, oIdx) => {
-                        const isChosen = deepSelectedAnswer === oIdx;
-                        const isCorrect = oIdx === activeDeepQuestion.correctAnswer;
-                        const showResult = deepShowExplanation;
-
-                        let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850 hover:border-amber-500/40";
-                        if (showResult) {
-                          if (isCorrect) {
-                            btnStyle = "bg-emerald-950/90 border-emerald-500 text-emerald-100 font-bold shadow-lg shadow-emerald-950/60 ring-1 ring-emerald-400";
-                          } else if (isChosen && !isCorrect) {
-                            btnStyle = "bg-rose-950/90 border-rose-500 text-rose-100 font-medium ring-1 ring-rose-400";
-                          } else {
-                            btnStyle = "bg-slate-950/60 border-slate-900 text-slate-600 opacity-50";
-                          }
-                        }
-
-                        return (
-                          <button
-                            key={oIdx}
-                            onClick={() => handleSelectDeepAnswer(oIdx)}
-                            className={`p-4 rounded-xl border text-right text-xs sm:text-sm font-medium transition-all flex items-start gap-3 cursor-pointer ${btnStyle}`}
-                          >
-                            <span className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-200 shrink-0 mt-0.5 border border-slate-700">
-                              {String.fromCharCode(65 + oIdx)}
-                            </span>
-                            <span className="flex-1 leading-relaxed">{opt}</span>
-                            {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
-                            {showResult && isChosen && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Reveal Button if not answered yet */}
-                    {!deepShowExplanation && (
-                      <div className="pt-2 flex items-center gap-2">
-                        <button
-                          onClick={() => setDeepShowExplanation(true)}
-                          className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors border border-amber-500/20"
-                        >
-                          <Eye className="w-4 h-4" />
-                          <span>كشف الإجابة والتحليل العلمي للمعلم مباشرة 👁️</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {/* Pedagogical Explanation & Misconception Trap Card */}
-                    {deepShowExplanation && (
-                      <div className="mt-4 space-y-3 animate-fadeIn">
-                        {/* 1. Scientific Depth Explanation */}
-                        <div className="p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 space-y-2">
-                          <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
-                            <Sparkles className="w-4 h-4 text-indigo-400" />
-                            <span>🎯 التفسير والعمق العلمي المعتمد:</span>
-                          </div>
-                          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                            {activeDeepQuestion.depthExplanation}
-                          </p>
-                        </div>
-
-                        {/* 2. Misconception Trap Alert */}
-                        <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-2">
-                          <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
-                            <AlertTriangle className="w-4 h-4 text-amber-400" />
-                            <span>⚠️ الفخ المفاهيمي الشائع (لماذا يقع الطلاب في الإجابات الخاطئة؟):</span>
-                          </div>
-                          <p className="text-xs sm:text-sm text-amber-200/90 leading-relaxed font-medium">
-                            {activeDeepQuestion.misconceptionTrap}
-                          </p>
-                        </div>
-
-                        {/* 3. Teacher Classroom Discussion Prompt */}
-                        {activeDeepQuestion.teacherDiscussionPrompt && (
-                          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-xs text-slate-300">
-                            <div className="flex items-center gap-1.5 font-bold text-emerald-400 text-xs">
-                              <Lightbulb className="w-3.5 h-3.5 text-emerald-400" />
-                              <span>💡 إرشاد المعلم لتحفيز النقاش الصفي:</span>
-                            </div>
-                            <p className="text-slate-300 leading-relaxed">
-                              {activeDeepQuestion.teacherDiscussionPrompt}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Actions Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setDeepSelectedAnswer(null);
-                          setDeepShowExplanation(false);
-                        }}
-                        className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <RefreshCw className="w-3.5 h-3.5" />
-                        <span>إعادة تعيين السؤال</span>
-                      </button>
-
-                      {onAddCustomSlide && (
-                        <button
-                          onClick={() => {
-                            onAddCustomSlide({
-                              title: `تحدي صفي عميق: سؤال ${activeDeepQuestion.index}`,
-                              badge: `🔥 فهم عميق (${activeDeepQuestion.cognitiveLevel})`,
-                              bullets: [
-                                ...(activeDeepQuestion.scenario ? [`السيناريو: ${activeDeepQuestion.scenario}`] : []),
-                                `السؤال: ${activeDeepQuestion.question}`,
-                                ...activeDeepQuestion.options.map((o, idx) => `(${String.fromCharCode(65 + idx)}) ${o}`),
-                                `الإجابة والتفسير: ${activeDeepQuestion.depthExplanation}`,
-                                `الفخ المفاهيمي: ${activeDeepQuestion.misconceptionTrap}`,
-                              ],
-                            });
-                            onClose();
-                          }}
-                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-orange-600/30"
-                        >
-                          <PlusCircle className="w-3.5 h-3.5" />
-                          <span>إدراج هذا التحدي كشريحة في العرض 🖥️</span>
-                        </button>
-                      )}
-                    </div>
-
-                    <span className="text-xs text-amber-400/80 font-medium">
-                      🔥 50 سؤالاً تقيس الفهم العميق والتحليل المتقدم لهذا الدرس بالكامل
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {/* B. CURRICULUM QUESTIONS SECTION */}
-              {questionTab === "curriculum" && (
-                <div className="space-y-6 animate-fadeIn">
-                  {/* Question Navigation Header */}
-                  <div className="flex items-center justify-between bg-slate-950 p-3.5 rounded-2xl border border-slate-800">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                        {activeQuestion.categoryLabel}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        سؤال {currentQuestionIndex + 1} من {generatedQuestions.length}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={handlePrevQuestion}
-                        className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                      >
-                        <ChevronRight className="w-4 h-4" />
-                        <span>السابق</span>
-                      </button>
-                      <button
-                        onClick={handleNextQuestion}
-                        className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                      >
-                        <span>التالي</span>
-                        <ChevronLeft className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Active Question Box */}
-                  <div className="p-6 bg-slate-950/80 rounded-2xl border border-slate-800 space-y-5">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
-                        ؟
-                      </div>
-                      <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
-                        {activeQuestion.question}
-                      </h4>
-                    </div>
-
-                    {/* Options List (For MCQ & True/False) */}
-                    {activeQuestion.options && activeQuestion.options.length > 0 && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                        {activeQuestion.options.map((opt, oIdx) => {
-                          const isChosen = selectedAnswer === oIdx;
-                          const isCorrect = oIdx === activeQuestion.correctAnswer;
-                          const showResult = showAnswerExplanation;
-
-                          let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700";
-                          if (showResult) {
-                            if (isCorrect) {
-                              btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold shadow-lg shadow-emerald-950/50";
-                            } else if (isChosen && !isCorrect) {
-                              btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200";
-                            } else {
-                              btnStyle = "bg-slate-950/60 border-slate-900 text-slate-600 opacity-60";
-                            }
-                          }
-
-                          return (
-                            <button
-                              key={oIdx}
-                              onClick={() => handleSelectAnswer(oIdx)}
-                              className={`p-4 rounded-xl border text-right text-xs sm:text-sm font-medium transition-all flex items-start gap-3 cursor-pointer ${btnStyle}`}
-                            >
-                              <span className="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 shrink-0 mt-0.5">
-                                {String.fromCharCode(65 + oIdx)}
-                              </span>
-                              <span className="flex-1 leading-relaxed">{opt}</span>
-                              {showResult && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
-                              {showResult && isChosen && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Scenario Model Answer Box */}
-                    {activeQuestion.type === "scenario" && (
-                      <div className="pt-2">
-                        {!showAnswerExplanation ? (
-                          <button
-                            onClick={() => setShowAnswerExplanation(true)}
-                            className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-600/30"
-                          >
-                            <Eye className="w-4 h-4" />
-                            <span>كشف توجيهات المناقشة والإجابة النموذجية للمعلم</span>
-                          </button>
-                        ) : (
-                          <div className="p-4 bg-slate-900 border border-amber-500/40 rounded-2xl space-y-3">
-                            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
-                              <Lightbulb className="w-4 h-4" />
-                              <span>التوجيه والتحليل العلمي النموذجي:</span>
-                            </div>
-                            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium whitespace-pre-line">
-                              {activeQuestion.explanation}
-                            </p>
-                            {activeQuestion.teacherDiscussionPrompt && (
-                              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-amber-300">
-                                <strong>💡 اقتراح لإدارة النقاش في الفصل: </strong>
-                                {activeQuestion.teacherDiscussionPrompt}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Explanation & Misconception Alert Banner */}
-                    {showAnswerExplanation && activeQuestion.type !== "scenario" && (
-                      <div className="mt-4 p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/40 space-y-2.5 animate-fadeIn">
-                        <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs">
-                          <Sparkles className="w-4 h-4 text-indigo-400" />
-                          <span>الشرح والتفسير العلمي المعتمد:</span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                          {activeQuestion.explanation}
-                        </p>
-
-                        {activeQuestion.teacherDiscussionPrompt && (
-                          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-indigo-200">
-                            <strong>💡 إرشاد المعلم: </strong>
-                            {activeQuestion.teacherDiscussionPrompt}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Actions Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedAnswer(null);
-                          setShowAnswerExplanation(false);
-                        }}
-                        className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <RefreshCw className="w-3.5 h-3.5" />
-                        <span>إعادة تعيين السؤال</span>
-                      </button>
-
-                      {onAddCustomSlide && (
-                        <button
-                          onClick={() => {
-                            onAddCustomSlide({
-                              title: `تحدي صفي: ${activeQuestion.question.slice(0, 50)}...`,
-                              badge: "سؤال تفاعلي 🤖",
-                              bullets: [
-                                `السؤال: ${activeQuestion.question}`,
-                                ...(activeQuestion.options?.map((o, idx) => `خيار (${String.fromCharCode(65 + idx)}): ${o}`) || []),
-                                `الإجابة والتفسير: ${activeQuestion.explanation}`,
-                              ],
-                            });
-                            onClose();
-                          }}
-                          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-600/30"
-                        >
-                          <PlusCircle className="w-3.5 h-3.5" />
-                          <span>إدراج السؤال كشريحة في العرض</span>
-                        </button>
-                      )}
-                    </div>
-
-                    <span className="text-xs text-slate-400">
-                      🎯 مستخرج بالكامل من قاعدة بيانات المنهج والكتاب المدرسي المعتمد
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 2. DIAGRAMS & CONCEPTS VISUALIZER DYNAMICALLY GENERATED FROM LESSON DATA */}
+          {/* 1. DIAGRAMS & CONCEPTS VISUALIZER DYNAMICALLY GENERATED FROM LESSON DATA */}
           {activeMode === "diagrams" && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1096,7 +251,7 @@ export function AIPresentationAssistant({
                   </div>
                 )}
 
-                {/* Solved Examples Model Answers in Study Guide */}
+                {/* 3. Solved Examples Model Answers in Study Guide */}
                 {lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0 && (
                   <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 hover:border-teal-500/40 transition-all">
                     <div className="flex items-center justify-between">
@@ -1126,7 +281,7 @@ export function AIPresentationAssistant({
                   </div>
                 )}
 
-                {/* 3. Section Tables or Process Pipeline */}
+                {/* 4. Section Tables or Process Pipeline */}
                 {lesson.sections && lesson.sections.length > 0 && (
                   <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 hover:border-purple-500/40 transition-all">
                     <div className="flex items-center justify-between">
@@ -1161,7 +316,7 @@ export function AIPresentationAssistant({
                   </div>
                 )}
 
-                {/* 4. Pedagogical Learning Path Journey */}
+                {/* 5. Pedagogical Learning Path Journey */}
                 {lesson.learningPath && (
                   <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 hover:border-pink-500/40 transition-all">
                     <div className="flex items-center justify-between">
@@ -1195,7 +350,7 @@ export function AIPresentationAssistant({
             </div>
           )}
 
-          {/* 3. CUSTOM PROMPT GENERATIVE DIAGRAM */}
+          {/* 2. CUSTOM PROMPT GENERATIVE DIAGRAM */}
           {activeMode === "custom_prompt" && (
             <div className="space-y-6">
               {/* Input Prompt Box */}
@@ -1316,4 +471,3 @@ export function AIPresentationAssistant({
     </div>
   );
 }
-

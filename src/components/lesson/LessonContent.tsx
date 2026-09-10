@@ -6,10 +6,11 @@ import { LessonHeader } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { QuizEngine } from "../quiz/QuizEngine";
+import { DeepComprehensionViewer } from "../quiz/DeepComprehensionViewer";
 import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
 import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { LessonConceptMap } from "./LessonConceptMap";
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -104,6 +105,7 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
+  const [quizSubTab, setQuizSubTab] = useState<"curriculum" | "comprehension">("curriculum");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
 
   // Automatically scroll to top when changing tabs or lessons
@@ -411,7 +413,34 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             </div>
           )}
 
-          {/* Embedded Quiz Engine */}
+          {/* Bottom of Lesson: Practice & Comprehension Callout */}
+          <div className="p-6 bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center shrink-0">
+                <Brain className="w-6 h-6 text-purple-400" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-bold text-white">
+                  انتقل إلى قسم التمارين وبنك أسئلة الفهم والتحليل 🧠
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  يشمل أسئلة المنهج الرسمية + بنك الـ 50 سؤالاً لقياس الفهم العميق والتمييز والتريكات الامتحانية.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setActiveTab("quiz");
+                setQuizSubTab("comprehension");
+              }}
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-purple-600/30 transition-all hover:scale-105"
+            >
+              <Brain className="w-4 h-4" />
+              <span>فتح بنك أسئلة الفهم (50 سؤالاً)</span>
+            </button>
+          </div>
+
+          {/* Embedded Curriculum Quiz Engine */}
           <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
         </div>
       )}
@@ -437,10 +466,42 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         </div>
       )}
 
-      {/* Standalone Quiz Tab */}
+      {/* Standalone Quiz & Exercise Hub */}
       {activeTab === "quiz" && (
-        <div className="animate-fadeIn">
-          <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
+        <div className="animate-fadeIn space-y-6">
+          {/* Sub-tab Switcher between Curriculum Questions & Deep Comprehension Questions */}
+          <div className="p-2 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => setQuizSubTab("curriculum")}
+              className={`flex-1 py-3 px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                quizSubTab === "curriculum"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              <CheckSquare className="w-4 h-4" />
+              <span>أسئلة وتمارين المنهج ({lesson.questions?.length || 0} أسئلة)</span>
+            </button>
+
+            <button
+              onClick={() => setQuizSubTab("comprehension")}
+              className={`flex-1 py-3 px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                quizSubTab === "comprehension"
+                  ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              <Brain className="w-4 h-4 text-purple-300" />
+              <span>قسم أسئلة الفهم والتحليل المعمق (50 سؤالاً) 🧠</span>
+            </button>
+          </div>
+
+          {/* Content of selected sub-tab */}
+          {quizSubTab === "curriculum" ? (
+            <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
+          ) : (
+            <DeepComprehensionViewer lesson={lesson} />
+          )}
         </div>
       )}
 

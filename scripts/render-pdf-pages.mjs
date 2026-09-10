@@ -1,17 +1,24 @@
 import { pdf } from 'pdf-to-img';
 import path from 'path';
 import fs from 'fs';
+import { getSources } from './sources-config.mjs';
 
-const pdfPath = 'C:\\Users\\devib\\Downloads\\Programming-ArtificialIntelligence-Ar-EB-part1.pdf';
-const outputDir = path.resolve('public', 'images', 'pages');
+const sources = getSources('term-1');
+const pdfPath = sources.pdfFile;
+const outputDir = sources.pages;
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-console.log('Rendering all PDF pages from:', pdfPath);
+console.log('Rendering all PDF pages from immutable source:', pdfPath);
 
 async function renderAll() {
+  if (!fs.existsSync(pdfPath)) {
+    console.error(`❌ PDF file not found at: ${pdfPath}`);
+    process.exit(1);
+  }
+
   let pageNumber = 1;
   const doc = await pdf(pdfPath, { scale: 1.5 });
   for await (const page of doc) {
@@ -21,9 +28,10 @@ async function renderAll() {
     console.log(`Rendered ${filename}`);
     pageNumber++;
   }
-  console.log(`Successfully rendered ${pageNumber - 1} pages!`);
+  console.log(`Successfully rendered ${pageNumber - 1} pages to ${outputDir}!`);
 }
 
 renderAll().catch(err => {
   console.error('Error rendering pages:', err);
+  process.exit(1);
 });
