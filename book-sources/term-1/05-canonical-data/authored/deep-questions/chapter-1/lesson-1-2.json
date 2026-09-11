@@ -5,46 +5,38 @@
     "lessonNumber": "1-2",
     "index": 1,
     "type": "mcq",
-    "title": "مفهوم التعلّم الآلي مقابل البرمجة التقليدية",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
+    "title": "المظلة الأوسع للذكاء الاصطناعي",
+    "cognitiveLevel": "تمييز بين المفاهيم",
+    "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02"
+      "concept-1-2-01"
     ],
     "contentOrigin": "authored",
-    "question": "لديك نظام حاسوبي يتعلم من البيانات لاكتشاف أنماط تساعده على تصنيف الرسائل إلى مزعجة وغير مزعجة، دون أن يكتب المبرمج قاعدة منفصلة لكل حالة. ما الوصف الأدق لهذا النظام؟",
+    "question": "أي عبارة تشرح مكان الذكاء الاصطناعي بين المفاهيم الواردة في الدرس؟",
     "options": [
-      "نظام ذكاء اصطناعي، ويُعد استخدامًا للتعلّم الآلي",
-      "نظام تعلم عميق بالضرورة",
-      "نظام ذكاء اصطناعي توليدي",
-      "نظام يعتمد فقط على قواعد مبرمجة صراحةً"
+      "الذكاء الاصطناعي فرع من التعلم العميق",
+      "الذكاء الاصطناعي مجال واسع يضم مفاهيم وتقنيات مترابطة مثل التعلم الآلي",
+      "الذكاء الاصطناعي نوع من الشبكات العصبية",
+      "الذكاء الاصطناعي يقتصر على توليد المحتوى"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نظام ذكاء اصطناعي، ويُعد استخدامًا للتعلّم الآلي",
-    "misconceptionTrap": "افتراض أن أي نظام يتعلم من البيانات هو بالضرورة تعلم عميق، وتجاهل أنه يمثل التعريف الأساسي للتعلّم الآلي.",
-    "depthExplanation": "النظام يندرج ضمن الذكاء الاصطناعي، وطريقة تعلمه للأنماط من البيانات بدل برمجة كل قاعدة صراحةً تجعله مثالًا على التعلّم الآلي.",
-    "teacherDiscussionPrompt": "كيف توضح للطلاب الفرق بين كتابة الشروط يدويًا (if-else) وبين استخراج النمط من البيانات؟",
-    "trapType": "concept_confusion",
+    "correctAnswer": 1,
+    "correctAnswerText": "الذكاء الاصطناعي مجال واسع يضم مفاهيم وتقنيات مترابطة مثل التعلم الآلي",
+    "misconceptionTrap": "عكس العلاقة بين المجال والفرع",
+    "depthExplanation": "الدرس يصف الذكاء الاصطناعي بأنه مجال واسع، بينما التعلم الآلي فرع منه.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "hierarchy_inversion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        12,
+        13
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 12,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-02"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -65,46 +57,37 @@
     "lessonNumber": "1-2",
     "index": 2,
     "type": "mcq",
-    "title": "الفرق الجوهري بين البرمجة الكلاسيكية والتعلّم الآلي",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
+    "title": "مفهوم الذكاء الاصطناعي",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
       "concept-1-2-01"
     ],
     "contentOrigin": "authored",
-    "question": "أي موقف يوضح الفرق الأساسي بين البرمجة التقليدية والتعلّم الآلي كما ورد في الدرس؟",
+    "question": "أي وصف أقرب لما يقصده الدرس بالذكاء الاصطناعي؟",
     "options": [
-      "في البرمجة التقليدية لا توجد بيانات، بينما التعلّم الآلي لا يحتاج إلى بيانات",
-      "في البرمجة التقليدية تُكتب القواعد صراحةً، بينما يتعلم نموذج التعلّم الآلي الأنماط من البيانات",
-      "التعلّم الآلي يعني أن المبرمج يكتب قواعد أكثر تفصيلًا",
-      "لا يوجد اختلاف جوهري بين الطريقتين"
+      "مجال يضم أنظمة تؤدي مهامًا مثل التعلم والتنبؤ والتعرف وتوليد المحتوى",
+      "طريقة لتخزين الملفات فقط",
+      "نوع واحد من الشبكات العصبية",
+      "أداة مخصصة لتوليد الصور فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "في البرمجة التقليدية تُكتب القواعد صراحةً، بينما يتعلم نموذج التعلّم الآلي الأنماط من البيانات",
-    "misconceptionTrap": "الاعتقاد بأن التعلّم الآلي هو مجرد كتابة قواعد شروط كثيرة ومعقدة من قبل المبرمج.",
-    "depthExplanation": "الفرق الذي يركز عليه الدرس هو أن التعلّم الآلي يعتمد على تعلم الأنماط من البيانات بدل برمجة كل قاعدة بشكل صريح.",
-    "teacherDiscussionPrompt": "اطلب من الطلاب تمثيل مدخلات ومخرجات كل طريقة لتأكيد دور البيانات.",
-    "trapType": "concept_confusion",
+    "correctAnswer": 0,
+    "correctAnswerText": "مجال يضم أنظمة تؤدي مهامًا مثل التعلم والتنبؤ والتعرف وتوليد المحتوى",
+    "misconceptionTrap": "اختزال AI في وظيفة واحدة",
+    "depthExplanation": "المادة تعرض AI كمجال واسع يشمل مهام متعددة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "scope_narrowing",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        13
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -125,46 +108,37 @@
     "lessonNumber": "1-2",
     "index": 3,
     "type": "mcq",
-    "title": "وحدة المبدأ في تطبيقات التعلّم الآلي المتنوعة",
-    "cognitiveLevel": "تطبيق على موقف",
+    "title": "الأنظمة ضيقة النطاق",
+    "cognitiveLevel": "تحليل واستنتاج",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
       "concept-1-2-01"
     ],
     "contentOrigin": "authored",
-    "question": "إذا كان نظامان يستخدمان التعلّم الآلي، أحدهما يصنف الرسائل المزعجة والآخر يوصي بمنتجات، فما الذي يجعلهما ينتميان إلى الفئة نفسها رغم اختلاف المهمة؟",
+    "question": "نظام صُمم للتعرف على الكلام فقط. ما الاستنتاج الأدق؟",
     "options": [
-      "كلاهما يجب أن يكون ذكاءً اصطناعيًا توليديًا",
-      "كلاهما يستخدم طبقة إخراج واحدة بالضرورة",
-      "كلاهما يتعلم أنماطًا من البيانات لاستخدامها في التنبؤ أو التصنيف أو دعم القرار",
-      "كلاهما يولد نصوصًا وصورًا جديدة"
+      "هو بالضرورة قادر على كل مهام الذكاء الاصطناعي",
+      "قد يكون ذكاءً اصطناعيًا ضيق النطاق مخصصًا لمهمة محددة",
+      "لا يمكن أن يكون AI",
+      "هو بالضرورة ذكاء اصطناعي توليدي"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "كلاهما يتعلم أنماطًا من البيانات لاستخدامها في التنبؤ أو التصنيف أو دعم القرار",
-    "misconceptionTrap": "الخلط بين طبيعة المهمة الخارجية (تصنيف مقابل توصية) والآلية المعرفية الباطنية (تعلم الأنماط).",
-    "depthExplanation": "اختلاف المهمة لا يمنع انتماء النظامين إلى التعلّم الآلي، لأن المشترك هو تعلم الأنماط من البيانات للاستفادة منها في مهمة مثل التصنيف أو التوصية.",
-    "teacherDiscussionPrompt": "ما هي أوجه الشبه الأخرى بين نظام مكافحة البريد المزعج وخوارزميات متجر إلكتروني؟",
-    "trapType": "task_vs_mechanism",
+    "correctAnswer": 1,
+    "correctAnswerText": "قد يكون ذكاءً اصطناعيًا ضيق النطاق مخصصًا لمهمة محددة",
+    "misconceptionTrap": "الخلط بين AI واتساع القدرات",
+    "depthExplanation": "معظم أنظمة الذكاء الاصطناعي الحالية ضيقة النطاق ومصممة لمهمة محددة أو محدودة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "scope_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        13
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -185,47 +159,41 @@
     "lessonNumber": "1-2",
     "index": 4,
     "type": "mcq",
-    "title": "الهيكلية المعرفية بين الذكاء الاصطناعي وفروعه",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
+    "title": "الذكاء الاصطناعي ليس مرادفًا للتوليد",
+    "cognitiveLevel": "اكتشاف خطأ وتريكات",
+    "difficulty": "hard",
     "conceptIds": [
       "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي عبارة تشرح العلاقة بين AI وML وDL بصورة صحيحة دون تحويل العلاقة التعليمية إلى تسلسل صارم في كل حالة؟",
+    "question": "أي موقف يدحض فكرة أن كل ذكاء اصطناعي هو ذكاء اصطناعي توليدي؟",
     "options": [
-      "كل نظام ذكاء اصطناعي يجب أن يكون تعلمًا عميقًا",
-      "كل نظام تعلّم آلي يجب أن يكون ذكاءً اصطناعيًا توليديًا",
-      "التعلم العميق والتعلّم الآلي مفهومان منفصلان تمامًا",
-      "الذكاء الاصطناعي مجال واسع، والتعلّم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلّم الآلي"
+      "تصنيف الرسائل المزعجة",
+      "إنشاء صورة جديدة",
+      "إنشاء نص جديد",
+      "إنشاء صوت جديد"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "الذكاء الاصطناعي مجال واسع، والتعلّم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلّم الآلي",
-    "misconceptionTrap": "الاعتقاد بأن كل ذكاء اصطناعي هو بالضرورة تعلّم عميق.",
-    "depthExplanation": "هذه هي العلاقة التعليمية الأساسية في الدرس: AI أوسع، وML فرع منه، وDL أسلوب ضمن ML، مع التنبيه إلى أن الشكل تعليمي مبسط وليس احتواءً صارمًا في كل حالة.",
-    "teacherDiscussionPrompt": "ارسم على السبورة مخطط الدوائر المتداخلة واشرح دلالة السهم التعليمي.",
-    "trapType": "hierarchy_inversion",
+    "correctAnswer": 0,
+    "correctAnswerText": "تصنيف الرسائل المزعجة",
+    "misconceptionTrap": "حصر AI في GenAI",
+    "depthExplanation": "التصنيف من مهام الذكاء الاصطناعي دون أن يكون إنشاء محتوى جديد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "genai_dominance",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        13
+        13,
+        15,
+        17
       ],
       "primaryPage": 13,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العلاقة التعليمية: الذكاء الاصطناعي مجال واسع، والتعلم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلم الآلي.",
-        "page": 13,
-        "conceptId": "concept-1-2-01"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
     "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -247,45 +215,40 @@
     "lessonNumber": "1-2",
     "index": 5,
     "type": "mcq",
-    "title": "الشبكات العصبية متعددة الطبقات كمعيار للتعلم العميق",
+    "title": "التعلم الآلي كفرع من AI",
     "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
+    "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
+      "concept-1-2-01",
+      "concept-1-2-02"
     ],
     "contentOrigin": "authored",
-    "question": "نظام يتعلم من أمثلة الصور أنماطًا معقدة باستخدام شبكة عصبية متعددة الطبقات. ما الاستنتاج الأدق؟",
+    "question": "ما العبارة الأدق عن العلاقة بين AI وML؟",
     "options": [
-      "هو مثال على التعلم العميق، والتعلم العميق أسلوب من أساليب التعلّم الآلي",
-      "هو مثال على الذكاء الاصطناعي التوليدي بالضرورة",
-      "هو ليس تعلمًا آليًا لأنه يستخدم شبكة عصبية",
-      "هو مجرد برمجة تقليدية بقواعد ثابتة"
+      "ML أوسع من AI",
+      "ML فرع من AI",
+      "AI فرع من ML",
+      "لا توجد علاقة بينهما"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "هو مثال على التعلم العميق، والتعلم العميق أسلوب من أساليب التعلّم الآلي",
-    "misconceptionTrap": "الظن بأن استخدام شبكة عصبية متعددة الطبقات يخرج النموذج من نطاق التعلّم الآلي.",
-    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات، وهو أسلوب ضمن التعلّم الآلي.",
-    "teacherDiscussionPrompt": "لماذا تُمكّن كثرة الطبقات الشبكة من تمييز التفاصيل الدقيقة كحواف الصور؟",
-    "trapType": "category_error",
+    "correctAnswer": 1,
+    "correctAnswerText": "ML فرع من AI",
+    "misconceptionTrap": "عكس العلاقة الهرمية",
+    "depthExplanation": "الدرس يضع التعلم الآلي داخل المجال الأوسع للذكاء الاصطناعي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "hierarchy_inversion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
+        13,
         15
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-03"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
     "secondaryConceptIds": [
-      "concept-1-2-04"
+      "concept-1-2-02"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -306,28 +269,27 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 6,
-    "type": "true_false",
-    "title": "تفنيد حتمية التوليد في التعلم العميق (تريكة 'بالضرورة')",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
+    "type": "mcq",
+    "title": "الفرق بين القاعدة والنمط",
+    "cognitiveLevel": "تطبيق على موقف",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
+      "concept-1-2-02"
     ],
     "contentOrigin": "authored",
-    "question": "إذا كان النظام يستخدم التعلم العميق، فهذا يعني بالضرورة أنه نظام ذكاء اصطناعي توليدي.",
+    "question": "أي موقف يوضح جوهر الفرق بين البرمجة بالقواعد والتعلم الآلي؟",
     "options": [
-      "صحيح (صواب)",
-      "غير صحيح (خطأ)",
-      "صحيح فقط في حالة معالجة اللغات الطبيعية",
-      "صحيح لأن كل تعلم عميق يولد محتوى"
+      "كتابة قاعدة لكل حالة مقابل تعلم نمط من البيانات",
+      "زيادة حجم شاشة الحاسوب",
+      "تغيير لغة البرمجة",
+      "حفظ مزيد من الملفات"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "غير صحيح (خطأ)",
-    "misconceptionTrap": "الوقوع في فخ كلمة 'بالضرورة' والخلط بين تقنية التعلم العميق ووظيفة التوليد.",
-    "depthExplanation": "التعلم العميق أسلوب ضمن التعلّم الآلي، ويمكن استخدامه في مهام مثل تحليل الصور والتعرف على الكلام دون توليد أي محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الفرق بين تعرف النموذج على الكلام وبين توليد مقطع صوتي جديد؟",
-    "trapType": "absolute_quantifier",
+    "correctAnswer": 0,
+    "correctAnswerText": "كتابة قاعدة لكل حالة مقابل تعلم نمط من البيانات",
+    "misconceptionTrap": "التركيز على أداة التنفيذ لا على آلية التعلم",
+    "depthExplanation": "التعلم الآلي يتعلم الأنماط من البيانات بدل برمجة كل قاعدة صراحةً.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "rule_based_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -336,17 +298,9 @@
         15
       ],
       "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-03"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -366,47 +320,38 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 7,
-    "type": "true_false",
-    "title": "اتساع مظلة الذكاء الاصطناعي خارج حدود التوليد",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "التعلم الآلي والتصنيف",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-05"
+      "concept-1-2-02"
     ],
     "contentOrigin": "authored",
-    "question": "يمكن أن يكون النظام ذكاءً اصطناعيًا دون أن يكون بالضرورة ذكاءً اصطناعيًا توليديًا.",
+    "question": "نظام يتعلم من رسائل سابقة ليصنف الرسائل الجديدة. ما العنصر الذي يجعله مثالًا على ML؟",
     "options": [
-      "غير صحيح (خطأ)",
-      "صحيح فقط إذا كان النظام مبرمجًا بلغة بايثون",
-      "صحيح (صواب)",
-      "غير صحيح لأن مفهوم الذكاء مقتصر اليوم على التوليد"
+      "أنه يعمل على الكمبيوتر",
+      "أنه يتعلم أنماطًا من البيانات",
+      "أنه يعرض النتائج على الشاشة",
+      "أنه يتعامل مع النصوص"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "صحيح (صواب)",
-    "misconceptionTrap": "حصر مفهوم الذكاء الاصطناعي كله في أدوات التوليد الحديثة (GenAI).",
-    "depthExplanation": "الذكاء الاصطناعي مجال واسع يشمل مهام مثل التعرف والتنبؤ والتصنيف واتخاذ القرارات أو دعمها، وليس كل هذه المهام توليدًا للمحتوى.",
-    "teacherDiscussionPrompt": "اذكر أمثلة على أنظمة ذكاء اصطناعي شائعة لا تقوم بتوليد أي نصوص أو صور.",
-    "trapType": "narrow_scope",
+    "correctAnswer": 1,
+    "correctAnswerText": "أنه يتعلم أنماطًا من البيانات",
+    "misconceptionTrap": "التركيز على شكل التطبيق",
+    "depthExplanation": "آلية تعلم الأنماط من البيانات هي العنصر الحاسم.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "superficial_feature",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        13
+        15
       ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العلاقة التعليمية: الذكاء الاصطناعي مجال واسع، والتعلم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلم الآلي.",
-        "page": 13,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -427,46 +372,37 @@
     "lessonNumber": "1-2",
     "index": 8,
     "type": "mcq",
-    "title": "المعيار الحاكم للذكاء الاصطناعي التوليدي",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "medium",
+    "title": "توصيات المنتجات",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-01"
+      "concept-1-2-02"
     ],
     "contentOrigin": "authored",
-    "question": "أي نظام يمثل الذكاء الاصطناعي التوليدي بصورة أوضح؟",
+    "question": "لماذا تُعد توصيات المنتجات مثالًا على التعلم الآلي؟",
     "options": [
-      "نظام يصنف رسالة موجودة على أنها مزعجة",
-      "نظام يتعرف على صورة موجودة فقط",
-      "نظام يطبق قاعدة مكتوبة مسبقًا دون تعلم",
-      "نظام ينشئ نصًا جديدًا اعتمادًا على الأنماط التي تعلمها من بيانات التدريب"
+      "لأن النظام يتعلم أنماطًا من البيانات ويستخدمها في التوصية",
+      "لأن كل توصية توليد محتوى",
+      "لأن التوصية لا تحتاج إلى بيانات",
+      "لأنها قاعدة مكتوبة لكل منتج"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "نظام ينشئ نصًا جديدًا اعتمادًا على الأنماط التي تعلمها من بيانات التدريب",
-    "misconceptionTrap": "الخلط بين تحليل وفلترة محتوى موجود وبين إنشاء محتوى جديد أصيل.",
-    "depthExplanation": "السمة الأساسية للذكاء الاصطناعي التوليدي في الدرس هي إنشاء محتوى جديد مثل النصوص والصور والصوت والبرمجيات.",
-    "teacherDiscussionPrompt": "لماذا يُعد إنشاء نص جديد أصعب من مجرد تصنيف النص الموجود؟",
-    "trapType": "creation_vs_analysis",
+    "correctAnswer": 0,
+    "correctAnswerText": "لأن النظام يتعلم أنماطًا من البيانات ويستخدمها في التوصية",
+    "misconceptionTrap": "الخلط بين التوصية والتوليد",
+    "depthExplanation": "الدرس يذكر توصية المنتجات مثالًا للتعلم الآلي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "task_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        17
+        15
       ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-05"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-05",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -487,46 +423,37 @@
     "lessonNumber": "1-2",
     "index": 9,
     "type": "mcq",
-    "title": "الحدود الاصطلاحية بين الذكاء الاصطناعي والتعلّم الآلي",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "وحدة المبدأ رغم اختلاف المهمة",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-01",
       "concept-1-2-02"
     ],
     "contentOrigin": "authored",
-    "question": "لماذا لا يصح القول إن الذكاء الاصطناعي والتعلّم الآلي مصطلحان لهما المعنى نفسه؟",
+    "question": "مرشح الرسائل المزعجة ونظام توصية المنتجات مختلفان في المهمة. ما المشترك؟",
     "options": [
-      "لأن الذكاء الاصطناعي مجال أوسع، بينما التعلّم الآلي فرع منه",
-      "لأن التعلّم الآلي لا علاقة له بالذكاء الاصطناعي",
-      "لأن الذكاء الاصطناعي خاص بالصور فقط",
-      "لأن التعلّم الآلي خاص بالنصوص فقط"
+      "كلاهما يولد صورًا",
+      "كلاهما يتعلم أنماطًا من البيانات",
+      "كلاهما لا يستخدم بيانات",
+      "كلاهما يجب أن يكون DL"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن الذكاء الاصطناعي مجال أوسع، بينما التعلّم الآلي فرع منه",
-    "misconceptionTrap": "التعامل مع AI و ML كمترادفين لغويين متطابقين تمامًا.",
-    "depthExplanation": "الدرس يوضح أن AI هو المجال الأوسع، وML فرع منه يركز على تعلم الأنماط من البيانات.",
-    "teacherDiscussionPrompt": "كيف تشرح لطالب يقول: 'أنا أستخدم AI' وهو في الحقيقة يستخدم تطبيق ML محدد؟",
-    "trapType": "synonym_fallacy",
+    "correctAnswer": 1,
+    "correctAnswerText": "كلاهما يتعلم أنماطًا من البيانات",
+    "misconceptionTrap": "الخلط بين نوع المهمة وآلية التعلم",
+    "depthExplanation": "اختلاف المهمة لا يلغي اشتراكهما في مبدأ التعلم من البيانات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "task_vs_mechanism",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        13
+        15
       ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العلاقة التعليمية: الذكاء الاصطناعي مجال واسع، والتعلم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلم الآلي.",
-        "page": 13,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-02"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -547,47 +474,43 @@
     "lessonNumber": "1-2",
     "index": 10,
     "type": "mcq",
-    "title": "الترتيب الهرمي التعليمي الصائب",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
+    "title": "تنبيه الكتاب على تبسيط العلاقة",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "very-hard",
     "conceptIds": [
       "concept-1-2-01",
       "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي ترتيب يعبر عن العلاقة التعليمية الصحيحة بين المفاهيم؟",
+    "question": "ماذا يعني أن العلاقة بين المفاهيم علاقة تعليمية مبسطة؟",
     "options": [
-      "DL ← AI ← ML",
-      "AI ← ML ← DL",
-      "ML ← AI ← DL",
-      "GenAI ← AI ← ML"
+      "أن المفاهيم لا علاقة بينها",
+      "أن الرسم يساعد على الفهم لكنه ليس احتواءً صارمًا في كل حالة",
+      "أن ML ليس فرعًا من AI",
+      "أن DL أوسع من AI"
     ],
     "correctAnswer": 1,
-    "correctAnswerText": "AI ← ML ← DL",
-    "misconceptionTrap": "عكس اتجاه الاحتواء أو وضع الفرع في موضع الأصل.",
-    "depthExplanation": "المقصود أن AI هو المجال الأوسع، وML فرع داخله، وDL أسلوب ضمن ML.",
-    "teacherDiscussionPrompt": "ماذا يمثل كل سهم في هذا المخطط الهرمي؟",
-    "trapType": "hierarchy_inversion",
+    "correctAnswerText": "أن الرسم يساعد على الفهم لكنه ليس احتواءً صارمًا في كل حالة",
+    "misconceptionTrap": "تحويل الشكل التعليمي إلى قاعدة مطلقة",
+    "depthExplanation": "الدرس يحذر من فهم الرسم على أنه تسلسل احتواء صارم في كل حالة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "diagram_literalism",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        13
+        14
       ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العلاقة التعليمية: الذكاء الاصطناعي مجال واسع، والتعلم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلم الآلي.",
-        "page": 13,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 14,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
     "secondaryConceptIds": [
       "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -609,27 +532,26 @@
     "lessonNumber": "1-2",
     "index": 11,
     "type": "mcq",
-    "title": "ديناميكية معالجة الخطأ في الشبكات العصبية",
-    "cognitiveLevel": "تطبيق على موقف",
+    "title": "تعريف التعلم العميق",
+    "cognitiveLevel": "تمييز بين المفاهيم",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-03"
     ],
     "contentOrigin": "authored",
-    "question": "شبكة عصبية أعطت نتيجة خاطئة أثناء التدريب. ما التفسير الأقرب لما يحدث أثناء التدريب وفق الدرس؟",
+    "question": "أي وصف يجمع عناصر تعريف التعلم العميق؟",
     "options": [
-      "يتم تغيير نوع البيانات إلى صور تلقائيًا",
-      "يتم استبدال طبقة الإدخال بطبقة إخراج",
-      "يتم تعديل الأوزان والانحيازات تدريجيًا لتعلم الأنماط وتقليل الخطأ",
-      "يتم حذف البيانات التي لم يتعرف عليها النظام"
+      "أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات",
+      "مجال مستقل عن التعلم الآلي",
+      "نظام توليدي فقط",
+      "طريقة بلا بيانات"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "يتم تعديل الأوزان والانحيازات تدريجيًا لتعلم الأنماط وتقليل الخطأ",
-    "misconceptionTrap": "الاعتقاد بأن الخطأ في التدريب يعني توقف الشبكة أو حذف البيانات بدل تعديل الأوزان الرياضية.",
-    "depthExplanation": "الشبكة العصبية تتعلم أثناء التدريب من خلال تغير أوزان الروابط، وتوضح المادة أيضًا دور الانحيازات في عملية التعلم.",
-    "teacherDiscussionPrompt": "كيف يشبه تعديل الأوزان عملية ضبط أوتار الآلة الموسيقية للوصول للنغمة الدقيقة؟",
-    "trapType": "training_mechanism",
+    "correctAnswer": 0,
+    "correctAnswerText": "أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات",
+    "misconceptionTrap": "فصل DL عن ML",
+    "depthExplanation": "الدرس يعرف DL كأسلوب ضمن ML يعتمد على شبكات عصبية متعددة الطبقات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "definition_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -638,17 +560,9 @@
         16
       ],
       "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -669,27 +583,26 @@
     "lessonNumber": "1-2",
     "index": 12,
     "type": "mcq",
-    "title": "الغائية الرياضية من تغيير أوزان الروابط",
+    "title": "تحليل الصور باستخدام DL",
     "cognitiveLevel": "تطبيق على موقف",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-03"
     ],
     "contentOrigin": "authored",
-    "question": "إذا تغيرت أوزان الروابط أثناء التدريب، فما الهدف الأساسي من هذا التغيير؟",
+    "question": "نظام يحلل الصور ويتعلم أنماطًا معقدة باستخدام شبكة متعددة الطبقات. ما الوصف الأدق؟",
     "options": [
-      "تحويل النظام من AI إلى ML",
-      "إجبار الشبكة على إنتاج صور بدل النصوص",
-      "إزالة طبقات الشبكة العصبية",
-      "جعل الشبكة تتعلم الأنماط بصورة أفضل وتقليل الخطأ"
+      "مثال على التعلم العميق",
+      "GenAI بالضرورة",
+      "ليس تعلمًا آليًا",
+      "برمجة قواعد فقط"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "جعل الشبكة تتعلم الأنماط بصورة أفضل وتقليل الخطأ",
-    "misconceptionTrap": "الظن بأن الأوزان ثابتة لا تتغير، أو أن تغييرها يغير مجال النظام بالكامل.",
-    "depthExplanation": "تعديل الأوزان والانحيازات جزء من تدريب الشبكة لتتعلم الأنماط وتقلل نسبة الخطأ في التنبؤات المستقبلية.",
-    "teacherDiscussionPrompt": "ماذا يحدث لو ظلت جميع الأوزان ثابتة عند الصفر خلال كل دورات التدريب؟",
-    "trapType": "parameter_role",
+    "correctAnswer": 0,
+    "correctAnswerText": "مثال على التعلم العميق",
+    "misconceptionTrap": "الربط التلقائي بين DL والتوليد",
+    "depthExplanation": "تحليل الصور مذكور مثالًا للتعلم العميق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "dl_vs_genai",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -698,17 +611,9 @@
         16
       ],
       "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -729,45 +634,40 @@
     "lessonNumber": "1-2",
     "index": 13,
     "type": "mcq",
-    "title": "المسار الوظيفي لطبقات الشبكة العصبية الاصطناعية",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "التعرف على الكلام",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي وصف يوضح وظيفة طبقة الإدخال والطبقات الخفية وطبقة الإخراج بشكل صحيح؟",
+    "question": "نظام يتعرف على الكلام ولا ينشئ محتوى جديدًا. ماذا نستطيع أن نقول؟",
     "options": [
-      "الإدخال تستقبل البيانات، والخفية تتعلم تمثيلات وأنماطًا، والإخراج تقدم النتيجة",
-      "الإدخال تقدم النتيجة، والخفية تخزن الملفات، والإخراج تستقبل البيانات",
-      "الإدخال والخفية والإخراج تؤدي الوظيفة نفسها",
-      "الإخراج هي التي تستقبل البيانات الخام دائمًا"
+      "لا يمكن أن يكون AI",
+      "قد يستخدم DL دون أن يكون GenAI",
+      "هو GenAI بالضرورة",
+      "لا يتعلم من البيانات"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الإدخال تستقبل البيانات، والخفية تتعلم تمثيلات وأنماطًا، والإخراج تقدم النتيجة",
-    "misconceptionTrap": "عكس الترتيب أو الاعتقاد بأن الطبقات المخفية مجرد ذاكرة تخزين وليست طبقات معالجة رياضية.",
-    "depthExplanation": "البنية الواردة في الدرس هي: طبقة إدخال تستقبل البيانات الخام، ثم طبقات مخفية تعالج الأنماط، ثم طبقة إخراج تعطي القرار أو التنبؤ.",
-    "teacherDiscussionPrompt": "لماذا سُميت الطبقات الوسيطة بالطبقات 'المخفية'؟",
-    "trapType": "architecture_order",
+    "correctAnswer": 1,
+    "correctAnswerText": "قد يستخدم DL دون أن يكون GenAI",
+    "misconceptionTrap": "اعتبار كل DL توليديًا",
+    "depthExplanation": "التعرف على الكلام مثال للتعلم العميق، بينما GenAI يتميز بإنشاء محتوى جديد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "generation_assumption",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        16
+        16,
+        17
       ],
       "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -788,47 +688,38 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 14,
-    "type": "true_false",
-    "title": "أصل تسمية التعلم 'العميق' (تعدد الطبقات)",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "دور الشبكة العصبية الاصطناعية",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-03",
       "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "question": "وجود طبقات مخفية متعددة هو أحد أسباب وصف الشبكة العصبية بأنها عميقة.",
+    "question": "أي وصف أدق لـANN؟",
     "options": [
-      "غير صحيح (خطأ)",
-      "صحيح (صواب)",
-      "صحيح فقط في الشبكات التي تتجاوز ألف طبقة",
-      "غير صحيح لأن العمق يشير إلى حجم المعالج بالبوصة"
+      "نموذج حاسوبي مستوحى بصورة مبسطة من ترابط العصبونات ووحداته مترابطة",
+      "قاعدة بيانات",
+      "نظام تشغيل",
+      "مجموعة قواعد ثابتة فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "صحيح (صواب)",
-    "misconceptionTrap": "الاعتقاد بأن كلمة 'عميق' تعني عمق الفلسفة الإنسانية وليس المعمارية متعددة الطبقات.",
-    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات (Deep)، وتساعد الطبقات المتعددة على تعلم تمثيلات وأنماط معقدة.",
-    "teacherDiscussionPrompt": "كيف تربط بين عمق المعمارية وقدرتها على استخراج ملامح أكثر تجريدًا؟",
-    "trapType": "literal_misinterpretation",
+    "correctAnswer": 0,
+    "correctAnswerText": "نموذج حاسوبي مستوحى بصورة مبسطة من ترابط العصبونات ووحداته مترابطة",
+    "misconceptionTrap": "فهم ANN كتخزين أو قواعد",
+    "depthExplanation": "هذا هو تعريف الشبكة العصبية الاصطناعية في الدرس.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "ann_definition",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        15
+        16
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-03"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -849,46 +740,38 @@
     "lessonNumber": "1-2",
     "index": 15,
     "type": "mcq",
-    "title": "التعرف على الكلام واستخدامات التعلم العميق غير التوليدي",
-    "cognitiveLevel": "تمييز بين المفاهيم",
+    "title": "أوزان الروابط",
+    "cognitiveLevel": "تحليل واستنتاج",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
+      "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "question": "إذا كان نظام ما يتعرف على الكلام ولا ينشئ محتوى جديدًا، فأي استنتاج هو الأكثر دقة؟",
+    "question": "لماذا تتغير أوزان الروابط أثناء التدريب؟",
     "options": [
-      "لا يمكن أن يكون ذكاءً اصطناعيًا لأنه لا يولد محتوى",
-      "يجب أن يكون ذكاءً اصطناعيًا توليديًا",
-      "يمكن أن يكون نظام ذكاء اصطناعي، وقد يستخدم التعلم العميق، دون أن يكون توليديًا",
-      "يجب أن يعتمد على قواعد ثابتة فقط"
+      "لتتعلم الشبكة الأنماط من البيانات",
+      "لتغيّر نوع النظام إلى GenAI",
+      "لحذف البيانات",
+      "لإلغاء التدريب"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "يمكن أن يكون نظام ذكاء اصطناعي، وقد يستخدم التعلم العميق، دون أن يكون توليديًا",
-    "misconceptionTrap": "الظن بأن أي نظام متقدم يعالج الصوت هو تلقائيًا ذكاء توليدي.",
-    "depthExplanation": "التعرف على الكلام من أبرز أمثلة استخدام التعلم العميق، وهو مهمة تمييز وتحويل وليس توليدًا لمحتوى جديد.",
-    "teacherDiscussionPrompt": "ما الفرق بين تفريغ التسجيل الصوتي إلى نص (التعرف) وتأليف قصة من الصفر (التوليد)؟",
-    "trapType": "speech_vs_generation",
+    "correctAnswer": 0,
+    "correctAnswerText": "لتتعلم الشبكة الأنماط من البيانات",
+    "misconceptionTrap": "إسناد تغير الأوزان لوظيفة غير التعلم",
+    "depthExplanation": "الوزن يتغير أثناء التدريب لمساعدة الشبكة على تعلم الأنماط.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "parameter_role",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        15
+        16,
+        17
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-03"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -909,46 +792,37 @@
     "lessonNumber": "1-2",
     "index": 16,
     "type": "mcq",
-    "title": "الدور التأسيسي لبيانات التدريب في التعلّم الآلي",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "ترتيب طبقات ANN",
+    "cognitiveLevel": "تمييز بين المفاهيم",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "question": "ما السبب الأقوى الذي يجعل بيانات التدريب مهمة لنظام يتعلم الأنماط؟",
+    "question": "أي ترتيب يطابق البنية التي تذكرها الخلاصة؟",
     "options": [
-      "لأن البيانات تمنع النظام من الخطأ بشكل مطلق",
-      "لأن البيانات تجعل كل نظام ذكاء اصطناعي توليديًا",
-      "لأن البيانات تستبدل طبقة الإخراج",
-      "لأن النموذج يتعلم الأنماط من البيانات التي يتدرب عليها"
+      "إخراج ثم إدخال ثم مخفي",
+      "إدخال ثم طبقات مخفية متعددة ثم إخراج",
+      "مخفي ثم إخراج ثم إدخال",
+      "إدخال ثم إخراج فقط"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "لأن النموذج يتعلم الأنماط من البيانات التي يتدرب عليها",
-    "misconceptionTrap": "توهم أن توفر البيانات يضمن العصمة من الخطأ بنسبة 100%.",
-    "depthExplanation": "المادة تؤكد أن التعلّم الآلي والتعلم العميق يتعلمان الأنماط من البيانات، ولذلك تحدد جودة وتنوع البيانات قدرات النظام.",
-    "teacherDiscussionPrompt": "ماذا يقصد المهندسون بالمثل الشهير: Garbage In, Garbage Out؟",
-    "trapType": "data_absolutism",
+    "correctAnswer": 1,
+    "correctAnswerText": "إدخال ثم طبقات مخفية متعددة ثم إخراج",
+    "misconceptionTrap": "عكس ترتيب الطبقات",
+    "depthExplanation": "الخلاصة تذكر طبقات إدخال وطبقات مخفية متعددة وطبقة إخراج.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "architecture_order",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -969,45 +843,39 @@
     "lessonNumber": "1-2",
     "index": 17,
     "type": "mcq",
-    "title": "تأثير ندرة البيانات على كفاءة استخلاص الأنماط",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
+    "title": "سبب تسمية التعلم بالعميق",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "question": "لماذا قد يواجه نظام ذكاء اصطناعي صعوبة عند التعامل مع شيء نادر جدًا في بيانات التدريب؟",
+    "question": "أي عنصر يرتبط بوصف التعلم بأنه «عميق»؟",
     "options": [
-      "لأنه لم يحصل على أمثلة كافية تساعده على تعلم نمطه",
-      "لأن الذكاء الاصطناعي لا يستطيع التعامل مع البيانات",
-      "لأن وجود البيانات يمنع التعلم",
-      "لأن كل البيانات النادرة تتحول تلقائيًا إلى هلوسة"
+      "وجود طبقات متعددة في الشبكة",
+      "حجم الشاشة",
+      "عدد الملفات",
+      "سرعة الإنترنت"
     ],
     "correctAnswer": 0,
-    "correctAnswerText": "لأنه لم يحصل على أمثلة كافية تساعده على تعلم نمطه",
-    "misconceptionTrap": "توقع أن الذكاء الاصطناعي يمتلك حدسًا ذاتيًا يعوض غياب الأمثلة في بيانات التدريب.",
-    "depthExplanation": "الدرس يربط صعوبة التعامل مع الأشياء النادرة بقلة رؤيتها في بيانات التدريب، وبالتالي ضعف تعلم الأنماط الإحصائية المرتبطة بها.",
-    "teacherDiscussionPrompt": "كيف يؤثر نقص عينات فئة معينة في أداء نماذج التشخيص الطبي؟",
-    "trapType": "intuition_fallacy",
+    "correctAnswerText": "وجود طبقات متعددة في الشبكة",
+    "misconceptionTrap": "فهم الكلمة خارج سياق المعمارية",
+    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "literal_misinterpretation",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        16
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-04"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1029,45 +897,39 @@
     "lessonNumber": "1-2",
     "index": 18,
     "type": "mcq",
-    "title": "تحليل السيناريو الزراعي وتغير معالم المرض",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
+    "title": "ANN مقابل DL",
+    "cognitiveLevel": "تمييز بين المفاهيم",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "question": "نظام للتعرف على أمراض النباتات تدرب على صور كثيرة، لكنه واجه نباتًا بمرض جديد لم يظهر في بيانات التدريب. أي تفسير يتفق مع الدرس؟",
+    "question": "أي عبارة تفرق بين ANN وDL؟",
     "options": [
-      "سيعرف المرض الجديد بالضرورة لأنه ذكاء اصطناعي",
-      "قد يخطئ النظام لأنه لم يتعلم نمط هذا المرض من بيانات التدريب",
-      "سيصبح النظام توليديًا تلقائيًا",
-      "لن يحتاج النظام إلى بيانات تدريب أصلًا"
+      "هما الشيء نفسه",
+      "ANN نموذج حاسوبي، وDL أسلوب من ML يعتمد على شبكات متعددة الطبقات",
+      "DL مجال أوسع من AI",
+      "لا علاقة بينهما"
     ],
     "correctAnswer": 1,
-    "correctAnswerText": "قد يخطئ النظام لأنه لم يتعلم نمط هذا المرض من بيانات التدريب",
-    "misconceptionTrap": "افتراض قدرة النموذج على التعميم السحري على أمراض لم يسبق له التدرب على خصائصها.",
-    "depthExplanation": "المثال التطبيقي في الدرس يوضح أن وجود مرض جديد لم تتضمنه بيانات التدريب قد يجعل التنبؤ خاطئًا لغياب النمط المقابل.",
-    "teacherDiscussionPrompt": "ما الخطوة البرمجية الواجب اتخاذها لتمكين النظام من كشف هذا المرض الجديد؟",
-    "trapType": "overgeneralization",
+    "correctAnswerText": "ANN نموذج حاسوبي، وDL أسلوب من ML يعتمد على شبكات متعددة الطبقات",
+    "misconceptionTrap": "المساواة بين النموذج والأسلوب",
+    "depthExplanation": "ANN هو النموذج، وDL أسلوب تعلم يستخدم شبكات متعددة الطبقات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "model_vs_method",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        16
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-04"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1089,46 +951,37 @@
     "lessonNumber": "1-2",
     "index": 19,
     "type": "mcq",
-    "title": "المفارقة بين سرعة المعالجة وموثوقية الصحة",
-    "cognitiveLevel": "تحليل ومقارنة",
+    "title": "التعلم من الأنماط المعقدة",
+    "cognitiveLevel": "تطبيق على موقف",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-06"
+      "concept-1-2-03"
     ],
     "contentOrigin": "authored",
-    "question": "أي موقف يوضح أن الذكاء الاصطناعي قد يكون قويًا في معالجة البيانات لكنه ليس مضمون الصحة دائمًا؟",
+    "question": "أي موقف أقرب لتعريف التعلم العميق؟",
     "options": [
-      "نظام لا يستطيع معالجة أي بيانات",
-      "نظام يضمن صحة كل إجابة دون تحقق",
-      "نظام يعالج كمية كبيرة من البيانات بسرعة لكنه ينتج إجابة غير صحيحة",
-      "نظام لا يستطيع اكتشاف الأنماط"
+      "شبكة متعددة الطبقات تتعلم أنماطًا معقدة في الصور",
+      "حفظ صورة كما هي",
+      "طباعة مستند",
+      "قاعدة واحدة ثابتة"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "نظام يعالج كمية كبيرة من البيانات بسرعة لكنه ينتج إجابة غير صحيحة",
-    "misconceptionTrap": "الربط التلقائي بين سرعة المعالجة الحاسوبية وبين صحة النتيجة منطقيًا وواقعيًا.",
-    "depthExplanation": "من نقاط القوة معالجة كميات هائلة من البيانات بسرعة، ومن الحدود احتمال الخطأ والهلوسة لغياب الفهم الحقيقي.",
-    "teacherDiscussionPrompt": "كيف توضح للطلاب أن الحاسوب قد يحسب خطأً بسرعة مليار عملية في الثانية؟",
-    "trapType": "speed_equals_truth",
+    "correctAnswer": 0,
+    "correctAnswerText": "شبكة متعددة الطبقات تتعلم أنماطًا معقدة في الصور",
+    "misconceptionTrap": "الخلط بين التعامل مع البيانات والتعلم العميق",
+    "depthExplanation": "الوصف يجمع الشبكات المتعددة والأنماط المعقدة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "surface_application",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        17
+        16
       ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1148,46 +1001,41 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 20,
-    "type": "true_false",
-    "title": "تفنيد مطابقة السرعة مع الصواب المطلق",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "هل كل DL توليدي؟",
+    "cognitiveLevel": "اكتشاف خطأ وتريكات",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-06"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "سرعة معالجة البيانات تعني أن مخرجات الذكاء الاصطناعي صحيحة دائمًا.",
+    "question": "أي عبارة خاطئة؟",
     "options": [
-      "صحيح (صواب)",
-      "صحيح فقط في أنظمة معالجة الرسوميات",
-      "صحيح في حالة البيانات النصية فقط",
-      "غير صحيح (خطأ)"
+      "DL أسلوب ضمن ML",
+      "DL يمكن استخدامه في التعرف على الكلام",
+      "كل DL يولد محتوى جديدًا",
+      "GenAI الحديث يعتمد غالبًا على DL"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "غير صحيح (خطأ)",
-    "misconceptionTrap": "الانبهار بالسرعة الفائقة وتخيل أنها تعني بالضرورة الصواب المعرفي.",
-    "depthExplanation": "السرعة والقدرة على معالجة البيانات من نقاط القوة، لكنها لا تعني أن كل المخرجات صحيحة؛ فقد تحدث الهلوسة أو التحيز.",
-    "teacherDiscussionPrompt": "هل السرعة في تقديم الإجابة دليل كافٍ على مطابقتها للواقع العلمي؟",
-    "trapType": "speed_equals_truth",
+    "correctAnswer": 2,
+    "correctAnswerText": "كل DL يولد محتوى جديدًا",
+    "misconceptionTrap": "تعميم GenAI على كل DL",
+    "depthExplanation": "التعلم العميق يمكن أن يستخدم في مهام مثل التعرف على الكلام أيضًا.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "universal_quantifier",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
+        16,
         17
       ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
     "secondaryConceptIds": [
-      "concept-1-2-06"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1209,27 +1057,26 @@
     "lessonNumber": "1-2",
     "index": 21,
     "type": "mcq",
-    "title": "التشخيص الاصطلاحي لظاهرة الهلوسة في الأنظمة التوليدية",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "medium",
+    "title": "المعيار الأساسي لـGenAI",
+    "cognitiveLevel": "تمييز بين المفاهيم",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-06",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "قدم نظام توليدي إجابة تبدو منطقية ومقنعة، لكن عند الرجوع إلى مصدر موثوق تبين أنها غير صحيحة. ما المصطلح الذي يصف الحالة؟",
+    "question": "ما السمة الفارقة للذكاء الاصطناعي التوليدي؟",
     "options": [
-      "الهلوسة",
-      "التعلم العميق",
-      "طبقة الإدخال",
-      "التصنيف"
+      "إنشاء محتوى جديد",
+      "عرض محتوى قديم",
+      "تخزين البيانات",
+      "تصنيف رسالة موجودة فقط"
     ],
     "correctAnswer": 0,
-    "correctAnswerText": "الهلوسة",
-    "misconceptionTrap": "توقع أن الخطأ في الذكاء الاصطناعي يظهر دائمًا كنص غير مفهوم أو رموز مكسورة.",
-    "depthExplanation": "الهلوسة هي إنتاج معلومات أو إجابات تبدو معقولة ومقنعة لكنها غير صحيحة واقعيًا أو غير مدعومة بمصادر معتمدة.",
-    "teacherDiscussionPrompt": "لماذا تعد الهلوسة المقنعة لغويًا أخطر بكثير من الخطأ الواضح الفاضح؟",
-    "trapType": "hallucination_plausibility",
+    "correctAnswerText": "إنشاء محتوى جديد",
+    "misconceptionTrap": "الخلط بين الإنشاء والتحليل",
+    "depthExplanation": "إنشاء المحتوى الجديد هو جوهر تعريف GenAI في الدرس.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "creation_vs_analysis",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -1238,17 +1085,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-06"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-06",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1269,27 +1108,26 @@
     "lessonNumber": "1-2",
     "index": 22,
     "type": "mcq",
-    "title": "المخاطر الأكاديمية للاعتماد غير النقدي على النظم التوليدية",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "hard",
+    "title": "تنوع المخرجات",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "لماذا يمثل استخدام إجابة مولدة بالذكاء الاصطناعي كما هي في تقرير مدرسي خطرًا؟",
+    "question": "أي مجموعة وردت ضمن أمثلة المحتوى الذي قد ينشئه GenAI؟",
     "options": [
-      "لأن الذكاء الاصطناعي لا يستطيع إنتاج النصوص",
-      "لأن الإجابة قد تبدو صحيحة ومقنعة رغم كونها غير صحيحة واقعيًا أو غير مدعومة بمصدر",
-      "لأن كل إجابات الذكاء الاصطناعي خاطئة بالضرورة",
-      "لأن استخدام أي تقنية ذكاء اصطناعي يمنع التعلم"
+      "النصوص والصور والصوت والبرمجيات",
+      "الجداول فقط",
+      "الملفات فقط",
+      "الأرقام فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "لأن الإجابة قد تبدو صحيحة ومقنعة رغم كونها غير صحيحة واقعيًا أو غير مدعومة بمصدر",
-    "misconceptionTrap": "التطرف بين رفض الذكاء الاصطناعي كليًا أو التسليم المطلق بصحة كل ما يكتبه.",
-    "depthExplanation": "المشكلة ليست أن كل المخرجات خاطئة، وإنما أن المخرج قد يبدو مقنعًا لغويًا رغم عدم صحته؛ لذلك يجب التحقق منه.",
-    "teacherDiscussionPrompt": "ما هي العواقب التعليمية لتقديم بحث يحتوي على مراجع مختلقة من هلوسة الذكاء الاصطناعي؟",
-    "trapType": "false_dichotomy",
+    "correctAnswer": 0,
+    "correctAnswerText": "النصوص والصور والصوت والبرمجيات",
+    "misconceptionTrap": "حصر التوليد في النصوص",
+    "depthExplanation": "الدرس يذكر عدة أنواع من المحتوى.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "output_scope",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -1298,17 +1136,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-05"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-05",
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1329,27 +1159,26 @@
     "lessonNumber": "1-2",
     "index": 23,
     "type": "mcq",
-    "title": "البروتوكول السلوكي المعتمد للتحقق من المخرجات",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "medium",
+    "title": "استرجاع صورة ليس توليدًا",
+    "cognitiveLevel": "تمييز بين المفاهيم",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "طالب حصل على إجابة من أداة ذكاء اصطناعي توليدي وأراد استخدامها في تقرير مدرسي. ما التصرف الأكثر توافقًا مع الدرس؟",
+    "question": "أداة تعرض صورة محفوظة دون إنشاء محتوى جديد. هل يكفي ذلك لوصفها بأنها GenAI؟",
     "options": [
-      "اعتمادها مباشرة لأنها تبدو مقنعة",
-      "رفضها مباشرة لأن كل مخرجات الذكاء الاصطناعي خاطئة",
-      "التحقق من الإجابة بالرجوع إلى المصادر المعتمدة قبل اعتمادها",
-      "تغيير الإجابة دون مقارنتها بأي مصدر"
+      "نعم دائمًا",
+      "لا، لأن التوليد يعني إنشاء محتوى جديد",
+      "نعم لأن الصور مذكورة",
+      "لا لأن AI لا يتعامل مع الصور"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "التحقق من الإجابة بالرجوع إلى المصادر المعتمدة قبل اعتمادها",
-    "misconceptionTrap": "الاكتفاء بالفحص الشكلي أو اللغوي للإجابة وإهمال مطابقتها بالمراجع الموثوقة.",
-    "depthExplanation": "الإجراء المنهجي المطلوب في الدرس هو التحقق من المخرجات بالرجوع إلى المصادر المعتمدة والكتب الرسمية.",
-    "teacherDiscussionPrompt": "كيف تدرب طلابك عمليًا على مضاهاة إجابة ChatGPT بنصوص الكتاب المدرسي؟",
-    "trapType": "verification_neglect",
+    "correctAnswer": 1,
+    "correctAnswerText": "لا، لأن التوليد يعني إنشاء محتوى جديد",
+    "misconceptionTrap": "الخلط بين العرض والإنشاء",
+    "depthExplanation": "عرض محتوى موجود ليس هو إنشاء محتوى جديد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "display_vs_generation",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -1358,17 +1187,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-05"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-05",
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1389,43 +1210,37 @@
     "lessonNumber": "1-2",
     "index": 24,
     "type": "mcq",
-    "title": "المفاضلة المعرفية بين مهام التصنيف ومهام التوليد",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "علاقة GenAI بـDL",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-02",
+      "concept-1-2-03",
       "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي عبارة تفرق بصورة أدق بين إنتاج المحتوى وتصنيف المحتوى؟",
+    "question": "أي عبارة أدق؟",
     "options": [
-      "التصنيف والتوليد يعنيان الشيء نفسه",
-      "التوليد يعني تطبيق قاعدة ثابتة فقط",
-      "التصنيف لا يمكن أن يكون من مهام الذكاء الاصطناعي",
-      "التصنيف يحدد فئة أو نتيجة مناسبة، بينما التوليد ينشئ محتوى جديدًا"
+      "كل DL هو GenAI",
+      "أغلب أنظمة GenAI الحديثة تعتمد على نماذج DL",
+      "GenAI لا علاقة له بـDL",
+      "DL منفصل تمامًا عن GenAI"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "التصنيف يحدد فئة أو نتيجة مناسبة، بينما التوليد ينشئ محتوى جديدًا",
-    "misconceptionTrap": "عدم إدراك الفارق بين فرز المدخلات القائمة وصياغة مخرجات جديدة ومبتكرة.",
-    "depthExplanation": "الدرس يذكر التصنيف ضمن مهام التعلّم الآلي التقليدية، بينما الذكاء الاصطناعي التوليدي يركز على إنشاء محتوى جديد كالنصوص والصور.",
-    "teacherDiscussionPrompt": "صنف المهام التالية: فرز رسائل البريد، كتابة مقال، تمييز الوجوه، رسم صورة.",
-    "trapType": "task_classification",
+    "correctAnswer": 1,
+    "correctAnswerText": "أغلب أنظمة GenAI الحديثة تعتمد على نماذج DL",
+    "misconceptionTrap": "تحويل العلاقة الغالبة إلى مساواة",
+    "depthExplanation": "الدرس يقول إن أغلب الأنظمة الحديثة تعتمد على DL، لا أن المفهومين متطابقان.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "relationship_overgeneralization",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
       "concept-1-2-05"
     ],
@@ -1449,46 +1264,37 @@
     "lessonNumber": "1-2",
     "index": 25,
     "type": "mcq",
-    "title": "الجوهر التقني لأنظمة التوصية كأحد تطبيقات التعلّم الآلي",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "توليد نص جديد",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "إذا كان النظام يوصي بمنتج للمستخدم اعتمادًا على الأنماط التي تعلمها من البيانات، فما العنصر الذي يحدد أنه مثال على التعلّم الآلي؟",
+    "question": "أي موقف هو الأوضح كـGenAI؟",
     "options": [
-      "تعلمه أنماطًا من البيانات لاستخدامها في التوصية",
-      "كونه يعرض المنتج على شاشة",
-      "كونه يستخدم حاسوبًا",
-      "كون المنتج له اسم"
+      "تصنيف رسالة",
+      "التعرف على كلام",
+      "إنشاء نص جديد",
+      "تخزين ملف"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تعلمه أنماطًا من البيانات لاستخدامها في التوصية",
-    "misconceptionTrap": "التركيز على المظهر البرمجي الخارجي وتجاهل الآلية الأساسية للتعلم من البيانات.",
-    "depthExplanation": "التوصية مثال مذكور في الدرس للتعلّم الآلي، والعنصر الجوهري ليس مجرد العرض أو الحوسبة وإنما تعلم الأنماط من البيانات.",
-    "teacherDiscussionPrompt": "كيف تستفيد منصات الفيديو من سجل مشاهداتك لتوصية المقاطع القادمة؟",
-    "trapType": "superficial_features",
+    "correctAnswer": 2,
+    "correctAnswerText": "إنشاء نص جديد",
+    "misconceptionTrap": "الخلط بين التصنيف والتوليد",
+    "depthExplanation": "إنشاء النصوص من أمثلة GenAI.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "task_identification",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1509,46 +1315,37 @@
     "lessonNumber": "1-2",
     "index": 26,
     "type": "mcq",
-    "title": "السمة الحاكمة للتعلّم الخاضع للإشراف (Supervised Learning)",
+    "title": "أداة توليد الصور",
     "cognitiveLevel": "تمييز بين المفاهيم",
     "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي موقف يمثل التعلّم الخاضع للإشراف كما ورد في المادة؟",
+    "question": "أي مثال ذُكر للذكاء الاصطناعي التوليدي؟",
     "options": [
-      "إعطاء النموذج بيانات غير موسومة فقط ليكتشف التجمعات",
-      "تدريب نموذج باستخدام بيانات موسومة تحتوي على الإجابات الصحيحة",
-      "تعلم الوكيل من المكافآت والعقوبات أثناء التفاعل مع البيئة",
-      "إنتاج محتوى جديد دون استخدام بيانات تدريب"
+      "ChatGPT وأدوات توليد الصور",
+      "مرشحات الرسائل فقط",
+      "توصيات المنتجات فقط",
+      "التعرف على الكلام فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "تدريب نموذج باستخدام بيانات موسومة تحتوي على الإجابات الصحيحة",
-    "misconceptionTrap": "الخلط بين البيانات الموسومة والبيانات غير المصنفة.",
-    "depthExplanation": "التعلّم الخاضع للإشراف يعتمد أساسًا على بيانات تدريبية موسومة ومصحوبة بالإجابات أو التصنيفات الصحيحة المسبقة.",
-    "teacherDiscussionPrompt": "لماذا يشبه التعلم الخاضع للإشراف وجود معلم يصحح كراسة إجابات الطالب؟",
-    "trapType": "supervision_type",
+    "correctAnswer": 0,
+    "correctAnswerText": "ChatGPT وأدوات توليد الصور",
+    "misconceptionTrap": "خلط أمثلة ML وDL مع GenAI",
+    "depthExplanation": "هذه أمثلة صريحة في النص.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "example_category_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1569,46 +1366,37 @@
     "lessonNumber": "1-2",
     "index": 27,
     "type": "mcq",
-    "title": "اكتشاف التجمعات في التعلّم غير الخاضع للإشراف (Unsupervised Learning)",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
+    "title": "الجديد في المحتوى",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "نظام تلقى مجموعة من البيانات دون إجابات أو تصنيفات مسبقة، ثم حاول اكتشاف الأنماط والتجمعات فيها. ما نوع التعلم؟",
+    "question": "لماذا لا يكفي مجرد استرجاع محتوى موجود لاعتبار المهمة توليدية؟",
     "options": [
-      "التعلّم الخاضع للإشراف",
-      "التعلّم المعزز",
-      "التعلّم غير الخاضع للإشراف",
-      "الذكاء الاصطناعي التوليدي بالضرورة"
+      "لأن GenAI يركز على إنشاء محتوى جديد",
+      "لأن الاسترجاع لا يستخدم حاسوبًا",
+      "لأن كل محتوى قديم خاطئ",
+      "لأن التوليد للصوت فقط"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "التعلّم غير الخاضع للإشراف",
-    "misconceptionTrap": "اعتقاد أن غياب الوسوم يعني أن النظام يتعلم بالتعزيز والمكافآت.",
-    "depthExplanation": "التعلم غير الخاضع للإشراف يستخدم بيانات غير موسومة، ويبحث النموذج تلقائيًا عن البنى والأنماط والتجمعات الخفية دون وسوم مسبقة.",
-    "teacherDiscussionPrompt": "كيف يستطيع المتجر تصنيف العملاء إلى شرائح دون معرفة تصنيف كل عميل مسبقًا؟",
-    "trapType": "label_absence_confusion",
+    "correctAnswer": 0,
+    "correctAnswerText": "لأن GenAI يركز على إنشاء محتوى جديد",
+    "misconceptionTrap": "إهمال كلمة جديد",
+    "depthExplanation": "تعريف GenAI يرتبط بإنشاء محتوى جديد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "definition_anchor",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1629,45 +1417,40 @@
     "lessonNumber": "1-2",
     "index": 28,
     "type": "mcq",
-    "title": "محددات التعلّم المعزز: تفاعل، تجربة وخطأ، مكافآت وعقوبات",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
+    "title": "DL وGenAI قد يجتمعان",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "وكيل يتفاعل مع بيئة، يجرب أفعالًا مختلفة، ويحصل على مكافآت عند التصرف بصورة صحيحة وعقوبات عند الخطأ. ما نوع التعلم الذي يصفه الدرس؟",
+    "question": "إذا استخدمت أداة توليدية نموذج تعلم عميق، فما الاستنتاج الصحيح؟",
     "options": [
-      "التعلّم غير الخاضع للإشراف",
-      "التعلّم الخاضع للإشراف",
-      "التعلم العميق بالضرورة",
-      "التعلّم المعزز"
+      "DL وGenAI متطابقان",
+      "الأداة GenAI وقد تعتمد على DL",
+      "الأداة ليست AI",
+      "DL لا علاقة له بالتوليد"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "التعلّم المعزز",
-    "misconceptionTrap": "الاعتقاد بأن وجود ردود أفعال يعني أنه تعلم خاضع للإشراف، متجاهلين أنه لا يتلقى بيانات موسومة مسبقًا.",
-    "depthExplanation": "التعلم المعزز يعتمد على التفاعل الحي مع البيئة، واستراتيجية التجربة والخطأ، والتوجيه عبر المكافآت والعقوبات.",
-    "teacherDiscussionPrompt": "كيف يدرب مهندسو الروبوتات الذراع الآلية على المشي باستخدام المكافآت؟",
-    "trapType": "reinforcement_mechanism",
+    "correctAnswer": 1,
+    "correctAnswerText": "الأداة GenAI وقد تعتمد على DL",
+    "misconceptionTrap": "المساواة بين الأسلوب والمهمة",
+    "depthExplanation": "الاثنان قد يجتمعان دون أن يكونا مفهومًا واحدًا.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "method_vs_task",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        16,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1689,45 +1472,40 @@
     "lessonNumber": "1-2",
     "index": 29,
     "type": "mcq",
-    "title": "التمييز بين اختلاف نمط التعلّم واختلاف مجال التطبيق",
-    "cognitiveLevel": "تمييز بين المفاهيم",
+    "title": "الفرق بين التعرف والتوليد",
+    "cognitiveLevel": "تحليل ومقارنة",
     "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "question": "أي زوج من المواقف يمثل اختلافًا في نوع التعلم وليس مجرد اختلاف في المهمة؟",
+    "question": "أي مقارنة صحيحة؟",
     "options": [
-      "نموذج يتعلم من بيانات موسومة، ووكيل يتعلم من المكافآت والعقوبات",
-      "نظام يصنف الرسائل، ونظام يوصي بالمنتجات",
-      "نظام يتعرف على الصور، ونظام يتعرف على الكلام",
-      "نظام يولد النصوص، ونظام يولد الصور"
+      "التعرف والتوليد شيء واحد",
+      "التعرف يعالج نمطًا أو محتوى موجودًا، والتوليد ينشئ محتوى جديدًا",
+      "التوليد لا يستخدم بيانات تدريب",
+      "التعرف دائمًا GenAI"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نموذج يتعلم من بيانات موسومة، ووكيل يتعلم من المكافآت والعقوبات",
-    "misconceptionTrap": "الخلط بين وسائط البيانات (نصوص وصور) وبين فلسفة خوارزمية التعلم ذاتها.",
-    "depthExplanation": "الموقف الأول يوضح التعلم الخاضع للإشراف، والثاني يوضح التعلم المعزز، بينما بقية الخيارات تصف اختلاف المهام مع بقاء نفس نوع التعلم.",
-    "teacherDiscussionPrompt": "لماذا يعد تصنيف الصور وتصنيف الكلام نفس نمط التعلم رغم اختلاف نوع الوسائط؟",
-    "trapType": "task_vs_learning_paradigm",
+    "correctAnswer": 1,
+    "correctAnswerText": "التعرف يعالج نمطًا أو محتوى موجودًا، والتوليد ينشئ محتوى جديدًا",
+    "misconceptionTrap": "طمس اختلاف الهدف",
+    "depthExplanation": "الفرق في طبيعة الناتج والهدف الوظيفي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "recognition_generation",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        16,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1748,46 +1526,40 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 30,
-    "type": "true_false",
-    "title": "تفنيد استغناء البيانات الموسومة عن عملية التدريب",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "التوليد لا يعني اليقين",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05",
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "وجود بيانات موسومة يعني أن النموذج يتعلم دون الحاجة إلى أي عملية تعلم أو تدريب.",
+    "question": "هل قدرة النظام على إنشاء محتوى جديد تعني أن كل ما ينشئه صحيح؟",
     "options": [
-      "صحيح (صواب)",
-      "غير صحيح (خطأ)",
-      "صحيح إذا كانت البيانات مصنفة من قبل خبراء",
-      "صحيح في حالة البيانات النصية فقط"
+      "نعم دائمًا",
+      "لا، قد تحدث هلوسة ويجب التحقق",
+      "نعم إذا كان النص طويلًا",
+      "نعم إذا كانت الصياغة جيدة"
     ],
     "correctAnswer": 1,
-    "correctAnswerText": "غير صحيح (خطأ)",
-    "misconceptionTrap": "الظن بأن الوسم يغني عن حساب الأوزان ودورات التدريب الرياضية.",
-    "depthExplanation": "البيانات الموسومة هي مجرد مدخلات للتدريب في التعلم الخاضع للإشراف؛ وجودها شرط للتدريب وليس بديلًا عنه.",
-    "teacherDiscussionPrompt": "هل امتلاك كتاب الإجابات يغني الطالب عن المذاكرة وفهم طريقة الحل؟",
-    "trapType": "data_vs_training_process",
+    "correctAnswerText": "لا، قد تحدث هلوسة ويجب التحقق",
+    "misconceptionTrap": "الخلط بين القدرة على الإنشاء والصحة",
+    "depthExplanation": "الدرس يربط GenAI بخطر الهلوسة والحاجة للتحقق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "generation_vs_veracity",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-06"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -1809,46 +1581,37 @@
     "lessonNumber": "1-2",
     "index": 31,
     "type": "mcq",
-    "title": "الخصوصية الرياضية التي تفصل التعلم العميق عن التعلم الآلي البسيط",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
+    "title": "تعريف الهلوسة",
+    "cognitiveLevel": "هلوسة والتحقق",
+    "difficulty": "medium",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "أي عبارة توضح بصورة أدق لماذا يمكن أن يختلف التعلم العميق عن مجرد وصف عام للتعلم الآلي؟",
+    "question": "أي وصف يطابق الهلوسة؟",
     "options": [
-      "التعلم العميق لا يستخدم البيانات",
-      "التعلم العميق لا علاقة له بالشبكات العصبية",
-      "التعلم العميق أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات لتعلم أنماط وتمثيلات معقدة",
-      "التعلم العميق هو اسم آخر للذكاء الاصطناعي"
+      "إجابة تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
+      "توقف النظام",
+      "بطء الجهاز",
+      "تغير حجم الخط"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "التعلم العميق أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات لتعلم أنماط وتمثيلات معقدة",
-    "misconceptionTrap": "اعتبار التعلم العميق بديلاً مناقضاً للتعلم الآلي بدلاً من كونه أسلوباً نوعياً متخصصاً داخله.",
-    "depthExplanation": "هذه العبارة تجمع الخصائص التي يحدد بها الدرس التعلم العميق داخل التعلّم الآلي: الاعتماد على الشبكات متعددة الطبقات لتعلم التمثيلات المعقدة.",
-    "teacherDiscussionPrompt": "كيف تمكن الطبقات المتتالية النظام من استخراج الملامح دون هندسة يدوية؟",
-    "trapType": "definition_synthesis",
+    "correctAnswer": 0,
+    "correctAnswerText": "إجابة تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
+    "misconceptionTrap": "اعتبار الهلوسة خللًا شكليًا",
+    "depthExplanation": "الهَلوسة تتعلق بصحة المعلومة ودعمها بمصدر.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "hallucination_definition",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        15
+        17
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
-    "secondaryConceptIds": [
-      "concept-1-2-03"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1869,46 +1632,37 @@
     "lessonNumber": "1-2",
     "index": 32,
     "type": "mcq",
-    "title": "توصيف تقنية التعرف الصوتي كتعلم عميق غير توليدي",
-    "cognitiveLevel": "تطبيق على موقف",
+    "title": "الإقناع اللغوي ليس دليلًا",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "إذا استخدم نظام ذكاء اصطناعي شبكة عصبية متعددة الطبقات للتعرف على الكلام، فأي وصف هو الأكثر دقة؟",
+    "question": "قال طالب: «الإجابة مكتوبة بثقة، إذن هي صحيحة». ما الخطأ؟",
     "options": [
-      "النظام يستخدم الذكاء الاصطناعي التوليدي بالضرورة",
-      "النظام ليس ذكاءً اصطناعيًا",
-      "النظام يعتمد على قواعد ثابتة فقط",
-      "النظام يستخدم التعلم العميق، وهو أسلوب ضمن التعلّم الآلي"
+      "الثقة والأسلوب لا يمنعان الهلوسة",
+      "كل الإجابات الواثقة خاطئة",
+      "اللغة لا تستخدم في AI",
+      "التحقق لا علاقة له بالمحتوى"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "النظام يستخدم التعلم العميق، وهو أسلوب ضمن التعلّم الآلي",
-    "misconceptionTrap": "الافتراض الخاطئ بأن التعرف على الكلام يستلزم التوليد.",
-    "depthExplanation": "التعرف على الكلام مذكور في الدرس مثالاً مباشراً للتعلم العميق، الذي يعتمد على شبكات عصبية متعددة الطبقات لمعالجة الإشارات الصوتية.",
-    "teacherDiscussionPrompt": "لماذا تحتاج معالجة الموجات الصوتية إلى طبقات متعددة لاستخلاص الحروف والكلمات؟",
-    "trapType": "application_tagging",
+    "correctAnswer": 0,
+    "correctAnswerText": "الثقة والأسلوب لا يمنعان الهلوسة",
+    "misconceptionTrap": "الانحياز للإقناع",
+    "depthExplanation": "الهلوسة قد تكون مقنعة في شكلها رغم عدم صحتها.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "eloquence_bias",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        15
+        17
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-03"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1929,46 +1683,37 @@
     "lessonNumber": "1-2",
     "index": 33,
     "type": "mcq",
-    "title": "آلية التعلم الفيزيائية للشبكة العصبية الاصطناعية",
-    "cognitiveLevel": "فهم مباشر عميق",
+    "title": "الإجابة غير المدعومة",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "ما الذي يجعل الشبكة العصبية الاصطناعية قادرة على التعلم وفق المادة؟",
+    "question": "وجد الطالب معلومة معقولة لكنه لم يجد لها دعمًا في المصادر المعتمدة. ماذا يفعل؟",
     "options": [
-      "تغير أوزان الروابط أثناء التدريب لتتعلم أنماطًا من البيانات",
-      "ثبات جميع الأوزان وعدم تغييرها",
-      "عدم وجود طبقات داخل الشبكة",
-      "اعتمادها على مصادر خارجية في كل عملية"
+      "يعتمدها فورًا",
+      "يتحقق منها قبل اعتمادها",
+      "يحذف كل التقرير",
+      "يضيفها ثم لا يراجعها"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تغير أوزان الروابط أثناء التدريب لتتعلم أنماطًا من البيانات",
-    "misconceptionTrap": "تخيل أن الشبكة تحفظ البيانات كنصوص مخزنة بدلاً من تعديل أوزان الروابط العصبية.",
-    "depthExplanation": "تعريف ANN في المنهج يوضح أن أوزان الوحدات المترابطة تتغير أثناء التدريب لتتعلم الأنماط وتقلل الخطأ تدريجيًا.",
-    "teacherDiscussionPrompt": "كيف تشبه قوة الرابطة بين عصبونين التوصيل العصبي في المخ البشري؟",
-    "trapType": "ann_mechanism",
+    "correctAnswer": 1,
+    "correctAnswerText": "يتحقق منها قبل اعتمادها",
+    "misconceptionTrap": "اعتبار المعقولية دليلًا كافيًا",
+    "depthExplanation": "غياب الدعم الموثوق يستدعي التحقق قبل الاعتماد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "unsupported_claim",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        16
+        17
       ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -1989,46 +1734,37 @@
     "lessonNumber": "1-2",
     "index": 34,
     "type": "mcq",
-    "title": "الاستدلال على هيكلية ANN من تتابع الطبقات",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
+    "title": "المراجعة البشرية",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "إذا كانت طبقة الإدخال تستقبل بيانات، ثم تمر البيانات عبر عدة طبقات مخفية، ثم تظهر نتيجة في طبقة الإخراج، فما الذي نستطيع استنتاجه؟",
+    "question": "لماذا تظل المراجعة البشرية ضرورية؟",
     "options": [
-      "هذه بالضرورة قاعدة بيانات",
-      "هذه بنية شبكة عصبية اصطناعية كما يوضح الدرس",
-      "هذه بنية نظام تشغيل",
-      "هذه آلية تخزين ملفات"
+      "لأن المخرجات قد تبدو صحيحة وهي غير صحيحة",
+      "لأن الإنسان أسرع دائمًا",
+      "لأن AI لا يستطيع الكتابة",
+      "لأن الصور لا تنتج"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "هذه بنية شبكة عصبية اصطناعية كما يوضح الدرس",
-    "misconceptionTrap": "الخلط بين المعمارية العصبية وهياكل البيانات التقليدية كالجداول والملفات.",
-    "depthExplanation": "طبقة الإدخال والطبقات المخفية وطبقة الإخراج هي البنية المعمارية الحصرية للشبكة العصبية الاصطناعية الواردة في المنهج.",
-    "teacherDiscussionPrompt": "ما هي وظيفة كل طبقة عند إدخال صورة رقمية لتصنيفها؟",
-    "trapType": "structural_recognition",
+    "correctAnswer": 0,
+    "correctAnswerText": "لأن المخرجات قد تبدو صحيحة وهي غير صحيحة",
+    "misconceptionTrap": "فهم Human-in-the-Loop كإجراء شكلي",
+    "depthExplanation": "خطر الهلوسة يفسر الحاجة إلى التحقق البشري.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "human_verification",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        16
+        17
       ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2049,27 +1785,27 @@
     "lessonNumber": "1-2",
     "index": 35,
     "type": "mcq",
-    "title": "المبرر الجوهري لإلزامية التحقق البشري من المخرجات",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "title": "تقرير مدرسي ومخرج مولد",
+    "cognitiveLevel": "تطبيق على موقف",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-06",
-      "concept-1-2-01"
+      "concept-1-2-05",
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "أي حالة توضح سبب أهمية التحقق البشري من مخرجات الذكاء الاصطناعي التوليدي؟",
+    "question": "طالب يريد نسخ مخرج توليدي مباشرة إلى تقرير مدرسي. ما التصرف الصحيح؟",
     "options": [
-      "النظام أنتج نصًا بسرعة",
-      "النظام استخدم بيانات أثناء التدريب",
-      "النظام قدم معلومة تبدو معقولة، لكن لا يوجد دليل موثوق يدعمها",
-      "النظام يحتوي على طبقات مخفية"
+      "نسخه كما هو",
+      "التحقق منه بالرجوع إلى المصادر المعتمدة",
+      "رفض كل أدوات AI",
+      "تغيير الكلمات فقط"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "النظام قدم معلومة تبدو معقولة، لكن لا يوجد دليل موثوق يدعمها",
-    "misconceptionTrap": "الاعتقاد بأن الحاجة للتحقق تقتصر فقط على الإجابات غير المترابطة نحويًا.",
-    "depthExplanation": "الهلوسة قد تكون مقنعة ظاهريًا ولغويًا لكنها غير مدعومة بمصادر حقيقية، ولذلك يلزم التحقق البشري الصارم والرجوع للمصادر.",
-    "teacherDiscussionPrompt": "ما هو دور الحس النقدي الإنساني عند التعامل مع النصوص الذكية المولدة؟",
-    "trapType": "human_in_the_loop",
+    "correctAnswer": 1,
+    "correctAnswerText": "التحقق منه بالرجوع إلى المصادر المعتمدة",
+    "misconceptionTrap": "إعادة الصياغة لا تتحقق من الحقيقة",
+    "depthExplanation": "الدرس يحذر من اعتماد المخرجات كما هي دون تدقيق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "verification_requirement",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2078,16 +1814,10 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-06"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-06",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-06"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2108,28 +1838,27 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 36,
-    "type": "true_false",
-    "title": "تفنيد الاعتماد على الإقناع اللغوي كبديل عن التوثيق",
+    "type": "mcq",
+    "title": "المصدر الأقوى",
     "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "medium",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-06",
-      "concept-1-2-01"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "كلما كانت إجابة الذكاء الاصطناعي التوليدي مقنعة لغويًا، أصبح التحقق منها غير ضروري.",
+    "question": "أي دليل أقوى لاعتماد معلومة مولدة؟",
     "options": [
-      "صحيح (صواب)",
-      "صحيح فقط في الأبحاث الأدبية",
-      "صحيح إذا تضمنت أرقامًا عشرية",
-      "غير صحيح (خطأ)"
+      "أنها طويلة",
+      "أنها مقنعة",
+      "أنها متوافقة مع مصدر معتمد بعد التحقق",
+      "أن النموذج أجاب بسرعة"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "غير صحيح (خطأ)",
-    "misconceptionTrap": "الانخداع بالبلاغة اللفظية واعتبار الفصاحة دليلاً على الصحة العلمية.",
-    "depthExplanation": "الهلوسة تحديدًا خطرة ومخادعة لأن المعلومة غير الصحيحة تأتي غالبًا في قالب لغوي محكم وفصيح ومقنع للغاية.",
-    "teacherDiscussionPrompt": "كيف يولد النموذج مصطلحات وتواريخ تبدو حقيقية جداً وهي وهمية بالكامل؟",
-    "trapType": "eloquence_bias",
+    "correctAnswer": 2,
+    "correctAnswerText": "أنها متوافقة مع مصدر معتمد بعد التحقق",
+    "misconceptionTrap": "استبدال الدليل بالمظهر",
+    "depthExplanation": "المعيار الصحيح هو التحقق ومطابقة المصادر المعتمدة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "evidence_quality",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2138,17 +1867,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-06"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-06",
-    "secondaryConceptIds": [
-      "concept-1-2-01"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2169,27 +1890,26 @@
     "lessonNumber": "1-2",
     "index": 37,
     "type": "mcq",
-    "title": "الموازنة المتكاملة بين كفاءة المعالجة ومحدودية الفهم",
-    "cognitiveLevel": "تحليل ومقارنة",
+    "title": "الهلوسة ليست رفض الإجابة",
+    "cognitiveLevel": "تمييز بين المفاهيم",
     "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-01",
       "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "أي استنتاج يجمع بصورة صحيحة بين قوة الذكاء الاصطناعي وحدوده؟",
+    "question": "أي عبارة خاطئة عن الهلوسة؟",
     "options": [
-      "يمكنه معالجة كميات كبيرة من البيانات بسرعة، ومع ذلك قد ينتج معلومات غير صحيحة",
-      "قدرته على معالجة البيانات تعني امتلاكه الفطرة السليمة دائمًا",
-      "وجود الذكاء الاصطناعي يلغي الحاجة إلى المصادر",
-      "الهلوسة تعني أن النظام لا يستطيع معالجة أي بيانات"
+      "قد تكون المعلومة غير صحيحة",
+      "قد تبدو الإجابة معقولة",
+      "تعني أن النموذج يرفض الإجابة دائمًا",
+      "تستدعي التحقق"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يمكنه معالجة كميات كبيرة من البيانات بسرعة، ومع ذلك قد ينتج معلومات غير صحيحة",
-    "misconceptionTrap": "افتراض أن الذكاء الاصطناعي يمتلك وعياً أو منطقاً سليماً فطرياً شبيهاً بالإنسان.",
-    "depthExplanation": "المنهج يحدد بدقة نقاط القوة (السرعة وتحليل البيانات الضخمة) ونقاط الضعف (الهلوسة وغياب المنطق السليم والفطرة).",
-    "teacherDiscussionPrompt": "ما الفرق بين الحساب الرياضي الإحصائي وبين الفهم والوعي الإنساني بالواقع؟",
-    "trapType": "anthropomorphism",
+    "correctAnswer": 2,
+    "correctAnswerText": "تعني أن النموذج يرفض الإجابة دائمًا",
+    "misconceptionTrap": "تعريف الهلوسة على أنها عدم إجابة",
+    "depthExplanation": "الهلوسة تعني توليد معلومات غير صحيحة أو غير مدعومة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "definition_inversion",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2198,17 +1918,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-01"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2229,27 +1941,26 @@
     "lessonNumber": "1-2",
     "index": 38,
     "type": "mcq",
-    "title": "عدم اعتبار التوليد دليلاً كافياً على الحقيقة الواقعية",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "hard",
+    "title": "المعقولية مقابل الحقيقة",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-05",
       "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "لماذا لا يمكن اعتبار كل مخرج من نظام الذكاء الاصطناعي التوليدي حقيقة مؤكدة لمجرد أن النظام نجح في إنشاءه؟",
+    "question": "أي موقف يكشف الفرق بين «مقنعة» و«صحيحة»؟",
     "options": [
-      "لأن النظام لا يستطيع إنتاج أي شيء",
-      "لأن النظام قد ينتج معلومات تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
-      "لأن كل محتوى يولده النظام خاطئ بالضرورة",
-      "لأن الذكاء الاصطناعي لا يستخدم البيانات"
+      "نص ممتاز الصياغة يناقض المصدر الرسمي",
+      "نص قصير مطابق للمصدر",
+      "نص واضح من الكتاب",
+      "نص مدعوم بمصدر معتمد"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "لأن النظام قد ينتج معلومات تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
-    "misconceptionTrap": "الخلط بين القدرة التقنية على التوليد والصدق المعرفي للمحتوى المولد.",
-    "depthExplanation": "هذا هو جوهر تعريف الهلوسة في المنهج؛ فالقدرة على الإنشاء اللغوي لا تضمن مطابقة الواقع المعرفي أو وجود مصدر حقيقي.",
-    "teacherDiscussionPrompt": "كيف توضح الفرق بين تأليف قصة خيالية وسرد وقائع تاريخية حقيقية؟",
-    "trapType": "generation_vs_veracity",
+    "correctAnswer": 0,
+    "correctAnswerText": "نص ممتاز الصياغة يناقض المصدر الرسمي",
+    "misconceptionTrap": "مساواة جودة الأسلوب بصحة المحتوى",
+    "depthExplanation": "قد تكون الإجابة المقنعة هلوسة، لذلك نحتاج إلى المصدر.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "plausibility_vs_truth",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2258,17 +1969,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-05"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-05",
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2289,27 +1992,27 @@
     "lessonNumber": "1-2",
     "index": 39,
     "type": "mcq",
-    "title": "كشف المغالطة في علاقة التكافؤ بين التعلم العميق والذكاء التوليدي",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
+    "title": "التحقق لا يعني الرفض التام",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "hard",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
+      "concept-1-2-05",
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "أي عبارة تمثل فهمًا خاطئًا للعلاقة بين التعلم العميق والذكاء الاصطناعي التوليدي؟",
+    "question": "أي موقف يعبر عن الاستخدام المتزن للمخرجات التوليدية؟",
     "options": [
-      "غالبية أنظمة الذكاء الاصطناعي التوليدي الحديثة تعتمد على نماذج التعلم العميق",
-      "التعلم العميق أسلوب ضمن التعلّم الآلي",
-      "كل تعلم عميق هو ذكاء اصطناعي توليدي",
-      "الذكاء الاصطناعي التوليدي يركز على إنشاء محتوى جديد"
+      "كل المخرجات خاطئة",
+      "كل المخرجات صحيحة",
+      "يمكن الاستفادة منها بعد التحقق والمراجعة",
+      "يجب منع كل استخدام"
     ],
     "correctAnswer": 2,
-    "correctAnswerText": "كل تعلم عميق هو ذكاء اصطناعي توليدي",
-    "misconceptionTrap": "عكس العلاقة الشرطية وتعميم التوليد على كافة تطبيقات الشبكات العصبية العميقة.",
-    "depthExplanation": "المنهج يوضح أن غالبية أنظمة GenAI الحديثة تعتمد على نماذج التعلم العميق، لكنه لا يقول أبدًا إن كل تعلم عميق هو توليدي (مثل أنظمة كشف الغش والتصنيف).",
-    "teacherDiscussionPrompt": "أعط مثالين لنظامين عميقين: أحدهما تصنيفي والآخر توليدي.",
-    "trapType": "universal_quantifier_trap",
+    "correctAnswerText": "يمكن الاستفادة منها بعد التحقق والمراجعة",
+    "misconceptionTrap": "الانتقال من الحذر إلى الرفض المطلق",
+    "depthExplanation": "المشكلة هي الاعتماد غير المدقق، وليس مجرد استخدام الأداة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "false_dichotomy",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2318,16 +2021,10 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-03"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
     "secondaryConceptIds": [
-      "concept-1-2-05"
+      "concept-1-2-06"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2349,27 +2046,26 @@
     "lessonNumber": "1-2",
     "index": 40,
     "type": "mcq",
-    "title": "المقارنة الوظيفية بين مهمتي التعرف والإنشاء في نماذج DL",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
+    "title": "مصدر لا يكفي اسمه",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
+      "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "نظامان كلاهما يستخدمان التعلم العميق: الأول يتعرف على الكلام، والثاني ينشئ نصًا جديدًا. ما الفرق الأهم بينهما وفق الدرس؟",
+    "question": "إذا ذكر النموذج اسم مصدر، ما التصرف الأدق؟",
     "options": [
-      "الأول ليس ذكاءً اصطناعيًا، والثاني فقط ذكاء اصطناعي",
-      "الأول تعلم آلي، والثاني ليس تعلمًا آليًا",
-      "لا يوجد أي فرق بين التعرف والتوليد",
-      "الأول يستخدم التعلم العميق في التعرف، والثاني يستخدمه في نظام توليدي لإنشاء محتوى"
+      "اعتبار المصدر صحيحًا تلقائيًا",
+      "التحقق فعليًا من المعلومة في المصدر المعتمد",
+      "تجاهل كل المصادر",
+      "اعتماد المعلومة لأنها ذكرت مصدرًا"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "الأول يستخدم التعلم العميق في التعرف، والثاني يستخدمه في نظام توليدي لإنشاء محتوى",
-    "misconceptionTrap": "اعتقاد أن الاشتراك في نفس المعمارية (التعلم العميق) يلغي التمايز الوظيفي بين المهام.",
-    "depthExplanation": "كلاهما يعتمدان على التعلم العميق كأسلوب، ولكن يختلفان في نوع المهمة والهدف النهائي: مهمة تعرف وتمييز مقابل مهمة توليد وإنشاء.",
-    "teacherDiscussionPrompt": "كيف يغير اتجاه معالجة البيانات نوع التطبيق من تحليل إلى تركيب؟",
-    "trapType": "architecture_vs_objective",
+    "correctAnswer": 1,
+    "correctAnswerText": "التحقق فعليًا من المعلومة في المصدر المعتمد",
+    "misconceptionTrap": "الثقة الآلية في الاستشهاد",
+    "depthExplanation": "وجود اسم مصدر لا يغني عن التحقق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "citation_trust",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2378,17 +2074,9 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-03"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-03",
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2408,47 +2096,41 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 41,
-    "type": "scenario",
-    "title": "سيناريو تطبيقي: تذبذب دقة تشخيص المحاصيل بتغير ظروف التصوير",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "تصنيف الرسائل مقابل توليد النص",
+    "cognitiveLevel": "أسئلة مركبة صعبة",
+    "difficulty": "very-hard",
     "conceptIds": [
       "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو تطبيقي: تذبذب دقة تشخيص المحاصيل بتغير ظروف التصوير",
-    "question": "طُلب من طالب تقييم نظام ذكاء اصطناعي يصنف صور المحاصيل السليمة والمصابة. النظام كان دقيقًا جدًا في الصور المشابهة لصور التدريب، لكنه أخطأ كثيرًا في ظروف تصوير مختلفة (إضاءة وزوايا جديدة). ما التفسير الأقرب لما تعلمته في الدرس؟",
+    "question": "نظام يصنف الرسائل وآخر ينشئ رسائل جديدة. ما الفرق الأساسي؟",
     "options": [
-      "الأنماط الموجودة في البيانات الجديدة مختلفة عن بيانات التدريب مما أثر على قدرة النموذج على التنبؤ السليم",
-      "النظام تحول فجأة إلى ذكاء اصطناعي توليدي بسبب كثرة الصور",
-      "المعالج الحاسوبي استنفد ذاكرة التخزين المؤقت بالكامل",
-      "البرمجة التقليدية لا تسمح بتصنيف المحاصيل الزراعية"
+      "كلاهما توليدي",
+      "الأول مهمة تصنيف بالتعلم الآلي، والثاني مهمة توليد محتوى",
+      "الأول ليس AI",
+      "الثاني لا يتعلم"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الأنماط الموجودة في البيانات الجديدة مختلفة عن بيانات التدريب مما أثر على قدرة النموذج على التنبؤ السليم",
-    "misconceptionTrap": "توقع أن النظام يستطيع التكيف تلقائيًا مع ظروف تصوير لم تتضمنها بيانات التدريب.",
-    "depthExplanation": "المادة تشير بوضوح إلى أن اختلاف ظروف الإضاءة والزوايا عن بيانات التدريب يؤدي لأخطاء في التنبؤ، لأن النموذج يتعلم الأنماط من البيانات التي تدرب عليها فقط.",
-    "teacherDiscussionPrompt": "ماذا يسمى هذا التحدي هندسيًا؟ وكيف نجمع بيانات تدريبية أكثر شمولاً؟",
-    "trapType": "distribution_shift",
+    "correctAnswer": 1,
+    "correctAnswerText": "الأول مهمة تصنيف بالتعلم الآلي، والثاني مهمة توليد محتوى",
+    "misconceptionTrap": "اعتبار كل معالجة نص توليدًا",
+    "depthExplanation": "نوع المهمة هو الفارق الأساسي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "text_task_confusion",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        15,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2469,47 +2151,47 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 42,
-    "type": "scenario",
-    "title": "سيناريو نقدي: تقييم مقولة انفصال التعلم العميق عن التعلم الآلي",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "مخطط العلاقة الكامل",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
     "conceptIds": [
+      "concept-1-2-01",
       "concept-1-2-02",
-      "concept-1-2-03"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو نقدي: تقييم مقولة انفصال التعلم العميق عن التعلم الآلي",
-    "question": "قال طالب: \"بما أن التعلّم العميق يعتمد على الشبكات العصبية، فهو مجال منفصل تمامًا عن التعلّم الآلي\". هل استنتاجه صحيح؟ ولماذا؟",
+    "question": "أي عبارة تجمع العلاقة الأساسية بصورة صحيحة؟",
     "options": [
-      "صحيح؛ لأن الشبكات العصبية لا تعتمد على البيانات",
-      "غير صحيح؛ فالتعلم العميق أسلوب من أساليب التعلّم الآلي ويعتمد على شبكات عصبية متعددة الطبقات",
-      "صحيح؛ لأن التعلّم الآلي مقتصر على القواعد البرمجية الصريحة",
-      "غير صحيح؛ لأن التعلّم العميق هو نفسه البرمجة التقليدية"
+      "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML، وGenAI الحديث يعتمد غالبًا على DL ويُنشئ محتوى جديدًا",
+      "ML أوسع من AI",
+      "DL منفصل عن ML",
+      "GenAI هو المجال الأوسع"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "غير صحيح؛ فالتعلم العميق أسلوب من أساليب التعلّم الآلي ويعتمد على شبكات عصبية متعددة الطبقات",
-    "misconceptionTrap": "فصل التقنيات المتقدمة عن أصولها المعرفية والتصنيفية العامة.",
-    "depthExplanation": "الدرس يضع التعلم العميق صراحة كأسلوب متفرع من التعلّم الآلي، ولا يمكن اعتباره مجالاً منفصلاً عنه بأي حال.",
-    "teacherDiscussionPrompt": "كيف تصحح لزميلك هذا المفهوم باستخدام مخطط الدرس الرسمي؟",
-    "trapType": "taxonomy_disconnection",
+    "correctAnswer": 0,
+    "correctAnswerText": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML، وGenAI الحديث يعتمد غالبًا على DL ويُنشئ محتوى جديدًا",
+    "misconceptionTrap": "خلط مستويات العلاقة",
+    "depthExplanation": "هذه هي الخلاصة التعليمية المتكاملة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "holistic_relation",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        15
+        13,
+        14,
+        16,
+        17
       ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم العميق والشبكات العصبية متعددة الطبقات (ANN): معالجة البيانات المعقدة والصور بتمثيلات متعددة المستويات.",
-        "page": 15,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-03"
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2530,47 +2212,43 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 43,
-    "type": "scenario",
-    "title": "سيناريو نقدي: تقييم علاقة الذكاء التوليدي بالتعلّم الآلي",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "اختيار التوصيف من وصف نظام",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-05"
+      "concept-1-2-01",
+      "concept-1-2-03",
+      "concept-1-2-04"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو نقدي: تقييم علاقة الذكاء التوليدي بالتعلّم الآلي",
-    "question": "قال طالب: \"إذا كان النظام يولد نصوصًا جديدة، فلا يمكن أن يكون تعلمًا آليًا لأنه لا يقوم بالتصنيف\". قيّم العبارة وفق الدرس.",
+    "question": "نظام يستخدم شبكة متعددة الطبقات ليتعلم من البيانات ويتعرف على الكلام. ما الوصف الأدق؟",
     "options": [
-      "العبارة صحيحة تمامًا؛ لأن التوليد لا يحتاج إلى تدريب أو بيانات",
-      "العبارة صحيحة؛ لأن التعلّم الآلي مخصص فقط للتصنيف الثنائي",
-      "العبارة غير صحيحة؛ فالذكاء الاصطناعي التوليدي الحديث يعتمد في الغالب على نماذج التعلم العميق، والتعلم الآلي لا يقتصر على التصنيف",
-      "العبارة غير صحيحة؛ لأن توليد النصوص يتم فقط عبر البرمجة الصريحة"
+      "GenAI بالضرورة",
+      "AI يستخدم التعلم العميق المعتمد على شبكة عصبية",
+      "برمجة قواعد فقط",
+      "ليس ML"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "العبارة غير صحيحة؛ فالذكاء الاصطناعي التوليدي الحديث يعتمد في الغالب على نماذج التعلم العميق، والتعلم الآلي لا يقتصر على التصنيف",
-    "misconceptionTrap": "حصر مهام التعلم الآلي في التصنيف فقط واستبعاد التوليد من مظلته.",
-    "depthExplanation": "التعلم الآلي لا يقتصر على التصنيف؛ والدرس يوضح ارتباط الذكاء الاصطناعي التوليدي الحديث بنماذج التعلم العميق المتفرعة من التعلم الآلي.",
-    "teacherDiscussionPrompt": "كيف يتدرب النموذج التوليدي على التنبؤ بالكلمة التالية كشكل متقدم من تعلم الأنماط؟",
-    "trapType": "scope_limitation",
+    "correctAnswer": 1,
+    "correctAnswerText": "AI يستخدم التعلم العميق المعتمد على شبكة عصبية",
+    "misconceptionTrap": "ربط التعرف بالتوليد",
+    "depthExplanation": "التعرف على الكلام مثال على DL، وDL داخل ML وAI.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "architecture_and_task",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        17
+        13,
+        16
       ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-05"
+      "concept-1-2-03",
+      "concept-1-2-04"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2591,47 +2269,44 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 44,
-    "type": "scenario",
-    "title": "سيناريو اتخاذ قرار: التعامل مع مخرجات توليدية مقنعة غير مدعومة بمصادر",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "اختيار التوصيف لنظام مولد",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-06",
-      "concept-1-2-01"
+      "concept-1-2-01",
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو اتخاذ قرار: التعامل مع مخرجات توليدية مقنعة غير مدعومة بمصادر",
-    "question": "وجد طالب معلومة في إجابة مولدة تبدو صحيحة ومقنعة للغاية، لكنه لم يجد لها أي ذكر أو دعم في المصادر المعتمدة. ما القرار الأكثر توافقًا مع الدرس؟",
+    "question": "نظام ينشئ نصوصًا جديدة ويعتمد على نموذج تعلم عميق. ما الوصف الأدق؟",
     "options": [
-      "اعتماد المعلومة فورًا لأن صياغتها مقنعة وتبدو صحيحة",
-      "حذف التقرير المدرسي بالكامل وإلغاء البحث",
-      "إعادة توليد النص حتى يختفي الشك دون مراجعة أي مصدر",
-      "لا يعتمد المعلومة كما هي، بل يتحقق منها بالرجوع إلى المصادر المعتمدة ويتجنب تضمينها دون سند"
+      "نظام قواعد فقط",
+      "GenAI يعتمد على DL ضمن منظومة AI/ML",
+      "ليس AI لأنه توليدي",
+      "هو ML فقط دون GenAI"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "لا يعتمد المعلومة كما هي، بل يتحقق منها بالرجوع إلى المصادر المعتمدة ويتجنب تضمينها دون سند",
-    "misconceptionTrap": "الاستسلام للإقناع الظاهري وإهمال معيار التوثيق الأكاديمي.",
-    "depthExplanation": "المعلومة التي تبدو معقولة قد تكون هلوسة، ولذلك فإن الإجراء الصحيح هو الامتناع عن اعتمادها حتى يتم التحقق منها عبر المراجع الرسمية الموثوقة.",
-    "teacherDiscussionPrompt": "ما هي المخاطر المترتبة على نقل معلومة طبية مهلوسة تبدو مقنعة؟",
-    "trapType": "uncritical_acceptance",
+    "correctAnswer": 1,
+    "correctAnswerText": "GenAI يعتمد على DL ضمن منظومة AI/ML",
+    "misconceptionTrap": "فصل GenAI عن AI/ML",
+    "depthExplanation": "التوليد يحدد الوظيفة، وDL يصف أسلوبًا يعتمد عليه غالبًا.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "full_mapping",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
+        13,
+        16,
         17
       ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-06"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-06",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2652,47 +2327,46 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 45,
-    "type": "scenario",
-    "title": "سيناريو مقارنة تجريبية: بيانات موسومة مقابل بيانات غير موسومة",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "medium",
+    "type": "mcq",
+    "title": "اختبار العبارة المركبة",
+    "cognitiveLevel": "أسئلة مركبة صعبة",
+    "difficulty": "very-hard",
     "conceptIds": [
+      "concept-1-2-01",
       "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو مقارنة تجريبية: بيانات موسومة مقابل بيانات غير موسومة",
-    "question": "لدينا نظامان: الأول يتعلم من بيانات موسومة بإجابات صحيحة مسبقًا، والثاني يتعلم من بيانات غير موسومة لاكتشاف التجمعات. ما الفرق الجوهري بينهما؟",
+    "question": "أي عبارة صحيحة بالكامل؟",
     "options": [
-      "الأول يستخدم التعلم الخاضع للإشراف، بينما الثاني يستخدم التعلم غير الخاضع للإشراف",
-      "الأول برمجة تقليدية، والثاني ذكاء اصطناعي توليدي",
-      "كلاهما تعلّم معزز يعتمد على المكافآت والعقوبات",
-      "لا يوجد أي فرق لأن كلاهما يستخدم نفس نوع البيانات"
+      "كل AI توليدي وكل DL يولد محتوى",
+      "ML فرع من AI، DL أسلوب ضمن ML، وGenAI ينشئ محتوى جديدًا ويعتمد حديثه غالبًا على DL",
+      "ML لا يستخدم بيانات",
+      "GenAI منفصل عن ML"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الأول يستخدم التعلم الخاضع للإشراف، بينما الثاني يستخدم التعلم غير الخاضع للإشراف",
-    "misconceptionTrap": "عدم ربط الوسوم بنوع التعلم المشرف وغير المشرف.",
-    "depthExplanation": "وجود الإجابات أو التصنيفات المسبقة يميز التعلم الخاضع للإشراف، بينما اكتشاف الأنماط من بيانات غير موسومة يميز التعلم غير الخاضع للإشراف.",
-    "teacherDiscussionPrompt": "متى نفضل استخدام البيانات الموسومة ومتى نلجأ للبيانات غير الموسومة في المشاريع العملية؟",
-    "trapType": "label_dependence",
+    "correctAnswer": 1,
+    "correctAnswerText": "ML فرع من AI، DL أسلوب ضمن ML، وGenAI ينشئ محتوى جديدًا ويعتمد حديثه غالبًا على DL",
+    "misconceptionTrap": "فحص عدة ادعاءات في جملة واحدة",
+    "depthExplanation": "السؤال يقيس قدرة الطالب على فحص العلاقات كلها معًا.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "compound_statement",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        13,
+        16,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2713,47 +2387,44 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 46,
-    "type": "scenario",
-    "title": "سيناريو استدلالي: لماذا لا يعد التعلم بالمكافآت تعلماً خاضعاً للإشراف؟",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "كشف الخطأ في تصنيف المفاهيم",
+    "cognitiveLevel": "اكتشاف خطأ وتريكات",
+    "difficulty": "very-hard",
     "conceptIds": [
       "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو استدلالي: لماذا لا يعد التعلم بالمكافآت تعلماً خاضعاً للإشراف؟",
-    "question": "وكيل يحاول تنفيذ أفعال مختلفة في بيئة، ولا يحصل على إجابة صحيحة جاهزة، وإنما يتعلم من المكافآت والعقوبات. لماذا لا يصنف هذا مباشرة على أنه تعلم خاضع للإشراف؟",
+    "question": "طالب قال: «تصنيف الرسائل = GenAI، تحليل الصور = ML فقط، وإنشاء صورة = DL». ما التصحيح الأدق؟",
     "options": [
-      "لأن التعلم المعزز لا يستخدم خوارزميات حاسوبية",
-      "لأنه يتعلم من التفاعل مع البيئة والتجربة والخطأ والمكافآت، وليس من بيانات تدريبية موسومة بإجابات صحيحة مسبقة",
-      "لأن التعلم الخاضع للإشراف لا يحتاج إلى بيانات تدريب",
-      "لأن الوكيل يقوم بتوليد صور ونصوص جديدة في كل خطوة"
+      "كلها صحيحة",
+      "تصنيف الرسائل مثال ML، وتحليل الصور قد يكون DL، وإنشاء صورة مثال GenAI",
+      "كلها خطأ",
+      "إنشاء الصورة ML فقط"
     ],
     "correctAnswer": 1,
-    "correctAnswerText": "لأنه يتعلم من التفاعل مع البيئة والتجربة والخطأ والمكافآت، وليس من بيانات تدريبية موسومة بإجابات صحيحة مسبقة",
-    "misconceptionTrap": "اعتبار المكافأة وسمًا تعليميًا مطابقًا لإجابات التدريب الخاضع للإشراف.",
-    "depthExplanation": "هذا هو المنطق الجوهري الذي يميز التعلم المعزز: فهو يستكشف البيئة عبر التجربة والخطأ ويتلقى إشارات مكافأة، ولا يحصل على جدول إجابات مصنفة مسبقًا.",
-    "teacherDiscussionPrompt": "كيف تفرق بين مدرب يعطيك الحل الصحيح ومدرب يقول لك 'أحسنت' عند المحاولة الناجحة؟",
-    "trapType": "reward_vs_label",
+    "correctAnswerText": "تصنيف الرسائل مثال ML، وتحليل الصور قد يكون DL، وإنشاء صورة مثال GenAI",
+    "misconceptionTrap": "خلط المهمة بالتقنية",
+    "depthExplanation": "التصنيف مثال ML، والتحليل بالطبقات قد يكون DL، والإنشاء الجديد GenAI.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "misclassification",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        15,
+        16,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2774,50 +2445,39 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 47,
-    "type": "scenario",
-    "title": "سيناريو تحليلي: قصور التسمية العامة 'ذكاء اصطناعي' في التمييز التقني",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "ما الذي لا يثبت GenAI؟",
+    "cognitiveLevel": "استكشاف أخطاء ونمذجة",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
       "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو تحليلي: قصور التسمية العامة 'ذكاء اصطناعي' في التمييز التقني",
-    "question": "لديك أداة تستطيع تصنيف الرسائل المزعجة، وأداة أخرى تستطيع إنشاء رسالة جديدة. لماذا لا يكفي أن نقول إن الأداتين \"ذكاء اصطناعي\" فقط إذا أردنا فهم الفرق بينهما؟",
+    "question": "أي وصف لا يكفي وحده للحكم بأن النظام GenAI؟",
     "options": [
-      "لأن إحدى الأداتين لا تعمل على أجهزة الحاسوب",
-      "لأن تصنيف الرسائل لا يعتبر من تطبيقات التكنولوجيا الحديثة",
-      "لأن الذكاء الاصطناعي مفهوم واسع؛ ويجب تحديد المهمة وطريقة التعلم: الأولى تصنيف بالتعلم الآلي والثانية توليد محتوى بالذكاء التوليدي",
-      "لأن الذكاء الاصطناعي يقتصر حصريًا على إنشاء المحتوى الجديد"
+      "ينشئ نصًا جديدًا",
+      "ينشئ صورة جديدة",
+      "يتعرف على الكلام فقط",
+      "ينشئ صوتًا جديدًا"
     ],
     "correctAnswer": 2,
-    "correctAnswerText": "لأن الذكاء الاصطناعي مفهوم واسع؛ ويجب تحديد المهمة وطريقة التعلم: الأولى تصنيف بالتعلم الآلي والثانية توليد محتوى بالذكاء التوليدي",
-    "misconceptionTrap": "الاكتفاء بالتسميات التسويقية العامة وتجاهل المعمارية الدقيقة للنظام.",
-    "depthExplanation": "فهم البنية الهيكلية بين AI وML وDL وGenAI يساعد على التمييز الدقيق بين أنواع الأنظمة والمهام بدل وضعها كلها تحت مظلة وصفية عامة غامضة.",
-    "teacherDiscussionPrompt": "لماذا يحتاج المهندس إلى تحديد فرع الذكاء الاصطناعي عند كتابة المواصفات الفنية؟",
-    "trapType": "umbrella_term_obscurity",
+    "correctAnswerText": "يتعرف على الكلام فقط",
+    "misconceptionTrap": "الخلط بين التعرف والتوليد",
+    "depthExplanation": "التعرف على الكلام لا يعني إنشاء محتوى جديد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "inverse_identification",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        13
+        16,
+        17
       ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العلاقة التعليمية: الذكاء الاصطناعي مجال واسع، والتعلم الآلي فرع منه، والتعلم العميق أسلوب ضمن التعلم الآلي.",
-        "page": 13,
-        "conceptId": "concept-1-2-01"
-      }
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-05"
-    ],
+    "secondaryConceptIds": [],
     "contentProvenance": {
       "question": "derived-from-curriculum",
       "explanation": "pedagogical-explanation",
@@ -2837,47 +2497,41 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 48,
-    "type": "scenario",
-    "title": "سيناريو معمارية: دور تعديل الأوزان في صلب وظيفة الشبكة",
+    "type": "mcq",
+    "title": "التعلم العميق ليس نتيجة وظيفية",
     "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
+    "difficulty": "very-hard",
     "conceptIds": [
-      "concept-1-2-04",
-      "concept-1-2-01"
+      "concept-1-2-03",
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو معمارية: دور تعديل الأوزان في صلب وظيفة الشبكة",
-    "question": "إذا كانت شبكة عصبية تعطي نتائج غير دقيقة أثناء التدريب، فهل تغيير الأوزان يعد جزءًا من حل المشكلة أم يعني أن الشبكة لم تعد شبكة عصبية؟",
+    "question": "ما الخطأ في قول: «طالما أن التطبيق يستخدم DL، فلا بد أن هدفه توليد محتوى»؟",
     "options": [
-      "تغيير الأوزان يعني تلف الشبكة العصبية ووجوب استبدالها ببرمجة تقليدية",
-      "الشبكة العصبية لا تغير أوزانها أبدًا أثناء التدريب",
-      "تغيير الأوزان يحول الشبكة فورًا إلى نموذج تعلّم غير خاضع للإشراف",
-      "تغيير الأوزان جزء أساسي من عملية التدريب؛ فالأوزان تتغير لتتعلم الشبكة الأنماط وتقلل الخطأ"
+      "DL يحدد نوع المهمة دائمًا",
+      "DL أسلوب قد يستخدم في التعرف والتحليل أيضًا",
+      "GenAI لا يعتمد على DL",
+      "DL لا علاقة له بالبيانات"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "تغيير الأوزان جزء أساسي من عملية التدريب؛ فالأوزان تتغير لتتعلم الشبكة الأنماط وتقلل الخطأ",
-    "misconceptionTrap": "الاعتقاد بأن تغير المتغيرات الداخلية يعني خللاً في استقرار النموذج.",
-    "depthExplanation": "تغير الأوزان والانحيازات أثناء التدريب هو الآلية الحصرية لتعلم الشبكة العصبية الرياضي، وهو جوهر نجاحها وليس خروجًا عنها أو عطلاً برمجياً.",
-    "teacherDiscussionPrompt": "كيف تنخفض قيمة دالة الخسارة (Loss Function) كلما تحسنت قيم الأوزان؟",
-    "trapType": "weight_adaptation",
+    "correctAnswer": 1,
+    "correctAnswerText": "DL أسلوب قد يستخدم في التعرف والتحليل أيضًا",
+    "misconceptionTrap": "تحويل أسلوب التعلم إلى وظيفة",
+    "depthExplanation": "الدرس يعطي أمثلة لـDL في تحليل الصور والتعرف على الكلام.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "method_not_task",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        16
+        16,
+        17
       ],
       "primaryPage": 16,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الذكاء الاصطناعي التوليدي: أنظمة تنشئ محتوى جديداً (نصوص، صور، أكواد) استناداً لأنماط بيانات التدريب.",
-        "page": 16,
-        "conceptId": "concept-1-2-04"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-04",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2898,47 +2552,41 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 49,
-    "type": "scenario",
-    "title": "سيناريو إحصائي: خطأ توقع التعميم على أمراض جديدة ببيانات تدريب شحيحة",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
+    "type": "mcq",
+    "title": "من النمط إلى المهمة",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "very-hard",
     "conceptIds": [
       "concept-1-2-02",
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentOrigin": "authored",
-    "scenario": "[سيناريو تطبيقي] — سيناريو إحصائي: خطأ توقع التعميم على أمراض جديدة ببيانات تدريب شحيحة",
-    "question": "مزارع يريد استخدام نظام لتمييز المحاصيل السليمة من المصابة. اقترح أحد الطلاب تدريب النظام على عدد قليل جدًا من الصور لحالات المرض، ثم توقع أنه سيعرف أي مرض جديد. ما الخطأ في هذا التفكير؟",
+    "question": "إذا تعلم نموذج أنماطًا من بيانات ثم استُخدم في مهمة جديدة، ما الذي يحدد هل المهمة تصنيف أم توليد؟",
     "options": [
-      "النظام يتعلم الأنماط من بيانات التدريب، وإذا كان المرض نادرًا أو غير موجود فسيواجه صعوبة بالغة وقد يخطئ في التنبؤ",
-      "الخطأ هو أن الذكاء الاصطناعي لا يحتاج لأي صور في التدريب",
-      "الخطأ هو أن المحاصيل الزراعية لا يمكن تصنيفها حاسوبيًا",
-      "الخطأ أن قلة البيانات تزيد من دقة الشبكات العصبية"
+      "وجود البيانات فقط",
+      "طبيعة المخرج: تحديد فئة/نتيجة مقابل إنشاء محتوى جديد",
+      "حجم الشاشة",
+      "لغة البرمجة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "النظام يتعلم الأنماط من بيانات التدريب، وإذا كان المرض نادرًا أو غير موجود فسيواجه صعوبة بالغة وقد يخطئ في التنبؤ",
-    "misconceptionTrap": "اعتقاد أن النموذج يملك ذكاءً إدراكياً فطرياً مستقلاً عن العينات التدريبية.",
-    "depthExplanation": "المنهج يؤكد الأهمية الحاسمة لبيانات التدريب؛ فالمرض الجديد أو المختلف عن البيانات يؤدي لتنبؤ خاطئ لأن النموذج لا يستطيع استدعاء أنماط لم يرها.",
-    "teacherDiscussionPrompt": "كم عينة يحتاجها المهندس عادة لضمان تغطية زوايا وإضاءات وأعراض المرض المختلفة؟",
-    "trapType": "training_sufficiency",
+    "correctAnswer": 1,
+    "correctAnswerText": "طبيعة المخرج: تحديد فئة/نتيجة مقابل إنشاء محتوى جديد",
+    "misconceptionTrap": "الخلط بين التدريب والمخرج",
+    "depthExplanation": "التعلم من البيانات يصف ML، بينما طبيعة الناتج تساعد على تمييز التوليد.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "training_vs_output",
     "isExamLikely": true,
     "source": {
       "term": 1,
       "lessonId": "lesson-1-2",
       "pages": [
-        14
+        15,
+        17
       ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم الآلي: تتعلم فيه النماذج أنماطًا من البيانات بدلاً من كتابة كل قاعدة صراحة في الكود التقليدي.",
-        "page": 14,
-        "conceptId": "concept-1-2-02"
-      }
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-02",
     "secondaryConceptIds": [
-      "concept-1-2-01"
+      "concept-1-2-05"
     ],
     "contentProvenance": {
       "question": "derived-from-curriculum",
@@ -2959,9 +2607,9 @@
     "lessonId": "lesson-1-2",
     "lessonNumber": "1-2",
     "index": 50,
-    "type": "essay",
-    "title": "المسألة التركيبية الشاملة: تكامل AI و ML و DL و GenAI وضوابط الهلوسة",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "type": "mcq",
+    "title": "التركيب النهائي",
+    "cognitiveLevel": "أسئلة مركبة صعبة",
     "difficulty": "very-hard",
     "conceptIds": [
       "concept-1-2-01",
@@ -2972,19 +2620,339 @@
       "concept-1-2-06"
     ],
     "contentOrigin": "authored",
-    "question": "أمامك نظام ذكاء اصطناعي يولد إجابة تبدو مقنعة، ونظام آخر يصنف الرسائل، ونظام ثالث يتعرف على الكلام باستخدام شبكة عصبية متعددة الطبقات. حلل الحالات الثلاث، ووضح كيف يمكن ربطها بمفاهيم AI وML وDL وGenAI، ثم اشرح لماذا لا يجوز اعتماد إجابة النظام التوليدي في تقرير مدرسي دون تحقق.",
+    "question": "أداة توليدية تعتمد على نموذج تعلم عميق وتنتج أحيانًا معلومات مقنعة غير مدعومة بالمصادر. ما التحليل الكامل؟",
     "options": [
-      "جميع الأنظمة الثلاثة هي ذكاء اصطناعي توليدي فقط ولا علاقة لها بالتعلّم الآلي",
-      "الأول (GenAI يولد محتوى معتمدًا على DL)، الثاني (ML يصنف بالأنماط)، الثالث (DL بشبكة عصبية)، والتحقق واجب لتجنب خطر الهلوسة",
-      "النظام الأول برمجة تقليدية، والنظام الثاني ليس ذكاءً اصطناعيًا، والثالث فقط هو التعلم العميق",
-      "لا يوجد فرق بين الأنظمة الثلاثة لأنها جميعًا تنتج إجابات مؤكدة واقعيًا بلا أي احتمال للخطأ"
+      "ليست AI",
+      "هي GenAI تعتمد على DL ضمن AI/ML، وقد تحدث هلوسة تستلزم التحقق",
+      "كل ما تنتجه صحيح",
+      "DL يعني أنها لا يمكن أن تهلوس"
     ],
     "correctAnswer": 1,
-    "correctAnswerText": "الأول (GenAI يولد محتوى معتمدًا على DL)، الثاني (ML يصنف بالأنماط)، الثالث (DL بشبكة عصبية)، والتحقق واجب لتجنب خطر الهلوسة",
-    "misconceptionTrap": "معالجة كل مفهوم في معزل عن بقية منظومة الدرس، وإهمال الضوابط الأخلاقية والأكاديمية للتحقق.",
-    "depthExplanation": "السؤال يقيس قدرة الطالب على الربط بين المفاهيم في موقف واحد: AI هو المظلة الشاملة، ML يتعلم الأنماط من البيانات للتصنيف، DL أسلوب متعدد الطبقات للتعرف الصوتي، GenAI ينشئ محتوى جديداً معتمداً على DL، والهلوسة خطر حقيقي يستوجب المضاهاة بالمراجع المعتمدة.",
-    "teacherDiscussionPrompt": "اطلب من الطلاب كتابة إجابة مقالية من 4 فقرات توضح دور كل تقنية وتختم بالتحذير من الهلوسة.",
-    "trapType": "holistic_synthesis",
+    "correctAnswerText": "هي GenAI تعتمد على DL ضمن AI/ML، وقد تحدث هلوسة تستلزم التحقق",
+    "misconceptionTrap": "تجزئة الحالة وعدم ربط المخاطر بالمفاهيم",
+    "depthExplanation": "السؤال يجمع المجال والفرع والأسلوب والوظيفة والخطر وإجراء التحقق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "full_synthesis",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        13,
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-04",
+      "concept-1-2-05",
+      "concept-1-2-06"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-51",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 51,
+    "type": "mcq",
+    "title": "سيناريو ندرة الأنماط",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-02"
+    ],
+    "contentOrigin": "authored",
+    "question": "نظام نادرًا ما رأى نوعًا معينًا من الحالات في بيانات التدريب، فواجه صعوبة عند ظهوره. ما التفسير الأقرب؟",
+    "options": [
+      "النموذج يتعلم من الأنماط التي رآها، وندرة النمط تقلل فرص تعلمه",
+      "النظام أصبح توليديًا",
+      "البيانات تمنع التعلم",
+      "كل حالة نادرة سهلة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "النموذج يتعلم من الأنماط التي رآها، وندرة النمط تقلل فرص تعلمه",
+    "misconceptionTrap": "افتراض وجود معرفة كاملة خارج التدريب",
+    "depthExplanation": "الدرس يوضح صعوبة التعامل مع الشيء النادر في بيانات التدريب.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "rare_pattern",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        14,
+        15
+      ],
+      "primaryPage": 14,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-52",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 52,
+    "type": "mcq",
+    "title": "سيناريو تغير المدخلات",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-02"
+    ],
+    "contentOrigin": "authored",
+    "question": "كان النظام جيدًا مع أمثلة مشابهة للتدريب، لكنه أخطأ عندما ظهرت حالات مختلفة. أي تفسير أقرب؟",
+    "options": [
+      "لأن النمط المختلف لم يكن ممثلًا جيدًا في بيانات التدريب",
+      "لأن كل AI يتوقف خارج المعمل",
+      "لأن التوليد بدأ تلقائيًا",
+      "لأن الشبكة فقدت اسمها"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "لأن النمط المختلف لم يكن ممثلًا جيدًا في بيانات التدريب",
+    "misconceptionTrap": "تجاهل أثر البيانات على التعلم",
+    "depthExplanation": "الأمثلة الجديدة تختلف عن الأنماط التي تعلمها النموذج من التدريب.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "training_distribution",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        14,
+        15
+      ],
+      "primaryPage": 14,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-53",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 53,
+    "type": "mcq",
+    "title": "سيناريو تصنيف واضح",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "medium",
+    "conceptIds": [
+      "concept-1-2-02"
+    ],
+    "contentOrigin": "authored",
+    "question": "نظام يقرر هل الرسالة «مزعجة» أو «غير مزعجة». ما نوع المهمة؟",
+    "options": [
+      "تصنيف",
+      "توليد محتوى",
+      "تخزين",
+      "ترجمة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "تصنيف",
+    "misconceptionTrap": "الخلط بين التصنيف والتوليد",
+    "depthExplanation": "الرسائل المزعجة مثال مباشر على التصنيف بالتعلم الآلي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "task_identification",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        15
+      ],
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-54",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 54,
+    "type": "mcq",
+    "title": "سيناريو توصية",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "medium",
+    "conceptIds": [
+      "concept-1-2-02"
+    ],
+    "contentOrigin": "authored",
+    "question": "نظام يقترح منتجات اعتمادًا على أنماط من البيانات. ما المفهوم الأقرب؟",
+    "options": [
+      "التعلم الآلي",
+      "الهَلوسة",
+      "ANN فقط",
+      "GenAI بالضرورة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "التعلم الآلي",
+    "misconceptionTrap": "اعتبار كل توصية توليدًا",
+    "depthExplanation": "توصية المنتجات مثال مذكور للتعلم الآلي.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "recommendation_confusion",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        15
+      ],
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-55",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 55,
+    "type": "mcq",
+    "title": "سيناريو شبكة متعددة الطبقات",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-03",
+      "concept-1-2-04"
+    ],
+    "contentOrigin": "authored",
+    "question": "شبكة متعددة الطبقات تتغير أوزانها أثناء التدريب لتتعلم أنماطًا معقدة. ما أفضل توصيف؟",
+    "options": [
+      "ANN مستخدمة في التعلم العميق",
+      "نظام تشغيل",
+      "تطبيق قواعد فقط",
+      "GenAI بالضرورة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "ANN مستخدمة في التعلم العميق",
+    "misconceptionTrap": "فصل ANN عن DL",
+    "depthExplanation": "ANN هو النموذج، وDL أسلوب يعتمد على شبكات متعددة الطبقات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "ann_dl_mapping",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        16
+      ],
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-04"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-56",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 56,
+    "type": "mcq",
+    "title": "سيناريو توليد صورة",
+    "cognitiveLevel": "تطبيق على موقف",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "أداة تنشئ صورة جديدة اعتمادًا على الأنماط التي تعلمتها. ما المفهوم الأوضح؟",
+    "options": [
+      "GenAI",
+      "تصنيف",
+      "التعرف على الكلام",
+      "البرمجة بالقواعد"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "GenAI",
+    "misconceptionTrap": "الخلط بين الإنشاء والتحليل",
+    "depthExplanation": "إنشاء الصور الجديدة من أمثلة GenAI.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "generation_identification",
     "isExamLikely": true,
     "source": {
       "term": 1,
@@ -2993,14 +2961,778 @@
         17
       ],
       "primaryPage": 17,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الهلوسة: إنتاج معلومات تبدو مقنعة لكنها غير صحيحة واقعياً أو غير مدعومة بمصادر، وتتطلب التحقق البشري.",
-        "page": 17,
-        "conceptId": "concept-1-2-01"
-      }
+      "sourceType": "official-page-scan"
     },
-    "conceptId": "concept-1-2-01",
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-57",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 57,
+    "type": "mcq",
+    "title": "سيناريو تقرير طالب",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "طالب نقل إجابة مولدة كما هي إلى تقريره دون مراجعة. ما الخطأ؟",
+    "options": [
+      "اعتمد مخرجًا قد يحتوي على هلوسة دون تحقق",
+      "استخدم حاسوبًا",
+      "قرأ نصًا",
+      "استعمل الذكاء الاصطناعي"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "اعتمد مخرجًا قد يحتوي على هلوسة دون تحقق",
+    "misconceptionTrap": "تجاهل الخطر الحقيقي",
+    "depthExplanation": "المشكلة في اعتماد المخرج دون الرجوع للمصادر المعتمدة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "academic_verification",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-58",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 58,
+    "type": "mcq",
+    "title": "سيناريو إجابة مقنعة وخاطئة",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "إجابة مولدة تبدو منطقية لكنها تختلف عن الكتاب الرسمي. ما القرار الأنسب؟",
+    "options": [
+      "اعتمادها لأنها أكثر إقناعًا",
+      "الرجوع للمصدر الرسمي والتحقق قبل اعتمادها",
+      "اختيار الأطول",
+      "إهمال الكتاب"
+    ],
+    "correctAnswer": 1,
+    "correctAnswerText": "الرجوع للمصدر الرسمي والتحقق قبل اعتمادها",
+    "misconceptionTrap": "تقديم الإقناع على المصدر",
+    "depthExplanation": "الهلوسة قد تكون مقنعة، والتحقق بالمصادر شرط.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "official_source_priority",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-59",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 59,
+    "type": "mcq",
+    "title": "سيناريو مصدر غير مؤكد",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "النموذج ذكر مرجعًا، لكن لم يتحقق الطالب من وجوده أو توافقه. ماذا يفعل؟",
+    "options": [
+      "يعتمد المرجع تلقائيًا",
+      "يتحقق من المرجع والمعلومة",
+      "يحذف كل AI",
+      "يعتبر اسم المرجع دليلًا كافيًا"
+    ],
+    "correctAnswer": 1,
+    "correctAnswerText": "يتحقق من المرجع والمعلومة",
+    "misconceptionTrap": "الثقة في المظهر المرجعي",
+    "depthExplanation": "التحقق الفعلي من المراجع جزء من التعامل الصحيح مع المخرجات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "citation_verification",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-60",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 60,
+    "type": "mcq",
+    "title": "سيناريو متكامل قصير",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-01",
+      "concept-1-2-03",
+      "concept-1-2-05",
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "نظام يولد نصًا باستخدام DL، والنص يبدو صحيحًا لكن توجد معلومة غير مدعومة. ماذا نستنتج؟",
+    "options": [
+      "هو GenAI يعتمد على DL وقد يعاني من هلوسة، لذا يلزم التحقق",
+      "هو برمجة تقليدية",
+      "كل ما يكتبه صحيح",
+      "لا علاقة له بـML"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "هو GenAI يعتمد على DL وقد يعاني من هلوسة، لذا يلزم التحقق",
+    "misconceptionTrap": "فشل في الربط بين الوظيفة والأسلوب والخطر",
+    "depthExplanation": "هذه الحالة تجمع GenAI وDL وML وخطر الهلوسة والتحقق.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "integrated_scenario",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-03",
+      "concept-1-2-05",
+      "concept-1-2-06"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-61",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 61,
+    "type": "mcq",
+    "title": "تمييز أربعة مفاهيم",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-01",
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي مطابقة صحيحة؟",
+    "options": [
+      "تصنيف الرسائل=ML، تحليل الصور متعدد الطبقات=DL، إنشاء صورة=GenAI",
+      "تصنيف الرسائل=GenAI، تحليل الصور=AI فقط، إنشاء صورة=ML",
+      "كلها DL",
+      "كلها GenAI"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "تصنيف الرسائل=ML، تحليل الصور متعدد الطبقات=DL، إنشاء صورة=GenAI",
+    "misconceptionTrap": "إسناد المفهوم بناءً على الكلمات السطحية",
+    "depthExplanation": "المطابقة تعتمد على طبيعة المهمة وأسلوب التعلم المذكور.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "concept_mapping",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-62",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 62,
+    "type": "mcq",
+    "title": "فحص عبارة «كلها AI»",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-01",
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "إذا قيل عن ثلاث أدوات إنها كلها AI، فما الذي يضيفه فهم ML وDL وGenAI؟",
+    "options": [
+      "يساعد على التمييز بين طريقة التعلم وطبيعة المهمة بدل الاكتفاء بالمظلة العامة",
+      "يجعل AI أصغر من ML",
+      "يلغي العلاقة بين المفاهيم",
+      "يعني أن كل أداة توليدية"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "يساعد على التمييز بين طريقة التعلم وطبيعة المهمة بدل الاكتفاء بالمظلة العامة",
+    "misconceptionTrap": "الاكتفاء بالاسم العام",
+    "depthExplanation": "الدرس يهدف إلى التمييز بين المفاهيم المترابطة داخل المجال.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "umbrella_term_obscurity",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        13,
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-63",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 63,
+    "type": "mcq",
+    "title": "ما الذي يثبت أنه ML؟",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-02"
+    ],
+    "contentOrigin": "authored",
+    "question": "في موقف ما، أي دليل هو الأقوى على أن النظام يستخدم التعلم الآلي؟",
+    "options": [
+      "أنه يتعلم أنماطًا من البيانات بدل كتابة كل قاعدة صراحةً",
+      "أنه يعرض النتائج على هاتف",
+      "أنه يعمل بسرعة",
+      "أنه يستخدم صورًا"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "أنه يتعلم أنماطًا من البيانات بدل كتابة كل قاعدة صراحةً",
+    "misconceptionTrap": "الاعتماد على مؤشرات غير جوهرية",
+    "depthExplanation": "هذه هي السمة التعريفية لـML في الدرس.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "evidence_of_ml",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        15
+      ],
+      "primaryPage": 15,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-64",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 64,
+    "type": "mcq",
+    "title": "ما الذي يثبت أنه DL؟",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-03",
+      "concept-1-2-04"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي وصف يدعم وصف النظام بأنه يستخدم التعلم العميق؟",
+    "options": [
+      "شبكة عصبية متعددة الطبقات تتعلم أنماطًا معقدة",
+      "وجود قاعدة واحدة ثابتة",
+      "عرض النص في شاشة",
+      "تخزين الصور"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "شبكة عصبية متعددة الطبقات تتعلم أنماطًا معقدة",
+    "misconceptionTrap": "التركيز على التطبيق بدل البنية",
+    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "evidence_of_dl",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        16
+      ],
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-04"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-65",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 65,
+    "type": "mcq",
+    "title": "ما الذي يثبت أنه GenAI؟",
+    "cognitiveLevel": "تحليل ومقارنة",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي وصف يدعم وصف النظام بأنه توليدي؟",
+    "options": [
+      "إنشاء محتوى جديد",
+      "تصنيف الرسائل",
+      "التعرف على الكلام",
+      "عرض ملف محفوظ"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "إنشاء محتوى جديد",
+    "misconceptionTrap": "حصر GenAI في نوع بيانات محدد",
+    "depthExplanation": "الإنشاء الجديد هو المعيار الأوضح.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "evidence_of_genai",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-66",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 66,
+    "type": "mcq",
+    "title": "ما الذي يثبت وجود خطر الهلوسة؟",
+    "cognitiveLevel": "هلوسة والتحقق",
+    "difficulty": "hard",
+    "conceptIds": [
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي موقف يطابق خطر الهلوسة؟",
+    "options": [
+      "معلومة تبدو معقولة لكنها غير صحيحة أو غير مدعومة",
+      "النظام يعرض الإجابة بسرعة",
+      "النظام يستقبل نصًا",
+      "النظام يتعامل مع صورة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "معلومة تبدو معقولة لكنها غير صحيحة أو غير مدعومة",
+    "misconceptionTrap": "الخلط بين الأداء والخطأ المعرفي",
+    "depthExplanation": "الهلوسة مرتبطة بصحة المعلومة ودعمها.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "evidence_of_hallucination",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-67",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 67,
+    "type": "mcq",
+    "title": "القرار الأقوى في الامتحان",
+    "cognitiveLevel": "تقييم واتخاذ قرار",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-05",
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "في سؤال يذكر أن مخرجًا توليديًا مقنع لكنه غير متوافق مع مصدر رسمي، ما الإجابة الأعلى جودة؟",
+    "options": [
+      "اعتماده لأنه مقنع",
+      "التحقق من المخرج ومقارنته بالمصدر الرسمي قبل الاعتماد",
+      "اختيار الأطول",
+      "إعادة صياغته فقط"
+    ],
+    "correctAnswer": 1,
+    "correctAnswerText": "التحقق من المخرج ومقارنته بالمصدر الرسمي قبل الاعتماد",
+    "misconceptionTrap": "المظهر بدل الدليل",
+    "depthExplanation": "القرار المبني على التحقق من المصدر هو المتوافق مع الدرس.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "exam_decision",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-06"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-68",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 68,
+    "type": "mcq",
+    "title": "اختبار العلاقات الشرطية",
+    "cognitiveLevel": "فهم مباشر عميق",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي عبارة منطقية وفق الدرس؟",
+    "options": [
+      "أغلب GenAI الحديث يعتمد على DL، لكن ليس كل DL GenAI",
+      "كل DL GenAI",
+      "كل AI DL",
+      "لا يمكن لـGenAI أن يعتمد على DL"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "أغلب GenAI الحديث يعتمد على DL، لكن ليس كل DL GenAI",
+    "misconceptionTrap": "قلب علاقة «أغلب» إلى «كل»",
+    "depthExplanation": "الدرس يحدد اعتمادًا غالبًا لا مساواة شاملة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "conditional_relation",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        16,
+        17
+      ],
+      "primaryPage": 16,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-05"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-69",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 69,
+    "type": "mcq",
+    "title": "التفريق بين المظلة والفرع والأسلوب والمهمة",
+    "cognitiveLevel": "تطبيق مركب",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-01",
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي عبارة تفرق بين مستويات المفاهيم دون خلط؟",
+    "options": [
+      "AI مجال، ML فرع، DL أسلوب، وGenAI يصف أنظمة تنشئ محتوى جديدًا",
+      "AI أسلوب وML مجال وDL مهمة",
+      "GenAI مجال أوسع من AI",
+      "DL هو نوع من التقارير المدرسية"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "AI مجال، ML فرع، DL أسلوب، وGenAI يصف أنظمة تنشئ محتوى جديدًا",
+    "misconceptionTrap": "الخلط بين مستوى المجال والفرع والأسلوب والمهمة",
+    "depthExplanation": "الطالب الفاهم يميز وظيفة كل مصطلح بدل حفظها كأسماء مترادفة.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "level_confusion",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        13,
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
+    },
+    "secondaryConceptIds": [
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-05"
+    ],
+    "contentProvenance": {
+      "question": "derived-from-curriculum",
+      "explanation": "pedagogical-explanation",
+      "teacherPrompt": "pedagogical-extension"
+    },
+    "validation": {
+      "distractorsPlausible": true,
+      "noExternalKnowledge": true,
+      "noDuplicate": true,
+      "conceptAligned": true,
+      "noAnswerLeakage": true,
+      "optionsIndependent": true
+    }
+  },
+  {
+    "id": "q-hard-1-2-70",
+    "lessonId": "lesson-1-2",
+    "lessonNumber": "1-2",
+    "index": 70,
+    "type": "mcq",
+    "title": "السؤال الشامل النهائي",
+    "cognitiveLevel": "أسئلة مركبة صعبة",
+    "difficulty": "very-hard",
+    "conceptIds": [
+      "concept-1-2-01",
+      "concept-1-2-02",
+      "concept-1-2-03",
+      "concept-1-2-04",
+      "concept-1-2-05",
+      "concept-1-2-06"
+    ],
+    "contentOrigin": "authored",
+    "question": "أي تحليل يمثل فهمًا متكاملًا للدرس؟",
+    "options": [
+      "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML يعتمد على شبكات متعددة الطبقات، GenAI ينشئ محتوى جديدًا، وقد تحدث هلوسة تستلزم التحقق",
+      "AI هو GenAI فقط",
+      "DL أوسع من AI",
+      "الهلوسة تعني عدم الإجابة"
+    ],
+    "correctAnswer": 0,
+    "correctAnswerText": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML يعتمد على شبكات متعددة الطبقات، GenAI ينشئ محتوى جديدًا، وقد تحدث هلوسة تستلزم التحقق",
+    "misconceptionTrap": "اختبار التكامل النهائي للعلاقات والمخاطر",
+    "depthExplanation": "الإجابة تجمع أهم المفاهيم والعلاقات والضابط العملي المذكور في الدرس.",
+    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
+    "trapType": "full_synthesis",
+    "isExamLikely": true,
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-1-2",
+      "pages": [
+        13,
+        15,
+        16,
+        17
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-page-scan"
+    },
     "secondaryConceptIds": [
       "concept-1-2-02",
       "concept-1-2-03",
