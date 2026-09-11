@@ -3,19 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Clock,
-  UserCheck,
   BookOpen,
   Keyboard,
   Play,
   Pause,
   RotateCcw,
   Sparkles,
-  Award,
-  Volume2,
-  VolumeX,
   Shuffle,
-  HelpCircle,
-  X,
   Timer
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";

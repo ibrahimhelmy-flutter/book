@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ExamBlueprint } from "@/lib/exam-generator/types";
-import { X, Layers, Brain, CheckCircle2, Clock, Award, BarChart3 } from "lucide-react";
+import { X, Layers, Brain, BarChart3 } from "lucide-react";
 
 interface BlueprintModalProps {
   blueprint: ExamBlueprint;

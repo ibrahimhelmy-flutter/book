@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Layout, Check, X, Sparkles, Eye, Info } from "lucide-react";
+import { Layout, Check, X, Eye, Info } from "lucide-react";
 
 export function CRAPDesignStudio() {
   const [contrastEnabled, setContrastEnabled] = useState<boolean>(true);

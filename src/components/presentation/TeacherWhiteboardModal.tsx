@@ -9,14 +9,8 @@ import {
   RotateCw,
   Trash2,
   Download,
-  Type,
   MousePointer2,
-  Sparkles,
   Check,
-  Palette,
-  Maximize2,
-  Minimize2,
-  Grid,
   Square,
   Circle,
   ArrowRight,
@@ -24,7 +18,6 @@ import {
   StickyNote,
   Smile,
   X,
-  Plus,
   ChevronDown
 } from "lucide-react";
 
@@ -249,6 +242,30 @@ export function TeacherWhiteboardModal({
     }
   }, [isOpen, syncCanvas]);
 
+  const handleUndo = useCallback(() => {
+    if (undoStackRef.current.length > 0) {
+      const prevState = undoStackRef.current.pop() || [];
+      redoStackRef.current.push([...strokesRef.current]);
+      strokesRef.current = prevState;
+      redraw();
+      setForceRender((v) => v + 1);
+    } else if (strokesRef.current.length > 0) {
+      redoStackRef.current.push([...strokesRef.current]);
+      strokesRef.current.pop();
+      redraw();
+      setForceRender((v) => v + 1);
+    }
+  }, [redraw]);
+
+  const handleRedo = useCallback(() => {
+    if (redoStackRef.current.length === 0) return;
+    const nextState = redoStackRef.current.pop() || [];
+    undoStackRef.current.push([...strokesRef.current]);
+    strokesRef.current = nextState;
+    redraw();
+    setForceRender((v) => v + 1);
+  }, [redraw]);
+
   // Whiteboard Keyboard Shortcuts (Ctrl+Z, Ctrl+Y, Esc)
   useEffect(() => {
     if (!isOpen) return;
@@ -287,7 +304,7 @@ export function TeacherWhiteboardModal({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, handleUndo, handleRedo]);
 
   if (!isOpen) return null;
 
@@ -420,29 +437,7 @@ export function TeacherWhiteboardModal({
     }
   };
 
-  const handleUndo = () => {
-    if (undoStackRef.current.length > 0) {
-      const prevState = undoStackRef.current.pop() || [];
-      redoStackRef.current.push([...strokesRef.current]);
-      strokesRef.current = prevState;
-      redraw();
-      setForceRender((v) => v + 1);
-    } else if (strokesRef.current.length > 0) {
-      redoStackRef.current.push([...strokesRef.current]);
-      strokesRef.current.pop();
-      redraw();
-      setForceRender((v) => v + 1);
-    }
-  };
 
-  const handleRedo = () => {
-    if (redoStackRef.current.length === 0) return;
-    const nextState = redoStackRef.current.pop() || [];
-    undoStackRef.current.push([...strokesRef.current]);
-    strokesRef.current = nextState;
-    redraw();
-    setForceRender((v) => v + 1);
-  };
 
   const handleClearAll = () => {
     undoStackRef.current.push([...strokesRef.current]);

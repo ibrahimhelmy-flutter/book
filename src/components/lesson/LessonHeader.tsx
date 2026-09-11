@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Lesson } from "@/types";
-import { Bookmark, CheckCircle, Volume2, VolumeX, Clock, BookOpen, Share2, Users, Presentation } from "lucide-react";
+import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
 
 interface Props {

@@ -4,14 +4,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { QuestionBankCoverageReport } from "@/core/application/dtos/ExamGenerationDTO";
 import { getExamEngineContainer } from "@/core/infrastructure/bootstrap";
 import {
-  BarChart3,
   Sparkles,
   CheckCircle2,
   AlertCircle,
-  Brain,
-  Layers,
   ArrowRight,
-  TrendingUp,
   RefreshCw,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";

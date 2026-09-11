@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Globe, Server, Database, Send, CheckCircle2, XCircle, AlertCircle, ArrowLeft, ArrowRight, Code } from "lucide-react";
+import { Globe, Server, Database, Send, Code } from "lucide-react";
 
 export function WebRequestFlowSimulator() {
   const [httpMethod, setHttpMethod] = useState<"GET" | "POST">("GET");

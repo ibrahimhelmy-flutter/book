@@ -25,14 +25,67 @@ const defaultProfile: UserProfile = {
   avatar: "🎓",
 };
 
+/**
+ * Defensive runtime sanitizers to prevent application crashes from corrupted or outdated localStorage schemas.
+ */
+function sanitizeProgress(raw: any): UserProgress {
+  if (!raw || typeof raw !== "object") return defaultProgress;
+  return {
+    completedLessons: Array.isArray(raw.completedLessons)
+      ? raw.completedLessons.filter((x: any) => typeof x === "string")
+      : [],
+    quizScores:
+      raw.quizScores && typeof raw.quizScores === "object" && !Array.isArray(raw.quizScores)
+        ? raw.quizScores
+        : {},
+    bookmarks: Array.isArray(raw.bookmarks)
+      ? raw.bookmarks.filter((x: any) => typeof x === "string")
+      : [],
+    notes:
+      raw.notes && typeof raw.notes === "object" && !Array.isArray(raw.notes)
+        ? raw.notes
+        : {},
+    streakDays:
+      typeof raw.streakDays === "number" && !isNaN(raw.streakDays)
+        ? Math.max(1, raw.streakDays)
+        : 1,
+    lastActiveDate:
+      typeof raw.lastActiveDate === "string"
+        ? raw.lastActiveDate
+        : new Date().toISOString().split("T")[0],
+    points:
+      typeof raw.points === "number" && !isNaN(raw.points)
+        ? Math.max(0, raw.points)
+        : 0,
+    badges: Array.isArray(raw.badges)
+      ? raw.badges.filter((x: any) => typeof x === "string")
+      : defaultProgress.badges,
+  };
+}
+
+function sanitizeProfile(raw: any): UserProfile {
+  if (!raw || typeof raw !== "object") return defaultProfile;
+  return {
+    id: typeof raw.id === "string" ? raw.id : defaultProfile.id,
+    name:
+      typeof raw.name === "string" && raw.name.trim()
+        ? raw.name
+        : defaultProfile.name,
+    email: typeof raw.email === "string" ? raw.email : defaultProfile.email,
+    role: raw.role === "teacher" ? "teacher" : "student",
+    grade: typeof raw.grade === "string" ? raw.grade : defaultProfile.grade,
+    school: typeof raw.school === "string" ? raw.school : defaultProfile.school,
+    avatar: typeof raw.avatar === "string" ? raw.avatar : defaultProfile.avatar,
+  };
+}
+
 export function getStoredProgress(): UserProgress {
   if (typeof window === "undefined") return defaultProgress;
   try {
     const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
     if (!raw || raw === "undefined" || raw === "null") return defaultProgress;
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object") return defaultProgress;
-    return { ...defaultProgress, ...parsed };
+    return sanitizeProgress(parsed);
   } catch {
     return defaultProgress;
   }
@@ -41,7 +94,8 @@ export function getStoredProgress(): UserProgress {
 export function saveProgress(progress: UserProgress): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progress));
+    const clean = sanitizeProgress(progress);
+    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(clean));
   } catch (err) {
     console.error("Failed to save progress to localStorage", err);
   }
@@ -82,8 +136,8 @@ export function toggleBookmark(lessonId: string): UserProgress {
 
 export function saveQuizScore(lessonId: string, score: number, total: number): UserProgress {
   const current = getStoredProgress();
-  const percentage = Math.round((score / total) * 100);
-  const additionalPoints = Math.round((score / total) * 100);
+  const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+  const additionalPoints = total > 0 ? Math.round((score / total) * 100) : 0;
 
   const updatedScores = {
     ...current.quizScores,
@@ -131,8 +185,7 @@ export function getStoredProfile(): UserProfile {
     const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
     if (!raw || raw === "undefined" || raw === "null") return defaultProfile;
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object") return defaultProfile;
-    return { ...defaultProfile, ...parsed };
+    return sanitizeProfile(parsed);
   } catch {
     return defaultProfile;
   }
@@ -141,7 +194,8 @@ export function getStoredProfile(): UserProfile {
 export function saveProfile(profile: UserProfile): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+    const clean = sanitizeProfile(profile);
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(clean));
   } catch (err) {
     console.error("Failed to save profile to localStorage", err);
   }

@@ -4,21 +4,13 @@ import React, { useState } from "react";
 import { Lesson } from "@/types";
 import { SlideItem } from "./LessonPresentationView";
 import {
-  HelpCircle,
   BookOpen,
-  Cpu,
-  Shield,
   Lightbulb,
-  CheckSquare,
   Award,
   Sparkles,
-  ArrowDown,
-  ArrowLeft,
   Play,
   Layers,
-  ChevronLeft,
   Compass,
-  CheckCircle2,
   FileCheck,
   Target,
   Wrench
@@ -327,14 +319,17 @@ export function PresentationFlowView({
         {/* Continuous Connecting Pipeline Line */}
         <div className="absolute top-8 bottom-8 right-6 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-emerald-500 rounded-full hidden sm:block opacity-40" />
 
-        {flowStages.map((stage, idx) => {
+        {flowStages.map((stage) => {
           const isSelected = selectedNodeId === stage.id;
           const isCurrentActiveSlide = currentSlideIndex === stage.slideTargetIndex;
 
           return (
             <div
               key={stage.id}
-              className={`relative flex flex-col sm:flex-row items-start gap-4 p-5 sm:p-6 rounded-2xl border transition-all duration-300 ${stage.colorTheme.bg} ${
+              onClick={() => setSelectedNodeId(isSelected ? null : stage.id)}
+              className={`relative flex flex-col sm:flex-row items-start gap-4 p-5 sm:p-6 rounded-2xl border transition-all duration-300 cursor-pointer ${stage.colorTheme.bg} ${
+                isSelected ? "ring-2 ring-indigo-400" : ""
+              } ${
                 isCurrentActiveSlide
                   ? "border-blue-400 shadow-xl shadow-blue-900/30 scale-[1.01]"
                   : `${stage.colorTheme.border} hover:border-slate-600`

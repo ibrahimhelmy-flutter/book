@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { UserProgress, UserProfile } from "@/types";
-import { getStoredProgress, getStoredProfile, saveProfile, toggleLessonComplete } from "@/lib/storage";
+import { getStoredProgress, getStoredProfile, saveProfile } from "@/lib/storage";
 import { CURRICULUM_DATA } from "@/data/curriculum";
-import { LayoutDashboard, Award, Bookmark, BookOpen, CheckCircle, Flame, Sparkles, User, School, Clock, Edit2 } from "lucide-react";
+import { Award, Bookmark, BookOpen, Flame, Sparkles, School, Edit2 } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -23,7 +23,24 @@ export default function DashboardPage() {
     setEditSchool(prof.school || "");
   }, []);
 
-  if (!progress || !profile) return null;
+  if (!progress || !profile) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-8 animate-pulse">
+        <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 h-32 flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-800" />
+          <div className="space-y-2 flex-1">
+            <div className="h-6 bg-slate-800 rounded w-48" />
+            <div className="h-4 bg-slate-800 rounded w-32" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-28 bg-slate-900/60 border border-slate-800 rounded-2xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const totalLessons = CURRICULUM_DATA.reduce((acc, ch) => acc + (ch.lessons ? ch.lessons.length : 0), 0) || 1;
   const completedCount = progress.completedLessons.length;

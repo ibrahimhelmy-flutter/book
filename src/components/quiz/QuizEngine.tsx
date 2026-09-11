@@ -3,19 +3,14 @@
 import React, { useState, useMemo } from "react";
 import { QuestionItem } from "@/types";
 import {
-  CheckCircle,
   XCircle,
-  HelpCircle,
   Award,
   RotateCcw,
   ChevronLeft,
   ChevronRight,
   Sparkles,
   CheckCircle2,
-  ListFilter,
   Lightbulb,
-  BookOpen,
-  Send,
   Eye,
   Check,
   X,
@@ -71,6 +66,17 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
     if (activeCategory === "ALL") return questions;
     return questions.filter((q) => q.category === activeCategory);
   }, [questions, activeCategory]);
+
+  // Category counts for quick tabs
+  const categoryCounts = useMemo(() => {
+    if (!questions) return { ALL: 0, check_understanding: 0, practice: 0, exam_style: 0 };
+    return {
+      ALL: questions.length,
+      check_understanding: questions.filter((q) => q.category === "check_understanding").length,
+      practice: questions.filter((q) => q.category === "practice").length,
+      exam_style: questions.filter((q) => q.category === "exam_style").length,
+    };
+  }, [questions]);
 
   if (!questions || questions.length === 0) return null;
 
@@ -144,16 +150,6 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
     setScore(0);
     setFilterReviewOnlyMistakes(false);
   };
-
-  // Category counts for quick tabs
-  const categoryCounts = useMemo(() => {
-    return {
-      ALL: questions.length,
-      check_understanding: questions.filter((q) => q.category === "check_understanding").length,
-      practice: questions.filter((q) => q.category === "practice").length,
-      exam_style: questions.filter((q) => q.category === "exam_style").length,
-    };
-  }, [questions]);
 
   return (
     <div className="w-full max-w-full bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 md:p-8 text-white shadow-2xl my-2 sm:my-8 box-border min-w-0 quiz-content-padding md:pb-8">

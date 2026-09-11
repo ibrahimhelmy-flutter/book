@@ -1,20 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { QuestionItem } from "@/types";
 import {
-  PenTool,
-  Award,
   CheckCircle2,
   Sparkles,
+  Award,
   Eye,
   EyeOff,
   ChevronLeft,
   ChevronRight,
-  BookOpen,
   FileCheck,
-  AlertCircle,
-  RotateCcw
+  RotateCcw,
+  PenTool
 } from "lucide-react";
 import { MobileQuizNavigation } from "./MobileQuizNavigation";
 
@@ -30,7 +28,10 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
   const [selfScores, setSelfScores] = useState<Record<string, number>>({});
 
   // Filter only essay questions
-  const essayQuestions = questions.filter((q) => q.type === "essay");
+  const essayQuestions = useMemo(
+    () => questions.filter((q) => q.type === "essay"),
+    [questions]
+  );
 
   // Load saved answers and scores from localStorage
   useEffect(() => {
@@ -49,7 +50,7 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
     } catch {
       // Ignore storage errors
     }
-  }, [lessonId, questions]);
+  }, [lessonId, essayQuestions]);
 
   const handleAnswerChange = (qId: string, value: string) => {
     setStudentAnswers((prev) => ({ ...prev, [qId]: value }));

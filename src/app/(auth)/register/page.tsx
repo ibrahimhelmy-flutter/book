@@ -1,29 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Sparkles, Lock, Mail, User, School, ArrowLeft } from "lucide-react";
-import { saveProfile } from "@/lib/storage";
+import { Sparkles, ArrowLeft, ShieldCheck, User, School, BookOpen } from "lucide-react";
+import { getStoredProfile, saveProfile } from "@/lib/storage";
 import { CURRENT_BOOK } from "@/data/books";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [school, setSchool] = useState("");
-  const [password, setPassword] = useState("");
   const [role, setRole] = useState<"student" | "teacher">("student");
+
+  useEffect(() => {
+    const existing = getStoredProfile();
+    setName(existing.name || "");
+    setSchool(existing.school || "");
+    setRole(existing.role || "student");
+  }, []);
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     saveProfile({
       id: `user_${Date.now()}`,
-      name: name || "طالب المرحلة الثانوية",
-      email: email || "student@moe.edu.eg",
+      name: name.trim() || (role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة"),
+      email: role === "student" ? "student@moe.edu.eg" : "teacher@moe.edu.eg",
       role: role,
       grade: CURRENT_BOOK.grade,
-      school: school || "مدرسة المتفوقين للعلوم والتكنولوجيا",
+      school: school.trim() || "مدرسة المتفوقين للعلوم والتكنولوجيا",
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
     router.push("/dashboard");
@@ -37,9 +42,17 @@ export default function RegisterPage() {
           <div className="inline-flex p-3 bg-purple-600/20 text-purple-400 rounded-2xl border border-purple-500/30 mb-2">
             <Sparkles className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-black">إنشاء حساب دراسي جديد</h1>
+          <h1 className="text-2xl font-black">بدء تجربة التعلم الرقمي</h1>
           <p className="text-xs text-slate-400">
             انضم لمنصة {CURRENT_BOOK.title} التفاعلية ({CURRENT_BOOK.grade})
+          </p>
+        </div>
+
+        {/* Local Storage Privacy Notice */}
+        <div className="p-3.5 bg-purple-950/40 border border-purple-500/30 rounded-2xl text-xs text-purple-200 flex items-start gap-2.5">
+          <ShieldCheck className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+          <p className="leading-relaxed">
+            المنهاج متاح مجاناً للجميع بدون حسابات أو كلمات مرور. يمكنك تخصيص اسمك ومدرستك لتخصيص لوحة تقدمك المحلية.
           </p>
         </div>
 
@@ -65,9 +78,9 @@ export default function RegisterPage() {
           </button>
         </div>
 
-        <form onSubmit={handleRegister} className="space-y-3.5">
+        <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">الاسم الكامل:</label>
+            <label className="text-xs text-slate-400 block mb-1 font-medium">الاسم الكامل أو المستعار:</label>
             <div className="relative">
               <User className="w-4 h-4 text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -75,69 +88,39 @@ export default function RegisterPage() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="أحمد محمود السيد"
-                className="w-full pr-10 pl-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
+                placeholder="أدخل اسمك الكريم"
+                className="w-full pr-10 pl-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">المدرسة أو الإدارة التعليمية:</label>
+            <label className="text-xs text-slate-400 block mb-1 font-medium">اسم المدرسة (اختياري):</label>
             <div className="relative">
               <School className="w-4 h-4 text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                required
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
-                placeholder="مدرسة الأورمان الثانوية العسكرية"
-                className="w-full pr-10 pl-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">البريد الإلكتروني:</label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="student@moe.edu.eg"
-                className="w-full pr-10 pl-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">كلمة المرور:</label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pr-10 pl-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
+                placeholder="اسم مدرستك الثانوية"
+                className="w-full pr-10 pl-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-purple-500"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xl shadow-purple-600/30 transition-all cursor-pointer mt-2"
+            className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xl shadow-purple-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
           >
-            إنشاء الحساب وبدء التعلم 🚀
+            <span>بدء الدراسة والانتقال للوحة الإنجاز</span>
+            <ArrowLeft className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="text-center text-xs text-slate-400">
-          <span>لديك حساب بالفعل؟ </span>
-          <Link href="/login" className="text-purple-400 hover:underline font-bold">
-            تسجيل الدخول
+        <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+          <Link href="/" className="text-purple-400 hover:underline inline-flex items-center gap-1 font-semibold">
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>تصفح المنهاج مباشرة دون تسجيل</span>
           </Link>
         </div>
       </div>

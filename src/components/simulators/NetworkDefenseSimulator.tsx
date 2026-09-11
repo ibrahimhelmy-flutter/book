@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Shield, ShieldAlert, ShieldCheck, Database, Server, Laptop, UserCheck, AlertTriangle, Play, RefreshCw } from "lucide-react";
+import { Shield, ShieldCheck, Database, Server, UserCheck, Play, RefreshCw } from "lucide-react";
 
 export function NetworkDefenseSimulator() {
   const [hasFirewall, setHasFirewall] = useState<boolean>(true);
@@ -181,7 +181,14 @@ export function NetworkDefenseSimulator() {
       {/* Real-time Attack Logs */}
       {attackLogs.length > 0 && (
         <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs space-y-2">
-          <div className="text-slate-400 font-bold mb-1 border-b border-slate-800 pb-1">سجل تحركات الهجوم والاستجابة:</div>
+          <div className="flex items-center justify-between border-b border-slate-800 pb-1">
+            <span className="text-slate-400 font-bold">سجل تحركات الهجوم والاستجابة:</span>
+            {attackScenario !== "none" && (
+              <span className="text-[11px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-normal">
+                السيناريو النشط: {attackScenario === "web_exploit" ? "استغلال ثغرة موقع الويب" : "اختراق جهاز موظف"}
+              </span>
+            )}
+          </div>
           {attackLogs.map((log, index) => (
             <div key={index} className="leading-relaxed">
               {log}

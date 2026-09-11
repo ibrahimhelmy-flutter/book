@@ -1,13 +1,29 @@
 import React from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import Link from "next/link";
-import { BookOpen, ArrowLeft, Layers, CheckCircle } from "lucide-react";
+import { ArrowLeft, Layers } from "lucide-react";
 
 interface Props {
   params: Promise<{
     chapterId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const chapter = CURRICULUM_DATA.find((c) => c.id === resolvedParams.chapterId);
+  if (!chapter) return { title: "الفصل غير موجود" };
+
+  return {
+    title: `${chapter.title} - الفصل ${chapter.number} | المنهج المصري للذكاء الاصطناعي`,
+    description: chapter.description,
+    openGraph: {
+      title: `${chapter.title} | ${chapter.englishTitle}`,
+      description: chapter.description,
+    },
+  };
 }
 
 export default async function ChapterOverviewPage({ params }: Props) {

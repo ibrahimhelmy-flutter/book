@@ -8,7 +8,6 @@ import {
 } from "@/data/deep-questions";
 import {
   CheckCircle2,
-  XCircle,
   Award,
   RotateCcw,
   ChevronLeft,

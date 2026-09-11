@@ -2,16 +2,63 @@
 
 import React, { useState } from "react";
 import { Lesson, CalloutBox } from "@/types";
+import dynamic from "next/dynamic";
 import { LessonHeader } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
-import { QuizEngine } from "../quiz/QuizEngine";
-import { DeepComprehensionViewer } from "../quiz/DeepComprehensionViewer";
-import { EssayQuestionsViewer } from "../quiz/EssayQuestionsViewer";
-import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
-import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { LessonConceptMap } from "./LessonConceptMap";
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight } from "lucide-react";
+import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
+
+// Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
+const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    fn()
+      .then(resolve)
+      .catch((error) => {
+        if (retries <= 0) {
+          reject(error);
+          return;
+        }
+        setTimeout(() => {
+          retryDynamicImport(fn, retries - 1, delay * 1.5)
+            .then(resolve)
+            .catch(reject);
+        }, delay);
+      });
+  });
+};
+
+const QuizEngine = dynamic(
+  () => retryDynamicImport(() => import("../quiz/QuizEngine").then((mod) => mod.QuizEngine)),
+  { ssr: false }
+);
+const DeepComprehensionViewer = dynamic(
+  () => retryDynamicImport(() => import("../quiz/DeepComprehensionViewer").then((mod) => mod.DeepComprehensionViewer)),
+  { ssr: false }
+);
+const EssayQuestionsViewer = dynamic(
+  () => retryDynamicImport(() => import("../quiz/EssayQuestionsViewer").then((mod) => mod.EssayQuestionsViewer)),
+  { ssr: false }
+);
+const SimulatorRenderer = dynamic(
+  () => retryDynamicImport(() => import("../simulators/SimulatorRenderer").then((mod) => mod.SimulatorRenderer)),
+  { ssr: false }
+);
+const LessonPresentationView = dynamic(
+  () => retryDynamicImport(() => import("../presentation/LessonPresentationView").then((mod) => mod.LessonPresentationView)),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="text-center space-y-3">
+          <div className="w-10 h-10 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm font-bold text-white">جاري تجهيز منصة العرض التقديمي...</p>
+        </div>
+      </div>
+    ),
+  }
+);
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -241,10 +288,12 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
       {/* Fullscreen Presentation Modal View */}
       {isPresentationOpen && (
-        <LessonPresentationView
-          lesson={lesson}
-          onExitPresentation={() => setIsPresentationOpen(false)}
-        />
+        <ComponentErrorBoundary fallbackTitle="تعذر تشغيل العرض التقديمي">
+          <LessonPresentationView
+            lesson={lesson}
+            onExitPresentation={() => setIsPresentationOpen(false)}
+          />
+        </ComponentErrorBoundary>
       )}
 
       {/* Main Lesson View */}
@@ -419,7 +468,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           {/* Embedded Simulator in Reading flow */}
           {lesson.simulatorId && (
             <div className="my-8">
-              <SimulatorRenderer simulatorId={lesson.simulatorId} />
+              <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
+                <SimulatorRenderer simulatorId={lesson.simulatorId} />
+              </ComponentErrorBoundary>
             </div>
           )}
 
@@ -565,7 +616,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       {/* Standalone Simulator Tab */}
       {activeTab === "simulator" && lesson.simulatorId && (
         <div className="animate-fadeIn">
-          <SimulatorRenderer simulatorId={lesson.simulatorId} />
+          <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
+            <SimulatorRenderer simulatorId={lesson.simulatorId} />
+          </ComponentErrorBoundary>
         </div>
       )}
 
@@ -646,25 +699,31 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
           {/* Tab 1 Content: أسئلة من الكتاب */}
           {quizSubTab === "textbook" && (
-            <QuizEngine
-              lessonId={lesson.id}
-              questions={textbookQuestions}
-              title="أسئلة وتمارين الكتاب المدرسي 📘"
-              subtitle="الأسئلة الموضوعية الرسمية الواردة بالكتاب (اختيار من متعدد، صواب وخطأ، أكمل الفراغ) مع التصحيح الفوري"
-            />
+            <ComponentErrorBoundary fallbackTitle="تعذر تشغيل تمارين واختبار الدرس">
+              <QuizEngine
+                lessonId={lesson.id}
+                questions={textbookQuestions}
+                title="أسئلة وتمارين الكتاب المدرسي 📘"
+                subtitle="الأسئلة الموضوعية الرسمية الواردة بالكتاب (اختيار من متعدد، صواب وخطأ، أكمل الفراغ) مع التصحيح الفوري"
+              />
+            </ComponentErrorBoundary>
           )}
 
           {/* Tab 2 Content: أسئلة مقالية محتاجة كتابة */}
           {quizSubTab === "essay" && (
-            <EssayQuestionsViewer
-              lessonId={lesson.id}
-              questions={essayQuestions}
-            />
+            <ComponentErrorBoundary fallbackTitle="تعذر تشغيل الأسئلة المقالية">
+              <EssayQuestionsViewer
+                lessonId={lesson.id}
+                questions={essayQuestions}
+              />
+            </ComponentErrorBoundary>
           )}
 
           {/* Tab 3 Content: أسئلة الفهم */}
           {quizSubTab === "comprehension" && (
-            <DeepComprehensionViewer lesson={lesson} />
+            <ComponentErrorBoundary fallbackTitle="تعذر تشغيل أسئلة الفهم المعمقة">
+              <DeepComprehensionViewer lesson={lesson} />
+            </ComponentErrorBoundary>
           )}
         </div>
       )}

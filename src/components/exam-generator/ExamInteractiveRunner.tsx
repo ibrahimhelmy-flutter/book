@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { GeneratedExamModel, CommitteeQuestion } from "@/lib/exam-generator/types";
 import {
   Clock,
@@ -16,8 +16,6 @@ import {
   Check,
   X,
   FileCheck2,
-  Bookmark,
-  BookOpen,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
@@ -30,76 +28,50 @@ interface ExamInteractiveRunnerProps {
 function normalizeArabic(text: string): string {
   if (!text) return "";
   return text
-    .trim()
-    .toLowerCase()
-    .replace(/[\u064B-\u065F\u0670]/g, "") // remove diacritics
-    .replace(/[أإآ]/g, "ا")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/\u0640/g, "")
+    .replace(/[إأآٱ]/g, "ا")
     .replace(/ة/g, "ه")
     .replace(/ى/g, "ي")
-    .replace(/ـ/g, "")
-    .replace(/[.,/#!$%^&*;:{}=\-_`~()؟"']/g, "")
-    .replace(/\s+/g, " ");
+    .trim()
+    .toLowerCase();
 }
 
 export function ExamInteractiveRunner({ model, onExit }: ExamInteractiveRunnerProps) {
-  const questions = model.allQuestions;
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Extract questions from model sections
+  const questions = useMemo<CommitteeQuestion[]>(() => {
+    return model.sections.flatMap((s) => s.questions);
+  }, [model]);
+
+  // Total time in seconds
+  const totalSeconds = (model.blueprint.durationMinutes || 60) * 60;
+
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(totalSeconds);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
-  const [timeLeft, setTimeLeft] = useState(model.durationMinutes * 60);
-  const [isPaused, setIsPaused] = useState(false);
   const [instantFeedback, setInstantFeedback] = useState(false);
   const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [reviewMistakesOnly, setReviewMistakesOnly] = useState(false);
-
-  // Scroll to top when question changes or screen mounts
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    if (document.documentElement) document.documentElement.scrollTop = 0;
-    if (document.body) document.body.scrollTop = 0;
-  }, [currentIndex, isSubmitted]);
-
-  // Timer countdown effect
-  useEffect(() => {
-    let interval: any = null;
-    if (!isSubmitted && !isPaused && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            handleSubmitExam();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isSubmitted, isPaused, timeLeft]);
-
-  // Format timer as MM:SS
-  const formattedTime = useMemo(() => {
-    const mins = Math.floor(timeLeft / 60);
-    const secs = timeLeft % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  }, [timeLeft]);
-
-  const currentQ = questions[currentIndex] || questions[0];
 
   const handleSelectAnswer = (qId: string, val: string) => {
     if (isSubmitted) return;
     setUserAnswers((prev) => ({ ...prev, [qId]: val }));
   };
 
-  const isQuestionCorrect = (q: CommitteeQuestion): boolean => {
+  const isQuestionCorrect = useCallback((q: CommitteeQuestion): boolean => {
     const ans = userAnswers[q.id];
     if (!ans) return false;
 
     if (q.questionType === "mcq") {
-      // Check if user answer matches option ID or option text
       return (
         ans.toLowerCase() === q.modelAnswer.toLowerCase() ||
-        q.options?.some((opt) => opt.id.toLowerCase() === ans.toLowerCase() && opt.id.toLowerCase() === q.modelAnswer.toLowerCase()) ||
+        q.options?.some(
+          (opt) =>
+            opt.id.toLowerCase() === ans.toLowerCase() &&
+            opt.id.toLowerCase() === q.modelAnswer.toLowerCase()
+        ) ||
         false
       );
     }
@@ -107,8 +79,10 @@ export function ExamInteractiveRunner({ model, onExit }: ExamInteractiveRunnerPr
     if (q.questionType === "true_false") {
       const normUser = ans.trim().toLowerCase();
       const normCorrect = q.modelAnswer.trim().toLowerCase();
-      const isTrueExpected = normCorrect === "true" || normCorrect === "صواب" || normCorrect.includes("صحيحة");
-      const isFalseExpected = normCorrect === "false" || normCorrect === "خطأ" || normCorrect.includes("خاطئة");
+      const isTrueExpected =
+        normCorrect === "true" || normCorrect === "صواب" || normCorrect.includes("صحيحة");
+      const isFalseExpected =
+        normCorrect === "false" || normCorrect === "خطأ" || normCorrect.includes("خاطئة");
 
       if (isTrueExpected && (normUser === "true" || normUser === "صواب")) return true;
       if (isFalseExpected && (normUser === "false" || normUser === "خطأ")) return true;
@@ -126,9 +100,8 @@ export function ExamInteractiveRunner({ model, onExit }: ExamInteractiveRunnerPr
       );
     }
 
-    // For essay, short answer, explain, compare
     return ans.trim().length >= 15;
-  };
+  }, [userAnswers]);
 
   const scoreStats = useMemo(() => {
     let earnedMarks = 0;
@@ -152,14 +125,48 @@ export function ExamInteractiveRunner({ model, onExit }: ExamInteractiveRunnerPr
       totalCount: questions.length,
       percentage,
     };
-  }, [questions, userAnswers]);
+  }, [questions, isQuestionCorrect]);
 
-  const handleSubmitExam = () => {
+  const handleSubmitExam = useCallback(() => {
     setIsSubmitted(true);
     if (scoreStats.percentage >= 70) {
       fireConfetti({ particleCount: 130, spread: 95, origin: { y: 0.6 } });
     }
-  };
+  }, [scoreStats.percentage]);
+
+  // Scroll to top when question changes or screen mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [currentIndex, isSubmitted]);
+
+  // Timer interval countdown
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (!isSubmitted && !isPaused && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            handleSubmitExam();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isSubmitted, isPaused, timeLeft, handleSubmitExam]);
+
+  // Format timer as MM:SS
+  const formattedTime = useMemo(() => {
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }, [timeLeft]);
+
+  const currentQ = questions[currentIndex] || questions[0];
 
   return (
     <div className="w-full space-y-6 animate-fadeIn">

@@ -11,7 +11,6 @@ import { EXAM_PROFILES } from "@/lib/exam-generator/profiles";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import {
   Sparkles,
-  Sliders,
   Layers,
   BookOpen,
   Award,
@@ -21,10 +20,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   Settings2,
-  RotateCcw,
-  Clock,
-  HelpCircle,
-  FileCheck2,
 } from "lucide-react";
 
 interface ExamGeneratorStudioProps {
@@ -64,7 +59,7 @@ export function ExamGeneratorStudio({ onGenerate }: ExamGeneratorStudioProps) {
   });
 
   // Toggles
-  const [includeAnswers, setIncludeAnswers] = useState(true);
+  const includeAnswers = true;
   const [includeSourceReferences, setIncludeSourceReferences] = useState(true);
   const [useExactBookAnswers, setUseExactBookAnswers] = useState(true);
   const [randomizeQuestions, setRandomizeQuestions] = useState(true);

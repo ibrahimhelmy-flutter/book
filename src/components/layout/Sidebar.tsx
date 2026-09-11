@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CURRICULUM_DATA } from "@/data/curriculum";
-import { ChevronDown, ChevronUp, CheckCircle, Circle, BookOpen, Layers } from "lucide-react";
+import { CURRICULUM_TOC, TOTAL_CURRICULUM_LESSONS } from "@/data/curriculum-toc";
+import { ChevronDown, ChevronUp, CheckCircle, Circle, BookOpen } from "lucide-react";
 import { getStoredProgress } from "@/lib/storage";
 
 export function Sidebar() {
@@ -12,15 +12,13 @@ export function Sidebar() {
   const [completedList, setCompletedList] = useState<string[]>([]);
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
-    CURRICULUM_DATA.forEach((ch) => {
+    CURRICULUM_TOC.forEach((ch) => {
       initial[ch.id] = true;
     });
     return initial;
   });
 
-  const totalLessons = useMemo(() => {
-    return CURRICULUM_DATA.reduce((acc, ch) => acc + (ch.lessons ? ch.lessons.length : 0), 0);
-  }, []);
+  const totalLessons = TOTAL_CURRICULUM_LESSONS;
 
   useEffect(() => {
     const p = getStoredProgress();
@@ -45,7 +43,7 @@ export function Sidebar() {
 
       {/* Chapters Tree */}
       <div className="space-y-4">
-        {CURRICULUM_DATA.map((chapter) => {
+        {CURRICULUM_TOC.map((chapter) => {
           const isExpanded = expandedChapters[chapter.id];
           const chapterCompletedCount = chapter.lessons.filter((l) => completedList.includes(l.id)).length;
 

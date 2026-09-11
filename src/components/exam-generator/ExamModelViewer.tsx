@@ -1,23 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { GeneratedExamModel, CommitteeQuestion } from "@/lib/exam-generator/types";
+import { GeneratedExamModel } from "@/lib/exam-generator/types";
 import {
   Printer,
   Sparkles,
   Award,
   Clock,
   BookOpen,
-  FileCheck2,
   FileText,
   Eye,
   CheckCircle2,
-  Layers,
   ChevronDown,
   ChevronUp,
   BarChart3,
   Bookmark,
-  ExternalLink,
 } from "lucide-react";
 import { BlueprintModal } from "./BlueprintModal";
 
@@ -232,7 +229,7 @@ export function ExamModelViewer({ models, onStartInteractiveExam }: ExamModelVie
         {/* ======================================================== */}
         {viewMode !== "answer_key" ? (
           <div className="space-y-10">
-            {activeModel.sections.map((section, sIdx) => (
+            {activeModel.sections.map((section) => (
               <div key={section.id} className="space-y-6">
                 {/* Section Header */}
                 <div className="flex flex-wrap items-center justify-between gap-2 p-4 bg-slate-950/80 rounded-2xl border border-slate-800 print:bg-gray-100 print:border-black print:text-black">
@@ -249,7 +246,7 @@ export function ExamModelViewer({ models, onStartInteractiveExam }: ExamModelVie
 
                 {/* Section Questions */}
                 <div className="space-y-6">
-                  {section.questions.map((q, qLocalIdx) => {
+                  {section.questions.map((q) => {
                     // Calculate sequential global question number
                     const globalNumber =
                       activeModel.allQuestions.findIndex((item) => item.id === q.id) + 1;
@@ -363,7 +360,7 @@ export function ExamModelViewer({ models, onStartInteractiveExam }: ExamModelVie
                                 <span className="text-xs font-bold text-indigo-300 print:text-black block mb-1">
                                   العمود (أ):
                                 </span>
-                                {q.matchingPairs.map((pair, pIdx) => (
+                                {q.matchingPairs.map((pair) => (
                                   <div
                                     key={pair.id}
                                     className="p-2.5 bg-slate-900/60 rounded-xl border border-slate-800 text-xs text-slate-200 print:bg-white print:border-gray-300 print:text-black"

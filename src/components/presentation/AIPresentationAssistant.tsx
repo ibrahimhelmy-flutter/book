@@ -33,9 +33,6 @@ interface AIPresentationAssistantProps {
 export function AIPresentationAssistant({
   lesson,
   currentSlideTitle,
-  currentSlideBullets,
-  currentSlideBadge,
-  currentSlideIndex,
   onAddCustomSlide,
   onClose,
 }: AIPresentationAssistantProps) {
@@ -52,6 +49,7 @@ export function AIPresentationAssistant({
 
   // Dynamic suggestion prompts based on the current lesson
   const suggestionPrompts = useMemo(() => {
+    const fromSlide = currentSlideTitle ? [`توضيح بصري معمق لـ: ${currentSlideTitle}`] : [];
     const fromConcepts = (lesson.keyConcepts || []).map((c) => `اشرح معمارية: ${c.termAr}`);
     const fromSections = (lesson.sections || []).map((s) => `مخطط تدفق لمفهوم: ${s.title}`);
     const defaultList = [
@@ -60,8 +58,8 @@ export function AIPresentationAssistant({
       "مقارنة بصرية بين البدائل والخيارات التقنية",
       "دورة حياة معالجة البيانات وتدفق العمليات",
     ];
-    return Array.from(new Set([...fromConcepts, ...fromSections, ...defaultList])).slice(0, 4);
-  }, [lesson]);
+    return Array.from(new Set([...fromSlide, ...fromConcepts, ...fromSections, ...defaultList])).slice(0, 4);
+  }, [lesson, currentSlideTitle]);
 
   // Handle custom generative diagram
   const handleGenerateCustomDiagram = () => {
@@ -408,9 +406,27 @@ export function AIPresentationAssistant({
                       <Sparkles className="w-4 h-4" />
                       <span>{generatedCustomDiagram.title}</span>
                     </h4>
-                    <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                      مخطط تدفق مفاهيمي متقدم
-                    </span>
+                    <div className="flex items-center gap-2">
+                      {onAddCustomSlide && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onAddCustomSlide({
+                              title: generatedCustomDiagram.title,
+                              badge: "مخطط الذكاء الاصطناعي التفاعلي",
+                              bullets: generatedCustomDiagram.nodes.map((n) => `${n.label}: ${n.desc}`),
+                            });
+                            onClose();
+                          }}
+                          className="text-xs px-3 py-1 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all cursor-pointer shadow-md"
+                        >
+                          إضافة كشريحة تفاعلية ➕
+                        </button>
+                      )}
+                      <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                        مخطط تدفق مفاهيمي متقدم
+                      </span>
+                    </div>
                   </div>
 
                   {/* Flow Nodes Pipeline */}
