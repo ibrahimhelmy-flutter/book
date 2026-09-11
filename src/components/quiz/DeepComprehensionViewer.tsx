@@ -30,6 +30,7 @@ import {
   Zap,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
+import { MobileQuizNavigation } from "./MobileQuizNavigation";
 
 interface Props {
   lesson: Lesson;
@@ -108,9 +109,14 @@ export function DeepComprehensionViewer({ lesson }: Props) {
   const safeIndex = Math.min(currentIndex, Math.max(0, totalFiltered - 1));
   const currentQ = filteredQuestions[safeIndex] || allQuestions[0];
 
-  // Auto-scroll the active question button into view inside the jump strip
+  // Auto-scroll the active question button into view inside the jump strip (Desktop/Tablet only)
   useEffect(() => {
-    if (activeBtnRef.current) {
+    if (
+      typeof window !== "undefined" &&
+      window.innerWidth >= 768 &&
+      activeBtnRef.current &&
+      activeBtnRef.current.offsetParent !== null
+    ) {
       activeBtnRef.current.scrollIntoView({
         behavior: "smooth",
         inline: "center",
@@ -245,7 +251,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
   }
 
   return (
-    <div className="space-y-3 sm:space-y-6 pb-28 md:pb-6" dir="rtl">
+    <div className="w-full max-w-full overflow-x-hidden min-w-0 space-y-3 sm:space-y-6 quiz-content-padding md:pb-6" dir="rtl">
       {/* 1. Header Banner & Mode Switcher (Desktop / Tablet) */}
       <div className="hidden md:flex p-4 sm:p-5 md:p-6 bg-gradient-to-r from-purple-950/70 via-indigo-950/50 to-slate-900 border border-purple-500/30 rounded-2xl sm:rounded-3xl shadow-xl text-white flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-start sm:items-center gap-3">
@@ -394,7 +400,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 setCurrentIndex(0);
               }}
               placeholder="ابحث في الأسئلة والتريكات..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pr-9 pl-8 py-2 sm:py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pr-9 pl-8 py-2 sm:py-1.5 text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
             />
             {searchQuery && (
               <button
@@ -492,6 +498,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 key={q.id}
                 ref={isCurrent ? activeBtnRef : undefined}
                 onClick={() => handleNavigate(idx)}
+                aria-current={isCurrent ? "page" : undefined}
                 className={`w-8 h-8 rounded-xl shrink-0 flex items-center justify-center font-bold text-xs transition-all cursor-pointer ${btnClass}`}
                 title={`سؤال ${idx + 1}: ${q.title}`}
               >
@@ -503,8 +510,8 @@ export function DeepComprehensionViewer({ lesson }: Props) {
       </div>
 
       {/* === MOBILE-FIRST SLEEK COMPACT TOP BAR (< md only) === */}
-      <div className="md:hidden bg-slate-900/95 border border-purple-500/30 rounded-2xl p-2.5 space-y-2 shadow-lg">
-        <div className="flex items-center justify-between gap-2">
+      <div className="md:hidden bg-slate-900/95 border border-purple-500/30 rounded-2xl p-2 px-2.5 space-y-2 shadow-lg min-w-0 max-w-full">
+        <div className="flex items-center justify-between gap-1.5 min-w-0">
           {/* Mode Switcher Pill */}
           <div className="flex items-center p-0.5 bg-slate-950 rounded-xl border border-slate-800 text-xs font-bold shrink-0">
             <button
@@ -599,7 +606,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                   setCurrentIndex(0);
                 }}
                 placeholder="ابحث في الأسئلة والتريكات..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pr-9 pl-8 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pr-9 pl-8 py-1.5 text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
               />
               {searchQuery && (
                 <button
@@ -709,7 +716,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
             <h4 className="text-[11px] sm:text-xs font-bold text-purple-400 uppercase tracking-wide flex items-center gap-1.5">
               <span>{currentQ.title}</span>
             </h4>
-            <p className="text-sm sm:text-base md:text-lg font-bold text-white leading-relaxed sm:leading-relaxed">
+            <p className="text-base sm:text-lg font-bold text-white leading-relaxed">
               {currentQ.question}
             </p>
           </div>
@@ -747,10 +754,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 <button
                   key={optIdx}
                   onClick={() => handleSelectOption(currentQ.id, optIdx)}
-                  className={`w-full p-3 sm:p-4 rounded-xl sm:rounded-2xl border-2 text-right transition-all flex items-start gap-2.5 sm:gap-3.5 cursor-pointer text-xs sm:text-sm leading-relaxed ${optionStyle}`}
+                  className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 text-right transition-all flex items-start gap-2.5 sm:gap-3.5 cursor-pointer text-sm sm:text-base leading-relaxed ${optionStyle}`}
                 >
                   <span
-                    className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 mt-0.5 ${
                       isSelected
                         ? "bg-purple-600 text-white shadow-md shadow-purple-600/40"
                         : "bg-slate-800 text-slate-300"
@@ -759,7 +766,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                     {letters[optIdx] || optIdx + 1}
                   </span>
 
-                  <span className="flex-1 mt-0.5 text-xs sm:text-sm">{optText}</span>
+                  <span className="flex-1 mt-0.5 text-sm sm:text-base font-medium">{optText}</span>
 
                   {/* Icon Feedback */}
                   {(viewMode === "study" || isExamSubmitted) && isAnswered && (
@@ -874,53 +881,17 @@ export function DeepComprehensionViewer({ lesson }: Props) {
         </div>
       )}
 
-      {/* 7. Sticky Bottom Floating Navigation Bar for Mobile Phones */}
-      <div className="md:hidden fixed bottom-3 inset-x-3 z-40">
-        <div className="bg-slate-950/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-2 px-3 shadow-2xl shadow-purple-950/60 flex items-center justify-between gap-2 text-white">
-          {/* Previous Button */}
-          <button
-            onClick={() => handleNavigate(Math.max(0, safeIndex - 1))}
-            disabled={safeIndex === 0}
-            className="p-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none text-xs font-bold flex items-center gap-1 cursor-pointer transition-all border border-slate-800"
-            aria-label="السؤال السابق"
-          >
-            <ChevronRight className="w-4 h-4" />
-            <span>السابق</span>
-          </button>
-
-          {/* Center Quick Grid Sheet Trigger */}
-          <button
-            onClick={() => setIsGridModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-purple-950/60 border border-purple-500/40 text-xs font-black text-purple-200 cursor-pointer hover:bg-purple-900/60 transition-colors shadow-inner"
-            title="فتح خريطة الـ 50 سؤالاً"
-          >
-            <LayoutGrid className="w-3.5 h-3.5 text-purple-400" />
-            <span>
-              {safeIndex + 1} / {totalFiltered}
-            </span>
-          </button>
-
-          {/* Next Button or Submit in Exam mode */}
-          {viewMode === "exam" && !isExamSubmitted && safeIndex === totalFiltered - 1 ? (
-            <button
-              onClick={handleSubmitExam}
-              className="p-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-black flex items-center gap-1 cursor-pointer transition-all shadow-md shadow-emerald-600/30"
-            >
-              <span>إنهاء 🏆</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => handleNavigate(Math.min(totalFiltered - 1, safeIndex + 1))}
-              disabled={safeIndex >= totalFiltered - 1}
-              className="p-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-30 disabled:pointer-events-none text-xs font-black flex items-center gap-1.5 cursor-pointer transition-all shadow-md shadow-purple-600/30"
-              aria-label="السؤال التالي"
-            >
-              <span>التالي</span>
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </div>
+      {/* 7. Shared Sticky Bottom Navigation Bar for Mobile Phones */}
+      <MobileQuizNavigation
+        currentIndex={safeIndex}
+        totalQuestions={totalFiltered}
+        onNavigate={handleNavigate}
+        onOpenGridModal={() => setIsGridModalOpen(true)}
+        isExamMode={viewMode === "exam"}
+        isSubmitted={isExamSubmitted}
+        onSubmitExam={handleSubmitExam}
+        accentColor="purple"
+      />
 
       {/* 8. Interactive 50-Question Quick Jump Sheet Modal */}
       {isGridModalOpen && (

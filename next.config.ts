@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
+  experimental: {
+    // Prevent OneDrive file-locking conflicts (ENOENT/PageNotFoundError) during build on Windows
+    cpus: process.platform === "win32" ? 1 : undefined,
+    workerThreads: process.platform === "win32" ? false : undefined,
+  },
   // Optimize file watching and prevent file lock conflicts on Windows / OneDrive
   webpack: (config, { dev }) => {
     if (dev) {

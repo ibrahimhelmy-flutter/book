@@ -1227,16 +1227,24 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                       loading="lazy"
                       onError={(e) => {
                         const target = e.currentTarget;
-                        if (!target.dataset.triedFallback && currentSlide.image?.src) {
-                          target.dataset.triedFallback = "true";
-                          const rawSrc = currentSlide.image.src.startsWith("/") ? currentSlide.image.src : `/${currentSlide.image.src}`;
+                        const attempts = parseInt(target.dataset.attempts || "0", 10);
+                        const rawSrc = currentSlide.image?.src ? (currentSlide.image.src.startsWith("/") ? currentSlide.image.src : `/${currentSlide.image.src}`) : "";
+                        if (attempts === 0 && rawSrc) {
+                          target.dataset.attempts = "1";
                           if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
                             target.src = rawSrc;
                           } else if (!target.src.includes("/book/")) {
                             target.src = `/book${rawSrc}`;
                           }
+                        } else if (attempts === 1 && rawSrc) {
+                          target.dataset.attempts = "2";
+                          const filename = rawSrc.split("/").pop();
+                          if (filename) {
+                            target.src = `../../images/extracted/${filename}`;
+                          }
                         }
                       }}
+
                     />
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-300 mt-3 text-center">

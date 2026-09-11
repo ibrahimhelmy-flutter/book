@@ -11,7 +11,7 @@ import { EssayQuestionsViewer } from "../quiz/EssayQuestionsViewer";
 import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
 import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { LessonConceptMap } from "./LessonConceptMap";
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, MessageSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -108,6 +108,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
   const [quizSubTab, setQuizSubTab] = useState<"textbook" | "essay" | "comprehension">("textbook");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
+  const [isLessonHeaderOpen, setIsLessonHeaderOpen] = useState<boolean>(false);
 
   // Split lesson questions into objective textbook exercises and essay writing questions
   const textbookQuestions = React.useMemo(() => {
@@ -118,23 +119,79 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     return (lesson.questions || []).filter((q) => q.type === "essay");
   }, [lesson.questions]);
 
-  // Automatically scroll to top when changing tabs or lessons
+  const quizSectionRef = React.useRef<HTMLDivElement>(null);
+
+  // Automatically scroll to top for lessons or main tabs, or smart-scroll to quiz section
   React.useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    if (document.documentElement) document.documentElement.scrollTop = 0;
-    if (document.body) document.body.scrollTop = 0;
+    if (activeTab === "quiz") {
+      const timer = setTimeout(() => {
+        if (quizSectionRef.current) {
+          // Use window.scrollTo instead of scrollIntoView to avoid browser viewport
+          // recalibration on mobile (which causes the "zoom/grow" effect)
+          const rect = quizSectionRef.current.getBoundingClientRect();
+          const targetTop = window.scrollY + rect.top - 72; // 72px offset for sticky header
+          window.scrollTo({ top: Math.max(0, targetTop), left: 0, behavior: "smooth" });
+        }
+      }, 60);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+    }
   }, [lesson.id, activeTab]);
 
-  return (
-    <article className="max-w-5xl mx-auto px-4 py-8">
-      {/* Lesson Header with TTS, Bookmark, and Objectives */}
-      <LessonHeader
-        lesson={lesson}
-        onOpenPresentation={() => setIsPresentationOpen(true)}
-      />
+  const isQuizMode = activeTab === "quiz";
 
-      {/* Interactive Tabs Ribbon for Quick Jumping */}
-      <div className="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg mb-8 grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5">
+  return (
+    <article className={`max-w-5xl mx-auto w-full max-w-full overflow-x-hidden min-w-0 ${isQuizMode ? "px-3 sm:px-4 py-3 sm:py-8" : "px-4 py-8"}`}>
+      {/* Mobile Quiz Focus Mode: Compact Bar when practicing questions */}
+      {isQuizMode && (
+        <div className="md:hidden mb-2.5 p-2 px-3 bg-slate-900/95 border border-slate-800 rounded-2xl flex items-center justify-between shadow-md">
+          <button
+            type="button"
+            onClick={() => setActiveTab("lesson")}
+            className="flex items-center gap-1.5 min-w-0 text-right cursor-pointer group"
+            title="العودة لشرح الدرس"
+          >
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-white shrink-0" />
+            <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-indigo-600/30 text-indigo-300 font-mono font-black shrink-0">
+              {lesson.number}
+            </span>
+            <span className="text-xs font-bold text-white truncate max-w-[130px] xs:max-w-[170px]">
+              {lesson.title}
+            </span>
+          </button>
+
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActiveTab("lesson")}
+              className="text-[11px] font-bold text-indigo-300 hover:text-white px-2 py-1 rounded-lg bg-indigo-950/60 border border-indigo-500/30 flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              <span>الدرس 📖</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsLessonHeaderOpen((prev) => !prev)}
+              className="text-[11px] font-bold text-slate-300 hover:text-white px-2 py-1 rounded-lg bg-slate-800/90 border border-slate-700/60 flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              <span>{isLessonHeaderOpen ? "طي ▴" : "الأهداف ▾"}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Lesson Header with TTS, Bookmark, and Objectives (Always visible on desktop; collapsible on mobile in quiz mode) */}
+      <div className={isQuizMode && !isLessonHeaderOpen ? "hidden md:block" : "block animate-fadeIn"}>
+        <LessonHeader
+          lesson={lesson}
+          onOpenPresentation={() => setIsPresentationOpen(true)}
+        />
+      </div>
+
+      {/* Interactive Tabs Ribbon for Quick Jumping (Hidden on mobile during quiz focus mode) */}
+      <div className={`bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg ${isQuizMode ? "hidden md:flex mb-8" : "mb-8 grid grid-cols-2 sm:flex sm:flex-wrap"} gap-1.5`}>
         <button
           onClick={() => setActiveTab("lesson")}
           className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
@@ -294,16 +351,24 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                           loading="lazy"
                           onError={(e) => {
                             const target = e.currentTarget;
-                            if (!target.dataset.triedFallback && sec.image?.src) {
-                              target.dataset.triedFallback = "true";
-                              const rawSrc = sec.image.src.startsWith("/") ? sec.image.src : `/${sec.image.src}`;
+                            const attempts = parseInt(target.dataset.attempts || "0", 10);
+                            const rawSrc = sec.image?.src ? (sec.image.src.startsWith("/") ? sec.image.src : `/${sec.image.src}`) : "";
+                            if (attempts === 0 && rawSrc) {
+                              target.dataset.attempts = "1";
                               if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
                                 target.src = rawSrc;
                               } else if (!target.src.includes("/book/")) {
                                 target.src = `/book${rawSrc}`;
                               }
+                            } else if (attempts === 1 && rawSrc) {
+                              target.dataset.attempts = "2";
+                              const filename = rawSrc.split("/").pop();
+                              if (filename) {
+                                target.src = `../../images/extracted/${filename}`;
+                              }
                             }
                           }}
+
                         />
                       </div>
                       {sec.image.caption && (
@@ -486,7 +551,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 onClick={() => {
                   setActiveTab("quiz");
                   setQuizSubTab("comprehension");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 className="p-3.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
               >
@@ -521,49 +585,62 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
       {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 3 Clear Tabs) */}
       {activeTab === "quiz" && (
-        <div className="animate-fadeIn space-y-6">
-          {/* Exactly 3 Clear Tabs Switcher */}
-          <div className="p-1.5 sm:p-2 bg-slate-900/90 border border-slate-800 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2 shadow-lg">
+        <div ref={quizSectionRef} className="animate-fadeIn space-y-4 sm:space-y-6 mobile-quiz-scroll-anchor">
+          {/* Exactly 3 Clear Tabs Switcher: Sleek Horizontal Segmented Control */}
+          <div
+            role="tablist"
+            aria-label="أقسام الأسئلة والتمارين"
+            className="h-11 sm:h-12 p-1 bg-slate-900/95 border border-slate-800 rounded-2xl flex items-center gap-1 sm:gap-1.5 shadow-lg"
+          >
             {/* 1. أسئلة من الكتاب */}
             <button
               type="button"
+              role="tab"
+              aria-selected={quizSubTab === "textbook"}
+              aria-current={quizSubTab === "textbook" ? "page" : undefined}
               onClick={() => setQuizSubTab("textbook")}
-              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
                 quizSubTab === "textbook"
-                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-extrabold"
+                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <BookOpen className="w-4 h-4 text-emerald-300 shrink-0" />
-              <span>أسئلة من الكتاب ({textbookQuestions.length}) 📘</span>
+              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" />
+              <span className="truncate">كتاب ({textbookQuestions.length})</span>
             </button>
 
             {/* 2. أسئلة مقالية محتاجة كتابة */}
             <button
               type="button"
+              role="tab"
+              aria-selected={quizSubTab === "essay"}
+              aria-current={quizSubTab === "essay" ? "page" : undefined}
               onClick={() => setQuizSubTab("essay")}
-              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
                 quizSubTab === "essay"
-                  ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-extrabold"
+                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <PenTool className="w-4 h-4 text-amber-300 shrink-0" />
-              <span>أسئلة مقالية محتاجة كتابة ({essayQuestions.length}) ✍️</span>
+              <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
+              <span className="truncate">مقالي ({essayQuestions.length})</span>
             </button>
 
             {/* 3. أسئلة الفهم */}
             <button
               type="button"
+              role="tab"
+              aria-selected={quizSubTab === "comprehension"}
+              aria-current={quizSubTab === "comprehension" ? "page" : undefined}
               onClick={() => setQuizSubTab("comprehension")}
-              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
                 quizSubTab === "comprehension"
-                  ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 font-extrabold"
+                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <Brain className="w-4 h-4 text-purple-300 shrink-0" />
-              <span>أسئلة الفهم والتحليل (50) 🧠</span>
+              <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300 shrink-0" />
+              <span className="truncate">فهم (50)</span>
             </button>
           </div>
 
