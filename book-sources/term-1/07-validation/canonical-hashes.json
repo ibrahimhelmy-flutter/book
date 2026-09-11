@@ -1,17 +1,27 @@
 {
   "term": 1,
   "description": "Exclusive cryptographic hashes of 05-canonical-data. Excludes 07-validation and runtime generated files.",
-  "totalCanonicalJsonFiles": 24,
+  "totalCanonicalJsonFiles": 26,
   "files": {
     "authored/committee-questions.json": {
       "sha256": "1b71e30843caf74c4ae1fbdeb6d477a20aaf9b1653ee9c0ddda3c127252087d0",
       "sizeBytes": 71172,
       "lastModified": "2026-09-10T10:08:49.917Z"
     },
+    "authored/deep-questions/chapter-1/lesson-1-1.json": {
+      "sha256": "add0fc20f11b719ac99497551a978bb2af726da2b0ab4c0eaa7e23a55b9ee0ea",
+      "sizeBytes": 165828,
+      "lastModified": "2026-09-10T19:55:03.209Z"
+    },
+    "authored/deep-questions/chapter-1/lesson-1-2.json": {
+      "sha256": "3a6cd5a2074b64c3319b4085e56a4a9b70f18ce49feba19ee318c9ab4a9c8b39",
+      "sizeBytes": 142610,
+      "lastModified": "2026-09-10T19:56:49.897Z"
+    },
     "authored/deep-questions/chapter-1.json": {
-      "sha256": "322768bb81a4f406efd9a91239c6262b29ebd7ec72a893dc22751b2625fad0aa",
-      "sizeBytes": 464468,
-      "lastModified": "2026-09-10T10:25:34.105Z"
+      "sha256": "e10902e6935f16da30819e6c63468d66a8ae44bfe54b170fc8911f9c3c598988",
+      "sizeBytes": 559161,
+      "lastModified": "2026-09-10T19:57:02.208Z"
     },
     "authored/deep-questions/chapter-2.json": {
       "sha256": "a48ce0f5aeb8485801c8f1af343f41ce7266fc041e1560af36586f8895843df9",
@@ -49,9 +59,9 @@
       "lastModified": "2026-09-07T21:53:56.481Z"
     },
     "official/glossary.json": {
-      "sha256": "4158f26c5713972e72c2763178ac38dd1f704e5d2780c4b31110c592fcc301f7",
-      "sizeBytes": 58249,
-      "lastModified": "2026-09-10T10:08:49.860Z"
+      "sha256": "ea3b85239bb570403a0096358a0359f6d3506db99a106581be9dfbd6f4abe178",
+      "sizeBytes": 58257,
+      "lastModified": "2026-09-10T18:38:08.542Z"
     },
     "official/official-lessons/chapter-1/lesson-1-1.json": {
       "sha256": "1a063684b249a62d485001c435929be862d387813a1f3303524e40be88667752",

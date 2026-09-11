@@ -11,6 +11,7 @@ import { CHAPTER_3_DEEP_QUESTIONS } from "./chapter-3";
 import { CHAPTER_4_DEEP_QUESTIONS } from "./chapter-4";
 
 export * from "./types";
+export * from "./chapter-1";
 
 export const ALL_DEEP_QUESTIONS: Record<string, DeepChallengingQuestion[]> = {
   ...CHAPTER_1_DEEP_QUESTIONS,

@@ -15,6 +15,27 @@ export type CognitiveLevel =
 
 export type QuestionDifficulty = "easy" | "medium" | "hard" | "very-hard";
 
+export interface DeepQuestionProvenance {
+  question: "derived-from-curriculum" | "official";
+  explanation: "pedagogical-explanation";
+  teacherPrompt: "pedagogical-extension";
+}
+
+export interface DeepQuestionValidation {
+  distractorsPlausible: boolean;
+  noExternalKnowledge: boolean;
+  noDuplicate: boolean;
+  conceptAligned: boolean;
+  noAnswerLeakage?: boolean;
+  optionsIndependent?: boolean;
+}
+
+export interface CurriculumEvidenceItem {
+  excerpt: string;
+  page: number;
+  conceptId?: string;
+}
+
 export interface DeepChallengingQuestion {
   id: string;
   lessonId: string;
@@ -24,8 +45,11 @@ export interface DeepChallengingQuestion {
   title: string;
   cognitiveLevel: CognitiveLevel;
   difficulty: QuestionDifficulty;
+  conceptId?: string;
+  secondaryConceptIds?: string[];
   conceptIds: string[];
   contentOrigin: "official" | "authored";
+  contentProvenance?: DeepQuestionProvenance;
   scenario?: string;
   question: string;
   options: string[]; // 4 options
@@ -36,5 +60,8 @@ export interface DeepChallengingQuestion {
   teacherDiscussionPrompt: string; // إرشاد المعلم للنقاش الصفي
   trapType?: string;
   isExamLikely?: boolean;
-  source?: ProvenanceSource;
+  source?: ProvenanceSource & {
+    curriculumEvidence?: string | CurriculumEvidenceItem;
+  };
+  validation?: DeepQuestionValidation;
 }
