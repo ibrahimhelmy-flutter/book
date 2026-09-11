@@ -353,6 +353,56 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
 
       {!submitted ? (
         <div className="w-full">
+          {/* Top Question Navigation Bar (Specially for mobile so button position never jumps with question size) */}
+          <div className="flex items-center justify-between gap-2 p-1.5 sm:p-2 bg-slate-950/90 border border-slate-800 rounded-xl sm:rounded-2xl sticky top-2 z-20 backdrop-blur-md shadow-lg mb-4">
+            {/* Previous Question Button */}
+            <button
+              type="button"
+              disabled={safeIndex === 0}
+              onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+              className="min-h-[42px] min-w-[76px] sm:min-w-[90px] px-3 sm:px-4 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-25 disabled:pointer-events-none text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all border border-slate-700/60 active:scale-95 cursor-pointer shadow-sm"
+              aria-label="السؤال السابق"
+            >
+              <ChevronRight className="w-4 h-4 shrink-0" />
+              <span>السابق</span>
+            </button>
+
+            {/* Center: Current Index & Grid Sheet Trigger */}
+            <button
+              type="button"
+              onClick={() => setIsGridModalOpen(true)}
+              className="min-h-[42px] px-3.5 sm:px-5 rounded-xl bg-indigo-950/70 border border-indigo-500/40 hover:border-indigo-400/60 text-indigo-200 text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-95 shadow-inner cursor-pointer"
+              title="عرض فهرس الأسئلة"
+              aria-label={`السؤال ${safeIndex + 1} من إجمالي ${totalQuestions}. انقر لفتح خريطة الأسئلة`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+              <span className="font-mono tracking-wider font-black">
+                {safeIndex + 1} / {totalQuestions}
+              </span>
+            </button>
+
+            {/* Next Question or Finish Quiz Button */}
+            {safeIndex < totalQuestions - 1 ? (
+              <button
+                type="button"
+                onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
+                className="min-h-[42px] min-w-[76px] sm:min-w-[90px] px-3 sm:px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all shadow-md shadow-indigo-600/30 active:scale-95 cursor-pointer"
+                aria-label="السؤال التالي"
+              >
+                <span>التالي</span>
+                <ChevronLeft className="w-4 h-4 shrink-0" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleFinishQuiz}
+                className="min-h-[42px] min-w-[76px] sm:min-w-[90px] px-3 sm:px-5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-600/30 active:scale-95 cursor-pointer"
+              >
+                <span>تسليم 🏆</span>
+              </button>
+            )}
+          </div>
+
           {/* Question Category, Type Badge, and Actions */}
           <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2 flex-wrap">
@@ -687,18 +737,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
             )}
           </div>
 
-          {/* Shared Mobile Sticky Bottom Navigation (< md) */}
-          <MobileQuizNavigation
-            currentIndex={safeIndex}
-            totalQuestions={totalQuestions}
-            onNavigate={(newIdx) => setCurrentIndex(newIdx)}
-            onOpenGridModal={() => setIsGridModalOpen(true)}
-            isExamMode={true}
-            isSubmitted={submitted}
-            onSubmitExam={handleFinishQuiz}
-            submitLabel="تسليم 🏆"
-            accentColor="indigo"
-          />
+          {/* Mobile Navigation is now integrated directly at top so button position never jumps */}
         </div>
       ) : (
         /* Results & Answer Review View */
