@@ -7,6 +7,7 @@ import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { QuizEngine } from "../quiz/QuizEngine";
 import { DeepComprehensionViewer } from "../quiz/DeepComprehensionViewer";
+import { EssayQuestionsViewer } from "../quiz/EssayQuestionsViewer";
 import { SimulatorRenderer } from "../simulators/SimulatorRenderer";
 import { LessonPresentationView } from "../presentation/LessonPresentationView";
 import { LessonConceptMap } from "./LessonConceptMap";
@@ -105,8 +106,17 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
-  const [quizSubTab, setQuizSubTab] = useState<"curriculum" | "comprehension">("curriculum");
+  const [quizSubTab, setQuizSubTab] = useState<"textbook" | "essay" | "comprehension">("textbook");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
+
+  // Split lesson questions into objective textbook exercises and essay writing questions
+  const textbookQuestions = React.useMemo(() => {
+    return (lesson.questions || []).filter((q) => q.type !== "essay");
+  }, [lesson.questions]);
+
+  const essayQuestions = React.useMemo(() => {
+    return (lesson.questions || []).filter((q) => q.type === "essay");
+  }, [lesson.questions]);
 
   // Automatically scroll to top when changing tabs or lessons
   React.useEffect(() => {
@@ -416,35 +426,62 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             </div>
           )}
 
-          {/* Bottom of Lesson: Practice & Comprehension Callout */}
-          <div className="p-6 bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center shrink-0">
-                <Brain className="w-6 h-6 text-purple-400" />
-              </div>
-              <div>
-                <h4 className="text-sm sm:text-base font-bold text-white">
-                  انتقل إلى قسم التمارين وبنك أسئلة الفهم والتحليل 🧠
-                </h4>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  يشمل أسئلة المنهج الرسمية + بنك الـ 50 سؤالاً لقياس الفهم العميق والتمييز والتريكات الامتحانية.
-                </p>
+          {/* Bottom of Lesson: Practice, Essay & Comprehension Hub Callout */}
+          <div className="p-6 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-3xl space-y-4 shadow-xl">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                  <CheckSquare className="w-6 h-6 text-indigo-400" />
+                </div>
+                <div>
+                  <h4 className="text-sm sm:text-base font-extrabold text-white">
+                    جاهز للتدريب واختبار فهمك للدرس؟ 📝
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    اختر القسم الذي ترغب بالتدرب عليه مباشرة (3 أقسام منظمة):
+                  </p>
+                </div>
               </div>
             </div>
-            <button
-              onClick={() => {
-                setActiveTab("quiz");
-                setQuizSubTab("comprehension");
-              }}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-purple-600/30 transition-all hover:scale-105"
-            >
-              <Brain className="w-4 h-4" />
-              <span>فتح بنك أسئلة الفهم (50 سؤالاً)</span>
-            </button>
-          </div>
 
-          {/* Embedded Curriculum Quiz Engine */}
-          <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("quiz");
+                  setQuizSubTab("textbook");
+                }}
+                className="p-3.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
+              >
+                <BookOpen className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>أسئلة من الكتاب ({textbookQuestions.length}) 📘</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("quiz");
+                  setQuizSubTab("essay");
+                }}
+                className="p-3.5 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/30 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
+              >
+                <PenTool className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>أسئلة مقالية ({essayQuestions.length}) ✍️</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("quiz");
+                  setQuizSubTab("comprehension");
+                }}
+                className="p-3.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
+              >
+                <Brain className="w-4 h-4 text-purple-400 shrink-0" />
+                <span>أسئلة الفهم (50) 🧠</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -469,40 +506,74 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         </div>
       )}
 
-      {/* Standalone Quiz & Exercise Hub */}
+      {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 3 Clear Tabs) */}
       {activeTab === "quiz" && (
         <div className="animate-fadeIn space-y-6">
-          {/* Sub-tab Switcher between Curriculum Questions & Deep Comprehension Questions */}
-          <div className="p-2 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col sm:flex-row gap-2">
+          {/* Exactly 3 Clear Tabs Switcher */}
+          <div className="p-1.5 sm:p-2 bg-slate-900/90 border border-slate-800 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-2 shadow-lg">
+            {/* 1. أسئلة من الكتاب */}
             <button
-              onClick={() => setQuizSubTab("curriculum")}
-              className={`flex-1 py-3 px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                quizSubTab === "curriculum"
-                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              type="button"
+              onClick={() => setQuizSubTab("textbook")}
+              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                quizSubTab === "textbook"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-extrabold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <CheckSquare className="w-4 h-4" />
-              <span>أسئلة وتمارين المنهج ({lesson.questions?.length || 0} أسئلة)</span>
+              <BookOpen className="w-4 h-4 text-emerald-300 shrink-0" />
+              <span>أسئلة من الكتاب ({textbookQuestions.length}) 📘</span>
             </button>
 
+            {/* 2. أسئلة مقالية محتاجة كتابة */}
             <button
-              onClick={() => setQuizSubTab("comprehension")}
-              className={`flex-1 py-3 px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                quizSubTab === "comprehension"
-                  ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              type="button"
+              onClick={() => setQuizSubTab("essay")}
+              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                quizSubTab === "essay"
+                  ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-extrabold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <Brain className="w-4 h-4 text-purple-300" />
-              <span>قسم أسئلة الفهم والتحليل المعمق (50 سؤالاً) 🧠</span>
+              <PenTool className="w-4 h-4 text-amber-300 shrink-0" />
+              <span>أسئلة مقالية محتاجة كتابة ({essayQuestions.length}) ✍️</span>
+            </button>
+
+            {/* 3. أسئلة الفهم */}
+            <button
+              type="button"
+              onClick={() => setQuizSubTab("comprehension")}
+              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                quizSubTab === "comprehension"
+                  ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 font-extrabold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/80"
+              }`}
+            >
+              <Brain className="w-4 h-4 text-purple-300 shrink-0" />
+              <span>أسئلة الفهم والتحليل (50) 🧠</span>
             </button>
           </div>
 
-          {/* Content of selected sub-tab */}
-          {quizSubTab === "curriculum" ? (
-            <QuizEngine lessonId={lesson.id} questions={lesson.questions} />
-          ) : (
+          {/* Tab 1 Content: أسئلة من الكتاب */}
+          {quizSubTab === "textbook" && (
+            <QuizEngine
+              lessonId={lesson.id}
+              questions={textbookQuestions}
+              title="أسئلة وتمارين الكتاب المدرسي 📘"
+              subtitle="الأسئلة الموضوعية الرسمية الواردة بالكتاب (اختيار من متعدد، صواب وخطأ، أكمل الفراغ) مع التصحيح الفوري"
+            />
+          )}
+
+          {/* Tab 2 Content: أسئلة مقالية محتاجة كتابة */}
+          {quizSubTab === "essay" && (
+            <EssayQuestionsViewer
+              lessonId={lesson.id}
+              questions={essayQuestions}
+            />
+          )}
+
+          {/* Tab 3 Content: أسئلة الفهم */}
+          {quizSubTab === "comprehension" && (
             <DeepComprehensionViewer lesson={lesson} />
           )}
         </div>

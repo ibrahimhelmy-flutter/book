@@ -26,6 +26,8 @@ import { fireConfetti } from "@/lib/confetti";
 interface Props {
   lessonId: string;
   questions: QuestionItem[];
+  title?: string;
+  subtitle?: string;
 }
 
 // Smart Arabic text normalizer for fill-in-the-blank grading
@@ -49,7 +51,7 @@ function normalizeArabicText(text: string): string {
     .replace(/\s+/g, " ");
 }
 
-export function QuizEngine({ lessonId, questions }: Props) {
+export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
@@ -161,14 +163,14 @@ export function QuizEngine({ lessonId, questions }: Props) {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-xl sm:text-2xl font-black text-white">
-                بنك الأسئلة الشامل والتدريبات التفاعلية
+                {title || "أسئلة وتمارين الكتاب المدرسي 📘"}
               </h3>
               <span className="text-xs font-mono font-bold px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30">
                 {questions.length} سؤالاً
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              أسئلة الفهم، الاختيار من متعدد، الصواب والخطأ، ونماذج امتحانات الثانوية العامة مع التصحيح الفوري
+              {subtitle || "الأسئلة الموضوعية الرسمية الواردة بالكتاب (اختيار من متعدد، صواب وخطأ، أكمل الفراغ) مع التصحيح الفوري"}
             </p>
           </div>
         </div>
