@@ -19,8 +19,24 @@ export function calculateReadingTime(text: string): number {
 export function getAssetPath(path: string): string {
   if (!path) return path;
   if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) return path;
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+  let basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+  // Dynamic client-side resolution:
+  // Detect if hosted under a repository subpath (e.g. GitHub Pages /book/) or at domain root (e.g. Vercel / localhost)
+  if (typeof window !== "undefined") {
+    if (window.location.pathname.startsWith("/book")) {
+      basePath = "/book";
+    } else {
+      basePath = "";
+    }
+  }
+
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  // Prevent double-prefixing if path already includes basePath
+  if (basePath && cleanPath.startsWith(basePath)) {
+    return cleanPath;
+  }
   return `${basePath}${cleanPath}`;
 }
 
