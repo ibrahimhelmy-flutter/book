@@ -18,10 +18,12 @@ import {
   Send,
   Eye,
   Check,
-  X
+  X,
+  LayoutGrid
 } from "lucide-react";
 import { saveQuizScore } from "@/lib/storage";
 import { fireConfetti } from "@/lib/confetti";
+import { MobileQuizNavigation } from "./MobileQuizNavigation";
 
 interface Props {
   lessonId: string;
@@ -61,6 +63,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
   const [filterReviewOnlyMistakes, setFilterReviewOnlyMistakes] = useState<boolean>(false);
   const [instantFeedback, setInstantFeedback] = useState<boolean>(true);
   const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
+  const [isGridModalOpen, setIsGridModalOpen] = useState<boolean>(false);
 
   // Filtered questions based on selected category
   const filteredQuestions = useMemo(() => {
@@ -153,9 +156,9 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
   }, [questions]);
 
   return (
-    <div className="w-full max-w-full bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-6 md:p-8 text-white shadow-2xl my-8 box-border min-w-0">
-      {/* Header Banner */}
-      <div className="w-full flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6">
+    <div className="w-full max-w-full bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-6 md:p-8 text-white shadow-2xl my-2 sm:my-8 box-border min-w-0 quiz-content-padding md:pb-8">
+      {/* 1. Header Banner (Desktop / Tablet) */}
+      <div className="hidden md:flex w-full flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-indigo-400 rounded-2xl border border-indigo-500/30 shadow-inner shrink-0">
             <Award className="w-7 h-7" />
@@ -206,9 +209,9 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
         )}
       </div>
 
-      {/* Category Tabs / Filters */}
+      {/* 2. Category Tabs / Filters (Desktop / Tablet) */}
       {!submitted && (
-        <div className="w-full flex flex-wrap gap-2 mb-6 bg-slate-950/70 p-2 rounded-2xl border border-slate-800/80">
+        <div className="hidden md:flex w-full flex-wrap gap-2 mb-6 bg-slate-950/70 p-2 rounded-2xl border border-slate-800/80">
           <button
             onClick={() => {
               setActiveCategory("ALL");
@@ -273,9 +276,9 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
         </div>
       )}
 
-      {/* Interactive Question Jump Strip */}
+      {/* 3. Interactive Question Jump Strip (Desktop / Tablet) */}
       {!submitted && totalQuestions > 1 && (
-        <div className="w-full mb-6 pb-4 border-b border-slate-800/80">
+        <div className="hidden md:block w-full mb-6 pb-4 border-b border-slate-800/80">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
             <span className="font-semibold">خريطة التنقل السريع بين الأسئلة:</span>
             <span>
@@ -308,6 +311,47 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* 4. Mobile-First Sleek Compact Quiz Toolbar (< md) */}
+      {!submitted && (
+        <div className="md:hidden bg-slate-950/90 border border-indigo-500/30 rounded-2xl p-2 px-3 mb-3 flex items-center justify-between gap-2 shadow-md">
+          {/* Question Counter & Jump Map Modal Button */}
+          <button
+            type="button"
+            onClick={() => setIsGridModalOpen(true)}
+            className="min-h-[40px] px-3 py-1 rounded-xl bg-indigo-600/25 hover:bg-indigo-600/35 text-indigo-200 border border-indigo-500/35 text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+            title="فتح خريطة أسئلة الكتاب"
+          >
+            <LayoutGrid className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+            <span>سؤال {safeIndex + 1} / {totalQuestions}</span>
+          </button>
+
+          {/* Instant Feedback Toggle */}
+          <button
+            type="button"
+            onClick={() => setInstantFeedback((prev) => !prev)}
+            className={`min-h-[40px] px-2.5 py-1 rounded-xl border text-xs font-bold flex items-center gap-1 cursor-pointer transition-all active:scale-95 ${
+              instantFeedback
+                ? "bg-emerald-950/80 border-emerald-500/60 text-emerald-300 shadow-sm"
+                : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>{instantFeedback ? "تصحيح فوري ⚡" : "تأجيل"}</span>
+          </button>
+
+          {/* Reset */}
+          <button
+            type="button"
+            onClick={resetQuiz}
+            className="min-h-[40px] min-w-[40px] p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center active:scale-95"
+            title="إعادة المحاولة"
+            aria-label="إعادة المحاولة"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
         </div>
       )}
 
@@ -379,8 +423,8 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
             </div>
           )}
 
-          {/* Question Text with Fixed Minimum Height & Strict Full Width */}
-          <div className="w-full min-w-full bg-slate-950/70 p-5 sm:p-6 rounded-2xl border border-slate-800/90 mb-6 min-h-[90px] flex items-center box-border">
+          {/* Question Text with Responsive Padding */}
+          <div className="w-full bg-slate-950/70 p-4 sm:p-6 rounded-2xl border border-slate-800/90 mb-4 sm:mb-6 min-h-[64px] sm:min-h-[90px] flex items-center box-border">
             <p className="w-full text-base sm:text-lg font-bold text-slate-100 leading-relaxed break-words">
               {currentQ.questionText}
             </p>
@@ -394,15 +438,15 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
             const isCurrentCorrect = checkIsCorrect(currentQ);
 
             return (
-              <div className="w-full space-y-6">
+              <div className="w-full space-y-4 sm:space-y-6">
                 {/* 1. MCQ */}
                 {currentQ.type === "mcq" && currentQ.options && (
-                  <div className="w-full space-y-3">
+                  <div className="w-full space-y-2.5 sm:space-y-3">
                     {currentQ.options.map((opt) => {
                       const isSelected = userAnswers[currentQ.id] === opt.id;
                       const isCorrectOpt = opt.id === String(currentQ.correctAnswer);
 
-                      let btnStyle = "bg-slate-950/50 hover:bg-slate-800/70 border-slate-800 text-slate-300";
+                      let btnStyle = "bg-slate-950/60 hover:bg-slate-800/70 border-slate-800 text-slate-200";
                       let badgeStyle = "bg-slate-800 text-slate-400 border border-slate-700";
 
                       if (shouldShowFeedback) {
@@ -423,11 +467,12 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                       return (
                         <button
                           key={opt.id}
+                          type="button"
                           onClick={() => handleSelectOption(currentQ.id, opt.id)}
-                          className={`w-full min-w-full p-4 rounded-2xl border text-right text-sm leading-relaxed transition-all cursor-pointer flex items-start gap-3.5 box-border ${btnStyle}`}
+                          className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-right text-sm sm:text-base leading-relaxed transition-all cursor-pointer flex items-start gap-3 box-border active:scale-[0.99] ${btnStyle}`}
                         >
                           <span
-                            className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-mono shrink-0 ${badgeStyle}`}
+                            className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-mono shrink-0 mt-0.5 ${badgeStyle}`}
                           >
                             {shouldShowFeedback && isCorrectOpt ? (
                               <Check className="w-4 h-4" />
@@ -437,7 +482,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                               opt.id.toUpperCase()
                             )}
                           </span>
-                          <span className="pt-0.5 break-words flex-1">{opt.text}</span>
+                          <span className="break-words flex-1 text-slate-200 font-medium">{opt.text}</span>
                         </button>
                       );
                     })}
@@ -446,14 +491,14 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
 
                 {/* 2. True / False */}
                 {currentQ.type === "true_false" && (
-                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {(() => {
                       const userAns = userAnswers[currentQ.id];
                       const correctAns = String(currentQ.correctAnswer).toLowerCase();
                       const isTrueCorrect = correctAns === "true" || correctAns === "t" || correctAns === "a";
 
-                      let trueBtnClass = "bg-slate-950/60 hover:bg-slate-800 border-slate-800 text-slate-300";
-                      let falseBtnClass = "bg-slate-950/60 hover:bg-slate-800 border-slate-800 text-slate-300";
+                      let trueBtnClass = "bg-slate-950/60 hover:bg-slate-800 border-slate-800 text-slate-200";
+                      let falseBtnClass = "bg-slate-950/60 hover:bg-slate-800 border-slate-800 text-slate-200";
 
                       if (shouldShowFeedback) {
                         if (isTrueCorrect) {
@@ -478,16 +523,18 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                       return (
                         <>
                           <button
+                            type="button"
                             onClick={() => handleSelectOption(currentQ.id, "true")}
-                            className={`w-full p-4 rounded-2xl border text-center text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-3 box-border ${trueBtnClass}`}
+                            className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-center text-sm sm:text-base font-bold transition-all cursor-pointer flex items-center justify-center gap-2.5 box-border active:scale-[0.99] ${trueBtnClass}`}
                           >
                             <Check className="w-5 h-5 text-emerald-400 shrink-0" />
                             <span>صواب (○ عبارة صحيحة)</span>
                           </button>
 
                           <button
+                            type="button"
                             onClick={() => handleSelectOption(currentQ.id, "false")}
-                            className={`w-full p-4 rounded-2xl border text-center text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-3 box-border ${falseBtnClass}`}
+                            className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-center text-sm sm:text-base font-bold transition-all cursor-pointer flex items-center justify-center gap-2.5 box-border active:scale-[0.99] ${falseBtnClass}`}
                           >
                             <X className="w-5 h-5 text-red-400 shrink-0" />
                             <span>خطأ (× عبارة خاطئة)</span>
@@ -501,7 +548,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                 {/* 3. Fill in the Blank */}
                 {currentQ.type === "fill_blank" && (
                   <div className="w-full space-y-2">
-                    <label className="text-xs text-slate-400 block font-semibold">
+                    <label className="text-xs text-slate-300 block font-semibold">
                       اكتب المصطلح أو العبارة الدقيقة في الفراغ:
                     </label>
                     <div className="relative w-full">
@@ -510,10 +557,10 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                         value={userAnswers[currentQ.id] || ""}
                         onChange={(e) => handleSelectOption(currentQ.id, e.target.value)}
                         placeholder="أدخل المصطلح العلمي هنا..."
-                        className="w-full min-w-full p-4 bg-slate-950 border border-slate-700 rounded-2xl text-sm sm:text-base text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 box-border"
+                        className="w-full p-3.5 sm:p-4 bg-slate-950 border border-slate-700 rounded-xl sm:rounded-2xl text-base text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 box-border"
                       />
                     </div>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-xs text-slate-400">
                       💡 نظام التصحيح يدعم الاختلافات الإملائية الشائعة (الهمزات والتاء المربوطة) تلقائياً.
                     </p>
                   </div>
@@ -530,7 +577,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                       value={userAnswers[currentQ.id] || ""}
                       onChange={(e) => handleSelectOption(currentQ.id, e.target.value)}
                       placeholder="صغ إجابتك المنطقية بالاستناد للمفاهيم والمعايير العلمية الواردة بالدرس..."
-                      className="w-full min-w-full p-4 bg-slate-950 border border-slate-700 rounded-2xl text-sm text-white focus:outline-none focus:border-indigo-500 resize-y leading-relaxed box-border"
+                      className="w-full p-3.5 sm:p-4 bg-slate-950 border border-slate-700 rounded-xl sm:rounded-2xl text-base text-white focus:outline-none focus:border-indigo-500 resize-y leading-relaxed box-border"
                     />
                   </div>
                 )}
@@ -614,32 +661,48 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
             );
           })()}
 
-          {/* Navigation Controls */}
-          <div className="w-full flex justify-between items-center gap-2.5 pt-6 border-t border-slate-800">
+          {/* Desktop Navigation Controls */}
+          <div className="hidden md:flex w-full justify-between items-center gap-2.5 pt-6 border-t border-slate-800">
             <button
+              type="button"
               disabled={safeIndex === 0}
               onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-              className="flex-1 sm:flex-initial justify-center px-4 sm:px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200"
+              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200"
             >
               <ChevronRight className="w-4 h-4 shrink-0" /> <span className="truncate">السؤال السابق</span>
             </button>
 
             {safeIndex < totalQuestions - 1 ? (
               <button
+                type="button"
                 onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
-                className="flex-1 sm:flex-initial justify-center px-4 sm:px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25"
+                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25"
               >
                 <span className="truncate">السؤال التالي</span> <ChevronLeft className="w-4 h-4 shrink-0" />
               </button>
             ) : (
               <button
+                type="button"
                 onClick={handleFinishQuiz}
-                className="flex-1 sm:flex-initial justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white"
+                className="px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white"
               >
                 <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">تسليم الإجابات والنتيجة</span>
               </button>
             )}
           </div>
+
+          {/* Shared Mobile Sticky Bottom Navigation (< md) */}
+          <MobileQuizNavigation
+            currentIndex={safeIndex}
+            totalQuestions={totalQuestions}
+            onNavigate={(newIdx) => setCurrentIndex(newIdx)}
+            onOpenGridModal={() => setIsGridModalOpen(true)}
+            isExamMode={true}
+            isSubmitted={submitted}
+            onSubmitExam={handleFinishQuiz}
+            submitLabel="تسليم 🏆"
+            accentColor="indigo"
+          />
         </div>
       ) : (
         /* Results & Answer Review View */
@@ -783,6 +846,91 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+      {/* Interactive Question Quick Jump Modal */}
+      {isGridModalOpen && !submitted && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="خريطة أسئلة الكتاب المدرسي"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn"
+          onClick={() => setIsGridModalOpen(false)}
+        >
+          <div
+            className="bg-slate-900 border border-indigo-500/40 rounded-t-3xl sm:rounded-3xl max-h-[85vh] sm:max-h-[80vh] w-full max-w-lg flex flex-col overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            dir="rtl"
+          >
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                  <LayoutGrid className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-black text-white">
+                    خريطة أسئلة الكتاب المدرسي
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    انقر على أي سؤال للانتقال إليه فوراً
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsGridModalOpen(false)}
+                className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                aria-label="إغلاق الخريطة"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Grid */}
+            <div className="p-4 sm:p-5 overflow-y-auto max-h-[55vh] custom-scrollbar">
+              <div className="grid grid-cols-5 gap-2">
+                {filteredQuestions.map((q, idx) => {
+                  const isCurrent = idx === safeIndex;
+                  const hasAnswered = !!userAnswers[q.id];
+                  return (
+                    <button
+                      key={q.id}
+                      type="button"
+                      onClick={() => {
+                        setCurrentIndex(idx);
+                        setIsGridModalOpen(false);
+                      }}
+                      className={`h-11 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center ${
+                        isCurrent
+                          ? "bg-indigo-600 text-white ring-2 ring-indigo-400 shadow-md scale-105"
+                          : hasAnswered
+                          ? "bg-emerald-950/80 border border-emerald-500/50 text-emerald-300"
+                          : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      }`}
+                    >
+                      {idx + 1}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between text-xs">
+              <span className="text-slate-400 font-bold">
+                تمت الإجابة: {filteredQuestions.filter((q) => !!userAnswers[q.id]).length} من {totalQuestions}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsGridModalOpen(false)}
+                className="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold cursor-pointer transition-colors"
+              >
+                إغلاق والعودة
+              </button>
+            </div>
           </div>
         </div>
       )}

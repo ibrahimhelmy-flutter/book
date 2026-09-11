@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp';
+
+let sharp = null;
 
 const pagesDir = path.resolve('book-sources', 'term-1', '02-page-scans');
 const diagramsSourceDir = path.resolve('book-sources', 'term-1', '04-extracted-diagrams');
@@ -119,9 +120,32 @@ for (const crop of remainingCrops) {
   const outPublic = path.join(publicExtractedDir, crop.output);
   const outSource = path.join(diagramsSourceDir, crop.output);
 
+  // If already present in public and valid, skip
+  if (fs.existsSync(outPublic) && fs.statSync(outPublic).size > 0) {
+    continue;
+  }
+
+  // If already present in source, copy directly
+  if (fs.existsSync(outSource) && fs.statSync(outSource).size > 0) {
+    fs.copyFileSync(outSource, outPublic);
+    console.log(`  ✓ Synced from source: ${crop.output}`);
+    continue;
+  }
+
   if (!fs.existsSync(pagePath)) {
     console.warn(`  ⚠️ Page scan not found: ${crop.page}`);
     continue;
+  }
+
+  // Attempt dynamic sharp load if needed
+  if (!sharp) {
+    try {
+      const mod = await import('sharp');
+      sharp = mod.default || mod;
+    } catch {
+      console.warn(`  ⚠️ sharp not available; skipping crop of ${crop.output}`);
+      continue;
+    }
   }
 
   try {
@@ -143,6 +167,7 @@ for (const crop of remainingCrops) {
     console.error(`  ❌ Failed to crop ${crop.output}:`, err.message);
   }
 }
+
 
 // 4. Create bilateral aliases so both naming conventions resolve perfectly
 const aliases = [

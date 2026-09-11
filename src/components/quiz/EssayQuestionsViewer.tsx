@@ -16,6 +16,7 @@ import {
   AlertCircle,
   RotateCcw
 } from "lucide-react";
+import { MobileQuizNavigation } from "./MobileQuizNavigation";
 
 interface Props {
   lessonId: string;
@@ -105,9 +106,9 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
   const wordCount = userText.trim() ? userText.trim().split(/\s+/).length : 0;
 
   return (
-    <div className="space-y-6 animate-fadeIn" dir="rtl">
-      {/* Header Banner */}
-      <div className="p-6 bg-gradient-to-r from-amber-950/50 via-slate-900 to-indigo-950/40 border border-amber-500/30 rounded-3xl shadow-xl text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div className="space-y-3 sm:space-y-6 animate-fadeIn quiz-content-padding md:pb-6" dir="rtl">
+      {/* Header Banner (Desktop / Tablet) */}
+      <div className="hidden md:flex p-6 bg-gradient-to-r from-amber-950/50 via-slate-900 to-indigo-950/40 border border-amber-500/30 rounded-3xl shadow-xl text-white flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-amber-600/20 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-inner">
             <PenTool className="w-6 h-6 text-amber-400" />
@@ -152,6 +153,42 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
             );
           })}
         </div>
+      </div>
+
+      {/* Mobile Compact Toolbar (< md) */}
+      <div className="md:hidden bg-slate-950/90 border border-amber-500/30 rounded-2xl p-2 px-3 mb-2 flex items-center justify-between gap-2 shadow-sm">
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          {essayQuestions.map((q, idx) => {
+            const hasAns = !!studentAnswers[q.id]?.trim();
+            const isSelected = idx === currentIndex;
+            return (
+              <button
+                key={q.id}
+                type="button"
+                onClick={() => setCurrentIndex(idx)}
+                aria-current={isSelected ? "page" : undefined}
+                className={`min-h-[38px] flex-1 px-2 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                  isSelected
+                    ? "bg-amber-600 text-white shadow-sm font-black"
+                    : "bg-slate-900 text-slate-400 border border-slate-800"
+                }`}
+              >
+                <span>سؤال {idx + 1}</span>
+                {hasAns && <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => handleResetCurrent(currentQ.id)}
+          className="min-h-[38px] min-w-[38px] p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center active:scale-95"
+          title="مسح الإجابة"
+          aria-label="مسح إجابة هذا السؤال"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+        </button>
       </div>
 
       {/* Main Active Question Card */}
@@ -213,7 +250,7 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
             value={userText}
             onChange={(e) => handleAnswerChange(currentQ.id, e.target.value)}
             placeholder="اكتب إجابتك المنظمة هنا، مستنداً إلى المفاهيم العلمية ومحاور السؤال المطلوبة..."
-            className="w-full p-4 sm:p-5 bg-slate-950 border border-slate-700 rounded-2xl text-sm sm:text-base text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 resize-y leading-relaxed"
+            className="w-full p-4 sm:p-5 bg-slate-950 border border-slate-700 rounded-2xl text-base text-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 resize-y leading-relaxed"
           />
           <p className="text-[11px] text-slate-400">
             💡 نصيحة: اكتب إجابتك بنفسك أولاً، ثم اضغط على زر كشف النموذج أدناه لتقييم إجابتك ومقارنتها بمعايير التصحيح الرسمية.
@@ -244,8 +281,8 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
             )}
           </button>
 
-          {/* Navigation between Essay Questions */}
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          {/* Navigation between Essay Questions (Desktop / Tablet) */}
+          <div className="hidden md:flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               disabled={currentIndex === 0}
@@ -343,6 +380,14 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
           </div>
         )}
       </div>
+
+      {/* Mobile Sticky Navigation Bar */}
+      <MobileQuizNavigation
+        currentIndex={currentIndex}
+        totalQuestions={essayQuestions.length}
+        onNavigate={(newIdx) => setCurrentIndex(newIdx)}
+        accentColor="amber"
+      />
     </div>
   );
 }
