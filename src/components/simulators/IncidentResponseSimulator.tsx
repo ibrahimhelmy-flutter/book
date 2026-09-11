@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertCircle, ShieldAlert, CheckCircle2, RotateCcw, HelpCircle, FileText, ArrowRight } from "lucide-react";
-
-interface StepOption {
-  id: string;
-  name: string;
-  correctIndex: number;
-}
+import { ShieldAlert, RotateCcw } from "lucide-react";
 
 const CORRECT_STEPS = [
   { index: 1, name: "1. التحضير (Preparation)", desc: "إعداد سياسات الاستجابة، تدريب الفريق، وتجهيز أدوات العزل والنسخ الاحتياطي مسبقاً." },

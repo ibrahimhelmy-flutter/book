@@ -2,20 +2,8 @@
 
 import React, { useState, useMemo } from "react";
 import { getAllCommitteeQuestions } from "@/lib/exam-generator/committeeBank";
-import { CommitteeQuestion, CommitteeQuestionType, CognitiveLevel } from "@/lib/exam-generator/types";
 import { CURRICULUM_DATA } from "@/data/curriculum";
-import {
-  Search,
-  BookOpen,
-  Sparkles,
-  CheckCircle2,
-  Filter,
-  Layers,
-  Award,
-  Bookmark,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 
 export function QuestionBankExplorer() {
   const allQuestions = useMemo(() => getAllCommitteeQuestions(), []);

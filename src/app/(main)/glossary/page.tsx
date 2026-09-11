@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { GLOSSARY_DATA } from "@/data/glossary";
 import { ACRONYMS_DATA } from "@/data/acronyms";
-import { BookA, Search, Volume2, VolumeX, Sparkles, Filter, Layers, Zap, Info } from "lucide-react";
+import { BookA, Search, Volume2, VolumeX, Zap } from "lucide-react";
+
+import { matchesSearch } from "@/lib/arabic";
 
 type CategoryFilter = "ALL" | "AI" | "Cybersecurity" | "WebDev" | "Design" | "General" | "Hardware" | "Networking";
 type ActiveTab = "terms" | "acronyms";
@@ -27,21 +29,21 @@ export default function GlossaryPage() {
 
   const filteredTerms = GLOSSARY_DATA.filter((item) => {
     const matchesCategory = selectedCategory === "ALL" || item.category === selectedCategory;
-    const matchesSearch =
-      item.termAr.includes(searchTerm) ||
-      item.termEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.definitionAr.includes(searchTerm);
-    return matchesCategory && matchesSearch;
+    const termMatches =
+      matchesSearch(item.termAr, searchTerm) ||
+      matchesSearch(item.termEn, searchTerm) ||
+      matchesSearch(item.definitionAr, searchTerm);
+    return matchesCategory && termMatches;
   });
 
   const filteredAcronyms = ACRONYMS_DATA.filter((item) => {
     const matchesCategory = selectedCategory === "ALL" || item.category === selectedCategory;
-    const matchesSearch =
-      item.short.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.fullEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.fullAr.includes(searchTerm) ||
-      item.descriptionAr.includes(searchTerm);
-    return matchesCategory && matchesSearch;
+    const acronymMatches =
+      matchesSearch(item.short, searchTerm) ||
+      matchesSearch(item.fullEn, searchTerm) ||
+      matchesSearch(item.fullAr, searchTerm) ||
+      matchesSearch(item.descriptionAr, searchTerm);
+    return matchesCategory && acronymMatches;
   });
 
   const speakText = (id: string, text: string, lang = "ar-SA") => {

@@ -47,7 +47,6 @@ import {
   Zap,
   BookOpenCheck,
   CheckCircle2,
-  FileCheck,
   Target,
   Lightbulb,
   GitBranch,
@@ -720,13 +719,13 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
   }, [currentSlideIndex, slides.length]);
 
   // Reveal all or reset steps on this slide
-  const handleRevealAllLines = () => {
+  const handleRevealAllLines = useCallback(() => {
     setRevealedLineIndex(totalSteps - 1);
-  };
+  }, [totalSteps]);
 
-  const handleResetSlideLines = () => {
+  const handleResetSlideLines = useCallback(() => {
     setRevealedLineIndex(0);
-  };
+  }, []);
 
   // Auto-play slideshow logic
   useEffect(() => {
@@ -918,6 +917,8 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
     revealedLineIndex,
     totalSteps,
     onExitPresentation,
+    handleRevealAllLines,
+    handleResetSlideLines,
   ]);
 
   // Add custom AI diagram/concept slide handler
@@ -2203,8 +2204,10 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                           <div
                             key={pIdx}
                             className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-between gap-3 ${
+                              isRevealed ? "opacity-100 shadow-sm" : "opacity-35"
+                            } ${
                               theme === "light"
-                                ? "bg-white border-slate-200 text-slate-900 shadow-xs"
+                                ? "bg-white border-slate-200 text-slate-900"
                                 : "bg-slate-900 border-slate-800 text-slate-200"
                             }`}
                           >

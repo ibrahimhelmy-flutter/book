@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { BarChart3, TrendingUp, Play, CheckCircle, RefreshCw, Layers, ArrowUpRight, Award } from "lucide-react";
+import { BarChart3, TrendingUp, Play, RefreshCw, ArrowUpRight, Award } from "lucide-react";
 
 export function PDCAAndABTestingLab() {
   const [pdcaStep, setPdcaStep] = useState<"plan" | "do" | "check" | "act">("plan");
   const [variantBColor, setVariantBColor] = useState<string>("emerald");
-  const [variantBText, setVariantBText] = useState<string>("سجل الآن مجاناً 🚀");
+  const variantBText = "سجل الآن مجاناً 🚀";
   const [isRunningSim, setIsRunningSim] = useState<boolean>(false);
   const [results, setResults] = useState<{
     visitorsA: number;
@@ -107,7 +107,7 @@ export function PDCAAndABTestingLab() {
               <span className="text-xs text-slate-500 font-mono">50% من الزوار</span>
             </div>
             <p className="text-xs text-slate-400 mb-4">
-              الزر القديم الرمادي التقليدي مع عبارة "إرسال الطلب".
+              الزر القديم الرمادي التقليدي مع عبارة &quot;إرسال الطلب&quot;.
             </p>
           </div>
 

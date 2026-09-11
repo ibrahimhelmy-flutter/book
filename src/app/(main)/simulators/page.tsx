@@ -16,6 +16,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   BarChart3: BarChart3,
 };
 
+import { ComponentErrorBoundary } from "@/components/common/ComponentErrorBoundary";
+
 export default function SimulatorsPage() {
   const [activeSim, setActiveSim] = useState<string>(SIMULATORS_DATA[0]?.id || "moores-law-sim");
 
@@ -64,9 +66,11 @@ export default function SimulatorsPage() {
         })}
       </div>
 
-      {/* Active Simulator Viewer */}
+      {/* Active Simulator Viewer Protected with Error Boundary */}
       <div className="animate-fadeIn">
-        <SimulatorRenderer simulatorId={activeSim} />
+        <ComponentErrorBoundary fallbackTitle="تعذر تشغيل هذا المحاكي">
+          <SimulatorRenderer simulatorId={activeSim} />
+        </ComponentErrorBoundary>
       </div>
     </div>
   );

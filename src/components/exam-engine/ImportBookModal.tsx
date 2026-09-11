@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { getExamEngineContainer } from "@/core/infrastructure/bootstrap";
 import { RawBookImportPayload } from "@/core/application/use-cases/ImportBookUseCase";
-import { X, Upload, CheckCircle2, AlertCircle, Sparkles, BookOpen } from "lucide-react";
+import { X, Upload, CheckCircle2, AlertCircle, Sparkles } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
 interface ImportBookModalProps {

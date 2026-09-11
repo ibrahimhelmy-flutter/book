@@ -1,12 +1,9 @@
 import { IAiQuestionGenerator, GenerateAiQuestionsParams } from "../../domain/interfaces/IAiQuestionGenerator";
 import { Question } from "../../domain/entities/Question";
-import { QuestionType } from "../../config/question-types.config";
-import { DifficultyLevel } from "../../config/difficulty.config";
-import { CognitiveLevel } from "../../config/cognitive.config";
 
 export class RuleBasedAiQuestionGenerator implements IAiQuestionGenerator {
   public async generateQuestions(params: GenerateAiQuestionsParams): Promise<Question[]> {
-    const { book, lesson, requestedCount, missingTypes, missingDifficulties } = params;
+    const { book, lesson, requestedCount } = params;
     const generated: Question[] = [];
 
     const concepts = lesson.keyConcepts || [];

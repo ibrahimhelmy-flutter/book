@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Book } from "@/types";
 import { getAllBooks, CURRENT_BOOK, getBookStats } from "@/data/books";
-import { BookOpen, ChevronDown, Check, Sparkles, Layers, GraduationCap } from "lucide-react";
-import Link from "next/link";
+import { BookOpen, ChevronDown, Check, GraduationCap } from "lucide-react";
 
 interface BookSelectorProps {
   currentBookId?: string;
@@ -23,7 +21,6 @@ export function BookSelector({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const books = getAllBooks();
   const activeBook = books.find((b) => b.id === currentBookId) || CURRENT_BOOK;
-  const activeStats = getBookStats(activeBook);
 
   // Close when clicking outside
   useEffect(() => {

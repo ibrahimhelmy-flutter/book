@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { SolvedExample } from "@/types";
-import { BookOpenCheck, ChevronDown, ChevronUp, CheckCircle, HelpCircle } from "lucide-react";
+import { BookOpenCheck, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
 
 interface Props {
   example: SolvedExample;

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CURRICULUM_DATA } from "@/data/curriculum";
+import { CURRICULUM_TOC, TOTAL_CURRICULUM_LESSONS } from "@/data/curriculum-toc";
 import {
   X,
   BookOpen,
@@ -28,7 +28,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
   const [completedList, setCompletedList] = useState<string[]>([]);
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
-    CURRICULUM_DATA.forEach((ch) => {
+    CURRICULUM_TOC.forEach((ch) => {
       initial[ch.id] = true;
     });
     return initial;
@@ -57,9 +57,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
     };
   }, [isOpen, onClose]);
 
-  const totalLessons = useMemo(() => {
-    return CURRICULUM_DATA.reduce((acc, ch) => acc + (ch.lessons ? ch.lessons.length : 0), 0);
-  }, []);
+  const totalLessons = TOTAL_CURRICULUM_LESSONS;
 
   const toggleChapter = (id: string) => {
     setExpandedChapters((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -131,13 +129,13 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
 
         {/* Chapters & Lessons List */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3.5 custom-scrollbar">
-          {CURRICULUM_DATA.map((chapter) => {
+          {CURRICULUM_TOC.map((chapter) => {
             const filteredLessons = chapter.lessons.filter((l) => {
               if (!normalizedSearch) return true;
               return (
                 l.title.toLowerCase().includes(normalizedSearch) ||
                 l.number.includes(normalizedSearch) ||
-                l.englishTitle.toLowerCase().includes(normalizedSearch)
+                (l.englishTitle && l.englishTitle.toLowerCase().includes(normalizedSearch))
               );
             });
 

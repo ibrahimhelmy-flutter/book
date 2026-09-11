@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import { LessonContent } from "@/components/lesson/LessonContent";
@@ -8,6 +9,36 @@ interface Props {
     chapterId: string;
     lessonSlug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const { chapterId, lessonSlug } = resolvedParams;
+  const chapter = CURRICULUM_DATA.find((c) => c.id === chapterId);
+  const lesson = chapter?.lessons.find((l) => l.slug === lessonSlug);
+
+  if (!lesson || !chapter) {
+    return { title: "الدرس غير موجود" };
+  }
+
+  const cleanDescription = Array.isArray(lesson.summary)
+    ? lesson.summary.slice(0, 2).join(" ")
+    : lesson.coreIdea || lesson.title;
+
+  return {
+    title: `${lesson.title} (${lesson.number}) | ${chapter.title}`,
+    description: cleanDescription,
+    keywords: [
+      lesson.title,
+      lesson.englishTitle,
+      chapter.title,
+      ...lesson.keyConcepts.map((k) => k.termAr),
+    ],
+    openGraph: {
+      title: `${lesson.title} - ${lesson.englishTitle}`,
+      description: cleanDescription,
+    },
+  };
 }
 
 export default async function LessonPage({ params }: Props) {

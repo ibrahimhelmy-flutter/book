@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
 const isProd = process.env.NODE_ENV === "production";
 const isVercel = process.env.VERCEL === "1";
 const isNetlify = process.env.NETLIFY === "true";
@@ -12,6 +13,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "export",
+  distDir: isDev ? ".next-dev" : ".next",
   basePath: basePath,
   assetPrefix: basePath,
   trailingSlash: true,
@@ -32,7 +34,7 @@ const nextConfig: NextConfig = {
       config.watchOptions = {
         poll: 800,
         aggregateTimeout: 300,
-        ignored: ["**/node_modules", "**/.git", "**/.next"],
+        ignored: ["**/node_modules", "**/.git", "**/.next", "**/.next-dev"],
       };
     }
     return config;

@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getExamEngineContainer } from "@/core/infrastructure/bootstrap";
 import { Book } from "@/core/domain/entities/Book";
-import { Exam } from "@/core/domain/entities/Exam";
 import { EngineBookSelector } from "@/components/exam-engine/BookSelector";
+import { ComponentErrorBoundary } from "@/components/common/ComponentErrorBoundary";
 import { QuestionBankDashboard } from "@/components/exam-engine/QuestionBankDashboard";
 import { ImportBookModal } from "@/components/exam-engine/ImportBookModal";
 import { ExamGeneratorStudio } from "@/components/exam-generator/ExamGeneratorStudio";
@@ -19,12 +19,10 @@ import {
   Sparkles,
   Timer,
   BarChart3,
-  Layers,
   RotateCcw,
   Clock,
   Play,
   CheckCircle2,
-  Upload,
 } from "lucide-react";
 
 export default function ExamsPage() {
@@ -272,10 +270,12 @@ export default function ExamsPage() {
       {/* ======================================================== */}
       {activeInteractiveModel && (
         <div className="w-full">
-          <ExamInteractiveRunner
-            model={activeInteractiveModel}
-            onExit={() => setActiveInteractiveModel(null)}
-          />
+          <ComponentErrorBoundary fallbackTitle="تعذر تشغيل جلسة الامتحان التفاعلي">
+            <ExamInteractiveRunner
+              model={activeInteractiveModel}
+              onExit={() => setActiveInteractiveModel(null)}
+            />
+          </ComponentErrorBoundary>
         </div>
       )}
 
@@ -284,36 +284,38 @@ export default function ExamsPage() {
       {/* ======================================================== */}
       {!activeInteractiveModel && activeTab === "generator" && (
         <div className="w-full space-y-8">
-          {generatedExamModels && generatedExamModels.length > 0 ? (
-            <div className="space-y-6">
-              {/* Reset / Edit Configuration Bar */}
-              <div className="w-full flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-900/80 rounded-2xl border border-slate-800 text-xs print:hidden">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>
-                    تم توليد <strong>{generatedExamModels.length} نماذج امتحانية</strong> متكافئة لكتاب «{activeBook?.title}»
-                  </span>
+          <ComponentErrorBoundary fallbackTitle="تعذر تشغيل استوديو توليد الامتحانات">
+            {generatedExamModels && generatedExamModels.length > 0 ? (
+              <div className="space-y-6">
+                {/* Reset / Edit Configuration Bar */}
+                <div className="w-full flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-900/80 rounded-2xl border border-slate-800 text-xs print:hidden">
+                  <div className="flex items-center gap-2 text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>
+                      تم توليد <strong>{generatedExamModels.length} نماذج امتحانية</strong> متكافئة لكتاب «{activeBook?.title}»
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => setGeneratedExamModels(null)}
+                    className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>إعادة تخصيص وضبط إعدادات التوليد</span>
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => setGeneratedExamModels(null)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>إعادة تخصيص وضبط إعدادات التوليد</span>
-                </button>
+                {/* Models Viewer with Student / Teacher / Answer Key modes & Print */}
+                <ExamModelViewer
+                  models={generatedExamModels}
+                  onStartInteractiveExam={(m) => setActiveInteractiveModel(m)}
+                />
               </div>
-
-              {/* Models Viewer with Student / Teacher / Answer Key modes & Print */}
-              <ExamModelViewer
-                models={generatedExamModels}
-                onStartInteractiveExam={(m) => setActiveInteractiveModel(m)}
-              />
-            </div>
-          ) : (
-            /* Studio Control Panel to Configure & Generate */
-            <ExamGeneratorStudio onGenerate={handleStudioGenerate} />
-          )}
+            ) : (
+              /* Studio Control Panel to Configure & Generate */
+              <ExamGeneratorStudio onGenerate={handleStudioGenerate} />
+            )}
+          </ComponentErrorBoundary>
         </div>
       )}
 

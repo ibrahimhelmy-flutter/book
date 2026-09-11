@@ -3,17 +3,32 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X } from "lucide-react";
-import { SearchModal } from "../common/SearchModal";
-import { LessonsIndexDrawer } from "../common/LessonsIndexDrawer";
+import dynamic from "next/dynamic";
+import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud } from "lucide-react";
 import { CURRENT_BOOK } from "@/data/books";
 import { BookSelector } from "../common/BookSelector";
+
+const SearchModal = dynamic(
+  () => import("../common/SearchModal").then((mod) => mod.SearchModal),
+  { ssr: false }
+);
+
+const LessonsIndexDrawer = dynamic(
+  () => import("../common/LessonsIndexDrawer").then((mod) => mod.LessonsIndexDrawer),
+  { ssr: false }
+);
+
+const OfflinePackModal = dynamic(
+  () => import("../pwa/OfflinePackModal").then((mod) => mod.OfflinePackModal),
+  { ssr: false }
+);
 
 export function Navbar() {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isIndexOpen, setIsIndexOpen] = useState(false);
+  const [isOfflinePackOpen, setIsOfflinePackOpen] = useState(false);
 
   // Automatically scroll to the very top on every screen navigation
   React.useEffect(() => {
@@ -90,7 +105,7 @@ export function Navbar() {
                 <span className="hidden sm:inline text-slate-400">بحث...</span>
               </button>
 
-              {/* Lessons Index Drawer Launcher (Replaces 'حسابي') */}
+              {/* Lessons Index Drawer Launcher */}
               <button
                 type="button"
                 onClick={() => setIsIndexOpen(true)}
@@ -100,6 +115,29 @@ export function Navbar() {
               >
                 <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
                 <span className="hidden sm:inline">فهرس الدروس</span>
+              </button>
+
+              {/* Offline Pack Download Launcher (Desktop) */}
+              <button
+                type="button"
+                onClick={() => setIsOfflinePackOpen(true)}
+                className="hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:text-emerald-300 text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                title="تحميل المنهج كاملاً للعمل بدون إنترنت (~7.2 MB)"
+                aria-label="تحميل المنهج بدون إنترنت"
+              >
+                <DownloadCloud className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="hidden lg:inline">بدون إنترنت</span>
+              </button>
+
+              {/* Offline Pack Download Launcher (Mobile compact) */}
+              <button
+                type="button"
+                onClick={() => setIsOfflinePackOpen(true)}
+                className="sm:hidden p-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-colors cursor-pointer"
+                title="تحميل المنهج بدون إنترنت"
+                aria-label="تحميل المنهج بدون إنترنت"
+              >
+                <DownloadCloud className="w-4 h-4" />
               </button>
 
               {/* Mobile Menu Button */}
@@ -129,6 +167,19 @@ export function Navbar() {
               <span>فهرس المنهج والدروس 📚</span>
             </button>
 
+            {/* Offline Pack Action in Mobile Menu */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsOfflinePackOpen(true);
+              }}
+              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-right cursor-pointer"
+            >
+              <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              <span>تحميل المنهج بدون إنترنت (Offline Pack) ⚡</span>
+            </button>
+
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -155,6 +206,9 @@ export function Navbar() {
 
       {/* Search Modal */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+
+      {/* Offline Pack Modal */}
+      <OfflinePackModal isOpen={isOfflinePackOpen} onClose={() => setIsOfflinePackOpen(false)} />
     </>
   );
 }

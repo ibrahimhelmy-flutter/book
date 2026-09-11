@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Lock, Unlock, ShieldCheck, Key, RefreshCw, ArrowRight, ArrowLeft, Globe, Server, EyeOff, AlertOctagon } from "lucide-react";
+import { Lock, ShieldCheck, RefreshCw, ArrowRight, ArrowLeft, Globe, Server, EyeOff } from "lucide-react";
 
 export function TLSHandshakeSimulator() {
   const [currentStep, setCurrentStep] = useState<number>(1);

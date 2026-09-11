@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import { GLOSSARY_DATA } from "@/data/glossary";
 import { ACRONYMS_DATA } from "@/data/acronyms";
-import { Search, X, BookOpen, Layers, ArrowLeft, Zap } from "lucide-react";
+import { Search, X, ArrowLeft, Zap } from "lucide-react";
 import Link from "next/link";
+
+import { matchesSearch } from "@/lib/arabic";
 
 interface Props {
   isOpen: boolean;
@@ -33,27 +35,29 @@ export function SearchModal({ isOpen, onClose }: Props) {
     ch.lessons
       .filter(
         (l) =>
-          l.title.includes(query) ||
-          l.englishTitle.toLowerCase().includes(query.toLowerCase()) ||
-          l.coreIdea.includes(query) ||
-          l.keyConcepts.some((k) => k.termAr.includes(query) || (k.termEn && k.termEn.toLowerCase().includes(query.toLowerCase())))
+          matchesSearch(l.title, query) ||
+          matchesSearch(l.englishTitle, query) ||
+          matchesSearch(l.coreIdea, query) ||
+          l.keyConcepts.some(
+            (k) => matchesSearch(k.termAr, query) || matchesSearch(k.termEn, query)
+          )
       )
       .map((l) => ({ ...l, chapterTitle: ch.title }))
   );
 
   const filteredGlossary = GLOSSARY_DATA.filter(
     (g) =>
-      g.termAr.includes(query) ||
-      g.termEn.toLowerCase().includes(query.toLowerCase()) ||
-      g.definitionAr.includes(query)
+      matchesSearch(g.termAr, query) ||
+      matchesSearch(g.termEn, query) ||
+      matchesSearch(g.definitionAr, query)
   );
 
   const filteredAcronyms = ACRONYMS_DATA.filter(
     (a) =>
-      a.short.toLowerCase().includes(query.toLowerCase()) ||
-      a.fullEn.toLowerCase().includes(query.toLowerCase()) ||
-      a.fullAr.includes(query) ||
-      a.descriptionAr.includes(query)
+      matchesSearch(a.short, query) ||
+      matchesSearch(a.fullEn, query) ||
+      matchesSearch(a.fullAr, query) ||
+      matchesSearch(a.descriptionAr, query)
   );
 
   return (

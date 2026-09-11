@@ -5,7 +5,6 @@ import {
   GeneratedExamModel,
   ExamSection,
   CommitteeQuestion,
-  CommitteeQuestionType,
   CognitiveLevel,
   DifficultyLevel,
   LessonWeightItem,
@@ -365,6 +364,8 @@ export function generateExamSystem(config: ExamGenerationConfig): ExamSystemResu
           questionUsageCount[q.id] = (questionUsageCount[q.id] || 0) + 1;
         }
       }
+    } else if (selectedForThisModel.length > actualQuestionCount) {
+      selectedForThisModel.splice(actualQuestionCount);
     }
 
     // 3. Randomize or sort options if requested

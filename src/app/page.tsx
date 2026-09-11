@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { CURRENT_BOOK, getBookStats } from "@/data/books";
 import { BookSelector } from "@/components/common/BookSelector";
-import { BookOpen, Sparkles, ShieldCheck, Globe, Palette, ArrowLeft, Award, CheckCircle, Cpu, Zap, Activity } from "lucide-react";
+import { BookOpen, Sparkles, ShieldCheck, Globe, Palette, ArrowLeft, Award, Cpu } from "lucide-react";
 
 export default function HomePage() {
   const stats = getBookStats(CURRENT_BOOK);
