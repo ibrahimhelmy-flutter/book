@@ -1225,6 +1225,18 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                       alt={currentSlide.image.caption}
                       className="max-h-76 w-auto object-contain rounded-lg"
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.dataset.triedFallback && currentSlide.image?.src) {
+                          target.dataset.triedFallback = "true";
+                          const rawSrc = currentSlide.image.src.startsWith("/") ? currentSlide.image.src : `/${currentSlide.image.src}`;
+                          if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
+                            target.src = rawSrc;
+                          } else if (!target.src.includes("/book/")) {
+                            target.src = `/book${rawSrc}`;
+                          }
+                        }
+                      }}
                     />
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-300 mt-3 text-center">

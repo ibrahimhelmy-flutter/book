@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
-// Base path for GitHub Pages repo (e.g. /book)
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || (isProd ? "/book" : "");
+const isVercel = process.env.VERCEL === "1";
+const isNetlify = process.env.NETLIFY === "true";
+const isGitHubPages = !isVercel && !isNetlify && (process.env.GITHUB_ACTIONS === "true" || isProd);
+// Base path for GitHub Pages repo (e.g. /book) or root for Vercel/custom domain
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
+  ? process.env.NEXT_PUBLIC_BASE_PATH
+  : (isGitHubPages ? "/book" : "");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,

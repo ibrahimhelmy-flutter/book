@@ -34,6 +34,7 @@ jobs:
           cache: "pnpm"
 
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
@@ -43,6 +44,8 @@ jobs:
 
       - name: Build static site
         run: pnpm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll

@@ -292,6 +292,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                           alt={sec.image.alt || sec.image.caption}
                           className="max-h-96 w-auto object-contain rounded-lg"
                           loading="lazy"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (!target.dataset.triedFallback && sec.image?.src) {
+                              target.dataset.triedFallback = "true";
+                              const rawSrc = sec.image.src.startsWith("/") ? sec.image.src : `/${sec.image.src}`;
+                              if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
+                                target.src = rawSrc;
+                              } else if (!target.src.includes("/book/")) {
+                                target.src = `/book${rawSrc}`;
+                              }
+                            }
+                          }}
                         />
                       </div>
                       {sec.image.caption && (
@@ -474,6 +486,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 onClick={() => {
                   setActiveTab("quiz");
                   setQuizSubTab("comprehension");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 className="p-3.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
               >
@@ -510,12 +523,12 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       {activeTab === "quiz" && (
         <div className="animate-fadeIn space-y-6">
           {/* Exactly 3 Clear Tabs Switcher */}
-          <div className="p-1.5 sm:p-2 bg-slate-900/90 border border-slate-800 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-2 shadow-lg">
+          <div className="p-1.5 sm:p-2 bg-slate-900/90 border border-slate-800 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2 shadow-lg">
             {/* 1. أسئلة من الكتاب */}
             <button
               type="button"
               onClick={() => setQuizSubTab("textbook")}
-              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 quizSubTab === "textbook"
                   ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-extrabold"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
@@ -529,7 +542,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             <button
               type="button"
               onClick={() => setQuizSubTab("essay")}
-              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 quizSubTab === "essay"
                   ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-extrabold"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
@@ -543,7 +556,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             <button
               type="button"
               onClick={() => setQuizSubTab("comprehension")}
-              className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 quizSubTab === "comprehension"
                   ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 font-extrabold"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
