@@ -281,22 +281,20 @@ export function DeepComprehensionViewer({ lesson }: Props) {
           <div className="grid grid-cols-2 p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs font-bold w-full md:w-auto gap-1">
             <button
               onClick={() => setViewMode("study")}
-              className={`px-3 py-2 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
-                viewMode === "study"
+              className={`px-3 py-2 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${viewMode === "study"
                   ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               <Lightbulb className="w-3.5 h-3.5 shrink-0" />
               <span className="text-[11px] sm:text-xs font-bold">مذاكرة وتحليل</span>
             </button>
             <button
               onClick={() => setViewMode("exam")}
-              className={`px-3 py-2 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
-                viewMode === "exam"
+              className={`px-3 py-2 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${viewMode === "exam"
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               <Target className="w-3.5 h-3.5 shrink-0" />
               <span className="text-[11px] sm:text-xs font-bold">اختبار تقييمي</span>
@@ -420,11 +418,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
               setSelectedCognitiveLevel("ALL");
               setCurrentIndex(0);
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
-              selectedCognitiveLevel === "ALL"
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${selectedCognitiveLevel === "ALL"
                 ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
                 : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
-            }`}
+              }`}
           >
             <span>الكل</span>
             <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20">
@@ -439,11 +436,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 setSelectedCognitiveLevel(item.level);
                 setCurrentIndex(0);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                selectedCognitiveLevel === item.level
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${selectedCognitiveLevel === item.level
                   ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
                   : "bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
-              }`}
+                }`}
             >
               <span>{item.level}</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20">
@@ -515,22 +511,20 @@ export function DeepComprehensionViewer({ lesson }: Props) {
           <div className="flex items-center p-0.5 bg-slate-950 rounded-xl border border-slate-800 text-xs font-bold shrink-0">
             <button
               onClick={() => setViewMode("study")}
-              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] flex items-center gap-1 cursor-pointer ${
-                viewMode === "study"
+              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] flex items-center gap-1 cursor-pointer ${viewMode === "study"
                   ? "bg-purple-600 text-white shadow-sm font-black"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               <Lightbulb className="w-3 h-3 shrink-0" />
               <span>مذاكرة</span>
             </button>
             <button
               onClick={() => setViewMode("exam")}
-              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] flex items-center gap-1 cursor-pointer ${
-                viewMode === "exam"
+              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] flex items-center gap-1 cursor-pointer ${viewMode === "exam"
                   ? "bg-indigo-600 text-white shadow-sm font-black"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               <Target className="w-3 h-3 shrink-0" />
               <span>اختبار</span>
@@ -552,11 +546,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
             {/* Filter Drawer Toggle */}
             <button
               onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-              className={`p-1.5 rounded-xl border text-xs cursor-pointer transition-all relative ${
-                isMobileFilterOpen || selectedCognitiveLevel !== "ALL" || searchQuery
+              className={`p-1.5 rounded-xl border text-xs cursor-pointer transition-all relative ${isMobileFilterOpen || selectedCognitiveLevel !== "ALL" || searchQuery
                   ? "bg-purple-600 text-white border-purple-500 shadow-sm"
                   : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
-              }`}
+                }`}
               title="البحث والتصفية"
               aria-label="تصفية الأسئلة"
             >
@@ -624,11 +617,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                   setSelectedCognitiveLevel("ALL");
                   setCurrentIndex(0);
                 }}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 transition-all cursor-pointer ${
-                  selectedCognitiveLevel === "ALL"
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 transition-all cursor-pointer ${selectedCognitiveLevel === "ALL"
                     ? "bg-purple-600 text-white shadow-sm"
                     : "bg-slate-950 text-slate-400 border border-slate-800"
-                }`}
+                  }`}
               >
                 الكل ({allQuestions.length})
               </button>
@@ -639,11 +631,10 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                     setSelectedCognitiveLevel(item.level);
                     setCurrentIndex(0);
                   }}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 transition-all cursor-pointer ${
-                    selectedCognitiveLevel === item.level
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 transition-all cursor-pointer ${selectedCognitiveLevel === item.level
                       ? "bg-purple-600 text-white shadow-sm"
                       : "bg-slate-950 text-slate-400 border border-slate-800"
-                  }`}
+                    }`}
                 >
                   {item.level} ({item.count})
                 </button>
@@ -670,192 +661,242 @@ export function DeepComprehensionViewer({ lesson }: Props) {
 
       {/* 5. Main Active Question Card with Touch Swipe Gestures */}
       {currentQ ? (
-        <div
-          ref={questionCardRef}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 md:p-8 space-y-4 sm:space-y-6 shadow-2xl relative overflow-hidden transition-all"
-        >
-          {/* Top Metadata Badges Row */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3 sm:pb-4">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-purple-600/20 text-purple-300 border border-purple-500/30 text-[11px] sm:text-xs font-bold">
-                سؤال {safeIndex + 1} من {totalFiltered}
-              </span>
-              <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[11px] sm:text-xs font-bold">
-                {currentQ.cognitiveLevel}
-              </span>
-              <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] sm:text-xs font-bold">
-                {currentQ.difficulty === "very-hard" ? "صعب جداً 🔥" : "متوسط إلى صعب ⚡"}
-              </span>
-              {currentQ.type && (
-                <span className="hidden sm:inline-block px-2.5 py-1 rounded-xl bg-slate-800 text-slate-300 text-[11px] font-bold">
-                  {currentQ.type === "mcq"
-                    ? "اختيار من متعدد"
-                    : currentQ.type === "true_false"
-                    ? "صواب أو خطأ"
-                    : currentQ.type === "scenario"
-                    ? "سيناريو تطبيقي"
-                    : "سؤال تحليلي"}
+        <>
+          {/* Mobile-only Top Navigation Bar — lives OUTSIDE the card so overflow-hidden never clips it */}
+          <div className="md:hidden flex items-center justify-between gap-2 p-1.5 bg-slate-950/95 border border-slate-800 rounded-xl backdrop-blur shadow-lg">
+            {/* Previous */}
+            <button
+              type="button"
+              onClick={() => handleNavigate(Math.max(0, safeIndex - 1))}
+              disabled={safeIndex === 0}
+              className="min-h-[44px] min-w-[80px] px-3 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-25 disabled:pointer-events-none text-white text-sm font-bold flex items-center justify-center gap-1.5 transition-all border border-slate-700/60 active:scale-95 cursor-pointer"
+              aria-label="السؤال السابق"
+            >
+              <ChevronRight className="w-4 h-4 shrink-0" />
+              <span>السابق</span>
+            </button>
+
+            {/* Center counter — tap to open grid */}
+            <button
+              type="button"
+              onClick={() => setIsGridModalOpen(true)}
+              className="min-h-[44px] flex-1 mx-1 rounded-xl bg-purple-950/80 border border-purple-500/40 hover:border-purple-400/60 text-purple-200 text-sm font-black flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+              aria-label={`السؤال ${safeIndex + 1} من ${totalFiltered}`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+              <span className="font-mono font-black">{safeIndex + 1} / {totalFiltered}</span>
+            </button>
+
+            {/* Next or Submit */}
+            {viewMode === "exam" && !isExamSubmitted && safeIndex >= totalFiltered - 1 ? (
+              <button
+                type="button"
+                onClick={handleSubmitExam}
+                className="min-h-[44px] min-w-[80px] px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-black flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              >
+                <span>إنهاء 🏆</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => handleNavigate(Math.min(totalFiltered - 1, safeIndex + 1))}
+                disabled={safeIndex >= totalFiltered - 1}
+                className="min-h-[44px] min-w-[80px] px-3 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-25 disabled:pointer-events-none text-white text-sm font-black flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                aria-label="السؤال التالي"
+              >
+                <span>التالي</span>
+                <ChevronLeft className="w-4 h-4 shrink-0" />
+              </button>
+            )}
+          </div>
+
+          {/* Question Card */}
+          <div
+            ref={questionCardRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 md:p-8 space-y-4 sm:space-y-6 shadow-2xl relative transition-all"
+          >
+            {/* Top Metadata Badges Row */}
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3 sm:pb-4">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-purple-600/20 text-purple-300 border border-purple-500/30 text-[11px] sm:text-xs font-bold">
+                  سؤال {safeIndex + 1} من {totalFiltered}
+                </span>
+                <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[11px] sm:text-xs font-bold">
+                  {currentQ.cognitiveLevel}
+                </span>
+                <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] sm:text-xs font-bold">
+                  {currentQ.difficulty === "very-hard" ? "صعب جداً 🔥" : "متوسط إلى صعب ⚡"}
+                </span>
+                {currentQ.type && (
+                  <span className="hidden sm:inline-block px-2.5 py-1 rounded-xl bg-slate-800 text-slate-300 text-[11px] font-bold">
+                    {currentQ.type === "mcq"
+                      ? "اختيار من متعدد"
+                      : currentQ.type === "true_false"
+                        ? "صواب أو خطأ"
+                        : currentQ.type === "scenario"
+                          ? "سيناريو تطبيقي"
+                          : "سؤال تحليلي"}
+                  </span>
+                )}
+              </div>
+
+              {currentQ.source?.pages && (
+                <span className="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1.5 shrink-0">
+                  <BookOpen className="w-3.5 h-3.5 text-slate-500" />
+                  <span className="hidden sm:inline">مرجع الكتاب المدرسي: </span>
+                  <span>ص {currentQ.source.pages.join(" - ")}</span>
                 </span>
               )}
             </div>
 
-            {currentQ.source?.pages && (
-              <span className="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1.5 shrink-0">
-                <BookOpen className="w-3.5 h-3.5 text-slate-500" />
-                <span className="hidden sm:inline">مرجع الكتاب المدرسي: </span>
-                <span>ص {currentQ.source.pages.join(" - ")}</span>
-              </span>
-            )}
-          </div>
+            {/* Question Stem */}
+            <div className="space-y-1.5 sm:space-y-2">
+              <h4 className="text-[11px] sm:text-xs font-bold text-purple-400 uppercase tracking-wide flex items-center gap-1.5">
+                <span>{currentQ.title}</span>
+              </h4>
+              <p className="text-base sm:text-lg font-bold text-white leading-relaxed">
+                {currentQ.question}
+              </p>
+            </div>
 
-          {/* Question Stem */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <h4 className="text-[11px] sm:text-xs font-bold text-purple-400 uppercase tracking-wide flex items-center gap-1.5">
-              <span>{currentQ.title}</span>
-            </h4>
-            <p className="text-base sm:text-lg font-bold text-white leading-relaxed">
-              {currentQ.question}
-            </p>
-          </div>
+            {/* Options Grid */}
+            <div className="grid grid-cols-1 gap-2.5 sm:gap-3 pt-1">
+              {currentQ.options.map((optText, optIdx) => {
+                const isSelected = userAnswers[currentQ.id] === optIdx;
+                const isCorrectAnswer = currentQ.correctAnswer === optIdx;
+                const isAnswered = userAnswers[currentQ.id] !== undefined;
 
-          {/* Options Grid */}
-          <div className="grid grid-cols-1 gap-2.5 sm:gap-3 pt-1">
-            {currentQ.options.map((optText, optIdx) => {
-              const isSelected = userAnswers[currentQ.id] === optIdx;
-              const isCorrectAnswer = currentQ.correctAnswer === optIdx;
-              const isAnswered = userAnswers[currentQ.id] !== undefined;
+                let optionStyle =
+                  "bg-slate-950/80 border-slate-800 hover:border-purple-500/40 text-slate-200 hover:bg-slate-800/60";
 
-              let optionStyle =
-                "bg-slate-950/80 border-slate-800 hover:border-purple-500/40 text-slate-200 hover:bg-slate-800/60";
+                if (isSelected) {
+                  optionStyle = "bg-purple-600/30 border-purple-500 text-white ring-2 ring-purple-500/40";
+                }
 
-              if (isSelected) {
-                optionStyle = "bg-purple-600/30 border-purple-500 text-white ring-2 ring-purple-500/40";
-              }
-
-              // Reveal correctness in study mode or after exam submission
-              if (viewMode === "study" || isExamSubmitted) {
-                if (isAnswered) {
-                  if (isCorrectAnswer) {
-                    optionStyle =
-                      "bg-emerald-950/60 border-emerald-500 text-emerald-100 ring-2 ring-emerald-500/40 font-bold";
-                  } else if (isSelected && !isCorrectAnswer) {
-                    optionStyle =
-                      "bg-rose-950/60 border-rose-500 text-rose-100 ring-2 ring-rose-500/40 font-bold";
+                // Reveal correctness in study mode or after exam submission
+                if (viewMode === "study" || isExamSubmitted) {
+                  if (isAnswered) {
+                    if (isCorrectAnswer) {
+                      optionStyle =
+                        "bg-emerald-950/60 border-emerald-500 text-emerald-100 ring-2 ring-emerald-500/40 font-bold";
+                    } else if (isSelected && !isCorrectAnswer) {
+                      optionStyle =
+                        "bg-rose-950/60 border-rose-500 text-rose-100 ring-2 ring-rose-500/40 font-bold";
+                    }
                   }
                 }
-              }
 
-              const letters = ["أ", "ب", "ج", "د"];
+                const letters = ["أ", "ب", "ج", "د"];
 
-              return (
-                <button
-                  key={optIdx}
-                  onClick={() => handleSelectOption(currentQ.id, optIdx)}
-                  className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 text-right transition-all flex items-start gap-2.5 sm:gap-3.5 cursor-pointer text-sm sm:text-base leading-relaxed ${optionStyle}`}
-                >
-                  <span
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 mt-0.5 ${
-                      isSelected
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-600/40"
-                        : "bg-slate-800 text-slate-300"
-                    }`}
+                return (
+                  <button
+                    key={optIdx}
+                    onClick={() => handleSelectOption(currentQ.id, optIdx)}
+                    className={`w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 text-right transition-all flex items-start gap-2.5 sm:gap-3.5 cursor-pointer text-sm sm:text-base leading-relaxed ${optionStyle}`}
                   >
-                    {letters[optIdx] || optIdx + 1}
-                  </span>
+                    <span
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 mt-0.5 ${isSelected
+                          ? "bg-purple-600 text-white shadow-md shadow-purple-600/40"
+                          : "bg-slate-800 text-slate-300"
+                        }`}
+                    >
+                      {letters[optIdx] || optIdx + 1}
+                    </span>
 
-                  <span className="flex-1 mt-0.5 text-sm sm:text-base font-medium">{optText}</span>
+                    <span className="flex-1 mt-0.5 text-sm sm:text-base font-medium">{optText}</span>
 
-                  {/* Icon Feedback */}
-                  {(viewMode === "study" || isExamSubmitted) && isAnswered && (
-                    <div className="shrink-0 mt-0.5">
-                      {isCorrectAnswer && <Check className="w-5 h-5 text-emerald-400" />}
-                      {isSelected && !isCorrectAnswer && (
-                        <X className="w-5 h-5 text-rose-400" />
-                      )}
+                    {/* Icon Feedback */}
+                    {(viewMode === "study" || isExamSubmitted) && isAnswered && (
+                      <div className="shrink-0 mt-0.5">
+                        {isCorrectAnswer && <Check className="w-5 h-5 text-emerald-400" />}
+                        {isSelected && !isCorrectAnswer && (
+                          <X className="w-5 h-5 text-rose-400" />
+                        )}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 6. Scientific Depth & Misconception Trap (Visible in Study mode when answered or toggled) */}
+            {((viewMode === "study" &&
+              (showExplanation[currentQ.id] || userAnswers[currentQ.id] !== undefined)) ||
+              (viewMode === "exam" && isExamSubmitted)) && (
+                <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-800 space-y-3 sm:space-y-4 animate-fadeIn">
+                  {/* Scientific Depth Explanation */}
+                  <div className="p-3.5 sm:p-5 bg-indigo-950/40 border border-indigo-500/30 rounded-xl sm:rounded-2xl space-y-1.5 sm:space-y-2 shadow-sm">
+                    <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs sm:text-sm">
+                      <Sparkles className="w-4 h-4 shrink-0" />
+                      <span>💡 التحليل والعمق العلمي المعتمد:</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+                      {currentQ.depthExplanation}
+                    </p>
+                  </div>
+
+                  {/* Misconception Trap */}
+                  {currentQ.misconceptionTrap && (
+                    <div className="p-3.5 sm:p-5 bg-amber-950/30 border border-amber-500/30 rounded-xl sm:rounded-2xl space-y-1.5 sm:space-y-2 shadow-sm">
+                      <div className="flex items-center gap-2 text-amber-400 font-bold text-xs sm:text-sm">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <span>⚠️ الفخ المفاهيمي والتريكة الامتحانية:</span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                        {currentQ.misconceptionTrap}
+                      </p>
                     </div>
                   )}
-                </button>
-              );
-            })}
-          </div>
 
-          {/* 6. Scientific Depth & Misconception Trap (Visible in Study mode when answered or toggled) */}
-          {((viewMode === "study" &&
-            (showExplanation[currentQ.id] || userAnswers[currentQ.id] !== undefined)) ||
-            (viewMode === "exam" && isExamSubmitted)) && (
-            <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-800 space-y-3 sm:space-y-4 animate-fadeIn">
-              {/* Scientific Depth Explanation */}
-              <div className="p-3.5 sm:p-5 bg-indigo-950/40 border border-indigo-500/30 rounded-xl sm:rounded-2xl space-y-1.5 sm:space-y-2 shadow-sm">
-                <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs sm:text-sm">
-                  <Sparkles className="w-4 h-4 shrink-0" />
-                  <span>💡 التحليل والعمق العلمي المعتمد:</span>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
-                  {currentQ.depthExplanation}
-                </p>
-              </div>
-
-              {/* Misconception Trap */}
-              {currentQ.misconceptionTrap && (
-                <div className="p-3.5 sm:p-5 bg-amber-950/30 border border-amber-500/30 rounded-xl sm:rounded-2xl space-y-1.5 sm:space-y-2 shadow-sm">
-                  <div className="flex items-center gap-2 text-amber-400 font-bold text-xs sm:text-sm">
-                    <AlertTriangle className="w-4 h-4 shrink-0" />
-                    <span>⚠️ الفخ المفاهيمي والتريكة الامتحانية:</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                    {currentQ.misconceptionTrap}
-                  </p>
+                  {/* Teacher Discussion Prompt */}
+                  {currentQ.teacherDiscussionPrompt && (
+                    <div className="p-3 sm:p-4 bg-slate-950/80 border border-slate-800 rounded-xl sm:rounded-2xl space-y-1 text-xs text-slate-400">
+                      <div className="flex items-center gap-2 text-slate-300 font-bold text-[11px]">
+                        <Compass className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                        <span>سؤال استقصائي للنقاش:</span>
+                      </div>
+                      <p className="text-[11px] leading-relaxed text-slate-300">
+                        {currentQ.teacherDiscussionPrompt}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* Teacher Discussion Prompt */}
-              {currentQ.teacherDiscussionPrompt && (
-                <div className="p-3 sm:p-4 bg-slate-950/80 border border-slate-800 rounded-xl sm:rounded-2xl space-y-1 text-xs text-slate-400">
-                  <div className="flex items-center gap-2 text-slate-300 font-bold text-[11px]">
-                    <Compass className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                    <span>سؤال استقصائي للنقاش:</span>
-                  </div>
-                  <p className="text-[11px] leading-relaxed text-slate-300">
-                    {currentQ.teacherDiscussionPrompt}
-                  </p>
-                </div>
-              )}
+            {/* Bottom Card Desktop Navigation Buttons (Mobile uses sticky bottom bar) */}
+            <div className="hidden md:flex items-center justify-between gap-3 pt-3 sm:pt-4 border-t border-slate-800">
+              <button
+                onClick={() => handleNavigate(Math.max(0, safeIndex - 1))}
+                disabled={safeIndex === 0}
+                className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all border border-slate-700/60"
+              >
+                <ChevronRight className="w-4 h-4" />
+                <span>السابق</span>
+              </button>
+
+              <button
+                onClick={() => setIsGridModalOpen(true)}
+                className="text-xs text-slate-400 hover:text-purple-300 font-bold flex items-center gap-1.5 cursor-pointer px-2.5 py-1 rounded-lg hover:bg-slate-800 transition-colors"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>
+                  {safeIndex + 1} / {totalFiltered}
+                </span>
+              </button>
+
+              <button
+                onClick={() => handleNavigate(Math.min(totalFiltered - 1, safeIndex + 1))}
+                disabled={safeIndex >= totalFiltered - 1}
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md shadow-purple-600/30"
+              >
+                <span>التالي</span>
+                <ChevronLeft className="w-4 h-4" />
+              </button>
             </div>
-          )}
-
-          {/* Bottom Card Desktop Navigation Buttons (Mobile uses sticky bottom bar) */}
-          <div className="hidden md:flex items-center justify-between gap-3 pt-3 sm:pt-4 border-t border-slate-800">
-            <button
-              onClick={() => handleNavigate(Math.max(0, safeIndex - 1))}
-              disabled={safeIndex === 0}
-              className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all border border-slate-700/60"
-            >
-              <ChevronRight className="w-4 h-4" />
-              <span>السابق</span>
-            </button>
-
-            <button
-              onClick={() => setIsGridModalOpen(true)}
-              className="text-xs text-slate-400 hover:text-purple-300 font-bold flex items-center gap-1.5 cursor-pointer px-2.5 py-1 rounded-lg hover:bg-slate-800 transition-colors"
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>
-                {safeIndex + 1} / {totalFiltered}
-              </span>
-            </button>
-
-            <button
-              onClick={() => handleNavigate(Math.min(totalFiltered - 1, safeIndex + 1))}
-              disabled={safeIndex >= totalFiltered - 1}
-              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md shadow-purple-600/30"
-            >
-              <span>التالي</span>
-              <ChevronLeft className="w-4 h-4" />
-            </button>
           </div>
-        </div>
+        </>
       ) : (
         <div className="p-8 sm:p-12 text-center text-slate-400 bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl">
           <p>لا توجد أسئلة تطابق معايير البحث الحالية.</p>
@@ -880,17 +921,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
         </div>
       )}
 
-      {/* 7. Shared Sticky Bottom Navigation Bar for Mobile Phones */}
-      <MobileQuizNavigation
-        currentIndex={safeIndex}
-        totalQuestions={totalFiltered}
-        onNavigate={handleNavigate}
-        onOpenGridModal={() => setIsGridModalOpen(true)}
-        isExamMode={viewMode === "exam"}
-        isSubmitted={isExamSubmitted}
-        onSubmitExam={handleSubmitExam}
-        accentColor="purple"
-      />
+      {/* 7. Mobile Navigation is now integrated directly at the top of the question card so button position never jumps */}
 
       {/* 8. Interactive 50-Question Quick Jump Sheet Modal */}
       {isGridModalOpen && (

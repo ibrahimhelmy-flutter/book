@@ -194,6 +194,40 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
 
       {/* Main Active Question Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 md:p-8 space-y-6 shadow-2xl relative">
+        {/* Top Question Navigation Bar (Specially for mobile so button position never jumps with question size) */}
+        <div className="flex items-center justify-between gap-2 p-1.5 sm:p-2 bg-slate-950/90 border border-slate-800 rounded-xl sm:rounded-2xl sticky top-2 z-20 backdrop-blur-md shadow-lg">
+          {/* Previous Question Button */}
+          <button
+            type="button"
+            disabled={currentIndex === 0}
+            onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+            className="min-h-[42px] min-w-[76px] sm:min-w-[90px] px-3 sm:px-4 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-25 disabled:pointer-events-none text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all border border-slate-700/60 active:scale-95 cursor-pointer shadow-sm"
+            aria-label="السؤال السابق"
+          >
+            <ChevronRight className="w-4 h-4 shrink-0" />
+            <span>السابق</span>
+          </button>
+
+          {/* Center: Current Index (e.g. 1 / 6) */}
+          <div className="min-h-[42px] px-3.5 sm:px-5 rounded-xl bg-amber-950/70 border border-amber-500/40 text-amber-200 text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-inner">
+            <span className="font-mono tracking-wider font-black">
+              {currentIndex + 1} / {essayQuestions.length}
+            </span>
+          </div>
+
+          {/* Next Question Button */}
+          <button
+            type="button"
+            disabled={currentIndex >= essayQuestions.length - 1}
+            onClick={() => setCurrentIndex((prev) => Math.min(essayQuestions.length - 1, prev + 1))}
+            className="min-h-[42px] min-w-[76px] sm:min-w-[90px] px-3 sm:px-5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-25 disabled:pointer-events-none text-white text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all shadow-md shadow-amber-600/30 active:scale-95 cursor-pointer"
+            aria-label="السؤال التالي"
+          >
+            <span>التالي</span>
+            <ChevronLeft className="w-4 h-4 shrink-0" />
+          </button>
+        </div>
+
         {/* Top Metadata Row */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div className="flex items-center gap-2 flex-wrap">
@@ -382,13 +416,7 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
         )}
       </div>
 
-      {/* Mobile Sticky Navigation Bar */}
-      <MobileQuizNavigation
-        currentIndex={currentIndex}
-        totalQuestions={essayQuestions.length}
-        onNavigate={(newIdx) => setCurrentIndex(newIdx)}
-        accentColor="amber"
-      />
+      {/* Mobile Navigation is now integrated directly at top so button position never jumps */}
     </div>
   );
 }
