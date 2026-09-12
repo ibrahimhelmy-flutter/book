@@ -2,15 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import { Lesson } from "@/types";
-import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation } from "lucide-react";
+import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
 
 interface Props {
   lesson: Lesson;
   onOpenPresentation?: () => void;
+  activeTab?: "lesson" | "quiz";
+  onToggleTab?: () => void;
+  questionsCount?: number;
 }
 
-export function LessonHeader({ lesson, onOpenPresentation }: Props) {
+export function LessonHeader({
+  lesson,
+  onOpenPresentation,
+  activeTab = "lesson",
+  onToggleTab,
+  questionsCount,
+}: Props) {
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
@@ -73,7 +82,33 @@ export function LessonHeader({ lesson, onOpenPresentation }: Props) {
           <span className="text-slate-400 font-mono text-[11px]">ص {lesson.pageRange}</span>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+          {/* Exercises & Practice Toggle Button */}
+          {onToggleTab && (
+            <button
+              type="button"
+              onClick={onToggleTab}
+              className={`px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm ${
+                activeTab === "quiz"
+                  ? "bg-indigo-600 hover:bg-indigo-500 border-indigo-500 text-white shadow-indigo-600/20"
+                  : "bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white shadow-emerald-600/20"
+              }`}
+              title={activeTab === "quiz" ? "العودة لشرح الدرس" : "الانتقال إلى تمارين وأسئلة الدرس"}
+            >
+              {activeTab === "quiz" ? (
+                <>
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>شرح الدرس 📖</span>
+                </>
+              ) : (
+                <>
+                  <CheckSquare className="w-3.5 h-3.5" />
+                  <span>تمارين وأسئلة {questionsCount ? `(${questionsCount})` : ""} 📝</span>
+                </>
+              )}
+            </button>
+          )}
+
           {/* Explore in Pairs Hover Button */}
           {lesson.exploreInPairs && (
             <div className="relative group">

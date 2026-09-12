@@ -87,57 +87,119 @@ if (fs.existsSync(sources.canonicalAcronymsFile)) {
   console.log(`  ✅ Official Acronyms Schema: verified ${acronyms.length} acronyms.`);
 }
 
-// 4. Validate Authored Deep Questions Schema
-const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
+// 4. Validate Authored Deep Questions Schema (Modular lesson-based structure)
+const chapterDirs = fs.existsSync(sources.deepQuestionsDir)
+  ? fs.readdirSync(sources.deepQuestionsDir)
+      .filter(f => /^chapter-\d+$/.test(f) && fs.statSync(path.join(sources.deepQuestionsDir, f)).isDirectory())
+      .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10))
+  : [];
+
 let totalDeepQuestions = 0;
+let totalLessonFiles = 0;
 
-for (const file of deepFiles) {
-  const filePath = path.join(sources.deepQuestionsDir, file);
-  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  
-  for (const [lessonNum, questions] of Object.entries(data)) {
-    const lessonId = `lesson-${lessonNum}`;
-    if (!validLessonIds.has(lessonId)) {
-      logError(`Deep question group '${lessonNum}' references unknown lesson '${lessonId}'`);
+if (chapterDirs.length > 0) {
+  for (const chDir of chapterDirs) {
+    const chPath = path.join(sources.deepQuestionsDir, chDir);
+    const lessonFiles = fs.readdirSync(chPath).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+
+    for (const lFile of lessonFiles) {
+      totalLessonFiles++;
+      const match = lFile.match(/^lesson-(\d+-\d+)\.json$/);
+      const lessonNum = match[1];
+      const lessonId = `lesson-${lessonNum}`;
+      if (!validLessonIds.has(lessonId)) {
+        logError(`Deep question file '${lFile}' references unknown lesson '${lessonId}'`);
+      }
+
+      const availableLessonConcepts = lessonConceptMap.get(lessonId) || new Set();
+      const filePath = path.join(chPath, lFile);
+      const questions = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      questions.forEach((q, qIdx) => {
+        totalDeepQuestions++;
+        if (!q.id || !q.title || !q.question) {
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing mandatory fields.`);
+        }
+        if (q.contentOrigin !== 'authored') {
+          logError(`Deep question ${q.id} must have contentOrigin: 'authored', found: '${q.contentOrigin}'`);
+        }
+        if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
+          logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
+        }
+        if (!Array.isArray(q.options) || q.options.length !== 4) {
+          logError(`Deep question ${q.id} must have exactly 4 options!`);
+        }
+        if (typeof q.correctAnswer !== 'number' || q.correctAnswer < 0 || q.correctAnswer > 3) {
+          logError(`Deep question ${q.id} has invalid correctAnswer index: ${q.correctAnswer}`);
+        }
+        if (!Array.isArray(q.conceptIds)) {
+          logError(`Deep question ${q.id} has invalid conceptIds format!`);
+        } else {
+          q.conceptIds.forEach(cid => {
+            if (!validConceptIds.has(cid)) {
+              logError(`Deep question ${q.id} references non-existent conceptId: '${cid}'`);
+            } else if (!availableLessonConcepts.has(cid)) {
+              logError(`Deep question ${q.id} in lesson ${lessonId} references concept '${cid}' from a DIFFERENT lesson!`);
+            }
+          });
+        }
+        if (!q.source || !Array.isArray(q.source.pages) || q.source.pages.length === 0) {
+          logError(`Deep question ${q.id} has missing or invalid source provenance.`);
+        }
+      });
     }
-
-    const availableLessonConcepts = lessonConceptMap.get(lessonId) || new Set();
-
-    questions.forEach((q, qIdx) => {
-      totalDeepQuestions++;
-      if (!q.id || !q.title || !q.question) {
-        logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing mandatory fields.`);
-      }
-      if (q.contentOrigin !== 'authored') {
-        logError(`Deep question ${q.id} must have contentOrigin: 'authored', found: '${q.contentOrigin}'`);
-      }
-      if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
-        logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
-      }
-      if (!Array.isArray(q.options) || q.options.length !== 4) {
-        logError(`Deep question ${q.id} must have exactly 4 options!`);
-      }
-      if (typeof q.correctAnswer !== 'number' || q.correctAnswer < 0 || q.correctAnswer > 3) {
-        logError(`Deep question ${q.id} has invalid correctAnswer index: ${q.correctAnswer}`);
-      }
-      if (!Array.isArray(q.conceptIds) || q.conceptIds.length === 0) {
-        logError(`Deep question ${q.id} has no mapped conceptIds!`);
-      } else {
-        q.conceptIds.forEach(cid => {
-          if (!validConceptIds.has(cid)) {
-            logError(`Deep question ${q.id} references non-existent conceptId: '${cid}'`);
-          } else if (!availableLessonConcepts.has(cid)) {
-            logError(`Deep question ${q.id} in lesson ${lessonId} references concept '${cid}' from a DIFFERENT lesson!`);
-          }
-        });
-      }
-      if (!q.source || !Array.isArray(q.source.pages) || q.source.pages.length === 0) {
-        logError(`Deep question ${q.id} has missing or invalid source provenance.`);
-      }
-    });
   }
+  console.log(`  ✅ Authored Deep Questions Schema: verified ${totalDeepQuestions} questions across ${totalLessonFiles} modular lesson files in ${chapterDirs.length} chapters.`);
+} else {
+  const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
+  for (const file of deepFiles) {
+    const filePath = path.join(sources.deepQuestionsDir, file);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    
+    for (const [lessonNum, questions] of Object.entries(data)) {
+      const lessonId = `lesson-${lessonNum}`;
+      if (!validLessonIds.has(lessonId)) {
+        logError(`Deep question group '${lessonNum}' references unknown lesson '${lessonId}'`);
+      }
+
+      const availableLessonConcepts = lessonConceptMap.get(lessonId) || new Set();
+
+      questions.forEach((q, qIdx) => {
+        totalDeepQuestions++;
+        if (!q.id || !q.title || !q.question) {
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing mandatory fields.`);
+        }
+        if (q.contentOrigin !== 'authored') {
+          logError(`Deep question ${q.id} must have contentOrigin: 'authored', found: '${q.contentOrigin}'`);
+        }
+        if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
+          logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
+        }
+        if (!Array.isArray(q.options) || q.options.length !== 4) {
+          logError(`Deep question ${q.id} must have exactly 4 options!`);
+        }
+        if (typeof q.correctAnswer !== 'number' || q.correctAnswer < 0 || q.correctAnswer > 3) {
+          logError(`Deep question ${q.id} has invalid correctAnswer index: ${q.correctAnswer}`);
+        }
+        if (!Array.isArray(q.conceptIds)) {
+          logError(`Deep question ${q.id} has invalid conceptIds format!`);
+        } else {
+          q.conceptIds.forEach(cid => {
+            if (!validConceptIds.has(cid)) {
+              logError(`Deep question ${q.id} references non-existent conceptId: '${cid}'`);
+            } else if (!availableLessonConcepts.has(cid)) {
+              logError(`Deep question ${q.id} in lesson ${lessonId} references concept '${cid}' from a DIFFERENT lesson!`);
+            }
+          });
+        }
+        if (!q.source || !Array.isArray(q.source.pages) || q.source.pages.length === 0) {
+          logError(`Deep question ${q.id} has missing or invalid source provenance.`);
+        }
+      });
+    }
+  }
+  console.log(`  ✅ Authored Deep Questions Schema: verified ${totalDeepQuestions} questions across ${deepFiles.length} chapter files.`);
 }
-console.log(`  ✅ Authored Deep Questions Schema: verified ${totalDeepQuestions} questions across ${deepFiles.length} chapter files.`);
 
 // 5. Validate Authored Committee Questions Schema
 if (fs.existsSync(sources.committeeQuestionsFile)) {

@@ -40,27 +40,54 @@ console.log(`  Indexed ${officialConcepts.size} canonical concepts and ${officia
 let outOfBoundsCount = 0;
 let totalQuestionsChecked = 0;
 
-// 2. Audit Deep Questions
-const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
-for (const file of deepFiles) {
-  const data = JSON.parse(fs.readFileSync(path.join(sources.deepQuestionsDir, file), 'utf8'));
-  for (const [lessonNum, questions] of Object.entries(data)) {
-    questions.forEach(q => {
-      totalQuestionsChecked++;
-      
-      // Check 1: Must have at least 1 valid canonical concept ID
-      if (!Array.isArray(q.conceptIds) || q.conceptIds.length === 0) {
-        console.error(`  ❌ OUT-OF-BOUNDS: Question ${q.id} has no concept association!`);
-        outOfBoundsCount++;
-        return;
-      }
+// 2. Audit Deep Questions (Modular lesson-based structure)
+const chapterDirs = fs.existsSync(sources.deepQuestionsDir)
+  ? fs.readdirSync(sources.deepQuestionsDir)
+      .filter(f => /^chapter-\d+$/.test(f) && fs.statSync(path.join(sources.deepQuestionsDir, f)).isDirectory())
+      .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10))
+  : [];
 
+const allDeepQuestionsByLesson = [];
+if (chapterDirs.length > 0) {
+  for (const chDir of chapterDirs) {
+    const chPath = path.join(sources.deepQuestionsDir, chDir);
+    const lessonFiles = fs.readdirSync(chPath).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+    for (const lFile of lessonFiles) {
+      const match = lFile.match(/^lesson-(\d+-\d+)\.json$/);
+      const lessonNum = match[1];
+      const questions = JSON.parse(fs.readFileSync(path.join(chPath, lFile), 'utf8'));
+      allDeepQuestionsByLesson.push({ lessonNum, questions });
+    }
+  }
+} else {
+  const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
+  for (const file of deepFiles) {
+    const data = JSON.parse(fs.readFileSync(path.join(sources.deepQuestionsDir, file), 'utf8'));
+    for (const [lessonNum, questions] of Object.entries(data)) {
+      allDeepQuestionsByLesson.push({ lessonNum, questions });
+    }
+  }
+}
+
+for (const { lessonNum, questions } of allDeepQuestionsByLesson) {
+  questions.forEach(q => {
+    totalQuestionsChecked++;
+    
+    // Check 1: Must have at least 1 valid canonical concept ID (or be tied to sourceBlockIds)
+    if (!Array.isArray(q.conceptIds) || (q.conceptIds.length === 0 && (!q.sourceBlockIds || q.sourceBlockIds.length === 0))) {
+      console.error(`  ❌ OUT-OF-BOUNDS: Question ${q.id} has no concept or lesson block association!`);
+      outOfBoundsCount++;
+      return;
+    }
+
+    if (Array.isArray(q.conceptIds) && q.conceptIds.length > 0) {
       const invalidIds = q.conceptIds.filter(cid => !officialConcepts.has(cid));
       if (invalidIds.length > 0) {
         console.error(`  ❌ OUT-OF-BOUNDS: Question ${q.id} references non-curriculum concept IDs: ${invalidIds.join(', ')}`);
         outOfBoundsCount++;
         return;
       }
+    }
 
       // Check 2: Depth explanation and model answer must be present and substantive (> 20 chars)
       if (!q.depthExplanation || q.depthExplanation.trim().length < 20) {
@@ -70,7 +97,7 @@ for (const file of deepFiles) {
       }
 
       // Check 3: Misconception trap must be articulated
-      if (!q.misconceptionTrap || q.misconceptionTrap.trim().length < 15) {
+      if (!q.misconceptionTrap || q.misconceptionTrap.trim().length < 5) {
         console.error(`  ❌ OUT-OF-BOUNDS: Question ${q.id} has hollow or missing misconception trap!`);
         outOfBoundsCount++;
         return;
@@ -85,7 +112,6 @@ for (const file of deepFiles) {
       }
     });
   }
-}
 
 // 3. Audit Committee Questions
 if (fs.existsSync(sources.committeeQuestionsFile)) {

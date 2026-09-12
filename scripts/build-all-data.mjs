@@ -104,29 +104,28 @@ export const SPECIALIZED_COMMITTEE_QUESTIONS: CommitteeQuestion[] = ${JSON.strin
 safeWriteFileSync(path.resolve('src/data/committee-questions.ts'), committeeTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/committee-questions.ts (${committeeQuestions.length} questions)`);
 
-// 7. Generate src/data/deep-questions/ from canonical deep-questions/*.json
+// 7. Generate src/data/deep-questions/ from canonical modular deep-questions/
 const targetDeepQuestionsDir = path.resolve('src/data/deep-questions');
 if (!fs.existsSync(targetDeepQuestionsDir)) {
   fs.mkdirSync(targetDeepQuestionsDir, { recursive: true });
 }
 
-const deepJsonFiles = fs.existsSync(sources.deepQuestionsDir)
-  ? fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f))
+// Discover all chapter numbers from curriculum and modular directories
+const foundChapterDirs = fs.existsSync(sources.deepQuestionsDir)
+  ? fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+$/.test(f) && fs.statSync(path.join(sources.deepQuestionsDir, f)).isDirectory())
   : [];
 
-deepJsonFiles.sort((a, b) => {
-  const numA = parseInt(a.match(/\d+/)[0], 10);
-  const numB = parseInt(b.match(/\d+/)[0], 10);
-  return numA - numB;
-});
+const chapterNumbers = Array.from(new Set([
+  ...chapters.map(c => c.number),
+  ...foundChapterDirs.map(d => parseInt(d.match(/\d+/)[0], 10))
+])).sort((a, b) => a - b);
 
 let totalDeepQ = 0;
 const chapterImports = [];
 const chapterSpreads = [];
 
-for (const file of deepJsonFiles) {
-  const chNum = parseInt(file.match(/\d+/)[0], 10);
-  const jsonPath = path.join(sources.deepQuestionsDir, file);
+for (const chNum of chapterNumbers) {
+  const jsonPath = path.join(sources.deepQuestionsDir, `chapter-${chNum}.json`);
   const chSubDir = path.join(sources.deepQuestionsDir, `chapter-${chNum}`);
   let questions = {};
   if (fs.existsSync(jsonPath)) {
@@ -300,7 +299,7 @@ export function getDeepQuestionsForLesson(lessonIdentifier: string | { id: strin
 export const get50DeepQuestionsForLesson = getDeepQuestionsForLesson;
 `;
 safeWriteFileSync(path.join(targetDeepQuestionsDir, 'index.ts'), deepIndexContent, 'utf-8');
-console.log(`  ✅ Generated src/data/deep-questions/ (${deepJsonFiles.length} chapter files, ${totalDeepQ} questions, and dynamic index.ts)`);
+console.log(`  ✅ Generated src/data/deep-questions/ (${chapterNumbers.length} chapter files, ${totalDeepQ} questions, and dynamic index.ts)`);
 
 // 8. Generate src/data/books.ts (Fully data-driven from book.json meta)
 const booksTsContent = `${AUTO_GEN_BANNER}

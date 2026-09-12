@@ -35,31 +35,57 @@ lessons.forEach(l => {
   });
 });
 
-// 2. Aggregate Deep Questions
-const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
-for (const file of deepFiles) {
-  const filePath = path.join(sources.deepQuestionsDir, file);
-  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  for (const [lessonNum, questions] of Object.entries(data)) {
-    const stat = lessonStats.get(lessonNum);
-    if (!stat) continue;
-    stat.totalQuestions += questions.length;
+// 2. Aggregate Deep Questions (Modular lesson-based structure)
+const chapterDirs = fs.existsSync(sources.deepQuestionsDir)
+  ? fs.readdirSync(sources.deepQuestionsDir)
+      .filter(f => /^chapter-\d+$/.test(f) && fs.statSync(path.join(sources.deepQuestionsDir, f)).isDirectory())
+      .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10))
+  : [];
 
-    questions.forEach(q => {
-      const diffKey = q.difficulty === 'very-hard' ? 'veryHard' : q.difficulty;
-      stat.difficultyCounts[diffKey] = (stat.difficultyCounts[diffKey] || 0) + 1;
+const lessonEntries = [];
+if (chapterDirs.length > 0) {
+  for (const chDir of chapterDirs) {
+    const chPath = path.join(sources.deepQuestionsDir, chDir);
+    const lessonFiles = fs.readdirSync(chPath).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+    for (const lFile of lessonFiles) {
+      const match = lFile.match(/^lesson-(\d+-\d+)\.json$/);
+      const lessonNum = match[1];
+      const questions = JSON.parse(fs.readFileSync(path.join(chPath, lFile), 'utf8'));
+      lessonEntries.push([lessonNum, questions]);
+    }
+  }
+} else {
+  const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
+  for (const file of deepFiles) {
+    const filePath = path.join(sources.deepQuestionsDir, file);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    for (const [lessonNum, questions] of Object.entries(data)) {
+      lessonEntries.push([lessonNum, questions]);
+    }
+  }
+}
 
-      if (Array.isArray(q.conceptIds)) {
-        q.conceptIds.forEach(cid => {
-          const cStat = stat.concepts.get(cid);
-          if (cStat) {
-            cStat.count++;
+for (const [lessonNum, questions] of lessonEntries) {
+  const stat = lessonStats.get(lessonNum);
+  if (!stat) continue;
+  stat.totalQuestions += questions.length;
+
+  questions.forEach(q => {
+    const diffKey = q.difficulty === 'very-hard' ? 'veryHard' : q.difficulty;
+    stat.difficultyCounts[diffKey] = (stat.difficultyCounts[diffKey] || 0) + 1;
+
+    if (Array.isArray(q.conceptIds)) {
+      q.conceptIds.forEach(cid => {
+        const cStat = stat.concepts.get(cid);
+        if (cStat) {
+          cStat.count++;
+          if (cStat[diffKey] !== undefined) {
             cStat[diffKey]++;
           }
-        });
-      }
-    });
-  }
+        }
+      });
+    }
+  });
 }
 
 // 3. Print Matrix & Check Invariants

@@ -7,21 +7,49 @@ console.log('🔍 Running Smart Question Duplicate & Semantic Similarity Audit..
 // Load all authored questions: deep questions + committee questions
 const allQuestions = [];
 
-const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
-for (const file of deepFiles) {
-  const filePath = path.join(sources.deepQuestionsDir, file);
-  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  for (const [lessonNum, questions] of Object.entries(data)) {
-    questions.forEach(q => {
-      allQuestions.push({
-        id: q.id,
-        lessonNumber: lessonNum,
-        title: q.title,
-        question: q.question,
-        options: q.options || [],
-        type: 'deep'
+const chapterDirs = fs.existsSync(sources.deepQuestionsDir)
+  ? fs.readdirSync(sources.deepQuestionsDir)
+      .filter(f => /^chapter-\d+$/.test(f) && fs.statSync(path.join(sources.deepQuestionsDir, f)).isDirectory())
+      .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10))
+  : [];
+
+if (chapterDirs.length > 0) {
+  for (const chDir of chapterDirs) {
+    const chPath = path.join(sources.deepQuestionsDir, chDir);
+    const lessonFiles = fs.readdirSync(chPath).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+    for (const lFile of lessonFiles) {
+      const match = lFile.match(/^lesson-(\d+-\d+)\.json$/);
+      const lessonNum = match[1];
+      const questions = JSON.parse(fs.readFileSync(path.join(chPath, lFile), 'utf8'));
+      questions.forEach(q => {
+        allQuestions.push({
+          id: q.id,
+          lessonNumber: lessonNum,
+          title: q.title,
+          question: q.question,
+          options: q.options || [],
+          type: 'deep'
+        });
       });
-    });
+    }
+  }
+} else {
+  const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
+  for (const file of deepFiles) {
+    const filePath = path.join(sources.deepQuestionsDir, file);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    for (const [lessonNum, questions] of Object.entries(data)) {
+      questions.forEach(q => {
+        allQuestions.push({
+          id: q.id,
+          lessonNumber: lessonNum,
+          title: q.title,
+          question: q.question,
+          options: q.options || [],
+          type: 'deep'
+        });
+      });
+    }
   }
 }
 
