@@ -7,6 +7,8 @@
     "dev:turbo": "next dev --turbopack",
     "clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); fs.rmSync('.next-dev', { recursive: true, force: true }); } catch(e) {}\"",
     "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); fs.rmSync('.next-dev', { recursive: true, force: true }); } catch(e) {}\" && next dev",
+    "lint": "next lint --dir src",
+    "tsc": "tsc",
     "prebuild": "node scripts/prepare-assets.mjs && node scripts/audit-canonical-fidelity.mjs && node scripts/validate-curriculum-compliance.mjs",
     "postbuild": "node scripts/sync-export-assets.mjs",
     "build": "node scripts/build.mjs",
