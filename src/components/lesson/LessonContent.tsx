@@ -122,32 +122,32 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
         <span className="text-[11px] hidden md:inline">{badge.label}</span>
       </button>
 
-      {/* Floating Popover on Hover/Click */}
-      <div
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-        className={`absolute left-0 top-full mt-2 w-72 sm:w-96 max-w-[90vw] p-4 bg-slate-950/95 backdrop-blur-xl border ${badge.borderClass} rounded-2xl shadow-2xl z-50 transition-all duration-200 text-right ${
-          isOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"
-        }`}
-      >
-        <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2.5 mb-2.5">
-          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${badge.bgBadge}`}>
-            {badge.label}
-          </span>
-          <span className="text-xs font-bold text-white line-clamp-1">{note.title}</span>
-        </div>
-
-        <p className="text-xs text-slate-300 leading-relaxed font-normal mb-2.5 whitespace-pre-line">
-          {note.content}
-        </p>
-
-        {note.question && (
-          <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
-            <strong className="text-amber-400 block mb-1 font-bold text-[11px]">الإجابة والتحليل:</strong>
-            <p className="text-slate-300 leading-relaxed text-[11px] font-normal">{note.question}</p>
+      {/* Floating Popover on Hover/Click (rendered only when open to avoid GPU layer bloat) */}
+      {isOpen && (
+        <div
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+          className={`absolute left-0 top-full mt-2 w-72 sm:w-96 max-w-[90vw] p-4 bg-slate-950 border ${badge.borderClass} rounded-2xl shadow-2xl z-50 text-right animate-fadeIn`}
+        >
+          <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2.5 mb-2.5">
+            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${badge.bgBadge}`}>
+              {badge.label}
+            </span>
+            <span className="text-xs font-bold text-white line-clamp-1">{note.title}</span>
           </div>
-        )}
-      </div>
+
+          <p className="text-xs text-slate-300 leading-relaxed font-normal mb-2.5 whitespace-pre-line">
+            {note.content}
+          </p>
+
+          {note.question && (
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
+              <strong className="text-amber-400 block mb-1 font-bold text-[11px]">الإجابة والتحليل:</strong>
+              <p className="text-slate-300 leading-relaxed text-[11px] font-normal">{note.question}</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -206,7 +206,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const isQuizMode = activeTab === "quiz";
 
   return (
-    <article className={`max-w-5xl mx-auto w-full max-w-full overflow-x-hidden min-w-0 ${isQuizMode ? "px-3 sm:px-4 py-3 sm:py-8" : "px-4 py-8"}`}>
+    <article className={`max-w-5xl mx-auto w-full max-w-full overflow-x-clip min-w-0 ${isQuizMode ? "px-3 sm:px-4 py-3 sm:py-8" : "px-4 py-8"}`}>
       {/* Mobile Quiz Focus Mode: Compact Bar when practicing questions */}
       {isQuizMode && (
         <div className="md:hidden mb-2.5 p-2 px-3 bg-slate-900/95 border border-slate-800 rounded-2xl flex items-center justify-between shadow-md">
@@ -245,7 +245,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       )}
 
       {/* Lesson Header with TTS, Bookmark, Objectives, and Quiz Toggle (Always visible on desktop; collapsible on mobile in quiz mode) */}
-      <div className={isQuizMode && !isLessonHeaderOpen ? "hidden md:block" : "block animate-fadeIn"}>
+      <div className={isQuizMode && !isLessonHeaderOpen ? "hidden md:block" : "block"}>
         <LessonHeader
           lesson={lesson}
           onOpenPresentation={() => setIsPresentationOpen(true)}
@@ -267,7 +267,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
       {/* Main Lesson View */}
       {activeTab === "lesson" && (
-        <div className="space-y-8 animate-fadeIn">
+        <div className="space-y-8">
           {/* Key Question & Learning Path - Compact Banner */}
           <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-white flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs sm:text-sm">
             <div className="flex items-start gap-2 flex-1">
@@ -342,6 +342,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                           alt={sec.image.alt || sec.image.caption}
                           className="max-h-96 w-auto object-contain rounded-lg"
                           loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const target = e.currentTarget;
                             const attempts = parseInt(target.dataset.attempts || "0", 10);
@@ -652,7 +653,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
       {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 3 Clear Tabs) */}
       {activeTab === "quiz" && (
-        <div ref={quizSectionRef} className="animate-fadeIn space-y-4 sm:space-y-6 mobile-quiz-scroll-anchor">
+        <div ref={quizSectionRef} className="space-y-4 sm:space-y-6 mobile-quiz-scroll-anchor">
           {/* Quick Return to Lesson Bar */}
           <div className="flex items-center justify-between gap-3 bg-slate-900/90 border border-slate-800/80 rounded-2xl px-4 py-2.5 shadow-md">
             <button

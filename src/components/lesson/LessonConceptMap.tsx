@@ -68,9 +68,9 @@ export function LessonConceptMap({ lesson }: Props) {
 
   return (
     <div className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-5 sm:p-7 shadow-2xl relative overflow-hidden my-8">
-      {/* Decorative Glow Background */}
-      <div className="absolute top-0 right-1/4 w-96 h-36 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-36 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative Glow Background - Lightweight radial gradients without costly Gaussian blur filters */}
+      <div className="absolute top-0 right-1/4 w-96 h-36 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-600/15 via-indigo-600/5 to-transparent rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-36 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-600/15 via-purple-600/5 to-transparent rounded-full pointer-events-none" />
 
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6 relative z-10">
