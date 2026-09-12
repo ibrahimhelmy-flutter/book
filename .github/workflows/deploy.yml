@@ -53,6 +53,9 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
+      - name: Verify PWA & Offline Export
+        run: pnpm run verify:pwa
+
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
 
