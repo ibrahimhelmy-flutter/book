@@ -26,7 +26,7 @@ export function normalizeLessonKey(identifier: string): string {
   return cleaned;
 }
 
-export function get50DeepQuestionsForLesson(lessonIdentifier: string | { id: string; number: string; title?: string }): DeepChallengingQuestion[] {
+export function getDeepQuestionsForLesson(lessonIdentifier: string | { id: string; number: string; title?: string }): DeepChallengingQuestion[] {
   let key = "1-1";
   let lessonTitle = "الدرس الحالي";
   let lessonId = "lesson-1-1";
@@ -42,60 +42,45 @@ export function get50DeepQuestionsForLesson(lessonIdentifier: string | { id: str
 
   const existing = ALL_DEEP_QUESTIONS[key] || [];
 
-  if (existing.length === 50) {
+  // If authored questions exist (any count: e.g. 30, 50, 70...), return ALL of them!
+  if (existing.length > 0) {
     return existing.map((q, idx) => ({
       ...q,
-      index: idx + 1,
-      lessonId: lessonId,
-      lessonNumber: key,
+      index: q.index || idx + 1,
+      lessonId: q.lessonId || lessonId,
+      lessonNumber: q.lessonNumber || key,
     }));
   }
 
-  const result: DeepChallengingQuestion[] = [...existing];
+  const result: DeepChallengingQuestion[] = [];
 
   while (result.length < 50) {
     const nextIdx = result.length + 1;
-    const baseRef = existing[result.length % Math.max(1, existing.length)];
-
-    if (baseRef) {
-      result.push({
-        ...baseRef,
-        id: `deep-${key}-${nextIdx}`,
-        index: nextIdx,
-        lessonId: lessonId,
-        lessonNumber: key,
-        title: `${baseRef.title} — تطبيق وتحليل مركب (${nextIdx})`,
-      });
-    } else {
-      result.push({
-        id: `deep-${key}-${nextIdx}`,
-        lessonId: lessonId,
-        lessonNumber: key,
-        index: nextIdx,
-        title: `تحدي الفهم العميق والتحليل الهندسي (${nextIdx})`,
-        cognitiveLevel: "تقييم واتخاذ قرار",
-        difficulty: "hard",
-        conceptIds: [],
-        contentOrigin: "authored",
-        question: `بناءً على المعايير القياسية والمفاهيم الجوهرية لدرس (${lessonTitle})، ما هو المعيار الأكثر دقة في المفاضلة بين الحلول التقنية المتاحة؟`,
-        options: [
-          "الموازنة الدقيقة بين الأداء الهندسي العالي، وموثوقية الأمان، وقابلية الصيانة والتوسع على المدى الطويل",
-          "اختيار الحل الأسهل والأسرع حتى لو كان يفتقر للموثوقية ومعايير الأمان الدولية",
-          "الاعتماد الكامل على الحلول المؤقتة وتجاهل توثيق المعمارية البرمجية",
-          "تجنب استخدام المعايير القياسية والبروتوكولات المعترف بها عالمياً"
-        ],
-        correctAnswer: 0,
-        misconceptionTrap: "التركيز على سرعة التنفيذ العاجلة وإهمال الأمان وقابلية التوسع والديون التقنية المتراكمة.",
-        depthExplanation: "الهندسة البرمجية والتقنية المتقدمة تتطلب دائماً تحليلاً شاملاً للمفاضلات (Trade-offs) لضمان استدامة واستقرار المنظومات في بيئات العمل الحقيقية.",
-        teacherDiscussionPrompt: "كيف تشرح للطلاب أهمية الموازنة بين سرعة التسليم وجودة البنية التحتية البرمجية؟"
-      });
-    }
+    result.push({
+      id: `deep-${key}-${nextIdx}`,
+      lessonId: lessonId,
+      lessonNumber: key,
+      index: nextIdx,
+      title: `تحدي الفهم العميق والتحليل الهندسي (${nextIdx})`,
+      cognitiveLevel: "تقييم واتخاذ قرار",
+      difficulty: "hard",
+      conceptIds: [],
+      contentOrigin: "authored",
+      question: `بناءً على المعايير القياسية والمفاهيم الجوهرية لدرس (${lessonTitle})، ما هو المعيار الأكثر دقة في المفاضلة بين الحلول التقنية المتاحة؟`,
+      options: [
+        "الموازنة الدقيقة بين الأداء الهندسي العالي، وموثوقية الأمان، وقابلية الصيانة والتوسع على المدى الطويل",
+        "اختيار الحل الأسهل والأسرع حتى لو كان يفتقر للموثوقية ومعايير الأمان الدولية",
+        "الاعتماد الكامل على الحلول المؤقتة وتجاهل توثيق المعمارية البرمجية",
+        "تجنب استخدام المعايير القياسية والبروتوكولات المعترف بها عالمياً"
+      ],
+      correctAnswer: 0,
+      misconceptionTrap: "التركيز على سرعة التنفيذ العاجلة وإهمال الأمان وقابلية التوسع والديون التقنية المتراكمة.",
+      depthExplanation: "الهندسة البرمجية والتقنية المتقدمة تتطلب دائماً تحليلاً شاملاً للمفاضلات (Trade-offs) لضمان استدامة واستقرار المنظومات في بيئات العمل الحقيقية.",
+      teacherDiscussionPrompt: "كيف تشرح للطلاب أهمية الموازنة بين سرعة التسليم وجودة البنية التحتية البرمجية؟"
+    });
   }
 
-  return result.slice(0, 50).map((q, idx) => ({
-    ...q,
-    index: idx + 1,
-    lessonId: lessonId,
-    lessonNumber: key,
-  }));
+  return result;
 }
+
+export const get50DeepQuestionsForLesson = getDeepQuestionsForLesson;

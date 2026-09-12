@@ -11,9 +11,16 @@ export type CognitiveLevel =
   | "تحليل واستنتاج"
   | "اكتشاف خطأ وتريكات"
   | "هلوسة والتحقق"
-  | "أسئلة مركبة صعبة";
+  | "أسئلة مركبة صعبة"
+  | "فهم وتعريف"
+  | "تطبيق سيناريو"
+  | "كشف مفهوم خاطئ"
+  | "تقييم"
+  | "تحليل وربط"
+  | "تركيب"
+  | "تركيب وتقييم";
 
-export type QuestionDifficulty = "easy" | "medium" | "hard" | "very-hard";
+export type QuestionDifficulty = "easy" | "medium" | "hard" | "very-hard" | "expert";
 
 export interface DeepQuestionProvenance {
   question: "derived-from-curriculum" | "official";
@@ -64,4 +71,5 @@ export interface DeepChallengingQuestion {
     curriculumEvidence?: string | CurriculumEvidenceItem;
   };
   validation?: DeepQuestionValidation;
+  sourceBlockIds?: string[];
 }

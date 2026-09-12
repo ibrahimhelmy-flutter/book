@@ -58,7 +58,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -152,10 +152,18 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 }
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
-  const [activeTab, setActiveTab] = useState<"lesson" | "simulator" | "quiz" | "engineer">("lesson");
+  const [activeTab, setActiveTab] = useState<"lesson" | "quiz">("lesson");
   const [quizSubTab, setQuizSubTab] = useState<"textbook" | "essay" | "comprehension">("textbook");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
   const [isLessonHeaderOpen, setIsLessonHeaderOpen] = useState<boolean>(false);
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
+  const [isEngineerOpen, setIsEngineerOpen] = useState<boolean>(false);
+
+  // Reset optional enrichment accordions on lesson switch so they remain closed by default
+  React.useEffect(() => {
+    setIsSimulatorOpen(false);
+    setIsEngineerOpen(false);
+  }, [lesson.id]);
 
   // Split lesson questions into objective textbook exercises and essay writing questions
   const textbookQuestions = React.useMemo(() => {
@@ -237,52 +245,32 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         />
       </div>
 
-      {/* Interactive Tabs Ribbon for Quick Jumping (Hidden on mobile during quiz focus mode) */}
-      <div className={`bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg ${isQuizMode ? "hidden md:flex mb-8" : "mb-8 grid grid-cols-2 sm:flex sm:flex-wrap"} gap-1.5`}>
+      {/* Interactive Tabs Ribbon: Exactly 2 Core Tabs (Hidden on mobile during quiz focus mode) */}
+      <div className={`bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg ${isQuizMode ? "hidden md:grid" : "mb-8 grid"} grid-cols-2 gap-2`}>
         <button
+          type="button"
           onClick={() => setActiveTab("lesson")}
-          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`w-full py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === "lesson"
-              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-              : "text-slate-400 hover:text-white hover:bg-slate-900"
+              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-black"
+              : "text-slate-400 hover:text-white hover:bg-slate-800/60"
           }`}
         >
-          <BookOpen className="w-4 h-4 shrink-0" /> <span className="truncate">نص الدرس والشرح</span>
-        </button>
-
-        {lesson.simulatorId && (
-          <button
-            onClick={() => setActiveTab("simulator")}
-            className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-              activeTab === "simulator"
-                ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
-                : "text-slate-400 hover:text-white hover:bg-slate-900"
-            }`}
-          >
-            <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">المحاكي التفاعلي ⚡</span>
-          </button>
-        )}
-
-        <button
-          onClick={() => setActiveTab("engineer")}
-          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-            activeTab === "engineer"
-              ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30"
-              : "text-slate-400 hover:text-white hover:bg-slate-900"
-          }`}
-        >
-          <Lightbulb className="w-4 h-4 shrink-0" /> <span className="truncate">فكر كمهندس ⚙️</span>
+          <BookOpen className="w-4 h-4 shrink-0" />
+          <span className="truncate">نص الدرس والشرح</span>
         </button>
 
         <button
+          type="button"
           onClick={() => setActiveTab("quiz")}
-          className={`w-full sm:flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+          className={`w-full py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
             activeTab === "quiz"
-              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
-              : "text-slate-400 hover:text-white hover:bg-slate-900"
+              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-black"
+              : "text-slate-400 hover:text-white hover:bg-slate-800/60"
           }`}
         >
-          <CheckSquare className="w-4 h-4 shrink-0" /> <span className="truncate">تمارين واختبار الدرس 📝</span>
+          <CheckSquare className="w-4 h-4 shrink-0" />
+          <span className="truncate">تمارين واختبار الدرس 📝</span>
         </button>
       </div>
 
@@ -465,18 +453,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             <LessonConceptMap lesson={lesson} />
           )}
 
-          {/* Embedded Simulator in Reading flow */}
-          {lesson.simulatorId && (
-            <div className="my-8">
-              <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
-                <SimulatorRenderer simulatorId={lesson.simulatorId} />
-              </ComponentErrorBoundary>
-            </div>
-          )}
-
-          {/* Think Like an Engineer Workspace */}
-          <ThinkLikeEngineer challenge={lesson.engineerChallenge} />
-
           {/* Applied Task Box */}
           {lesson.appliedTask && (
             <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 text-white shadow-xl my-6">
@@ -554,6 +530,111 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             </div>
           )}
 
+          {/* Optional Enrichment Section at End of Lesson (Hidden/Collapsed by default) */}
+          {(lesson.simulatorId || lesson.engineerChallenge) && (
+            <div className="pt-6 border-t border-slate-800/80 space-y-3">
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center gap-2 text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-slate-600" />
+                  <span className="font-bold text-slate-300">أنشطة وتطبيقات إثرائية (اختيارية)</span>
+                </div>
+                <span className="text-[11px] text-slate-500">مغلقة افتراضياً — اضغط للاستكشاف</span>
+              </div>
+
+              {/* 1. Collapsible Interactive Simulator */}
+              {lesson.simulatorId && (
+                <div className="border border-slate-800 hover:border-purple-500/30 bg-slate-900/60 rounded-2xl overflow-hidden transition-all duration-200 shadow-md">
+                  <button
+                    type="button"
+                    onClick={() => setIsSimulatorOpen((prev) => !prev)}
+                    className="w-full p-4 sm:p-4.5 flex items-center justify-between gap-3 text-right hover:bg-slate-800/40 transition-colors cursor-pointer"
+                    aria-expanded={isSimulatorOpen}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 text-purple-400">
+                        <Sparkles className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0 text-right">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm sm:text-base font-bold text-white">المحاكي التفاعلي المعملي ⚡</span>
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/25">
+                            إثرائي اختياري
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          محاكاة تفاعلية لتجربة المفاهيم عملياً (غير مطلوب للامتحان)
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs shrink-0">
+                      <span className="hidden sm:inline font-medium">
+                        {isSimulatorOpen ? "إخفاء المحاكي" : "فتح المحاكي"}
+                      </span>
+                      {isSimulatorOpen ? (
+                        <ChevronUp className="w-5 h-5 text-purple-400 transition-transform" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-slate-400 transition-transform" />
+                      )}
+                    </div>
+                  </button>
+
+                  {isSimulatorOpen && (
+                    <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-950/70 animate-fadeIn">
+                      <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
+                        <SimulatorRenderer simulatorId={lesson.simulatorId} />
+                      </ComponentErrorBoundary>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 2. Collapsible Think Like an Engineer */}
+              {lesson.engineerChallenge && (
+                <div className="border border-slate-800 hover:border-amber-500/30 bg-slate-900/60 rounded-2xl overflow-hidden transition-all duration-200 shadow-md">
+                  <button
+                    type="button"
+                    onClick={() => setIsEngineerOpen((prev) => !prev)}
+                    className="w-full p-4 sm:p-4.5 flex items-center justify-between gap-3 text-right hover:bg-slate-800/40 transition-colors cursor-pointer"
+                    aria-expanded={isEngineerOpen}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 text-amber-400">
+                        <Lightbulb className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0 text-right">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm sm:text-base font-bold text-white">فكر كمهندس ⚙️ (التحدي الهندسي)</span>
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/25">
+                            إثرائي اختياري
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-0.5 truncate max-w-md">
+                          {lesson.engineerChallenge.title || "تطبيق التفكير الهندسي وحل المشكلات"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs shrink-0">
+                      <span className="hidden sm:inline font-medium">
+                        {isEngineerOpen ? "إخفاء التحدي" : "فتح التحدي"}
+                      </span>
+                      {isEngineerOpen ? (
+                        <ChevronUp className="w-5 h-5 text-amber-400 transition-transform" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-slate-400 transition-transform" />
+                      )}
+                    </div>
+                  </button>
+
+                  {isEngineerOpen && (
+                    <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-950/70 animate-fadeIn">
+                      <ThinkLikeEngineer challenge={lesson.engineerChallenge} />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Bottom of Lesson: Practice, Essay & Comprehension Hub Callout */}
           <div className="p-6 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-3xl space-y-4 shadow-xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -608,29 +689,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 <Brain className="w-4 h-4 text-purple-400 shrink-0" />
                 <span>أسئلة الفهم (50) 🧠</span>
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Standalone Simulator Tab */}
-      {activeTab === "simulator" && lesson.simulatorId && (
-        <div className="animate-fadeIn">
-          <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
-            <SimulatorRenderer simulatorId={lesson.simulatorId} />
-          </ComponentErrorBoundary>
-        </div>
-      )}
-
-      {/* Standalone Engineer Tab */}
-      {activeTab === "engineer" && (
-        <div className="animate-fadeIn space-y-6">
-          <ThinkLikeEngineer challenge={lesson.engineerChallenge} />
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white">
-            <h4 className="font-bold text-sm text-indigo-400 mb-2">تطبيق هندسي عملي:</h4>
-            <p className="text-xs text-slate-300 leading-relaxed mb-4">{lesson.appliedTask.prompt}</p>
-            <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300">
-              {lesson.appliedTask.sampleAnswer}
             </div>
           </div>
         </div>

@@ -111,7 +111,7 @@ for (const file of deepFiles) {
       if (q.contentOrigin !== 'authored') {
         logError(`Deep question ${q.id} must have contentOrigin: 'authored', found: '${q.contentOrigin}'`);
       }
-      if (!['easy', 'medium', 'hard', 'very-hard'].includes(q.difficulty)) {
+      if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
         logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
       }
       if (!Array.isArray(q.options) || q.options.length !== 4) {
