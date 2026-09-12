@@ -69,7 +69,7 @@ export function LessonHeader({
   const [showObjectives, setShowObjectives] = useState<boolean>(false);
 
   return (
-    <header className="bg-slate-900/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 sm:p-7 text-white shadow-xl mb-6">
+    <header className="bg-slate-900 border border-slate-800/80 sm:bg-slate-900/80 sm:backdrop-blur-md rounded-2xl p-5 sm:p-7 text-white shadow-xl mb-6">
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-4 mb-5">
         <div className="flex items-center gap-2 text-xs">
@@ -124,24 +124,22 @@ export function LessonHeader({
                 <span className="hidden sm:inline">نشاط تعاوني</span>
               </button>
 
-              {/* Hover Popover */}
-              <div
-                onMouseEnter={() => setShowExplorePopover(true)}
-                onMouseLeave={() => setShowExplorePopover(false)}
-                className={`absolute left-0 top-full mt-2 w-72 sm:w-80 p-3.5 bg-slate-950/95 backdrop-blur-xl border border-purple-500/40 rounded-xl shadow-2xl z-50 transition-all duration-200 text-right ${
-                  showExplorePopover
-                    ? "opacity-100 visible pointer-events-auto"
-                    : "opacity-0 invisible pointer-events-none"
-                }`}
-              >
-                <div className="flex items-center gap-1.5 text-purple-400 font-bold text-xs mb-1.5 border-b border-purple-500/20 pb-1.5">
-                  <Users className="w-3.5 h-3.5" />
-                  <span>نشاط تفاعلي تعاوني:</span>
+              {/* Hover Popover (rendered only when visible to prevent GPU layer bloat) */}
+              {showExplorePopover && (
+                <div
+                  onMouseEnter={() => setShowExplorePopover(true)}
+                  onMouseLeave={() => setShowExplorePopover(false)}
+                  className="absolute left-0 top-full mt-2 w-72 sm:w-80 p-3.5 bg-slate-950 border border-purple-500/40 rounded-xl shadow-2xl z-50 text-right animate-fadeIn"
+                >
+                  <div className="flex items-center gap-1.5 text-purple-400 font-bold text-xs mb-1.5 border-b border-purple-500/20 pb-1.5">
+                    <Users className="w-3.5 h-3.5" />
+                    <span>نشاط تفاعلي تعاوني:</span>
+                  </div>
+                  <p className="text-xs text-slate-200 leading-relaxed font-normal">
+                    {lesson.exploreInPairs}
+                  </p>
                 </div>
-                <p className="text-xs text-slate-200 leading-relaxed font-normal">
-                  {lesson.exploreInPairs}
-                </p>
-              </div>
+              )}
             </div>
           )}
 
