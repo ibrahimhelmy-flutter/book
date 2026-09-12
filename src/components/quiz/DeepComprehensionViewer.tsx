@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Lesson } from "@/types";
 import {
-  get50DeepQuestionsForLesson,
+  getDeepQuestionsForLesson,
   DeepChallengingQuestion,
 } from "@/data/deep-questions";
 import {
@@ -36,9 +36,9 @@ interface Props {
 }
 
 export function DeepComprehensionViewer({ lesson }: Props) {
-  // Load the 50 deep comprehension questions for this lesson
+  // Load the deep comprehension questions for this lesson
   const allQuestions = useMemo<DeepChallengingQuestion[]>(() => {
-    return get50DeepQuestionsForLesson(lesson);
+    return getDeepQuestionsForLesson(lesson);
   }, [lesson]);
 
   // View Mode: "study" (instant feedback & explanations) | "exam" (graded test)
@@ -456,12 +456,12 @@ export function DeepComprehensionViewer({ lesson }: Props) {
         <button
           onClick={() => setIsGridModalOpen(true)}
           className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors shadow-sm"
-          title="فتح شبكة الـ 50 سؤالاً للاختيار السريع"
+          title={`فتح شبكة الأسئلة للاختيار السريع (${allQuestions.length} سؤال)`}
         >
           <LayoutGrid className="w-3.5 h-3.5 text-purple-400 shrink-0" />
           <span className="hidden xs:inline">شبكة الأسئلة</span>
           <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-purple-500/30 font-black">
-            {stats.answered}/50
+            {stats.answered}/{allQuestions.length}
           </span>
         </button>
 
@@ -537,7 +537,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
             <button
               onClick={() => setIsGridModalOpen(true)}
               className="px-2.5 py-1 rounded-xl bg-purple-600/20 text-purple-300 border border-purple-500/30 text-xs font-black flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
-              title="فتح شبكة الـ 50 سؤالاً"
+              title={`فتح شبكة الأسئلة (${allQuestions.length} سؤال)`}
             >
               <LayoutGrid className="w-3.5 h-3.5 text-purple-400 shrink-0" />
               <span className="text-[11px] font-black">{safeIndex + 1}/{totalFiltered}</span>
@@ -727,7 +727,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                   {currentQ.cognitiveLevel}
                 </span>
                 <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] sm:text-xs font-bold">
-                  {currentQ.difficulty === "very-hard" ? "صعب جداً 🔥" : "متوسط إلى صعب ⚡"}
+                  {currentQ.difficulty === "expert" ? "مستوى خبير 🏆" : currentQ.difficulty === "very-hard" ? "صعب جداً 🔥" : "متوسط إلى صعب ⚡"}
                 </span>
                 {currentQ.type && (
                   <span className="hidden sm:inline-block px-2.5 py-1 rounded-xl bg-slate-800 text-slate-300 text-[11px] font-bold">
@@ -944,7 +944,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-black text-white">
-                    خريطة الـ 50 سؤالاً التحليلية
+                    خريطة الأسئلة التحليلية ({allQuestions.length} سؤال)
                   </h3>
                   <p className="text-[10px] sm:text-xs text-slate-400">
                     انقر على أي سؤال للانتقال إليه فوراً

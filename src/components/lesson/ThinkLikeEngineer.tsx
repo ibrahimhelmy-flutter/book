@@ -21,7 +21,7 @@ export function ThinkLikeEngineer({ challenge }: Props) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 text-white shadow-xl my-8">
+    <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 text-white shadow-xl my-2">
       <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
         <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
           <Wrench className="w-6 h-6" />
