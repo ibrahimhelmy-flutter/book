@@ -8,6 +8,7 @@ import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
+import { getDeepQuestionsForLesson } from "@/data/deep-questions";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -58,7 +59,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, Presentation, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -174,6 +175,12 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     return (lesson.questions || []).filter((q) => q.type === "essay");
   }, [lesson.questions]);
 
+  const comprehensionQuestions = React.useMemo(() => {
+    return getDeepQuestionsForLesson(lesson);
+  }, [lesson]);
+
+  const totalQuestionsCount = textbookQuestions.length + essayQuestions.length + comprehensionQuestions.length;
+
   const quizSectionRef = React.useRef<HTMLDivElement>(null);
 
   // Automatically scroll to top for lessons or main tabs, or smart-scroll to quiz section
@@ -237,41 +244,15 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         </div>
       )}
 
-      {/* Lesson Header with TTS, Bookmark, and Objectives (Always visible on desktop; collapsible on mobile in quiz mode) */}
+      {/* Lesson Header with TTS, Bookmark, Objectives, and Quiz Toggle (Always visible on desktop; collapsible on mobile in quiz mode) */}
       <div className={isQuizMode && !isLessonHeaderOpen ? "hidden md:block" : "block animate-fadeIn"}>
         <LessonHeader
           lesson={lesson}
           onOpenPresentation={() => setIsPresentationOpen(true)}
+          activeTab={activeTab}
+          onToggleTab={() => setActiveTab((prev) => (prev === "lesson" ? "quiz" : "lesson"))}
+          questionsCount={totalQuestionsCount}
         />
-      </div>
-
-      {/* Interactive Tabs Ribbon: Exactly 2 Core Tabs (Hidden on mobile during quiz focus mode) */}
-      <div className={`bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-lg ${isQuizMode ? "hidden md:grid" : "mb-8 grid"} grid-cols-2 gap-2`}>
-        <button
-          type="button"
-          onClick={() => setActiveTab("lesson")}
-          className={`w-full py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            activeTab === "lesson"
-              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-black"
-              : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-          }`}
-        >
-          <BookOpen className="w-4 h-4 shrink-0" />
-          <span className="truncate">نص الدرس والشرح</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("quiz")}
-          className={`w-full py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            activeTab === "quiz"
-              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-black"
-              : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-          }`}
-        >
-          <CheckSquare className="w-4 h-4 shrink-0" />
-          <span className="truncate">تمارين واختبار الدرس 📝</span>
-        </button>
       </div>
 
       {/* Fullscreen Presentation Modal View */}
@@ -302,31 +283,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 <span>{lesson.learningPath.current}</span>
               </div>
             )}
-          </div>
-
-          {/* Presentation Launcher Banner in First Section / Top View (Hidden on mobile phones, visible on tablets/desktops) */}
-          <div className="hidden md:flex bg-gradient-to-r from-blue-950/70 via-indigo-950/50 to-slate-900 border border-blue-500/40 rounded-2xl p-4 sm:p-5 flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center shrink-0 shadow-inner">
-                <Presentation className="w-6 h-6 text-blue-400 animate-pulse" />
-              </div>
-              <div>
-                <h4 className="text-sm sm:text-base font-extrabold text-white">
-                  جاهز لشرح أو مراجعة الدرس على البروجيكتور؟ 📽️
-                </h4>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  شرائح تفاعلية بملء الشاشة مع أدوات الرسم والتظليل، والسبورة الرقمية، ومساعد الذكاء الاصطناعي.
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsPresentationOpen(true)}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95 shrink-0"
-            >
-              <Presentation className="w-4 h-4" />
-              <span>بدء العرض التقديمي (Full Screen)</span>
-            </button>
           </div>
 
           {/* Detailed Sections with In-Section Notes Button */}
@@ -687,7 +643,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 className="p-3.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
               >
                 <Brain className="w-4 h-4 text-purple-400 shrink-0" />
-                <span>أسئلة الفهم (50) 🧠</span>
+                <span>أسئلة الفهم ({comprehensionQuestions.length}) 🧠</span>
               </button>
             </div>
           </div>
@@ -697,6 +653,21 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 3 Clear Tabs) */}
       {activeTab === "quiz" && (
         <div ref={quizSectionRef} className="animate-fadeIn space-y-4 sm:space-y-6 mobile-quiz-scroll-anchor">
+          {/* Quick Return to Lesson Bar */}
+          <div className="flex items-center justify-between gap-3 bg-slate-900/90 border border-slate-800/80 rounded-2xl px-4 py-2.5 shadow-md">
+            <button
+              type="button"
+              onClick={() => setActiveTab("lesson")}
+              className="flex items-center gap-2 text-xs sm:text-sm font-bold text-indigo-300 hover:text-white transition-colors cursor-pointer group"
+            >
+              <ArrowRight className="w-4 h-4 text-indigo-400 group-hover:-translate-x-0.5 transition-transform" />
+              <span>العودة إلى شرح الدرس 📖</span>
+            </button>
+            <span className="text-xs text-slate-400 font-medium">
+              بنك الأسئلة والتمارين ({totalQuestionsCount})
+            </span>
+          </div>
+
           {/* Exactly 3 Clear Tabs Switcher: Sleek Horizontal Segmented Control */}
           <div
             role="tablist"
@@ -751,7 +722,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               }`}
             >
               <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300 shrink-0" />
-              <span className="truncate">فهم (50)</span>
+              <span className="truncate">فهم ({comprehensionQuestions.length})</span>
             </button>
           </div>
 
