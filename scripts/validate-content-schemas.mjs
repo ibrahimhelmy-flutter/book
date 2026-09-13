@@ -94,6 +94,27 @@ const chapterDirs = fs.existsSync(sources.deepQuestionsDir)
       .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10))
   : [];
 
+const VALID_COGNITIVE_LEVELS = new Set([
+  'تحليل ومقارنة',
+  'تقييم واتخاذ قرار',
+  'تطبيق مركب',
+  'استكشاف أخطاء ونمذجة',
+  'فهم مباشر عميق',
+  'تمييز بين المفاهيم',
+  'تطبيق على موقف',
+  'تحليل واستنتاج',
+  'اكتشاف خطأ وتريكات',
+  'هلوسة والتحقق',
+  'أسئلة مركبة صعبة',
+  'فهم وتعريف',
+  'تطبيق سيناريو',
+  'كشف مفهوم خاطئ',
+  'تقييم',
+  'تحليل وربط',
+  'تركيب',
+  'تركيب وتقييم'
+]);
+
 let totalDeepQuestions = 0;
 let totalLessonFiles = 0;
 
@@ -125,6 +146,9 @@ if (chapterDirs.length > 0) {
         }
         if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
           logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
+        }
+        if (!VALID_COGNITIVE_LEVELS.has(q.cognitiveLevel)) {
+          logError(`Deep question ${q.id} has invalid cognitiveLevel: '${q.cognitiveLevel}'`);
         }
         if (!Array.isArray(q.options) || q.options.length !== 4) {
           logError(`Deep question ${q.id} must have exactly 4 options!`);
@@ -174,6 +198,9 @@ if (chapterDirs.length > 0) {
         }
         if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
           logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
+        }
+        if (!VALID_COGNITIVE_LEVELS.has(q.cognitiveLevel)) {
+          logError(`Deep question ${q.id} has invalid cognitiveLevel: '${q.cognitiveLevel}'`);
         }
         if (!Array.isArray(q.options) || q.options.length !== 4) {
           logError(`Deep question ${q.id} must have exactly 4 options!`);
