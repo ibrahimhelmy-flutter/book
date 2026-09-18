@@ -44,27 +44,28 @@ export interface CurriculumEvidenceItem {
 }
 
 export interface DeepChallengingQuestion {
-  id: string;
-  lessonId: string;
-  lessonNumber: string; // e.g. "1-1", "1-2", "4-4"
-  index: number; // 1 to 50
-  type?: "mcq" | "true_false" | "scenario" | "essay";
-  title: string;
-  cognitiveLevel: CognitiveLevel;
-  difficulty: QuestionDifficulty;
-  conceptId?: string;
-  secondaryConceptIds?: string[];
-  conceptIds: string[];
-  contentOrigin: "official" | "authored";
-  contentProvenance?: DeepQuestionProvenance;
-  scenario?: string;
   question: string;
   options: string[]; // 4 options
-  correctAnswer: number; // 0 | 1 | 2 | 3
+  answer: string;
+  difficulty: QuestionDifficulty;
+  id?: string;
+  lessonId?: string;
+  lessonNumber?: string; // e.g. "1-1", "1-2", "4-4"
+  index?: number; // 1 to 50
+  type?: "mcq" | "true_false" | "scenario" | "essay";
+  title?: string;
+  cognitiveLevel?: CognitiveLevel;
+  conceptId?: string;
+  secondaryConceptIds?: string[];
+  conceptIds?: string[];
+  contentOrigin?: "official" | "authored";
+  contentProvenance?: DeepQuestionProvenance;
+  scenario?: string;
+  correctAnswer?: number; // 0 | 1 | 2 | 3
   correctAnswerText?: string;
-  misconceptionTrap: string; // الفخ المفاهيمي: لماذا يقع الطلاب في الخطأ الشائع
-  depthExplanation: string; // التفسير والعمق العلمي المعتمد
-  teacherDiscussionPrompt: string; // إرشاد المعلم للنقاش الصفي
+  misconceptionTrap?: string;
+  depthExplanation?: string;
+  teacherDiscussionPrompt?: string;
   trapType?: string;
   isExamLikely?: boolean;
   source?: ProvenanceSource & {

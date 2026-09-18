@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud } from "lucide-react";
+import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud, CheckCircle2 } from "lucide-react";
 import { CURRENT_BOOK } from "@/data/books";
 import { BookSelector } from "../common/BookSelector";
 
@@ -43,6 +43,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "الرئيسية", icon: BookOpen },
+    { href: "/practice", label: "أسئلة الدروس", icon: CheckCircle2 },
     { href: "/simulators", label: "المحاكيات التفاعلية", icon: Sparkles },
     { href: "/glossary", label: "المصطلحات", icon: BookA },
     { href: "/exams", label: "الامتحانات", icon: Award },
@@ -87,7 +88,7 @@ export function Navbar() {
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
-                    <span>{link.label}</span>
+                    <span suppressHydrationWarning>{link.label}</span>
                   </Link>
                 );
               })}
@@ -193,7 +194,7 @@ export function Navbar() {
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  <span>{link.label}</span>
+                  <span suppressHydrationWarning>{link.label}</span>
                 </Link>
               );
             })}

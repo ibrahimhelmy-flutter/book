@@ -13,7 +13,7 @@
     "postbuild": "node scripts/sync-export-assets.mjs",
     "build": "node scripts/build.mjs",
     "start": "next start",
-    "test": "npx tsx src/core/tests/engine.test.ts && npx tsx src/core/tests/arabic.test.ts && npx tsx src/core/tests/offline-architecture.test.ts && node scripts/verify-pwa-and-offline.mjs",
+    "test": "npx tsx src/core/tests/practice-filtering.test.ts && npx tsx src/core/tests/engine.test.ts && npx tsx src/core/tests/arabic.test.ts && npx tsx src/core/tests/offline-architecture.test.ts && node scripts/verify-pwa-and-offline.mjs",
     "verify:pwa": "node scripts/verify-pwa-and-offline.mjs",
     "build:data": "node scripts/build-all-data.mjs",
     "sources:validate": "node scripts/generate-source-manifest.mjs",

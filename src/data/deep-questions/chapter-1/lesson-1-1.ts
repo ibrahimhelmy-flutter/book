@@ -8,18 +8,6 @@ import { DeepChallengingQuestion } from "../types";
 
 export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
   {
-    "id": "q-hard-1-1-01",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 1,
-    "type": "mcq",
-    "title": "الفكرة المحورية للدرس",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الفكرة التي تلخص تطور تكنولوجيا المعلومات كما يعرضها الدرس؟",
     "options": [
       "كل مرحلة أضافت جهازًا جديدًا وغيّرت طريقة تواصل المجتمع وعمله وتجارته",
@@ -27,57 +15,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التطور اقتصر على زيادة عدد التطبيقات",
       "التطور انتهى مع ظهور الإنترنت"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "كل مرحلة أضافت جهازًا جديدًا وغيّرت طريقة تواصل المجتمع وعمله وتجارته",
-    "misconceptionTrap": "اختزال التطور التقني في شكل الجهاز",
-    "depthExplanation": "النص يربط كل مرحلة بإضافة جهاز جديد وبأثر في التواصل والعمل والتجارة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "social_impact_reduction",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        11
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "كل مرحلة أضافت جهازًا جديدًا وغيّرت طريقة تواصل المجتمع وعمله وتجارته",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-02",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 2,
-    "type": "mcq",
-    "title": "المراحل المذكورة في الخلاصة",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تسلسل يطابق المراحل التي تلخصها نهاية الدرس؟",
     "options": [
       "أجهزة الكمبيوتر ثم الإنترنت ثم الهواتف الذكية ثم الحوسبة السحابية",
@@ -85,57 +26,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الحوسبة السحابية ثم الإنترنت ثم الهواتف الذكية ثم أجهزة الكمبيوتر",
       "الإنترنت ثم أجهزة الكمبيوتر ثم الحوسبة السحابية ثم الهواتف الذكية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أجهزة الكمبيوتر ثم الإنترنت ثم الهواتف الذكية ثم الحوسبة السحابية",
-    "misconceptionTrap": "عكس الترتيب الوارد في الخلاصة",
-    "depthExplanation": "الخلاصة في الصفحة 11 تعرض هذا التسلسل تحديدًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "sequence_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        11
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "أجهزة الكمبيوتر ثم الإنترنت ثم الهواتف الذكية ثم الحوسبة السحابية",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-03",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 3,
-    "type": "mcq",
-    "title": "صغر الحجم وزيادة الاتصال",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا قال طالب: «تطور IT يعني أن الأجهزة أصبحت أصغر فقط»، ما الجزء الذي أغفله؟",
     "options": [
       "أن الأجهزة أصبحت أصغر وأكثر اتصالًا أيضًا",
@@ -143,56 +37,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن الحوسبة السحابية تعني أجهزة أكبر",
       "أن الإنترنت لم يغير المجتمع"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أن الأجهزة أصبحت أصغر وأكثر اتصالًا أيضًا",
-    "misconceptionTrap": "حذف أحد عنصري وصف التطور",
-    "depthExplanation": "الكتاب يصف التطور بأنه صغر في الأجهزة مع زيادة الاتصال.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "partial_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "أن الأجهزة أصبحت أصغر وأكثر اتصالًا أيضًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-04",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 4,
-    "type": "mcq",
-    "title": "الأثر الاجتماعي جزء من التطور",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يعبّر عن الفكرة الأساسية للدرس؟",
     "options": [
       "ظهور مرحلة جديدة غيّر وسيلة التواصل والعمل والتجارة",
@@ -200,57 +48,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "زيادة حجم الجهاز مع ثبات طريقة العمل",
       "تغيير اسم التقنية فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ظهور مرحلة جديدة غيّر وسيلة التواصل والعمل والتجارة",
-    "misconceptionTrap": "فصل التقنية عن أثرها الاجتماعي",
-    "depthExplanation": "الدرس لا يدرس الأجهزة بمعزل عن تغير التواصل والعمل والتجارة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "tech_society_separation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        11
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "ظهور مرحلة جديدة غيّر وسيلة التواصل والعمل والتجارة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-05",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 5,
-    "type": "mcq",
-    "title": "سؤال يقيس فهم المراحل",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي إجابة تُعد أكثر اكتمالًا لسؤال: كيف تطورت IT وكيف أثرت في المجتمع؟",
     "options": [
       "تذكر المراحل وتوضح التغيير الذي أحدثته كل مرحلة في طرق التواصل والعمل والتجارة",
@@ -258,57 +59,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تذكر تعريف الحوسبة السحابية فقط",
       "تذكر قانون مور فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تذكر المراحل وتوضح التغيير الذي أحدثته كل مرحلة في طرق التواصل والعمل والتجارة",
-    "misconceptionTrap": "اعتبار ذكر الأسماء كافيًا",
-    "depthExplanation": "السؤال يطلب الربط بين المراحل وأثر كل مرحلة اجتماعيًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_requirement",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        5
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "تذكر المراحل وتوضح التغيير الذي أحدثته كل مرحلة في طرق التواصل والعمل والتجارة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-06",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 6,
-    "type": "mcq",
-    "title": "الترابط عبر المراحل",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الاستنتاج الأقرب للنص من قول إن الأجهزة أصبحت «أكثر اتصالًا»؟",
     "options": [
       "أن التطور لم يكن مجرد تصغير للأجهزة بل ارتبط بزيادة الترابط",
@@ -316,57 +70,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن الاتصال لم يؤثر في المجتمع",
       "أن الحوسبة السحابية تعني جهازًا غير متصل"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أن التطور لم يكن مجرد تصغير للأجهزة بل ارتبط بزيادة الترابط",
-    "misconceptionTrap": "تفسير الاتصال على أنه مجرد شبكة واحدة",
-    "depthExplanation": "العبارة جزء من وصف الاتجاه العام لتطور IT.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "connectedness_inference",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        11
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "أن التطور لم يكن مجرد تصغير للأجهزة بل ارتبط بزيادة الترابط",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-07",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 7,
-    "type": "mcq",
-    "title": "اختيار دليل على التحول الاجتماعي",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي خيار يمثل تغيرًا اجتماعيًا صريحًا في الدرس؟",
     "options": [
       "العمل من المنزل عبر الإنترنت",
@@ -374,58 +81,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المعالجة على الجهاز",
       "وضع المستخدم داخل بيئة افتراضية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "العمل من المنزل عبر الإنترنت",
-    "misconceptionTrap": "خلط التحولات الاجتماعية بالتقنيات الناشئة",
-    "depthExplanation": "العمل عن بُعد مذكور ضمن التغيرات الاجتماعية.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "category_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العمل عن بُعد (Remote Work): العمل من المنزل أو من موقع بعيد آخر عبر الإنترنت.",
-        "page": 7,
-        "conceptId": "concept-1-1-04"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-04"
+    "answer": "العمل من المنزل عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-08",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 8,
-    "type": "mcq",
-    "title": "لماذا لا تكفي قائمة التقنيات؟",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-04",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب حفظ أسماء التقنيات لكنه لا يستطيع تفسير أثرها على الناس. ما الذي ينقصه وفق أهداف الدرس؟",
     "options": [
       "تحليل أثر التقنية على المجتمع وتبرير القرار بالأدلة",
@@ -433,60 +92,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تعريف قانون مور فقط",
       "معرفة ترتيب طبقات الشبكة العصبية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تحليل أثر التقنية على المجتمع وتبرير القرار بالأدلة",
-    "misconceptionTrap": "التركيز على الحفظ بدل التحليل",
-    "depthExplanation": "الأهداف تشمل شرح التغيرات وتحليل أثر تقنية على مجموعات المجتمع وتبرير قرار بالدليل.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "memorization_vs_analysis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04",
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "تحليل أثر التقنية على المجتمع وتبرير القرار بالأدلة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-09",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 9,
-    "type": "mcq",
-    "title": "تطور IT ليس مسارًا منفصلًا عن المجتمع",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تجمع العلاقة بين التقنية والمجتمع بصورة أدق؟",
     "options": [
       "المراحل التقنية المتتابعة غيّرت كيف يتواصل الناس ويعملون ويتعلمون ويدفعون",
@@ -494,59 +103,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المجتمع لا يتأثر بالتقنية إلا في الدفع",
       "كل تغير اجتماعي سببه الحوسبة الكمومية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "المراحل التقنية المتتابعة غيّرت كيف يتواصل الناس ويعملون ويتعلمون ويدفعون",
-    "misconceptionTrap": "حصر الأثر في جانب واحد",
-    "depthExplanation": "الخلاصة توسع الأثر إلى التواصل والعمل والتعلم والمدفوعات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "scope_narrowing",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        11
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "المراحل التقنية المتتابعة غيّرت كيف يتواصل الناس ويعملون ويتعلمون ويدفعون",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-10",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 10,
-    "type": "mcq",
-    "title": "تحديد العبارة غير المدعومة",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة لا يمكن دعمها من النص المقدم؟",
     "options": [
       "التطور شمل أجهزة أصغر وأكثر اتصالًا",
@@ -554,57 +114,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل مرحلة غيّرت التواصل والعمل والتجارة",
       "كل مرحلة أدت حتمًا إلى استبدال الإنسان بالكامل"
     ],
-    "correctAnswer": 3,
-    "correctAnswerText": "كل مرحلة أدت حتمًا إلى استبدال الإنسان بالكامل",
-    "misconceptionTrap": "إضافة نتيجة مطلقة غير موجودة",
-    "depthExplanation": "النص لا يقول إن كل مرحلة تستبدل الإنسان بالكامل.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "unsupported_absolute",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        11
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "كل مرحلة أدت حتمًا إلى استبدال الإنسان بالكامل",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-11",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 11,
-    "type": "mcq",
-    "title": "المعنى الصحيح لقانون مور",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الذي يصفه قانون مور في الدرس؟",
     "options": [
       "ملاحظة تاريخية بأن عدد الترانزستورات على الشريحة يتضاعف تقريبًا كل سنتين",
@@ -612,57 +125,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قاعدة لتحديد سرعة الإنترنت",
       "طريقة لتصميم الحوسبة الكمومية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ملاحظة تاريخية بأن عدد الترانزستورات على الشريحة يتضاعف تقريبًا كل سنتين",
-    "misconceptionTrap": "تحويل الملاحظة التاريخية إلى قانون فيزيائي",
-    "depthExplanation": "الدرس يؤكد أنه اتجاه تاريخي وليس قانونًا فيزيائيًا ثابتًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "law_status",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "ملاحظة تاريخية بأن عدد الترانزستورات على الشريحة يتضاعف تقريبًا كل سنتين",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-12",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 12,
-    "type": "mcq",
-    "title": "تقريبًا كل سنتين",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي صياغة أدق؟",
     "options": [
       "عدد الترانزستورات يتضاعف تقريبًا كل سنتين",
@@ -670,57 +136,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يتضاعف كل شهرين",
       "يتضاعف كل عشر سنوات"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "عدد الترانزستورات يتضاعف تقريبًا كل سنتين",
-    "misconceptionTrap": "إسقاط كلمة «تقريبًا»",
-    "depthExplanation": "النص يستخدم approximately/تقريبًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "precision_loss",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "عدد الترانزستورات يتضاعف تقريبًا كل سنتين",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-13",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 13,
-    "type": "mcq",
-    "title": "قانون مور ليس ضمانًا للأداء",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا تكون عبارة «قانون مور يضمن أن أداء كل جهاز يتضاعف كل سنتين» غير دقيقة؟",
     "options": [
       "لأن النص يصف اتجاهًا في عدد الترانزستورات وليس ضمانًا حرفيًا لأداء كل جهاز",
@@ -728,56 +147,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن قانون مور يتحدث عن الإنترنت فقط",
       "لأن الأداء لا يتحسن أبدًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن النص يصف اتجاهًا في عدد الترانزستورات وليس ضمانًا حرفيًا لأداء كل جهاز",
-    "misconceptionTrap": "مساواة عدد الترانزستورات بالأداء الحرفي",
-    "depthExplanation": "الدرس يربط الاتجاه بزيادة القدرة الحاسوبية وتحسن المعالجات، لكنه لا يقدمه كضمان لكل جهاز.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "transistor_performance_equation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "لأن النص يصف اتجاهًا في عدد الترانزستورات وليس ضمانًا حرفيًا لأداء كل جهاز",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-14",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 14,
-    "type": "mcq",
-    "title": "أثر قانون مور تاريخيًا",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الأثر الذي يربطه الدرس باستمرار الاتجاه لعقود؟",
     "options": [
       "المساهمة في زيادة القدرة الحاسوبية وتحسين المعالجات",
@@ -785,56 +158,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "جعل كل المشكلات سهلة",
       "منع ظهور الحوسبة السحابية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "المساهمة في زيادة القدرة الحاسوبية وتحسين المعالجات",
-    "misconceptionTrap": "مبالغة في الأثر",
-    "depthExplanation": "النص يذكر زيادة القدرة الحاسوبية وتحسن المعالجات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "causal_overreach",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "المساهمة في زيادة القدرة الحاسوبية وتحسين المعالجات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-15",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 15,
-    "type": "mcq",
-    "title": "حدود التصغير",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الذي يجعل استمرار التصغير أكثر تحديًا وفق الدرس؟",
     "options": [
       "تحديات هندسية وفيزيائية مثل تيارات التسرب وتأثيرات كمومية مثل النفقية",
@@ -842,56 +169,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اختفاء الإنترنت",
       "زيادة عدد المستخدمين فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تحديات هندسية وفيزيائية مثل تيارات التسرب وتأثيرات كمومية مثل النفقية",
-    "misconceptionTrap": "استبدال سبب تقني بسبب اجتماعي",
-    "depthExplanation": "الدرس يذكر تحديات التصغير الهندسية والفيزيائية.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "wrong_cause",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "تحديات هندسية وفيزيائية مثل تيارات التسرب وتأثيرات كمومية مثل النفقية",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-16",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 16,
-    "type": "mcq",
-    "title": "ما المقصود بتيارات التسرب في سياق الدرس؟",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "عند الحديث عن مستقبل التصغير، لماذا تُذكر تيارات التسرب؟",
     "options": [
       "بوصفها أحد التحديات الهندسية والفيزيائية التي تواجه مزيدًا من التصغير",
@@ -899,56 +180,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "بوصفها طريقة دفع إلكتروني",
       "بوصفها تقنية واقع افتراضي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "بوصفها أحد التحديات الهندسية والفيزيائية التي تواجه مزيدًا من التصغير",
-    "misconceptionTrap": "إخراج المصطلح من سياقه",
-    "depthExplanation": "المصطلح ورد تحديدًا ضمن تحديات التصغير.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "context_shift",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "بوصفها أحد التحديات الهندسية والفيزيائية التي تواجه مزيدًا من التصغير",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-17",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 17,
-    "type": "mcq",
-    "title": "بدائل تحسين الأداء",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا واجه مزيد من التصغير تحديات، فما المسارات التي يذكرها الدرس لتحسين الأداء؟",
     "options": [
       "المعالجات متعددة الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
@@ -956,56 +191,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "زيادة حجم الشاشة فقط",
       "استخدام SNS بدل المعالج"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "المعالجات متعددة الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
-    "misconceptionTrap": "الخلط بين تحسين الأداء وتجربة المستخدم",
-    "depthExplanation": "الدرس يذكر ثلاثة مسارات بديلة صراحة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "alternative_paths",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "المعالجات متعددة الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-18",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 18,
-    "type": "mcq",
-    "title": "هل كل تحسن يعتمد على التصغير؟",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي استنتاج يوافق النص؟",
     "options": [
       "لا، يمكن أيضًا تحسين الأداء عبر تعدد الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
@@ -1013,56 +202,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نعم، لأن الحوسبة السحابية تلغي المعالجات",
       "لا، لأن الأداء لا يمكن تحسينه"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لا، يمكن أيضًا تحسين الأداء عبر تعدد الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
-    "misconceptionTrap": "ثنائية زائفة بين التصغير وعدم التحسن",
-    "depthExplanation": "النص يذكر بدائل لتحسين الأداء عندما تصبح مواصلة التصغير أكثر صعوبة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "false_dichotomy",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "لا، يمكن أيضًا تحسين الأداء عبر تعدد الأنوية والمعالجة المتوازية والتصميمات المتخصصة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-19",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 19,
-    "type": "mcq",
-    "title": "تمييز «اتجاه تاريخي» عن «قانون ثابت»",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي طالب فهم وصف مور على نحو صحيح؟",
     "options": [
       "قال إنه اتجاه تاريخي استمر لعقود وليس قانونًا فيزيائيًا ثابتًا",
@@ -1070,57 +213,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قال إنه تعريف للحوسبة السحابية",
       "قال إنه يصف الواقع الافتراضي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "قال إنه اتجاه تاريخي استمر لعقود وليس قانونًا فيزيائيًا ثابتًا",
-    "misconceptionTrap": "تجاهل التحذير الوارد في النص",
-    "depthExplanation": "التمييز بين الملاحظة التاريخية والقانون الفيزيائي نقطة أساسية في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "historical_vs_physical",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "قال إنه اتجاه تاريخي استمر لعقود وليس قانونًا فيزيائيًا ثابتًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-20",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 20,
-    "type": "mcq",
-    "title": "اختبار مركب لقانون مور",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة مركبة هي الأدق؟",
     "options": [
       "الاتجاه التاريخي في زيادة عدد الترانزستورات ساهم في نمو القدرة الحاسوبية، لكن استمرار التحسن يعتمد أيضًا على مسارات مثل التوازي والتصميمات المتخصصة",
@@ -1128,58 +224,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "بمجرد توقف التصغير تتوقف الحوسبة تمامًا",
       "قانون مور هو نفسه الحوسبة الكمومية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الاتجاه التاريخي في زيادة عدد الترانزستورات ساهم في نمو القدرة الحاسوبية، لكن استمرار التحسن يعتمد أيضًا على مسارات مثل التوازي والتصميمات المتخصصة",
-    "misconceptionTrap": "جمع أجزاء صحيحة مع تعميم خاطئ",
-    "depthExplanation": "الإجابة تربط بين الاتجاه التاريخي وأثره وبين مسارات الأداء البديلة دون تحويله إلى ضمان مطلق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "compound_claim",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "الاتجاه التاريخي في زيادة عدد الترانزستورات ساهم في نمو القدرة الحاسوبية، لكن استمرار التحسن يعتمد أيضًا على مسارات مثل التوازي والتصميمات المتخصصة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-21",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 21,
-    "type": "mcq",
-    "title": "خدمة الشبكات الاجتماعية SNS",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-02",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الوظيفة الأساسية التي يحددها الدرس لخدمات الشبكات الاجتماعية؟",
     "options": [
       "ربط المستخدمين لنشر المعلومات ومشاركتها",
@@ -1187,60 +235,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "معالجة البيانات على الجهاز",
       "تقديم الدروس فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ربط المستخدمين لنشر المعلومات ومشاركتها",
-    "misconceptionTrap": "الخلط بين النشر والشراء",
-    "depthExplanation": "SNS مخصصة للاتصال ونشر ومشاركة المعلومات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "service_purpose",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "شبكات التواصل الاجتماعي (SNS): تربط المستخدمين لنشر المعلومات ومشاركتها.",
-        "page": 5,
-        "conceptId": "concept-1-1-02"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-02"
+    "answer": "ربط المستخدمين لنشر المعلومات ومشاركتها",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-22",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 22,
-    "type": "mcq",
-    "title": "التجارة الإلكترونية",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-03",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يطابق التجارة الإلكترونية؟",
     "options": [
       "شراء أو بيع سلعة أو خدمة عبر الإنترنت",
@@ -1248,59 +246,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "العمل من المنزل عبر الإنترنت",
       "الدفع دون نقود فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "شراء أو بيع سلعة أو خدمة عبر الإنترنت",
-    "misconceptionTrap": "حصر التجارة الإلكترونية في الدفع",
-    "depthExplanation": "التجارة الإلكترونية تتعلق بالشراء والبيع عبر الإنترنت، بينما الدفع غير النقدي وسيلة دفع.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "ecommerce_vs_payment",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التجارة الإلكترونية (E-Commerce): البيع والشراء عبر الإنترنت وتسهيل المعاملات وسلاسل التوريد.",
-        "page": 5,
-        "conceptId": "concept-1-1-03"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-03"
+    "answer": "شراء أو بيع سلعة أو خدمة عبر الإنترنت",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-23",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 23,
-    "type": "mcq",
-    "title": "العمل عن بُعد",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "ما العنصر الحاسم في تعريف العمل عن بُعد؟",
     "options": [
       "أداء العمل من المنزل أو مكان بعيد باستخدام الإنترنت",
@@ -1308,58 +257,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نشر منشور عام",
       "دفع فاتورة ببطاقة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أداء العمل من المنزل أو مكان بعيد باستخدام الإنترنت",
-    "misconceptionTrap": "ربط العمل عن بعد بأي نشاط إنترنت",
-    "depthExplanation": "التعريف يركز على مكان أداء العمل واستخدام الإنترنت.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "remote_work_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العمل عن بُعد (Remote Work): العمل من المنزل أو من موقع بعيد آخر عبر الإنترنت.",
-        "page": 5,
-        "conceptId": "concept-1-1-04"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-04"
+    "answer": "أداء العمل من المنزل أو مكان بعيد باستخدام الإنترنت",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-24",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 24,
-    "type": "mcq",
-    "title": "التعلم عبر الإنترنت",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-05",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يطابق التعلم عبر الإنترنت؟",
     "options": [
       "تقديم الدروس والمواد التعليمية عبر الإنترنت",
@@ -1367,60 +268,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "مشاركة صورة على SNS",
       "معالجة بيانات السيارة محليًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تقديم الدروس والمواد التعليمية عبر الإنترنت",
-    "misconceptionTrap": "خلط التعليم بالتجارة أو التواصل",
-    "depthExplanation": "هذا هو التعريف الوارد للتعلم عبر الإنترنت.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "online_learning_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم عبر الإنترنت (Online Learning): تقديم الدروس والمواد عبر الإنترنت بمرونة.",
-        "page": 5,
-        "conceptId": "concept-1-1-05"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-05"
+    "answer": "تقديم الدروس والمواد التعليمية عبر الإنترنت",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-25",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 25,
-    "type": "mcq",
-    "title": "الدفع غير النقدي",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-06",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مجموعة وردت كأمثلة لوسائل الدفع غير النقدي؟",
     "options": [
       "البطاقات البنكية وتطبيقات الهاتف ورموز QR",
@@ -1428,60 +279,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المعالجات متعددة الأنوية",
       "الكاميرات والحساسات فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "البطاقات البنكية وتطبيقات الهاتف ورموز QR",
-    "misconceptionTrap": "إدخال أدوات من تقنيات أخرى",
-    "depthExplanation": "النص يذكر هذه الوسائل الثلاث ضمن الدفع غير النقدي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "example_category",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 5,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "البطاقات البنكية وتطبيقات الهاتف ورموز QR",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-26",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 26,
-    "type": "mcq",
-    "title": "التجارة أم الدفع؟",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-03",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "متجر يبيع سلعة عبر الإنترنت، والعميل يدفع بوسيلة إلكترونية. ما التصنيف الأدق؟",
     "options": [
       "البيع عبر الإنترنت تجارة إلكترونية، وطريقة الدفع مثال للدفع غير النقدي",
@@ -1489,60 +290,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "البيع هو تعلم عبر الإنترنت والدفع هو عمل عن بعد",
       "كلاهما حوسبة طرفية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "البيع عبر الإنترنت تجارة إلكترونية، وطريقة الدفع مثال للدفع غير النقدي",
-    "misconceptionTrap": "دمج النشاط التجاري وطريقة الدفع في مفهوم واحد",
-    "depthExplanation": "الكتاب يعرّف التجارة الإلكترونية بالشراء/البيع، والدفع غير النقدي بطريقة الدفع.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "concept_boundary",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التجارة الإلكترونية (E-Commerce): البيع والشراء عبر الإنترنت وتسهيل المعاملات وسلاسل التوريد.",
-        "page": 5,
-        "conceptId": "concept-1-1-03"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-03"
+    "answer": "البيع عبر الإنترنت تجارة إلكترونية، وطريقة الدفع مثال للدفع غير النقدي",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-27",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 27,
-    "type": "mcq",
-    "title": "SNS ليست مجرد وسيلة دفع",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-02",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا لا يصح وصف SNS بأنها خدمة دفع غير نقدي لمجرد أن المستخدمين قد يتشاركون المعلومات حول الدفع؟",
     "options": [
       "لأن تعريف SNS في الدرس يركز على ربط المستخدمين ونشر/مشاركة المعلومات",
@@ -1550,60 +301,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن الدفع غير النقدي لا يستخدم الإنترنت",
       "لأن SNS هي حوسبة سحابية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن تعريف SNS في الدرس يركز على ربط المستخدمين ونشر/مشاركة المعلومات",
-    "misconceptionTrap": "الاعتماد على علاقة عرضية بدل التعريف",
-    "depthExplanation": "التصنيف يعتمد على الوظيفة التي يحددها الدرس، لا على إمكانية ذكر الموضوع نفسه.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_over_context",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "شبكات التواصل الاجتماعي (SNS): تربط المستخدمين لنشر المعلومات ومشاركتها.",
-        "page": 5,
-        "conceptId": "concept-1-1-02"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-02"
+    "answer": "لأن تعريف SNS في الدرس يركز على ربط المستخدمين ونشر/مشاركة المعلومات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-28",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 28,
-    "type": "mcq",
-    "title": "العمل عن بعد مقابل التعلم",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-04",
-      "concept-1-1-05"
-    ],
-    "contentOrigin": "authored",
     "question": "شخص يعمل من منزله عبر الإنترنت، وشخص يتلقى درسًا عبر الإنترنت. ما الفرق الأساسي؟",
     "options": [
       "الأول أداء عمل عن بُعد، والثاني تقديم/تلقي تعلم عبر الإنترنت",
@@ -1611,59 +312,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الأول SNS والثاني دفع غير نقدي",
       "كلاهما قيادة ذاتية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الأول أداء عمل عن بُعد، والثاني تقديم/تلقي تعلم عبر الإنترنت",
-    "misconceptionTrap": "اعتبار استخدام الإنترنت كافيًا لتوحيد المفهومين",
-    "depthExplanation": "الإنترنت مشترك، لكن الغرض مختلف: عمل مقابل تعلم.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "same_medium_different_purpose",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        7
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العمل عن بُعد (Remote Work): العمل من المنزل أو من موقع بعيد آخر عبر الإنترنت.",
-        "page": 5,
-        "conceptId": "concept-1-1-04"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-04"
+    "answer": "الأول أداء عمل عن بُعد، والثاني تقديم/تلقي تعلم عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-29",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 29,
-    "type": "mcq",
-    "title": "تمييز خمس تغيرات اجتماعية",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مطابقة كلها صحيحة؟",
     "options": [
       "SNS=نشر ومشاركة المعلومات؛ التجارة الإلكترونية=شراء وبيع عبر الإنترنت؛ العمل عن بعد=العمل من مكان بعيد؛ التعلم عبر الإنترنت=دروس ومواد عبر الإنترنت؛ الدفع غير النقدي=الدفع دون نقود",
@@ -1671,60 +323,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلها تعني استخدام الإنترنت بنفس الوظيفة",
       "التجارة=معالجة محلية؛ SNS=حوسبة سحابية؛ العمل=واقع افتراضي؛ التعلم=قيادة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "SNS=نشر ومشاركة المعلومات؛ التجارة الإلكترونية=شراء وبيع عبر الإنترنت؛ العمل عن بعد=العمل من مكان بعيد؛ التعلم عبر الإنترنت=دروس ومواد عبر الإنترنت؛ الدفع غير النقدي=الدفع دون نقود",
-    "misconceptionTrap": "خلط وظائف التقنيات المتقاربة في الوسط الرقمي",
-    "depthExplanation": "الاختيار الصحيح يطابق كل مفهوم بوظيفته المحددة في SEC-03.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "multi_concept_mapping",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العمل عن بُعد (Remote Work): العمل من المنزل أو من موقع بعيد آخر عبر الإنترنت.",
-        "page": 7,
-        "conceptId": "concept-1-1-04"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-04"
+    "answer": "SNS=نشر ومشاركة المعلومات؛ التجارة الإلكترونية=شراء وبيع عبر الإنترنت؛ العمل عن بعد=العمل من مكان بعيد؛ التعلم عبر الإنترنت=دروس ومواد عبر الإنترنت؛ الدفع غير النقدي=الدفع دون نقود",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-30",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 30,
-    "type": "mcq",
-    "title": "موقف متعدد الخدمات",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-02",
-      "concept-1-1-03",
-      "concept-1-1-04",
-      "concept-1-1-05",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "مستخدم نشر تجربة شراء على منصة اجتماعية، ثم اشترى منتجًا من متجر إلكتروني، وعمل من المنزل، وحضر درسًا عبر الإنترنت، ودفع إلكترونيًا. ما التحليل الصحيح؟",
     "options": [
       "المواقف الخمسة تمثل خمس وظائف مختلفة رغم اشتراكها في استخدام التقنيات الرقمية",
@@ -1732,61 +334,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلها SNS لأن المستخدم نشر تجربة",
       "كلها دفع غير نقدي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "المواقف الخمسة تمثل خمس وظائف مختلفة رغم اشتراكها في استخدام التقنيات الرقمية",
-    "misconceptionTrap": "تعميم مفهوم واحد على أنشطة مختلفة",
-    "depthExplanation": "الدرس يميز هذه التغيرات الاجتماعية بحسب الوظيفة وليس مجرد استخدام الإنترنت.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "five_way_discrimination",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "شبكات التواصل الاجتماعي (SNS): تربط المستخدمين لنشر المعلومات ومشاركتها.",
-        "page": 7,
-        "conceptId": "concept-1-1-02"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-03",
-      "concept-1-1-04",
-      "concept-1-1-05",
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-02"
+    "answer": "المواقف الخمسة تمثل خمس وظائف مختلفة رغم اشتراكها في استخدام التقنيات الرقمية",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-31",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 31,
-    "type": "mcq",
-    "title": "المطلوب في نشاط المجتمع بلا نقود",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "في سؤال المجتمع الذي لا يستخدم النقود، ماذا يطلب الدرس تحديده؟",
     "options": [
       "فائدة واحدة وقلق محتمل واحد مع تفسير السبب",
@@ -1794,56 +345,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نوع المعالج المستخدم",
       "تعريف الواقع الافتراضي فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "فائدة واحدة وقلق محتمل واحد مع تفسير السبب",
-    "misconceptionTrap": "تجاهل صيغة المهمة",
-    "depthExplanation": "النص يطلب اختيار فائدة وقلق محتمل وشرح سبب كل منهما.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_reading",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 8,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "فائدة واحدة وقلق محتمل واحد مع تفسير السبب",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-32",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 32,
-    "type": "mcq",
-    "title": "الفائدة والقلق ليسا إجابة محفوظة",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا لا يكون مجرد ذكر فائدة وقلق كافيًا في نشاط الدفع غير النقدي؟",
     "options": [
       "لأن المطلوب شرح لماذا تمثل كل منهما فائدة أو قلقًا ثم البحث واتخاذ قرار",
@@ -1851,57 +356,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن النشاط عن الواقع الافتراضي",
       "لأن الدفع غير النقدي لا يحتاج تفكيرًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن المطلوب شرح لماذا تمثل كل منهما فائدة أو قلقًا ثم البحث واتخاذ قرار",
-    "misconceptionTrap": "حذف عنصر التبرير واتخاذ القرار",
-    "depthExplanation": "النشاط ينتقل من تحديد الفائدة والقلق إلى البحث ثم القرار.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "reasoning_requirement",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8,
-        10
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 8,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "لأن المطلوب شرح لماذا تمثل كل منهما فائدة أو قلقًا ثم البحث واتخاذ قرار",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-33",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 33,
-    "type": "mcq",
-    "title": "التفكير كمهندس",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تسلسل يوافق مهمة «فكر كمهندس»؟",
     "options": [
       "ابدأ بفائدة وقلق، ابحث أكثر، ثم اتخذ قرارًا",
@@ -1909,57 +367,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "احفظ الإجابة النموذجية فقط",
       "اختر التقنية دون النظر إلى أثرها"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ابدأ بفائدة وقلق، ابحث أكثر، ثم اتخذ قرارًا",
-    "misconceptionTrap": "عكس خطوات اتخاذ القرار",
-    "depthExplanation": "النص يذكر البدء بالفائدة والقلق ثم البحث ثم القرار.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "process_order",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        10
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "ابدأ بفائدة وقلق، ابحث أكثر، ثم اتخذ قرارًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-34",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 34,
-    "type": "mcq",
-    "title": "القرار المبني على دليل",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يحقق هدف تبرير القرار بالأدلة؟",
     "options": [
       "يحدد الطالب فائدة وقلقًا، يبحث عنهما، ثم يبرر قراره بما وجده من أدلة",
@@ -1967,57 +378,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ينقل تعريفًا دون ربطه بالقرار",
       "يختار التقنية لأنها أحدث"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يحدد الطالب فائدة وقلقًا، يبحث عنهما، ثم يبرر قراره بما وجده من أدلة",
-    "misconceptionTrap": "الخلط بين الرأي والدليل",
-    "depthExplanation": "هدف الدرس يتضمن تبرير القرار بناءً على الأدلة، ونشاط المهندس يضيف البحث قبل القرار.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_based_decision",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        10
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "يحدد الطالب فائدة وقلقًا، يبحث عنهما، ثم يبرر قراره بما وجده من أدلة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-35",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 35,
-    "type": "mcq",
-    "title": "تحليل أثر تقنية على مجموعتين",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي طريقة تناسب هدف تحليل أثر تقنية على مجموعات مختلفة؟",
     "options": [
       "فحص أثر التقنية على كل مجموعة ثم مقارنة النتائج قبل تبرير القرار",
@@ -2025,56 +389,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اختيار رأي واحد مسبقًا",
       "حفظ تعريف التقنية فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "فحص أثر التقنية على كل مجموعة ثم مقارنة النتائج قبل تبرير القرار",
-    "misconceptionTrap": "إلغاء عنصر «المجموعات» من الهدف",
-    "depthExplanation": "الهدف الثالث يطلب تحليل أثر تقنية على مجموعات في المجتمع وتبرير قرار بالأدلة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "group_impact_analysis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "فحص أثر التقنية على كل مجموعة ثم مقارنة النتائج قبل تبرير القرار",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-36",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 36,
-    "type": "mcq",
-    "title": "لا نختلق القلق من خارج النص",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "عند إعداد سؤال اختياري من فقرة «مجتمع بلا نقود»، ما الطريقة الأكثر التزامًا بالمصدر؟",
     "options": [
       "نسأل الطالب عن فائدة وقلق محتملين وطريقة تبريرهما، دون ادعاء أن الكتاب حدد قلقًا بعينه",
@@ -2082,56 +400,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نحذف عنصر القلق",
       "نحوّل السؤال إلى قانون مور"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نسأل الطالب عن فائدة وقلق محتملين وطريقة تبريرهما، دون ادعاء أن الكتاب حدد قلقًا بعينه",
-    "misconceptionTrap": "إسناد محتوى غير موجود للمصدر",
-    "depthExplanation": "الكتلة الرسمية تطلب اختيار فائدة وقلق محتمل، لكنها لا تسمي قلقًا محددًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "source_fidelity",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 8,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "نسأل الطالب عن فائدة وقلق محتملين وطريقة تبريرهما، دون ادعاء أن الكتاب حدد قلقًا بعينه",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-37",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 37,
-    "type": "mcq",
-    "title": "التعمق دون الخروج عن المنهج",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي سؤال أعمق لكنه ما زال داخل حدود الدرس؟",
     "options": [
       "أي قرار بشأن الدفع غير النقدي يكون أقوى إذا بدأ بفائدة وقلق ثم بحث الطالب عن أدلة قبل القرار",
@@ -2139,58 +411,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ما الخوارزمية الرياضية داخل الحوسبة الكمومية؟",
       "ما نوع البطارية الأفضل للهواتف؟"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أي قرار بشأن الدفع غير النقدي يكون أقوى إذا بدأ بفائدة وقلق ثم بحث الطالب عن أدلة قبل القرار",
-    "misconceptionTrap": "إغراء إضافة معرفة خارجية",
-    "depthExplanation": "السؤال الصحيح يعمق مهارة اتخاذ القرار دون إدخال تفاصيل لم يذكرها المصدر.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "curriculum_boundary",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        8,
-        10
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "أي قرار بشأن الدفع غير النقدي يكون أقوى إذا بدأ بفائدة وقلق ثم بحث الطالب عن أدلة قبل القرار",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-38",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 38,
-    "type": "mcq",
-    "title": "من الرأي إلى الدليل",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب يقول: «أنا أؤيد الدفع غير النقدي لأنه أفضل». ما الإضافة التي تجعل موقفه أقرب لهدف الدرس؟",
     "options": [
       "تحديد فائدة وقلق والبحث ثم دعم القرار بالأدلة",
@@ -2198,57 +422,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ذكر اسم هاتف يستخدم الدفع",
       "حفظ قانون مور"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تحديد فائدة وقلق والبحث ثم دعم القرار بالأدلة",
-    "misconceptionTrap": "مساواة الرأي بالدليل",
-    "depthExplanation": "الأهداف تطلب تبرير القرار بناءً على الأدلة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "opinion_vs_evidence",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        10
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "تحديد فائدة وقلق والبحث ثم دعم القرار بالأدلة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-39",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 39,
-    "type": "mcq",
-    "title": "المعالجة الطرفية Edge Computing",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الفكرة الأساسية للحوسبة الطرفية؟",
     "options": [
       "معالجة البيانات على الجهاز نفسه فورًا بدل إرسالها إلى السحابة",
@@ -2256,58 +433,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "شراء المنتجات عبر الإنترنت",
       "وضع المستخدم في عالم افتراضي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "معالجة البيانات على الجهاز نفسه فورًا بدل إرسالها إلى السحابة",
-    "misconceptionTrap": "عكس Edge وCloud",
-    "depthExplanation": "الدرس يعرّف Edge بأنها معالجة محلية فورية بدل الإرسال للسحابة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "edge_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "معالجة البيانات على الجهاز نفسه فورًا بدل إرسالها إلى السحابة",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-40",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 40,
-    "type": "mcq",
-    "title": "الحوسبة السحابية",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-11",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "ما المقصود بالحوسبة السحابية في الدرس؟",
     "options": [
       "تقديم خدمات تكنولوجيا المعلومات كخدمة عبر الإنترنت",
@@ -2315,60 +444,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قيادة السيارة دون إنترنت",
       "إضافة عنصر رقمي للمشهد الحقيقي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تقديم خدمات تكنولوجيا المعلومات كخدمة عبر الإنترنت",
-    "misconceptionTrap": "اعتبار Cloud مرادفًا للمعالجة المحلية",
-    "depthExplanation": "تعريف Cloud في النص هو تقديم IT كخدمة عبر الإنترنت.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "cloud_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة السحابية (Cloud Computing): تكنولوجيا المعلومات المقدّمة كخدمة عبر الإنترنت مثل البرمجيات والتخزين وقوة المعالجة.",
-        "page": 5,
-        "conceptId": "concept-1-1-11"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-11"
+    "answer": "تقديم خدمات تكنولوجيا المعلومات كخدمة عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-41",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 41,
-    "type": "mcq",
-    "title": "الفرق الجوهري بين Edge وCloud",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-11"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مقارنة أدق؟",
     "options": [
       "Edge تعالج البيانات محليًا على الجهاز، بينما Cloud تقدم خدمات IT عبر الإنترنت",
@@ -2376,60 +455,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Cloud تعني دائمًا قيادة ذاتية",
       "Edge تعني شراء وبيع السلع"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "Edge تعالج البيانات محليًا على الجهاز، بينما Cloud تقدم خدمات IT عبر الإنترنت",
-    "misconceptionTrap": "تسوية مفهومين متعارضين في موضع المعالجة/الخدمة",
-    "depthExplanation": "الكتاب يميز بوضوح بين المعالجة المحلية الطرفية والخدمات السحابية عبر الإنترنت.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "edge_cloud_contrast",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-11"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "Edge تعالج البيانات محليًا على الجهاز، بينما Cloud تقدم خدمات IT عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-42",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 42,
-    "type": "mcq",
-    "title": "لماذا تحتاج القيادة الذاتية إلى Edge؟",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا يربط الدرس القيادة الذاتية بالحوسبة الطرفية؟",
     "options": [
       "لأن تأخر القرار قد يؤثر في السلامة، فتُعالج بعض البيانات محليًا لتقليل زمن الاستجابة",
@@ -2437,59 +466,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن Edge تبيع السيارة عبر الإنترنت",
       "لأن الواقع الافتراضي يتطلب سيارة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن تأخر القرار قد يؤثر في السلامة، فتُعالج بعض البيانات محليًا لتقليل زمن الاستجابة",
-    "misconceptionTrap": "تجاهل سبب الحساسية للزمن",
-    "depthExplanation": "النص يذكر صراحة أن التأخير قد يؤثر في السلامة ولذلك تتم معالجة بعض البيانات محليًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "latency_safety",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 8,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "لأن تأخر القرار قد يؤثر في السلامة، فتُعالج بعض البيانات محليًا لتقليل زمن الاستجابة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-43",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 43,
-    "type": "mcq",
-    "title": "مسار القرار في القيادة الذاتية",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-09",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تسلسل يوافق وصف النظام في الدرس؟",
     "options": [
       "الكاميرات والحساسات تدرك البيئة، ثم يعالج النظام البيانات لاتخاذ قرارات القيادة والتحكم",
@@ -2497,59 +477,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المستخدم يضع نفسه في بيئة افتراضية ثم يقود",
       "السحابة تعني أن الكاميرات غير مطلوبة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الكاميرات والحساسات تدرك البيئة، ثم يعالج النظام البيانات لاتخاذ قرارات القيادة والتحكم",
-    "misconceptionTrap": "خلط الاستشعار بالمعالجة والقرار",
-    "depthExplanation": "الصفحة 8 تربط الكاميرات والحساسات بالإدراك ثم معالجة البيانات واتخاذ القرار والتحكم.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "pipeline_understanding",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الواقع المعزز (AR) يضيف عناصر رقمية إلى مشهد من العالم الحقيقي، بينما الواقع الافتراضي (VR) يضع المستخدم داخل بيئة افتراضية مولدة حاسوبيًا.",
-        "page": 8,
-        "conceptId": "concept-1-1-09"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-09"
+    "answer": "الكاميرات والحساسات تدرك البيئة، ثم يعالج النظام البيانات لاتخاذ قرارات القيادة والتحكم",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-44",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 44,
-    "type": "mcq",
-    "title": "القيادة الذاتية ليست تعريفًا لـEdge",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تفرق بين المفهومين؟",
     "options": [
       "القيادة الذاتية تطبيق يساعد فيه AI على القيادة، بينما Edge طريقة لمعالجة بعض البيانات محليًا لتقليل زمن الاستجابة",
@@ -2557,60 +488,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "القيادة الذاتية تعني الدفع الإلكتروني",
       "كلاهما يعني الواقع الافتراضي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "القيادة الذاتية تطبيق يساعد فيه AI على القيادة، بينما Edge طريقة لمعالجة بعض البيانات محليًا لتقليل زمن الاستجابة",
-    "misconceptionTrap": "اعتبار التقنية المساندة هي التطبيق نفسه",
-    "depthExplanation": "الدرس يربط Edge بتقليل زمن الاستجابة داخل سيناريو القيادة الذاتية.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "application_vs_technology",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7,
-        8
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 7,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "القيادة الذاتية تطبيق يساعد فيه AI على القيادة، بينما Edge طريقة لمعالجة بعض البيانات محليًا لتقليل زمن الاستجابة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-45",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 45,
-    "type": "mcq",
-    "title": "هل كل بيانات القيادة يجب أن تذهب للسحابة؟",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة توافق نص الدرس؟",
     "options": [
       "بعض البيانات تُعالج محليًا بسبب الحاجة إلى استجابة سريعة، وليس النص يقول إن كل البيانات يجب أن ترسل للسحابة",
@@ -2618,60 +499,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Edge تعني إرسال البيانات أسرع إلى السحابة",
       "لا توجد معالجة للبيانات في السيارة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "بعض البيانات تُعالج محليًا بسبب الحاجة إلى استجابة سريعة، وليس النص يقول إن كل البيانات يجب أن ترسل للسحابة",
-    "misconceptionTrap": "الخلط بين Cloud وEdge",
-    "depthExplanation": "الدرس يذكر معالجة بعض البيانات محليًا لتقليل زمن الاستجابة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "all_or_nothing_processing",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 8,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "بعض البيانات تُعالج محليًا بسبب الحاجة إلى استجابة سريعة، وليس النص يقول إن كل البيانات يجب أن ترسل للسحابة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-46",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 46,
-    "type": "mcq",
-    "title": "اختيار التقنية من وصفها",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09",
-      "concept-1-1-11"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يحتاج قرارًا سريعًا ويعالج البيانات على الجهاز بدل إرسالها إلى السحابة. ما المفهوم الأوضح؟",
     "options": [
       "Edge Computing",
@@ -2679,61 +510,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "E-Commerce",
       "Online Learning"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "Edge Computing",
-    "misconceptionTrap": "اختيار Cloud لمجرد ذكر البيانات",
-    "depthExplanation": "العنصر الفارق هو المعالجة المحلية بدل الإرسال للسحابة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "scenario_identification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09",
-      "concept-1-1-11"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "Edge Computing",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-47",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 47,
-    "type": "mcq",
-    "title": "السبب والنتيجة في Edge",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "أي سلسلة منطقية هي الأدق؟",
     "options": [
       "حساسية القيادة للزمن → تقليل التأخير مهم → بعض البيانات تعالج محليًا → استخدام Edge لتقليل زمن الاستجابة",
@@ -2741,59 +521,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Edge → شراء السلع → قيادة السيارة",
       "Cloud → واقع افتراضي → دفع نقدي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "حساسية القيادة للزمن → تقليل التأخير مهم → بعض البيانات تعالج محليًا → استخدام Edge لتقليل زمن الاستجابة",
-    "misconceptionTrap": "قلب العلاقة السببية",
-    "depthExplanation": "النص يبني العلاقة بين حساسية السلامة للزمن والمعالجة المحلية وتقليل الاستجابة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "causal_chain",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 8,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "حساسية القيادة للزمن → تقليل التأخير مهم → بعض البيانات تعالج محليًا → استخدام Edge لتقليل زمن الاستجابة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-48",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 48,
-    "type": "mcq",
-    "title": "الحوسبة السحابية ليست «داخل الجهاز»",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-11"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تكشف الخلط بين المفهومين؟",
     "options": [
       "«Cloud تعني أن البيانات تُعالج على الجهاز نفسه فورًا»",
@@ -2801,60 +532,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "«Cloud تقدم IT كخدمة عبر الإنترنت»",
       "«Edge قد تقلل زمن الاستجابة»"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "«Cloud تعني أن البيانات تُعالج على الجهاز نفسه فورًا»",
-    "misconceptionTrap": "إسناد تعريف Edge إلى Cloud",
-    "depthExplanation": "العبارة الأولى هي الخلط؛ الثلاث الأخرى متوافقة مع المصدر.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_swap",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-11"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "«Cloud تعني أن البيانات تُعالج على الجهاز نفسه فورًا»",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-49",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 49,
-    "type": "mcq",
-    "title": "القيادة الذاتية بحسب الدرس",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-08",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "كيف يصف الدرس القيادة الذاتية؟",
     "options": [
       "قيادة بمساعدة الذكاء الاصطناعي مع أقل تدخل بشري بحسب مستوى الأتمتة",
@@ -2862,60 +543,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قيادة تعتمد فقط على الواقع الافتراضي",
       "وسيلة للدفع الإلكتروني"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "قيادة بمساعدة الذكاء الاصطناعي مع أقل تدخل بشري بحسب مستوى الأتمتة",
-    "misconceptionTrap": "تحويل «بحسب مستوى الأتمتة» إلى استقلال مطلق",
-    "depthExplanation": "النص يذكر AI وأقل تدخل بشري بحسب مستوى الأتمتة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "automation_absolute",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "القيادة الذاتية (Autonomous Driving): تقنية تستخدم الذكاء الاصطناعي للمساعدة على قيادة المركبة بأقل تدخل بشري بحسب مستوى الأتمتة.",
-        "page": 5,
-        "conceptId": "concept-1-1-08"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-08"
+    "answer": "قيادة بمساعدة الذكاء الاصطناعي مع أقل تدخل بشري بحسب مستوى الأتمتة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-50",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 50,
-    "type": "mcq",
-    "title": "الواقع المعزز AR",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-09",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الفرق الأساسي الذي يذكره الدرس للواقع المعزز؟",
     "options": [
       "يضيف عناصر رقمية إلى مشهد العالم الحقيقي",
@@ -2923,60 +554,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يشتري السلع عبر الإنترنت",
       "يعالج البيانات على الجهاز"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يضيف عناصر رقمية إلى مشهد العالم الحقيقي",
-    "misconceptionTrap": "الخلط بين AR وVR",
-    "depthExplanation": "AR يحافظ على مشهد العالم الحقيقي مع إضافة عناصر رقمية.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "ar_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الواقع المعزز (AR) يضيف عناصر رقمية إلى مشهد من العالم الحقيقي، بينما الواقع الافتراضي (VR) يضع المستخدم داخل بيئة افتراضية مولدة حاسوبيًا.",
-        "page": 5,
-        "conceptId": "concept-1-1-09"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-09"
+    "answer": "يضيف عناصر رقمية إلى مشهد العالم الحقيقي",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-51",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 51,
-    "type": "mcq",
-    "title": "الواقع الافتراضي VR",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-1-09",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يطابق VR؟",
     "options": [
       "يضع المستخدم داخل بيئة افتراضية مولدة بالحاسوب",
@@ -2984,59 +565,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يعمل من المنزل عبر الإنترنت",
       "يدفع عبر QR"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يضع المستخدم داخل بيئة افتراضية مولدة بالحاسوب",
-    "misconceptionTrap": "عكس AR وVR",
-    "depthExplanation": "VR يضع المستخدم داخل بيئة مولدة بالحاسوب.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "vr_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الواقع المعزز (AR) يضيف عناصر رقمية إلى مشهد من العالم الحقيقي، بينما الواقع الافتراضي (VR) يضع المستخدم داخل بيئة افتراضية مولدة حاسوبيًا.",
-        "page": 5,
-        "conceptId": "concept-1-1-09"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-09"
+    "answer": "يضع المستخدم داخل بيئة افتراضية مولدة بالحاسوب",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-1-52",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 52,
-    "type": "mcq",
-    "title": "AR أم VR؟",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا ظل المشهد الحقيقي حاضرًا وأضيفت إليه عناصر رقمية، فما التقنية؟",
     "options": [
       "AR",
@@ -3044,57 +576,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Edge",
       "Cloud"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "AR",
-    "misconceptionTrap": "تحديد التقنية بناء على كلمة «افتراضي» فقط",
-    "depthExplanation": "وجود العالم الحقيقي مع إضافة رقمية هو تعريف AR في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "ar_vr_boundary",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الواقع المعزز (AR) يضيف عناصر رقمية إلى مشهد من العالم الحقيقي، بينما الواقع الافتراضي (VR) يضع المستخدم داخل بيئة افتراضية مولدة حاسوبيًا.",
-        "page": 5,
-        "conceptId": "concept-1-1-09"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-09"
+    "answer": "AR",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-53",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 53,
-    "type": "mcq",
-    "title": "AR أم VR في حالة مختلفة",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا كان المستخدم داخل بيئة مولدة بالحاسوب بدل المشهد الحقيقي، فما التقنية؟",
     "options": [
       "VR",
@@ -3102,59 +587,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "SNS",
       "E-Commerce"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "VR",
-    "misconceptionTrap": "عكس التعريفين",
-    "depthExplanation": "هذا هو وصف VR في المصدر.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "vr_ar_boundary",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الواقع المعزز (AR) يضيف عناصر رقمية إلى مشهد من العالم الحقيقي، بينما الواقع الافتراضي (VR) يضع المستخدم داخل بيئة افتراضية مولدة حاسوبيًا.",
-        "page": 5,
-        "conceptId": "concept-1-1-09"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-09"
+    "answer": "VR",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-54",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 54,
-    "type": "mcq",
-    "title": "الحوسبة الكمومية ليست بديلًا عامًا",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-10",
-      "concept-1-1-01",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة صحيحة عن الحوسبة الكمومية؟",
     "options": [
       "قد تتفوق في فئات محددة من المشكلات، وليست بديلًا عامًا لكل الحسابات",
@@ -3162,61 +598,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "هي نسخة من الحوسبة السحابية",
       "هي طريقة للدفع الإلكتروني"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "قد تتفوق في فئات محددة من المشكلات، وليست بديلًا عامًا لكل الحسابات",
-    "misconceptionTrap": "التعميم من «قد تتفوق» إلى «تتفوق دائمًا»",
-    "depthExplanation": "الدرس يقيد الميزة بفئات محددة من المشكلات وينفي كونها بديلًا عامًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "quantum_overgeneralization",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الكمومية (Quantum Computing): نهج حوسبي يستخدم خصائص ميكانيكا الكم لمعالجة المعلومات، وقد يوفر تفوقًا في فئات محددة من المسائل، لكنه لا يسرّع جميع أنواع الحسابات.",
-        "page": 5,
-        "conceptId": "concept-1-1-10"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-10"
+    "answer": "قد تتفوق في فئات محددة من المشكلات، وليست بديلًا عامًا لكل الحسابات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-55",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 55,
-    "type": "mcq",
-    "title": "معنى «لفئات محددة»",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-10"
-    ],
-    "contentOrigin": "authored",
     "question": "ماذا يمنعنا وصف الحوسبة الكمومية بأنها مفيدة لفئات محددة من قوله إنها أسرع في كل شيء؟",
     "options": [
       "لأن النص يقصر التفوق المحتمل على فئات معينة من المشكلات",
@@ -3224,57 +609,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأنها تقنية اجتماعية فقط",
       "لأنها تعني الواقع الافتراضي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن النص يقصر التفوق المحتمل على فئات معينة من المشكلات",
-    "misconceptionTrap": "إسقاط القيد الموجود في التعريف",
-    "depthExplanation": "القيد «لفئات محددة» جزء أساسي من تعريفها في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "scope_constraint",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الكمومية (Quantum Computing): نهج حوسبي يستخدم خصائص ميكانيكا الكم لمعالجة المعلومات، وقد يوفر تفوقًا في فئات محددة من المسائل، لكنه لا يسرّع جميع أنواع الحسابات.",
-        "page": 5,
-        "conceptId": "concept-1-1-10"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-10"
+    "answer": "لأن النص يقصر التفوق المحتمل على فئات معينة من المشكلات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-56",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 56,
-    "type": "mcq",
-    "title": "الحوسبة الكمومية والبديل الشامل",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-10",
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي استنتاج غير صحيح؟",
     "options": [
       "بما أن الحوسبة الكمومية قد تتفوق في بعض المشكلات، فهي ستستبدل الحواسيب التقليدية في كل الاستخدامات",
@@ -3282,61 +620,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ليست بديلًا عامًا لكل الحسابات",
       "هي نهج مختلف يعتمد على ميكانيكا الكم"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "بما أن الحوسبة الكمومية قد تتفوق في بعض المشكلات، فهي ستستبدل الحواسيب التقليدية في كل الاستخدامات",
-    "misconceptionTrap": "استنتاج أوسع من مقدمته",
-    "depthExplanation": "الدرس يقول صراحة إنها ليست بديلًا عامًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "invalid_inference",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الكمومية (Quantum Computing): نهج حوسبي يستخدم خصائص ميكانيكا الكم لمعالجة المعلومات، وقد يوفر تفوقًا في فئات محددة من المسائل، لكنه لا يسرّع جميع أنواع الحسابات.",
-        "page": 5,
-        "conceptId": "concept-1-1-10"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-10"
+    "answer": "بما أن الحوسبة الكمومية قد تتفوق في بعض المشكلات، فهي ستستبدل الحواسيب التقليدية في كل الاستخدامات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-57",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 57,
-    "type": "mcq",
-    "title": "تمييز ثلاث تقنيات ناشئة",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09",
-      "concept-1-1-10"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مطابقة صحيحة؟",
     "options": [
       "Edge=معالجة محلية فورية؛ AR=إضافة عناصر رقمية للمشهد الحقيقي؛ Quantum=نهج حوسبي قائم على ميكانيكا الكم",
@@ -3344,64 +631,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Edge=دروس؛ AR=دفع؛ Quantum=عمل عن بعد",
       "كلها تعني الحوسبة السحابية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "Edge=معالجة محلية فورية؛ AR=إضافة عناصر رقمية للمشهد الحقيقي؛ Quantum=نهج حوسبي قائم على ميكانيكا الكم",
-    "misconceptionTrap": "تبديل تعريفات تقنيات مختلفة",
-    "depthExplanation": "كل جزء من المطابقة مأخوذ من التعريفات الرسمية في الصفحة 5.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "three_concept_mapping",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09",
-      "concept-1-1-10"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "Edge=معالجة محلية فورية؛ AR=إضافة عناصر رقمية للمشهد الحقيقي؛ Quantum=نهج حوسبي قائم على ميكانيكا الكم",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-58",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 58,
-    "type": "mcq",
-    "title": "تحديد المفهوم من الغرض",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-02",
-      "concept-1-1-03",
-      "concept-1-1-04",
-      "concept-1-1-05",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مجموعة تربط النشاط بالمفهوم الصحيح؟",
     "options": [
       "نشر/مشاركة المعلومات= SNS؛ شراء/بيع= E-Commerce؛ العمل من مكان بعيد=Remote Work؛ الدروس عبر الإنترنت=Online Learning؛ الدفع دون نقود=Cashless Payment",
@@ -3409,64 +642,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل الأنشطة=Edge",
       "كل الأنشطة=Quantum Computing"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نشر/مشاركة المعلومات= SNS؛ شراء/بيع= E-Commerce؛ العمل من مكان بعيد=Remote Work؛ الدروس عبر الإنترنت=Online Learning؛ الدفع دون نقود=Cashless Payment",
-    "misconceptionTrap": "إلغاء الفروق بين الخدمات الاجتماعية",
-    "depthExplanation": "الفروق في الغرض هي أساس التمييز بين المفاهيم الخمسة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "five_concepts_synthesis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "شبكات التواصل الاجتماعي (SNS): تربط المستخدمين لنشر المعلومات ومشاركتها.",
-        "page": 7,
-        "conceptId": "concept-1-1-02"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-03",
-      "concept-1-1-04",
-      "concept-1-1-05",
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-02"
+    "answer": "نشر/مشاركة المعلومات= SNS؛ شراء/بيع= E-Commerce؛ العمل من مكان بعيد=Remote Work؛ الدروس عبر الإنترنت=Online Learning؛ الدفع دون نقود=Cashless Payment",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-59",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 59,
-    "type": "mcq",
-    "title": "اختبار Cloud وEdge وAutonomous",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-08",
-      "concept-1-1-09",
-      "concept-1-1-11"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تحليل لحالة سيارة مزودة بمساعدة AI هو الأكثر دقة؟",
     "options": [
       "AI يساعد في القيادة، والكاميرات والحساسات تدرك البيئة، وبعض البيانات قد تعالج محليًا عبر Edge لتقليل الاستجابة؛ وهذا يختلف عن Cloud كخدمة عبر الإنترنت",
@@ -3474,62 +653,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Edge هي اسم القيادة الذاتية",
       "Cloud تعني أن المستخدم يدخل عالمًا افتراضيًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "AI يساعد في القيادة، والكاميرات والحساسات تدرك البيئة، وبعض البيانات قد تعالج محليًا عبر Edge لتقليل الاستجابة؛ وهذا يختلف عن Cloud كخدمة عبر الإنترنت",
-    "misconceptionTrap": "دمج المفاهيم دون الحفاظ على حدودها",
-    "depthExplanation": "الإجابة تربط التطبيق بالاستشعار والمعالجة المحلية والسحابة دون مساواة المفاهيم.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "integrated_vehicle",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-08",
-      "concept-1-1-09",
-      "concept-1-1-11"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "AI يساعد في القيادة، والكاميرات والحساسات تدرك البيئة، وبعض البيانات قد تعالج محليًا عبر Edge لتقليل الاستجابة؛ وهذا يختلف عن Cloud كخدمة عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-60",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 60,
-    "type": "mcq",
-    "title": "اختبار Moore وQuantum",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-10"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تقارن بين الفكرتين دون تجاوز النص؟",
     "options": [
       "Moore يصف اتجاهًا تاريخيًا في عدد الترانزستورات، بينما Quantum نهج مختلف قد يفيد في فئات محددة من المشكلات",
@@ -3537,60 +664,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Quantum يفسر تضاعف الترانزستورات كل سنتين",
       "Moore يعني أن Quantum يستبدل كل الحواسيب"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "Moore يصف اتجاهًا تاريخيًا في عدد الترانزستورات، بينما Quantum نهج مختلف قد يفيد في فئات محددة من المشكلات",
-    "misconceptionTrap": "مساواة مفهومين مختلفين",
-    "depthExplanation": "الدرس يضع قانون مور كتوجه تاريخي، والحوسبة الكمومية كنهج مختلف ذي استخدامات محددة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "concept_equation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        6
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 5,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-10"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "Moore يصف اتجاهًا تاريخيًا في عدد الترانزستورات، بينما Quantum نهج مختلف قد يفيد في فئات محددة من المشكلات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-61",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 61,
-    "type": "mcq",
-    "title": "كشف عبارة تحتوي نصف حقيقة",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-10"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب يقول: «الحوسبة الكمومية قد تكون أسرع من التقليدية، إذن هي أفضل لكل المهام». أين الخطأ؟",
     "options": [
       "حوّل ميزة محتملة لفئات محددة إلى حكم عام على كل المهام",
@@ -3598,59 +675,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الخطأ أنه ذكر الحوسبة التقليدية",
       "الخطأ أنه قال قد"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "حوّل ميزة محتملة لفئات محددة إلى حكم عام على كل المهام",
-    "misconceptionTrap": "إلغاء القيد على نطاق الميزة",
-    "depthExplanation": "الدرس يحدد التفوق المحتمل بفئات محددة، وينفي البديل العام.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "half_truth_trap",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-10"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "حوّل ميزة محتملة لفئات محددة إلى حكم عام على كل المهام",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-62",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 62,
-    "type": "mcq",
-    "title": "كشف عبارة «Edge أسرع من Cloud دائمًا»",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-11"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تصحيح أدق لعبارة «Edge أسرع من Cloud دائمًا»؟",
     "options": [
       "في سياق القيادة الذاتية، معالجة بعض البيانات محليًا تساعد على تقليل زمن الاستجابة عندما يكون التأخير حساسًا للسلامة؛ وليس النص قاعدة مطلقة لكل حالة",
@@ -3658,58 +686,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "Cloud هي نفسها Edge",
       "القيادة الذاتية لا تحتاج معالجة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "في سياق القيادة الذاتية، معالجة بعض البيانات محليًا تساعد على تقليل زمن الاستجابة عندما يكون التأخير حساسًا للسلامة؛ وليس النص قاعدة مطلقة لكل حالة",
-    "misconceptionTrap": "تحويل سبب سياقي إلى قاعدة مطلقة",
-    "depthExplanation": "المصدر يربط Edge بسيناريو الحاجة إلى استجابة سريعة، ولا يقرر قاعدة مطلقة لكل الحالات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "context_to_universal",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        8
-      ],
-      "primaryPage": 8,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 8,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-11"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "في سياق القيادة الذاتية، معالجة بعض البيانات محليًا تساعد على تقليل زمن الاستجابة عندما يكون التأخير حساسًا للسلامة؛ وليس النص قاعدة مطلقة لكل حالة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-63",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 63,
-    "type": "mcq",
-    "title": "السؤال الأكثر التزامًا بالمصدر",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي سؤال من الآتي يحافظ على حدود المصدر ويقيس فهمًا عميقًا؟",
     "options": [
       "كيف يمكن تبرير قرار بشأن الدفع غير النقدي بعد تحديد فائدة وقلق والبحث عن أدلة؟",
@@ -3717,60 +697,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ما الخوارزمية التي تستخدمها السيارات؟",
       "ما عدد البتات في الحوسبة الكمومية؟"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "كيف يمكن تبرير قرار بشأن الدفع غير النقدي بعد تحديد فائدة وقلق والبحث عن أدلة؟",
-    "misconceptionTrap": "إضافة معرفة تقنية غير موجودة في المصدر",
-    "depthExplanation": "السؤال الصحيح يقيس الهدف الثالث ونشاط المهندس دون اختراع تفاصيل تقنية خارج الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "deep_but_in_scope",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        8,
-        10
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 4,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "كيف يمكن تبرير قرار بشأن الدفع غير النقدي بعد تحديد فائدة وقلق والبحث عن أدلة؟",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-64",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 64,
-    "type": "mcq",
-    "title": "تحليل سؤال امتحاني مركب",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-04",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "أي إجابة تجمع ثلاث أفكار من الدرس بصورة صحيحة؟",
     "options": [
       "قانون مور اتجاه تاريخي، والدفع غير النقدي تغير اجتماعي، وEdge تقنية لمعالجة بعض البيانات محليًا عند الحاجة لاستجابة سريعة",
@@ -3778,62 +708,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قانون مور واقع افتراضي، والدفع غير النقدي SNS، وEdge تعليم إلكتروني",
       "الثلاثة تعني الحوسبة السحابية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "قانون مور اتجاه تاريخي، والدفع غير النقدي تغير اجتماعي، وEdge تقنية لمعالجة بعض البيانات محليًا عند الحاجة لاستجابة سريعة",
-    "misconceptionTrap": "اختبار القدرة على تصنيف الأفكار بحسب طبيعتها",
-    "depthExplanation": "الاختيار الصحيح يميز بين اتجاه تقني، تغير اجتماعي، وتقنية معالجة ناشئة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "cross_section_classification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6,
-        7,
-        8
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04",
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "قانون مور اتجاه تاريخي، والدفع غير النقدي تغير اجتماعي، وEdge تقنية لمعالجة بعض البيانات محليًا عند الحاجة لاستجابة سريعة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-65",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 65,
-    "type": "mcq",
-    "title": "التمييز بين «التعريف» و«السبب»",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-07",
-      "concept-1-1-09"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تميز بين تعريف Edge وسبب استخدامها في القيادة الذاتية؟",
     "options": [
       "التعريف: معالجة محلية على الجهاز؛ السبب في الحالة المذكورة: تقليل زمن الاستجابة لأن التأخير قد يؤثر في السلامة",
@@ -3841,62 +719,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التعريف: بيئة افتراضية؛ السبب: التعليم",
       "لا يوجد فرق بينهما"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "التعريف: معالجة محلية على الجهاز؛ السبب في الحالة المذكورة: تقليل زمن الاستجابة لأن التأخير قد يؤثر في السلامة",
-    "misconceptionTrap": "دمج تعريف التقنية بمبرر استخدامها",
-    "depthExplanation": "الدرس يقدم تعريف Edge ثم يوضح سبب ارتباطها بالقيادة الذاتية.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_vs_rationale",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        5,
-        8
-      ],
-      "primaryPage": 5,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الحوسبة الطرفية (Edge Computing): معالجة البيانات على الجهاز نفسه، فورًا، بدلًا من إرسالها إلى السحابة.",
-        "page": 5,
-        "conceptId": "concept-1-1-07"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-09"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-07"
+    "answer": "التعريف: معالجة محلية على الجهاز؛ السبب في الحالة المذكورة: تقليل زمن الاستجابة لأن التأخير قد يؤثر في السلامة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-66",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 66,
-    "type": "mcq",
-    "title": "السؤال النهائي: هل الطالب فاهم فعلًا؟",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01",
-      "concept-1-1-04",
-      "concept-1-1-07",
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي إجابة تدل على فهم متكامل للدرس وليس مجرد حفظ تعريفات؟",
     "options": [
       "يربط تطور IT بأثره الاجتماعي، ويميز اتجاه مور عن القانون الفيزيائي، ويفرق Edge عن Cloud، ويميز AR عن VR، ويفهم أن Quantum ليست بديلًا عامًا، ويبرر القرارات بالأدلة",
@@ -3904,63 +730,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يحفظ تعريف قانون مور فقط",
       "يعتبر كل تقنية تستخدم الإنترنت نوعًا واحدًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يربط تطور IT بأثره الاجتماعي، ويميز اتجاه مور عن القانون الفيزيائي، ويفرق Edge عن Cloud، ويميز AR عن VR، ويفهم أن Quantum ليست بديلًا عامًا، ويبرر القرارات بالأدلة",
-    "misconceptionTrap": "اختبار التكامل النهائي",
-    "depthExplanation": "الفهم الحقيقي يظهر في الربط والمقارنة واكتشاف القيود وتبرير القرار، وهي محاور الأهداف والمحتوى.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "full_lesson_synthesis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        4,
-        6,
-        7,
-        8
-      ],
-      "primaryPage": 4,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 4,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04",
-      "concept-1-1-07",
-      "concept-1-1-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "يربط تطور IT بأثره الاجتماعي، ويميز اتجاه مور عن القانون الفيزيائي، ويفرق Edge عن Cloud، ويميز AR عن VR، ويفهم أن Quantum ليست بديلًا عامًا، ويبرر القرارات بالأدلة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-67",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 67,
-    "type": "mcq",
-    "title": "تمييز المصدر عن المثال",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-06"
-    ],
-    "contentOrigin": "authored",
     "question": "كيف يجب التعامل مع كتل المثال المحلول والتطبيق عندما لا يحتوي المصدر المقدم على نص تفصيلي لها؟",
     "options": [
       "لا ننسب إليها محتوى غير موجود، ونبني السؤال من الكتل الرسمية التي تحتوي مضمونًا فعليًا",
@@ -3968,57 +741,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نعتبرها تعريفًا للحوسبة الكمومية",
       "نستخدمها لإضافة معلومات خارج المنهج"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لا ننسب إليها محتوى غير موجود، ونبني السؤال من الكتل الرسمية التي تحتوي مضمونًا فعليًا",
-    "misconceptionTrap": "اختلاق محتوى داخل كتلة فارغة",
-    "depthExplanation": "المصدر المقدم يضع عناوين للمثال والتطبيق دون نص، لذلك لا يجوز اختراع محتوى ونسبته للكتاب.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "empty_block_fidelity",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        10
-      ],
-      "primaryPage": 10,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الدفع غير النقدي (Cashless Payment): الدفع دون استخدام النقد (نقود إلكترونية، رموز QR).",
-        "page": 10,
-        "conceptId": "concept-1-1-06"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-06"
+    "answer": "لا ننسب إليها محتوى غير موجود، ونبني السؤال من الكتل الرسمية التي تحتوي مضمونًا فعليًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-68",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 68,
-    "type": "mcq",
-    "title": "التعليم الإلكتروني كتغير اجتماعي",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-1-05",
-      "concept-1-1-04"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا يُصنف التعلم عبر الإنترنت ضمن التغيرات الاجتماعية في الدرس؟",
     "options": [
       "لأنه يغير طريقة تقديم الدروس والمواد التعليمية عبر الإنترنت",
@@ -4026,58 +752,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأنه يعالج بيانات السيارة محليًا",
       "لأنه يصف عدد الترانزستورات"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأنه يغير طريقة تقديم الدروس والمواد التعليمية عبر الإنترنت",
-    "misconceptionTrap": "تصنيف المفهوم بناءً على كونه تقنية رقمية فقط",
-    "depthExplanation": "القسم الثالث يضع Online Learning ضمن أمثلة التغير الاجتماعي الناتج عن IT.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "social_change_classification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "التعلم عبر الإنترنت (Online Learning): تقديم الدروس والمواد عبر الإنترنت بمرونة.",
-        "page": 7,
-        "conceptId": "concept-1-1-05"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-05"
+    "answer": "لأنه يغير طريقة تقديم الدروس والمواد التعليمية عبر الإنترنت",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-69",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 69,
-    "type": "mcq",
-    "title": "الربط بين الأداء والتصميمات المتخصصة",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-01"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا أصبحت مواصلة تصغير المكونات أكثر تحديًا، أي خيار يظل داخل الحلول التي ذكرها الدرس؟",
     "options": [
       "استخدام تصميمات متخصصة إلى جانب تعدد الأنوية والمعالجة المتوازية",
@@ -4085,57 +763,10 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الاعتماد على SNS بدل المعالجات",
       "تحويل كل الحسابات إلى VR"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "استخدام تصميمات متخصصة إلى جانب تعدد الأنوية والمعالجة المتوازية",
-    "misconceptionTrap": "اعتبار التصغير المسار الوحيد للأداء",
-    "depthExplanation": "النص يذكر التصميمات المتخصصة والتوازي وتعدد الأنوية كمسارات لتحسين الأداء.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "performance_strategy",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        6
-      ],
-      "primaryPage": 6,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "الملاحظة القائلة إن عدد الترانزستورات في الشريحة يتضاعف تقريبًا كل عامين.",
-        "page": 6,
-        "conceptId": "concept-1-1-01"
-      }
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-01"
+    "answer": "استخدام تصميمات متخصصة إلى جانب تعدد الأنوية والمعالجة المتوازية",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-1-70",
-    "lessonId": "lesson-1-1",
-    "lessonNumber": "1-1",
-    "index": 70,
-    "type": "mcq",
-    "title": "الفرق بين تغير اجتماعي وتقنية ناشئة",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-1-04",
-      "concept-1-1-07"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تصنيف أدق لما ورد في الصفحتين 7 و8؟",
     "options": [
       "العمل عن بعد والتعلم عبر الإنترنت والدفع غير النقدي أمثلة لتغيرات اجتماعية، بينما Edge والقيادة الذاتية وAR/VR والحوسبة الكمومية أمثلة لتقنيات ناشئة",
@@ -4143,44 +774,7 @@ export const LESSON_1_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل ما ورد تقنيات ناشئة فقط",
       "الدفع غير النقدي هو نفسه الحوسبة الكمومية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "العمل عن بعد والتعلم عبر الإنترنت والدفع غير النقدي أمثلة لتغيرات اجتماعية، بينما Edge والقيادة الذاتية وAR/VR والحوسبة الكمومية أمثلة لتقنيات ناشئة",
-    "misconceptionTrap": "دمج القسمين في فئة واحدة",
-    "depthExplanation": "الدرس يفصل بين «التغيرات الاجتماعية» و«التقنيات الناشئة» ويعطي أمثلة مختلفة لكل قسم.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "section_boundary",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-1",
-      "pages": [
-        7,
-        8
-      ],
-      "primaryPage": 7,
-      "sourceType": "official-page-scan",
-      "curriculumEvidence": {
-        "excerpt": "العمل عن بُعد (Remote Work): العمل من المنزل أو من موقع بعيد آخر عبر الإنترنت.",
-        "page": 7,
-        "conceptId": "concept-1-1-04"
-      }
-    },
-    "secondaryConceptIds": [
-      "concept-1-1-07"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    },
-    "conceptId": "concept-1-1-04"
+    "answer": "العمل عن بعد والتعلم عبر الإنترنت والدفع غير النقدي أمثلة لتغيرات اجتماعية، بينما Edge والقيادة الذاتية وAR/VR والحوسبة الكمومية أمثلة لتقنيات ناشئة",
+    "difficulty": "hard"
   }
 ];

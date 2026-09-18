@@ -8,18 +8,6 @@ import { DeepChallengingQuestion } from "../types";
 
 export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
   {
-    "id": "q-hard-1-2-01",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 1,
-    "type": "mcq",
-    "title": "المظلة الأوسع للذكاء الاصطناعي",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تشرح مكان الذكاء الاصطناعي بين المفاهيم الواردة في الدرس؟",
     "options": [
       "الذكاء الاصطناعي فرع من التعلم العميق",
@@ -27,51 +15,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الذكاء الاصطناعي نوع من الشبكات العصبية",
       "الذكاء الاصطناعي يقتصر على توليد المحتوى"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "الذكاء الاصطناعي مجال واسع يضم مفاهيم وتقنيات مترابطة مثل التعلم الآلي",
-    "misconceptionTrap": "عكس العلاقة بين المجال والفرع",
-    "depthExplanation": "الدرس يصف الذكاء الاصطناعي بأنه مجال واسع، بينما التعلم الآلي فرع منه.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "hierarchy_inversion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        12,
-        13
-      ],
-      "primaryPage": 12,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "الذكاء الاصطناعي مجال واسع يضم مفاهيم وتقنيات مترابطة مثل التعلم الآلي",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-02",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 2,
-    "type": "mcq",
-    "title": "مفهوم الذكاء الاصطناعي",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-01"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف أقرب لما يقصده الدرس بالذكاء الاصطناعي؟",
     "options": [
       "مجال يضم أنظمة تؤدي مهامًا مثل التعلم والتنبؤ والتعرف وتوليد المحتوى",
@@ -79,50 +26,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نوع واحد من الشبكات العصبية",
       "أداة مخصصة لتوليد الصور فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "مجال يضم أنظمة تؤدي مهامًا مثل التعلم والتنبؤ والتعرف وتوليد المحتوى",
-    "misconceptionTrap": "اختزال AI في وظيفة واحدة",
-    "depthExplanation": "المادة تعرض AI كمجال واسع يشمل مهام متعددة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "scope_narrowing",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "مجال يضم أنظمة تؤدي مهامًا مثل التعلم والتنبؤ والتعرف وتوليد المحتوى",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-03",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 3,
-    "type": "mcq",
-    "title": "الأنظمة ضيقة النطاق",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-01"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام صُمم للتعرف على الكلام فقط. ما الاستنتاج الأدق؟",
     "options": [
       "هو بالضرورة قادر على كل مهام الذكاء الاصطناعي",
@@ -130,51 +37,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لا يمكن أن يكون AI",
       "هو بالضرورة ذكاء اصطناعي توليدي"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "قد يكون ذكاءً اصطناعيًا ضيق النطاق مخصصًا لمهمة محددة",
-    "misconceptionTrap": "الخلط بين AI واتساع القدرات",
-    "depthExplanation": "معظم أنظمة الذكاء الاصطناعي الحالية ضيقة النطاق ومصممة لمهمة محددة أو محدودة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "scope_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "قد يكون ذكاءً اصطناعيًا ضيق النطاق مخصصًا لمهمة محددة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-04",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 4,
-    "type": "mcq",
-    "title": "الذكاء الاصطناعي ليس مرادفًا للتوليد",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يدحض فكرة أن كل ذكاء اصطناعي هو ذكاء اصطناعي توليدي؟",
     "options": [
       "تصنيف الرسائل المزعجة",
@@ -182,55 +48,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "إنشاء نص جديد",
       "إنشاء صوت جديد"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تصنيف الرسائل المزعجة",
-    "misconceptionTrap": "حصر AI في GenAI",
-    "depthExplanation": "التصنيف من مهام الذكاء الاصطناعي دون أن يكون إنشاء محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "genai_dominance",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "تصنيف الرسائل المزعجة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-05",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 5,
-    "type": "mcq",
-    "title": "التعلم الآلي كفرع من AI",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "ما العبارة الأدق عن العلاقة بين AI وML؟",
     "options": [
       "ML أوسع من AI",
@@ -238,53 +59,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "AI فرع من ML",
       "لا توجد علاقة بينهما"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "ML فرع من AI",
-    "misconceptionTrap": "عكس العلاقة الهرمية",
-    "depthExplanation": "الدرس يضع التعلم الآلي داخل المجال الأوسع للذكاء الاصطناعي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "hierarchy_inversion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "ML فرع من AI",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-06",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 6,
-    "type": "mcq",
-    "title": "الفرق بين القاعدة والنمط",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يوضح جوهر الفرق بين البرمجة بالقواعد والتعلم الآلي؟",
     "options": [
       "كتابة قاعدة لكل حالة مقابل تعلم نمط من البيانات",
@@ -292,50 +70,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تغيير لغة البرمجة",
       "حفظ مزيد من الملفات"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "كتابة قاعدة لكل حالة مقابل تعلم نمط من البيانات",
-    "misconceptionTrap": "التركيز على أداة التنفيذ لا على آلية التعلم",
-    "depthExplanation": "التعلم الآلي يتعلم الأنماط من البيانات بدل برمجة كل قاعدة صراحةً.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "rule_based_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "كتابة قاعدة لكل حالة مقابل تعلم نمط من البيانات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-07",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 7,
-    "type": "mcq",
-    "title": "التعلم الآلي والتصنيف",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يتعلم من رسائل سابقة ليصنف الرسائل الجديدة. ما العنصر الذي يجعله مثالًا على ML؟",
     "options": [
       "أنه يعمل على الكمبيوتر",
@@ -343,50 +81,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أنه يعرض النتائج على الشاشة",
       "أنه يتعامل مع النصوص"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "أنه يتعلم أنماطًا من البيانات",
-    "misconceptionTrap": "التركيز على شكل التطبيق",
-    "depthExplanation": "آلية تعلم الأنماط من البيانات هي العنصر الحاسم.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "superficial_feature",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أنه يتعلم أنماطًا من البيانات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-08",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 8,
-    "type": "mcq",
-    "title": "توصيات المنتجات",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا تُعد توصيات المنتجات مثالًا على التعلم الآلي؟",
     "options": [
       "لأن النظام يتعلم أنماطًا من البيانات ويستخدمها في التوصية",
@@ -394,50 +92,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن التوصية لا تحتاج إلى بيانات",
       "لأنها قاعدة مكتوبة لكل منتج"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن النظام يتعلم أنماطًا من البيانات ويستخدمها في التوصية",
-    "misconceptionTrap": "الخلط بين التوصية والتوليد",
-    "depthExplanation": "الدرس يذكر توصية المنتجات مثالًا للتعلم الآلي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لأن النظام يتعلم أنماطًا من البيانات ويستخدمها في التوصية",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-09",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 9,
-    "type": "mcq",
-    "title": "وحدة المبدأ رغم اختلاف المهمة",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "مرشح الرسائل المزعجة ونظام توصية المنتجات مختلفان في المهمة. ما المشترك؟",
     "options": [
       "كلاهما يولد صورًا",
@@ -445,53 +103,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلاهما لا يستخدم بيانات",
       "كلاهما يجب أن يكون DL"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "كلاهما يتعلم أنماطًا من البيانات",
-    "misconceptionTrap": "الخلط بين نوع المهمة وآلية التعلم",
-    "depthExplanation": "اختلاف المهمة لا يلغي اشتراكهما في مبدأ التعلم من البيانات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_vs_mechanism",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "كلاهما يتعلم أنماطًا من البيانات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-10",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 10,
-    "type": "mcq",
-    "title": "تنبيه الكتاب على تبسيط العلاقة",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "ماذا يعني أن العلاقة بين المفاهيم علاقة تعليمية مبسطة؟",
     "options": [
       "أن المفاهيم لا علاقة بينها",
@@ -499,54 +114,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن ML ليس فرعًا من AI",
       "أن DL أوسع من AI"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "أن الرسم يساعد على الفهم لكنه ليس احتواءً صارمًا في كل حالة",
-    "misconceptionTrap": "تحويل الشكل التعليمي إلى قاعدة مطلقة",
-    "depthExplanation": "الدرس يحذر من فهم الرسم على أنه تسلسل احتواء صارم في كل حالة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "diagram_literalism",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        14
-      ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أن الرسم يساعد على الفهم لكنه ليس احتواءً صارمًا في كل حالة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-11",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 11,
-    "type": "mcq",
-    "title": "تعريف التعلم العميق",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-03"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يجمع عناصر تعريف التعلم العميق؟",
     "options": [
       "أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات",
@@ -554,50 +125,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نظام توليدي فقط",
       "طريقة بلا بيانات"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات",
-    "misconceptionTrap": "فصل DL عن ML",
-    "depthExplanation": "الدرس يعرف DL كأسلوب ضمن ML يعتمد على شبكات عصبية متعددة الطبقات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أسلوب من التعلم الآلي يعتمد على شبكات عصبية متعددة الطبقات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-12",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 12,
-    "type": "mcq",
-    "title": "تحليل الصور باستخدام DL",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-03"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يحلل الصور ويتعلم أنماطًا معقدة باستخدام شبكة متعددة الطبقات. ما الوصف الأدق؟",
     "options": [
       "مثال على التعلم العميق",
@@ -605,51 +136,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ليس تعلمًا آليًا",
       "برمجة قواعد فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "مثال على التعلم العميق",
-    "misconceptionTrap": "الربط التلقائي بين DL والتوليد",
-    "depthExplanation": "تحليل الصور مذكور مثالًا للتعلم العميق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "dl_vs_genai",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "مثال على التعلم العميق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-13",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 13,
-    "type": "mcq",
-    "title": "التعرف على الكلام",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يتعرف على الكلام ولا ينشئ محتوى جديدًا. ماذا نستطيع أن نقول؟",
     "options": [
       "لا يمكن أن يكون AI",
@@ -657,53 +147,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "هو GenAI بالضرورة",
       "لا يتعلم من البيانات"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "قد يستخدم DL دون أن يكون GenAI",
-    "misconceptionTrap": "اعتبار كل DL توليديًا",
-    "depthExplanation": "التعرف على الكلام مثال للتعلم العميق، بينما GenAI يتميز بإنشاء محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "generation_assumption",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "قد يستخدم DL دون أن يكون GenAI",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-14",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 14,
-    "type": "mcq",
-    "title": "دور الشبكة العصبية الاصطناعية",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف أدق لـANN؟",
     "options": [
       "نموذج حاسوبي مستوحى بصورة مبسطة من ترابط العصبونات ووحداته مترابطة",
@@ -711,50 +158,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نظام تشغيل",
       "مجموعة قواعد ثابتة فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نموذج حاسوبي مستوحى بصورة مبسطة من ترابط العصبونات ووحداته مترابطة",
-    "misconceptionTrap": "فهم ANN كتخزين أو قواعد",
-    "depthExplanation": "هذا هو تعريف الشبكة العصبية الاصطناعية في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "ann_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "نموذج حاسوبي مستوحى بصورة مبسطة من ترابط العصبونات ووحداته مترابطة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-15",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 15,
-    "type": "mcq",
-    "title": "أوزان الروابط",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا تتغير أوزان الروابط أثناء التدريب؟",
     "options": [
       "لتتعلم الشبكة الأنماط من البيانات",
@@ -762,51 +169,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لحذف البيانات",
       "لإلغاء التدريب"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لتتعلم الشبكة الأنماط من البيانات",
-    "misconceptionTrap": "إسناد تغير الأوزان لوظيفة غير التعلم",
-    "depthExplanation": "الوزن يتغير أثناء التدريب لمساعدة الشبكة على تعلم الأنماط.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "parameter_role",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لتتعلم الشبكة الأنماط من البيانات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-16",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 16,
-    "type": "mcq",
-    "title": "ترتيب طبقات ANN",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي ترتيب يطابق البنية التي تذكرها الخلاصة؟",
     "options": [
       "إخراج ثم إدخال ثم مخفي",
@@ -814,51 +180,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "مخفي ثم إخراج ثم إدخال",
       "إدخال ثم إخراج فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "إدخال ثم طبقات مخفية متعددة ثم إخراج",
-    "misconceptionTrap": "عكس ترتيب الطبقات",
-    "depthExplanation": "الخلاصة تذكر طبقات إدخال وطبقات مخفية متعددة وطبقة إخراج.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "architecture_order",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "إدخال ثم طبقات مخفية متعددة ثم إخراج",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-17",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 17,
-    "type": "mcq",
-    "title": "سبب تسمية التعلم بالعميق",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عنصر يرتبط بوصف التعلم بأنه «عميق»؟",
     "options": [
       "وجود طبقات متعددة في الشبكة",
@@ -866,53 +191,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "عدد الملفات",
       "سرعة الإنترنت"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "وجود طبقات متعددة في الشبكة",
-    "misconceptionTrap": "فهم الكلمة خارج سياق المعمارية",
-    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "literal_misinterpretation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "وجود طبقات متعددة في الشبكة",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-18",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 18,
-    "type": "mcq",
-    "title": "ANN مقابل DL",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تفرق بين ANN وDL؟",
     "options": [
       "هما الشيء نفسه",
@@ -920,52 +202,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "DL مجال أوسع من AI",
       "لا علاقة بينهما"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "ANN نموذج حاسوبي، وDL أسلوب من ML يعتمد على شبكات متعددة الطبقات",
-    "misconceptionTrap": "المساواة بين النموذج والأسلوب",
-    "depthExplanation": "ANN هو النموذج، وDL أسلوب تعلم يستخدم شبكات متعددة الطبقات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "model_vs_method",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "ANN نموذج حاسوبي، وDL أسلوب من ML يعتمد على شبكات متعددة الطبقات",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-19",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 19,
-    "type": "mcq",
-    "title": "التعلم من الأنماط المعقدة",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-03"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف أقرب لتعريف التعلم العميق؟",
     "options": [
       "شبكة متعددة الطبقات تتعلم أنماطًا معقدة في الصور",
@@ -973,51 +213,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "طباعة مستند",
       "قاعدة واحدة ثابتة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "شبكة متعددة الطبقات تتعلم أنماطًا معقدة في الصور",
-    "misconceptionTrap": "الخلط بين التعامل مع البيانات والتعلم العميق",
-    "depthExplanation": "الوصف يجمع الشبكات المتعددة والأنماط المعقدة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "surface_application",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "شبكة متعددة الطبقات تتعلم أنماطًا معقدة في الصور",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-20",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 20,
-    "type": "mcq",
-    "title": "هل كل DL توليدي؟",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة خاطئة؟",
     "options": [
       "DL أسلوب ضمن ML",
@@ -1025,53 +224,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل DL يولد محتوى جديدًا",
       "GenAI الحديث يعتمد غالبًا على DL"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "كل DL يولد محتوى جديدًا",
-    "misconceptionTrap": "تعميم GenAI على كل DL",
-    "depthExplanation": "التعلم العميق يمكن أن يستخدم في مهام مثل التعرف على الكلام أيضًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "universal_quantifier",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "كل DL يولد محتوى جديدًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-21",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 21,
-    "type": "mcq",
-    "title": "المعيار الأساسي لـGenAI",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "ما السمة الفارقة للذكاء الاصطناعي التوليدي؟",
     "options": [
       "إنشاء محتوى جديد",
@@ -1079,50 +235,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تخزين البيانات",
       "تصنيف رسالة موجودة فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "إنشاء محتوى جديد",
-    "misconceptionTrap": "الخلط بين الإنشاء والتحليل",
-    "depthExplanation": "إنشاء المحتوى الجديد هو جوهر تعريف GenAI في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "creation_vs_analysis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "إنشاء محتوى جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-22",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 22,
-    "type": "mcq",
-    "title": "تنوع المخرجات",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مجموعة وردت ضمن أمثلة المحتوى الذي قد ينشئه GenAI؟",
     "options": [
       "النصوص والصور والصوت والبرمجيات",
@@ -1130,50 +246,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الملفات فقط",
       "الأرقام فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "النصوص والصور والصوت والبرمجيات",
-    "misconceptionTrap": "حصر التوليد في النصوص",
-    "depthExplanation": "الدرس يذكر عدة أنواع من المحتوى.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "output_scope",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "النصوص والصور والصوت والبرمجيات",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-23",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 23,
-    "type": "mcq",
-    "title": "استرجاع صورة ليس توليدًا",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أداة تعرض صورة محفوظة دون إنشاء محتوى جديد. هل يكفي ذلك لوصفها بأنها GenAI؟",
     "options": [
       "نعم دائمًا",
@@ -1181,51 +257,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نعم لأن الصور مذكورة",
       "لا لأن AI لا يتعامل مع الصور"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "لا، لأن التوليد يعني إنشاء محتوى جديد",
-    "misconceptionTrap": "الخلط بين العرض والإنشاء",
-    "depthExplanation": "عرض محتوى موجود ليس هو إنشاء محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "display_vs_generation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لا، لأن التوليد يعني إنشاء محتوى جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-24",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 24,
-    "type": "mcq",
-    "title": "علاقة GenAI بـDL",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة أدق؟",
     "options": [
       "كل DL هو GenAI",
@@ -1233,52 +268,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "GenAI لا علاقة له بـDL",
       "DL منفصل تمامًا عن GenAI"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "أغلب أنظمة GenAI الحديثة تعتمد على نماذج DL",
-    "misconceptionTrap": "تحويل العلاقة الغالبة إلى مساواة",
-    "depthExplanation": "الدرس يقول إن أغلب الأنظمة الحديثة تعتمد على DL، لا أن المفهومين متطابقان.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "relationship_overgeneralization",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أغلب أنظمة GenAI الحديثة تعتمد على نماذج DL",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-25",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 25,
-    "type": "mcq",
-    "title": "توليد نص جديد",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف هو الأوضح كـGenAI؟",
     "options": [
       "تصنيف رسالة",
@@ -1286,50 +279,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "إنشاء نص جديد",
       "تخزين ملف"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "إنشاء نص جديد",
-    "misconceptionTrap": "الخلط بين التصنيف والتوليد",
-    "depthExplanation": "إنشاء النصوص من أمثلة GenAI.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_identification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "إنشاء نص جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-26",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 26,
-    "type": "mcq",
-    "title": "أداة توليد الصور",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مثال ذُكر للذكاء الاصطناعي التوليدي؟",
     "options": [
       "ChatGPT وأدوات توليد الصور",
@@ -1337,50 +290,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "توصيات المنتجات فقط",
       "التعرف على الكلام فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ChatGPT وأدوات توليد الصور",
-    "misconceptionTrap": "خلط أمثلة ML وDL مع GenAI",
-    "depthExplanation": "هذه أمثلة صريحة في النص.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "example_category_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "ChatGPT وأدوات توليد الصور",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-27",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 27,
-    "type": "mcq",
-    "title": "الجديد في المحتوى",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا لا يكفي مجرد استرجاع محتوى موجود لاعتبار المهمة توليدية؟",
     "options": [
       "لأن GenAI يركز على إنشاء محتوى جديد",
@@ -1388,51 +301,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن كل محتوى قديم خاطئ",
       "لأن التوليد للصوت فقط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن GenAI يركز على إنشاء محتوى جديد",
-    "misconceptionTrap": "إهمال كلمة جديد",
-    "depthExplanation": "تعريف GenAI يرتبط بإنشاء محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_anchor",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لأن GenAI يركز على إنشاء محتوى جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-28",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 28,
-    "type": "mcq",
-    "title": "DL وGenAI قد يجتمعان",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا استخدمت أداة توليدية نموذج تعلم عميق، فما الاستنتاج الصحيح؟",
     "options": [
       "DL وGenAI متطابقان",
@@ -1440,54 +312,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الأداة ليست AI",
       "DL لا علاقة له بالتوليد"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "الأداة GenAI وقد تعتمد على DL",
-    "misconceptionTrap": "المساواة بين الأسلوب والمهمة",
-    "depthExplanation": "الاثنان قد يجتمعان دون أن يكونا مفهومًا واحدًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "method_vs_task",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "الأداة GenAI وقد تعتمد على DL",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-29",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 29,
-    "type": "mcq",
-    "title": "الفرق بين التعرف والتوليد",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مقارنة صحيحة؟",
     "options": [
       "التعرف والتوليد شيء واحد",
@@ -1495,54 +323,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التوليد لا يستخدم بيانات تدريب",
       "التعرف دائمًا GenAI"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "التعرف يعالج نمطًا أو محتوى موجودًا، والتوليد ينشئ محتوى جديدًا",
-    "misconceptionTrap": "طمس اختلاف الهدف",
-    "depthExplanation": "الفرق في طبيعة الناتج والهدف الوظيفي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "recognition_generation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "التعرف يعالج نمطًا أو محتوى موجودًا، والتوليد ينشئ محتوى جديدًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-30",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 30,
-    "type": "mcq",
-    "title": "التوليد لا يعني اليقين",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "هل قدرة النظام على إنشاء محتوى جديد تعني أن كل ما ينشئه صحيح؟",
     "options": [
       "نعم دائمًا",
@@ -1550,52 +334,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نعم إذا كان النص طويلًا",
       "نعم إذا كانت الصياغة جيدة"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "لا، قد تحدث هلوسة ويجب التحقق",
-    "misconceptionTrap": "الخلط بين القدرة على الإنشاء والصحة",
-    "depthExplanation": "الدرس يربط GenAI بخطر الهلوسة والحاجة للتحقق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "generation_vs_veracity",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لا، قد تحدث هلوسة ويجب التحقق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-31",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 31,
-    "type": "mcq",
-    "title": "تعريف الهلوسة",
-    "cognitiveLevel": "هلوسة والتحقق",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يطابق الهلوسة؟",
     "options": [
       "إجابة تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
@@ -1603,50 +345,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "بطء الجهاز",
       "تغير حجم الخط"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "إجابة تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
-    "misconceptionTrap": "اعتبار الهلوسة خللًا شكليًا",
-    "depthExplanation": "الهَلوسة تتعلق بصحة المعلومة ودعمها بمصدر.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "hallucination_definition",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "إجابة تبدو معقولة لكنها غير صحيحة أو غير مدعومة بمصادر",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-32",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 32,
-    "type": "mcq",
-    "title": "الإقناع اللغوي ليس دليلًا",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "قال طالب: «الإجابة مكتوبة بثقة، إذن هي صحيحة». ما الخطأ؟",
     "options": [
       "الثقة والأسلوب لا يمنعان الهلوسة",
@@ -1654,50 +356,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اللغة لا تستخدم في AI",
       "التحقق لا علاقة له بالمحتوى"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "الثقة والأسلوب لا يمنعان الهلوسة",
-    "misconceptionTrap": "الانحياز للإقناع",
-    "depthExplanation": "الهلوسة قد تكون مقنعة في شكلها رغم عدم صحتها.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "eloquence_bias",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "الثقة والأسلوب لا يمنعان الهلوسة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-33",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 33,
-    "type": "mcq",
-    "title": "الإجابة غير المدعومة",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "وجد الطالب معلومة معقولة لكنه لم يجد لها دعمًا في المصادر المعتمدة. ماذا يفعل؟",
     "options": [
       "يعتمدها فورًا",
@@ -1705,50 +367,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يحذف كل التقرير",
       "يضيفها ثم لا يراجعها"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "يتحقق منها قبل اعتمادها",
-    "misconceptionTrap": "اعتبار المعقولية دليلًا كافيًا",
-    "depthExplanation": "غياب الدعم الموثوق يستدعي التحقق قبل الاعتماد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "unsupported_claim",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "يتحقق منها قبل اعتمادها",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-34",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 34,
-    "type": "mcq",
-    "title": "المراجعة البشرية",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "لماذا تظل المراجعة البشرية ضرورية؟",
     "options": [
       "لأن المخرجات قد تبدو صحيحة وهي غير صحيحة",
@@ -1756,51 +378,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن AI لا يستطيع الكتابة",
       "لأن الصور لا تنتج"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن المخرجات قد تبدو صحيحة وهي غير صحيحة",
-    "misconceptionTrap": "فهم Human-in-the-Loop كإجراء شكلي",
-    "depthExplanation": "خطر الهلوسة يفسر الحاجة إلى التحقق البشري.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "human_verification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لأن المخرجات قد تبدو صحيحة وهي غير صحيحة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-35",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 35,
-    "type": "mcq",
-    "title": "تقرير مدرسي ومخرج مولد",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب يريد نسخ مخرج توليدي مباشرة إلى تقرير مدرسي. ما التصرف الصحيح؟",
     "options": [
       "نسخه كما هو",
@@ -1808,52 +389,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "رفض كل أدوات AI",
       "تغيير الكلمات فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "التحقق منه بالرجوع إلى المصادر المعتمدة",
-    "misconceptionTrap": "إعادة الصياغة لا تتحقق من الحقيقة",
-    "depthExplanation": "الدرس يحذر من اعتماد المخرجات كما هي دون تدقيق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "verification_requirement",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "التحقق منه بالرجوع إلى المصادر المعتمدة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-36",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 36,
-    "type": "mcq",
-    "title": "المصدر الأقوى",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي دليل أقوى لاعتماد معلومة مولدة؟",
     "options": [
       "أنها طويلة",
@@ -1861,50 +400,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أنها متوافقة مع مصدر معتمد بعد التحقق",
       "أن النموذج أجاب بسرعة"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "أنها متوافقة مع مصدر معتمد بعد التحقق",
-    "misconceptionTrap": "استبدال الدليل بالمظهر",
-    "depthExplanation": "المعيار الصحيح هو التحقق ومطابقة المصادر المعتمدة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_quality",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أنها متوافقة مع مصدر معتمد بعد التحقق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-37",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 37,
-    "type": "mcq",
-    "title": "الهلوسة ليست رفض الإجابة",
-    "cognitiveLevel": "تمييز بين المفاهيم",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة خاطئة عن الهلوسة؟",
     "options": [
       "قد تكون المعلومة غير صحيحة",
@@ -1912,50 +411,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تعني أن النموذج يرفض الإجابة دائمًا",
       "تستدعي التحقق"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "تعني أن النموذج يرفض الإجابة دائمًا",
-    "misconceptionTrap": "تعريف الهلوسة على أنها عدم إجابة",
-    "depthExplanation": "الهلوسة تعني توليد معلومات غير صحيحة أو غير مدعومة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "definition_inversion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "تعني أن النموذج يرفض الإجابة دائمًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-38",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 38,
-    "type": "mcq",
-    "title": "المعقولية مقابل الحقيقة",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يكشف الفرق بين «مقنعة» و«صحيحة»؟",
     "options": [
       "نص ممتاز الصياغة يناقض المصدر الرسمي",
@@ -1963,51 +422,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "نص واضح من الكتاب",
       "نص مدعوم بمصدر معتمد"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "نص ممتاز الصياغة يناقض المصدر الرسمي",
-    "misconceptionTrap": "مساواة جودة الأسلوب بصحة المحتوى",
-    "depthExplanation": "قد تكون الإجابة المقنعة هلوسة، لذلك نحتاج إلى المصدر.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "plausibility_vs_truth",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "نص ممتاز الصياغة يناقض المصدر الرسمي",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-39",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 39,
-    "type": "mcq",
-    "title": "التحقق لا يعني الرفض التام",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يعبر عن الاستخدام المتزن للمخرجات التوليدية؟",
     "options": [
       "كل المخرجات خاطئة",
@@ -2015,52 +433,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يمكن الاستفادة منها بعد التحقق والمراجعة",
       "يجب منع كل استخدام"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "يمكن الاستفادة منها بعد التحقق والمراجعة",
-    "misconceptionTrap": "الانتقال من الحذر إلى الرفض المطلق",
-    "depthExplanation": "المشكلة هي الاعتماد غير المدقق، وليس مجرد استخدام الأداة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "false_dichotomy",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "يمكن الاستفادة منها بعد التحقق والمراجعة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-40",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 40,
-    "type": "mcq",
-    "title": "مصدر لا يكفي اسمه",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا ذكر النموذج اسم مصدر، ما التصرف الأدق؟",
     "options": [
       "اعتبار المصدر صحيحًا تلقائيًا",
@@ -2068,51 +444,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تجاهل كل المصادر",
       "اعتماد المعلومة لأنها ذكرت مصدرًا"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "التحقق فعليًا من المعلومة في المصدر المعتمد",
-    "misconceptionTrap": "الثقة الآلية في الاستشهاد",
-    "depthExplanation": "وجود اسم مصدر لا يغني عن التحقق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "citation_trust",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "التحقق فعليًا من المعلومة في المصدر المعتمد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-41",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 41,
-    "type": "mcq",
-    "title": "تصنيف الرسائل مقابل توليد النص",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يصنف الرسائل وآخر ينشئ رسائل جديدة. ما الفرق الأساسي؟",
     "options": [
       "كلاهما توليدي",
@@ -2120,56 +455,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الأول ليس AI",
       "الثاني لا يتعلم"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "الأول مهمة تصنيف بالتعلم الآلي، والثاني مهمة توليد محتوى",
-    "misconceptionTrap": "اعتبار كل معالجة نص توليدًا",
-    "depthExplanation": "نوع المهمة هو الفارق الأساسي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "text_task_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15,
-        17
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "الأول مهمة تصنيف بالتعلم الآلي، والثاني مهمة توليد محتوى",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-42",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 42,
-    "type": "mcq",
-    "title": "مخطط العلاقة الكامل",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تجمع العلاقة الأساسية بصورة صحيحة؟",
     "options": [
       "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML، وGenAI الحديث يعتمد غالبًا على DL ويُنشئ محتوى جديدًا",
@@ -2177,59 +466,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "DL منفصل عن ML",
       "GenAI هو المجال الأوسع"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML، وGenAI الحديث يعتمد غالبًا على DL ويُنشئ محتوى جديدًا",
-    "misconceptionTrap": "خلط مستويات العلاقة",
-    "depthExplanation": "هذه هي الخلاصة التعليمية المتكاملة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "holistic_relation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        14,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML، وGenAI الحديث يعتمد غالبًا على DL ويُنشئ محتوى جديدًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-43",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 43,
-    "type": "mcq",
-    "title": "اختيار التوصيف من وصف نظام",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يستخدم شبكة متعددة الطبقات ليتعلم من البيانات ويتعرف على الكلام. ما الوصف الأدق؟",
     "options": [
       "GenAI بالضرورة",
@@ -2237,56 +477,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "برمجة قواعد فقط",
       "ليس ML"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "AI يستخدم التعلم العميق المعتمد على شبكة عصبية",
-    "misconceptionTrap": "ربط التعرف بالتوليد",
-    "depthExplanation": "التعرف على الكلام مثال على DL، وDL داخل ML وAI.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "architecture_and_task",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        16
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "AI يستخدم التعلم العميق المعتمد على شبكة عصبية",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-44",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 44,
-    "type": "mcq",
-    "title": "اختيار التوصيف لنظام مولد",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام ينشئ نصوصًا جديدة ويعتمد على نموذج تعلم عميق. ما الوصف الأدق؟",
     "options": [
       "نظام قواعد فقط",
@@ -2294,58 +488,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ليس AI لأنه توليدي",
       "هو ML فقط دون GenAI"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "GenAI يعتمد على DL ضمن منظومة AI/ML",
-    "misconceptionTrap": "فصل GenAI عن AI/ML",
-    "depthExplanation": "التوليد يحدد الوظيفة، وDL يصف أسلوبًا يعتمد عليه غالبًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "full_mapping",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "GenAI يعتمد على DL ضمن منظومة AI/ML",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-45",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 45,
-    "type": "mcq",
-    "title": "اختبار العبارة المركبة",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة صحيحة بالكامل؟",
     "options": [
       "كل AI توليدي وكل DL يولد محتوى",
@@ -2353,58 +499,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ML لا يستخدم بيانات",
       "GenAI منفصل عن ML"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "ML فرع من AI، DL أسلوب ضمن ML، وGenAI ينشئ محتوى جديدًا ويعتمد حديثه غالبًا على DL",
-    "misconceptionTrap": "فحص عدة ادعاءات في جملة واحدة",
-    "depthExplanation": "السؤال يقيس قدرة الطالب على فحص العلاقات كلها معًا.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "compound_statement",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "ML فرع من AI، DL أسلوب ضمن ML، وGenAI ينشئ محتوى جديدًا ويعتمد حديثه غالبًا على DL",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-46",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 46,
-    "type": "mcq",
-    "title": "كشف الخطأ في تصنيف المفاهيم",
-    "cognitiveLevel": "اكتشاف خطأ وتريكات",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب قال: «تصنيف الرسائل = GenAI، تحليل الصور = ML فقط، وإنشاء صورة = DL». ما التصحيح الأدق؟",
     "options": [
       "كلها صحيحة",
@@ -2412,55 +510,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلها خطأ",
       "إنشاء الصورة ML فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "تصنيف الرسائل مثال ML، وتحليل الصور قد يكون DL، وإنشاء صورة مثال GenAI",
-    "misconceptionTrap": "خلط المهمة بالتقنية",
-    "depthExplanation": "التصنيف مثال ML، والتحليل بالطبقات قد يكون DL، والإنشاء الجديد GenAI.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "misclassification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "تصنيف الرسائل مثال ML، وتحليل الصور قد يكون DL، وإنشاء صورة مثال GenAI",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-47",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 47,
-    "type": "mcq",
-    "title": "ما الذي لا يثبت GenAI؟",
-    "cognitiveLevel": "استكشاف أخطاء ونمذجة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف لا يكفي وحده للحكم بأن النظام GenAI؟",
     "options": [
       "ينشئ نصًا جديدًا",
@@ -2468,52 +521,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يتعرف على الكلام فقط",
       "ينشئ صوتًا جديدًا"
     ],
-    "correctAnswer": 2,
-    "correctAnswerText": "يتعرف على الكلام فقط",
-    "misconceptionTrap": "الخلط بين التعرف والتوليد",
-    "depthExplanation": "التعرف على الكلام لا يعني إنشاء محتوى جديد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "inverse_identification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "يتعرف على الكلام فقط",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-48",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 48,
-    "type": "mcq",
-    "title": "التعلم العميق ليس نتيجة وظيفية",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "ما الخطأ في قول: «طالما أن التطبيق يستخدم DL، فلا بد أن هدفه توليد محتوى»؟",
     "options": [
       "DL يحدد نوع المهمة دائمًا",
@@ -2521,54 +532,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "GenAI لا يعتمد على DL",
       "DL لا علاقة له بالبيانات"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "DL أسلوب قد يستخدم في التعرف والتحليل أيضًا",
-    "misconceptionTrap": "تحويل أسلوب التعلم إلى وظيفة",
-    "depthExplanation": "الدرس يعطي أمثلة لـDL في تحليل الصور والتعرف على الكلام.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "method_not_task",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "DL أسلوب قد يستخدم في التعرف والتحليل أيضًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-49",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 49,
-    "type": "mcq",
-    "title": "من النمط إلى المهمة",
-    "cognitiveLevel": "تحليل واستنتاج",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا تعلم نموذج أنماطًا من بيانات ثم استُخدم في مهمة جديدة، ما الذي يحدد هل المهمة تصنيف أم توليد؟",
     "options": [
       "وجود البيانات فقط",
@@ -2576,58 +543,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "حجم الشاشة",
       "لغة البرمجة"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "طبيعة المخرج: تحديد فئة/نتيجة مقابل إنشاء محتوى جديد",
-    "misconceptionTrap": "الخلط بين التدريب والمخرج",
-    "depthExplanation": "التعلم من البيانات يصف ML، بينما طبيعة الناتج تساعد على تمييز التوليد.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "training_vs_output",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15,
-        17
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "طبيعة المخرج: تحديد فئة/نتيجة مقابل إنشاء محتوى جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-50",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 50,
-    "type": "mcq",
-    "title": "التركيب النهائي",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-04",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أداة توليدية تعتمد على نموذج تعلم عميق وتنتج أحيانًا معلومات مقنعة غير مدعومة بالمصادر. ما التحليل الكامل؟",
     "options": [
       "ليست AI",
@@ -2635,59 +554,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل ما تنتجه صحيح",
       "DL يعني أنها لا يمكن أن تهلوس"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "هي GenAI تعتمد على DL ضمن AI/ML، وقد تحدث هلوسة تستلزم التحقق",
-    "misconceptionTrap": "تجزئة الحالة وعدم ربط المخاطر بالمفاهيم",
-    "depthExplanation": "السؤال يجمع المجال والفرع والأسلوب والوظيفة والخطر وإجراء التحقق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "full_synthesis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-04",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "هي GenAI تعتمد على DL ضمن AI/ML، وقد تحدث هلوسة تستلزم التحقق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-51",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 51,
-    "type": "mcq",
-    "title": "سيناريو ندرة الأنماط",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام نادرًا ما رأى نوعًا معينًا من الحالات في بيانات التدريب، فواجه صعوبة عند ظهوره. ما التفسير الأقرب؟",
     "options": [
       "النموذج يتعلم من الأنماط التي رآها، وندرة النمط تقلل فرص تعلمه",
@@ -2695,51 +565,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "البيانات تمنع التعلم",
       "كل حالة نادرة سهلة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "النموذج يتعلم من الأنماط التي رآها، وندرة النمط تقلل فرص تعلمه",
-    "misconceptionTrap": "افتراض وجود معرفة كاملة خارج التدريب",
-    "depthExplanation": "الدرس يوضح صعوبة التعامل مع الشيء النادر في بيانات التدريب.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "rare_pattern",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        14,
-        15
-      ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "النموذج يتعلم من الأنماط التي رآها، وندرة النمط تقلل فرص تعلمه",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-52",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 52,
-    "type": "mcq",
-    "title": "سيناريو تغير المدخلات",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "كان النظام جيدًا مع أمثلة مشابهة للتدريب، لكنه أخطأ عندما ظهرت حالات مختلفة. أي تفسير أقرب؟",
     "options": [
       "لأن النمط المختلف لم يكن ممثلًا جيدًا في بيانات التدريب",
@@ -2747,51 +576,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن التوليد بدأ تلقائيًا",
       "لأن الشبكة فقدت اسمها"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "لأن النمط المختلف لم يكن ممثلًا جيدًا في بيانات التدريب",
-    "misconceptionTrap": "تجاهل أثر البيانات على التعلم",
-    "depthExplanation": "الأمثلة الجديدة تختلف عن الأنماط التي تعلمها النموذج من التدريب.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "training_distribution",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        14,
-        15
-      ],
-      "primaryPage": 14,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "لأن النمط المختلف لم يكن ممثلًا جيدًا في بيانات التدريب",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-53",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 53,
-    "type": "mcq",
-    "title": "سيناريو تصنيف واضح",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يقرر هل الرسالة «مزعجة» أو «غير مزعجة». ما نوع المهمة؟",
     "options": [
       "تصنيف",
@@ -2799,50 +587,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تخزين",
       "ترجمة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تصنيف",
-    "misconceptionTrap": "الخلط بين التصنيف والتوليد",
-    "depthExplanation": "الرسائل المزعجة مثال مباشر على التصنيف بالتعلم الآلي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "task_identification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "تصنيف",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-54",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 54,
-    "type": "mcq",
-    "title": "سيناريو توصية",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "medium",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يقترح منتجات اعتمادًا على أنماط من البيانات. ما المفهوم الأقرب؟",
     "options": [
       "التعلم الآلي",
@@ -2850,51 +598,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "ANN فقط",
       "GenAI بالضرورة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "التعلم الآلي",
-    "misconceptionTrap": "اعتبار كل توصية توليدًا",
-    "depthExplanation": "توصية المنتجات مثال مذكور للتعلم الآلي.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "recommendation_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "التعلم الآلي",
+    "difficulty": "medium"
   },
   {
-    "id": "q-hard-1-2-55",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 55,
-    "type": "mcq",
-    "title": "سيناريو شبكة متعددة الطبقات",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "شبكة متعددة الطبقات تتغير أوزانها أثناء التدريب لتتعلم أنماطًا معقدة. ما أفضل توصيف؟",
     "options": [
       "ANN مستخدمة في التعلم العميق",
@@ -2902,52 +609,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تطبيق قواعد فقط",
       "GenAI بالضرورة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "ANN مستخدمة في التعلم العميق",
-    "misconceptionTrap": "فصل ANN عن DL",
-    "depthExplanation": "ANN هو النموذج، وDL أسلوب يعتمد على شبكات متعددة الطبقات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "ann_dl_mapping",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "ANN مستخدمة في التعلم العميق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-56",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 56,
-    "type": "mcq",
-    "title": "سيناريو توليد صورة",
-    "cognitiveLevel": "تطبيق على موقف",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أداة تنشئ صورة جديدة اعتمادًا على الأنماط التي تعلمتها. ما المفهوم الأوضح؟",
     "options": [
       "GenAI",
@@ -2955,50 +620,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التعرف على الكلام",
       "البرمجة بالقواعد"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "GenAI",
-    "misconceptionTrap": "الخلط بين الإنشاء والتحليل",
-    "depthExplanation": "إنشاء الصور الجديدة من أمثلة GenAI.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "generation_identification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "GenAI",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-57",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 57,
-    "type": "mcq",
-    "title": "سيناريو تقرير طالب",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "طالب نقل إجابة مولدة كما هي إلى تقريره دون مراجعة. ما الخطأ؟",
     "options": [
       "اعتمد مخرجًا قد يحتوي على هلوسة دون تحقق",
@@ -3006,50 +631,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "قرأ نصًا",
       "استعمل الذكاء الاصطناعي"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "اعتمد مخرجًا قد يحتوي على هلوسة دون تحقق",
-    "misconceptionTrap": "تجاهل الخطر الحقيقي",
-    "depthExplanation": "المشكلة في اعتماد المخرج دون الرجوع للمصادر المعتمدة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "academic_verification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "اعتمد مخرجًا قد يحتوي على هلوسة دون تحقق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-58",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 58,
-    "type": "mcq",
-    "title": "سيناريو إجابة مقنعة وخاطئة",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "إجابة مولدة تبدو منطقية لكنها تختلف عن الكتاب الرسمي. ما القرار الأنسب؟",
     "options": [
       "اعتمادها لأنها أكثر إقناعًا",
@@ -3057,50 +642,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اختيار الأطول",
       "إهمال الكتاب"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "الرجوع للمصدر الرسمي والتحقق قبل اعتمادها",
-    "misconceptionTrap": "تقديم الإقناع على المصدر",
-    "depthExplanation": "الهلوسة قد تكون مقنعة، والتحقق بالمصادر شرط.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "official_source_priority",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "الرجوع للمصدر الرسمي والتحقق قبل اعتمادها",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-59",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 59,
-    "type": "mcq",
-    "title": "سيناريو مصدر غير مؤكد",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "النموذج ذكر مرجعًا، لكن لم يتحقق الطالب من وجوده أو توافقه. ماذا يفعل؟",
     "options": [
       "يعتمد المرجع تلقائيًا",
@@ -3108,53 +653,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يحذف كل AI",
       "يعتبر اسم المرجع دليلًا كافيًا"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "يتحقق من المرجع والمعلومة",
-    "misconceptionTrap": "الثقة في المظهر المرجعي",
-    "depthExplanation": "التحقق الفعلي من المراجع جزء من التعامل الصحيح مع المخرجات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "citation_verification",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "يتحقق من المرجع والمعلومة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-60",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 60,
-    "type": "mcq",
-    "title": "سيناريو متكامل قصير",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-03",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "نظام يولد نصًا باستخدام DL، والنص يبدو صحيحًا لكن توجد معلومة غير مدعومة. ماذا نستنتج؟",
     "options": [
       "هو GenAI يعتمد على DL وقد يعاني من هلوسة، لذا يلزم التحقق",
@@ -3162,59 +664,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل ما يكتبه صحيح",
       "لا علاقة له بـML"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "هو GenAI يعتمد على DL وقد يعاني من هلوسة، لذا يلزم التحقق",
-    "misconceptionTrap": "فشل في الربط بين الوظيفة والأسلوب والخطر",
-    "depthExplanation": "هذه الحالة تجمع GenAI وDL وML وخطر الهلوسة والتحقق.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "integrated_scenario",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "هو GenAI يعتمد على DL وقد يعاني من هلوسة، لذا يلزم التحقق",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-61",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 61,
-    "type": "mcq",
-    "title": "تمييز أربعة مفاهيم",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي مطابقة صحيحة؟",
     "options": [
       "تصنيف الرسائل=ML، تحليل الصور متعدد الطبقات=DL، إنشاء صورة=GenAI",
@@ -3222,59 +675,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلها DL",
       "كلها GenAI"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "تصنيف الرسائل=ML، تحليل الصور متعدد الطبقات=DL، إنشاء صورة=GenAI",
-    "misconceptionTrap": "إسناد المفهوم بناءً على الكلمات السطحية",
-    "depthExplanation": "المطابقة تعتمد على طبيعة المهمة وأسلوب التعلم المذكور.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "concept_mapping",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "تصنيف الرسائل=ML، تحليل الصور متعدد الطبقات=DL، إنشاء صورة=GenAI",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-62",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 62,
-    "type": "mcq",
-    "title": "فحص عبارة «كلها AI»",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "إذا قيل عن ثلاث أدوات إنها كلها AI، فما الذي يضيفه فهم ML وDL وGenAI؟",
     "options": [
       "يساعد على التمييز بين طريقة التعلم وطبيعة المهمة بدل الاكتفاء بالمظلة العامة",
@@ -3282,57 +686,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يلغي العلاقة بين المفاهيم",
       "يعني أن كل أداة توليدية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "يساعد على التمييز بين طريقة التعلم وطبيعة المهمة بدل الاكتفاء بالمظلة العامة",
-    "misconceptionTrap": "الاكتفاء بالاسم العام",
-    "depthExplanation": "الدرس يهدف إلى التمييز بين المفاهيم المترابطة داخل المجال.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "umbrella_term_obscurity",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "يساعد على التمييز بين طريقة التعلم وطبيعة المهمة بدل الاكتفاء بالمظلة العامة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-63",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 63,
-    "type": "mcq",
-    "title": "ما الذي يثبت أنه ML؟",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-02"
-    ],
-    "contentOrigin": "authored",
     "question": "في موقف ما، أي دليل هو الأقوى على أن النظام يستخدم التعلم الآلي؟",
     "options": [
       "أنه يتعلم أنماطًا من البيانات بدل كتابة كل قاعدة صراحةً",
@@ -3340,51 +697,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أنه يعمل بسرعة",
       "أنه يستخدم صورًا"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أنه يتعلم أنماطًا من البيانات بدل كتابة كل قاعدة صراحةً",
-    "misconceptionTrap": "الاعتماد على مؤشرات غير جوهرية",
-    "depthExplanation": "هذه هي السمة التعريفية لـML في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_of_ml",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        15
-      ],
-      "primaryPage": 15,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أنه يتعلم أنماطًا من البيانات بدل كتابة كل قاعدة صراحةً",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-64",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 64,
-    "type": "mcq",
-    "title": "ما الذي يثبت أنه DL؟",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-04"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يدعم وصف النظام بأنه يستخدم التعلم العميق؟",
     "options": [
       "شبكة عصبية متعددة الطبقات تتعلم أنماطًا معقدة",
@@ -3392,52 +708,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "عرض النص في شاشة",
       "تخزين الصور"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "شبكة عصبية متعددة الطبقات تتعلم أنماطًا معقدة",
-    "misconceptionTrap": "التركيز على التطبيق بدل البنية",
-    "depthExplanation": "التعلم العميق يعتمد على شبكات عصبية متعددة الطبقات.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_of_dl",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-04"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "شبكة عصبية متعددة الطبقات تتعلم أنماطًا معقدة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-65",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 65,
-    "type": "mcq",
-    "title": "ما الذي يثبت أنه GenAI؟",
-    "cognitiveLevel": "تحليل ومقارنة",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي وصف يدعم وصف النظام بأنه توليدي؟",
     "options": [
       "إنشاء محتوى جديد",
@@ -3445,50 +719,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التعرف على الكلام",
       "عرض ملف محفوظ"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "إنشاء محتوى جديد",
-    "misconceptionTrap": "حصر GenAI في نوع بيانات محدد",
-    "depthExplanation": "الإنشاء الجديد هو المعيار الأوضح.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_of_genai",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "إنشاء محتوى جديد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-66",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 66,
-    "type": "mcq",
-    "title": "ما الذي يثبت وجود خطر الهلوسة؟",
-    "cognitiveLevel": "هلوسة والتحقق",
-    "difficulty": "hard",
-    "conceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي موقف يطابق خطر الهلوسة؟",
     "options": [
       "معلومة تبدو معقولة لكنها غير صحيحة أو غير مدعومة",
@@ -3496,51 +730,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "النظام يستقبل نصًا",
       "النظام يتعامل مع صورة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "معلومة تبدو معقولة لكنها غير صحيحة أو غير مدعومة",
-    "misconceptionTrap": "الخلط بين الأداء والخطأ المعرفي",
-    "depthExplanation": "الهلوسة مرتبطة بصحة المعلومة ودعمها.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "evidence_of_hallucination",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "معلومة تبدو معقولة لكنها غير صحيحة أو غير مدعومة",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-67",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 67,
-    "type": "mcq",
-    "title": "القرار الأقوى في الامتحان",
-    "cognitiveLevel": "تقييم واتخاذ قرار",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "في سؤال يذكر أن مخرجًا توليديًا مقنع لكنه غير متوافق مع مصدر رسمي، ما الإجابة الأعلى جودة؟",
     "options": [
       "اعتماده لأنه مقنع",
@@ -3548,53 +741,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اختيار الأطول",
       "إعادة صياغته فقط"
     ],
-    "correctAnswer": 1,
-    "correctAnswerText": "التحقق من المخرج ومقارنته بالمصدر الرسمي قبل الاعتماد",
-    "misconceptionTrap": "المظهر بدل الدليل",
-    "depthExplanation": "القرار المبني على التحقق من المصدر هو المتوافق مع الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "exam_decision",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        17
-      ],
-      "primaryPage": 17,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "التحقق من المخرج ومقارنته بالمصدر الرسمي قبل الاعتماد",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-68",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 68,
-    "type": "mcq",
-    "title": "اختبار العلاقات الشرطية",
-    "cognitiveLevel": "فهم مباشر عميق",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة منطقية وفق الدرس؟",
     "options": [
       "أغلب GenAI الحديث يعتمد على DL، لكن ليس كل DL GenAI",
@@ -3602,56 +752,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كل AI DL",
       "لا يمكن لـGenAI أن يعتمد على DL"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "أغلب GenAI الحديث يعتمد على DL، لكن ليس كل DL GenAI",
-    "misconceptionTrap": "قلب علاقة «أغلب» إلى «كل»",
-    "depthExplanation": "الدرس يحدد اعتمادًا غالبًا لا مساواة شاملة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "conditional_relation",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        16,
-        17
-      ],
-      "primaryPage": 16,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "أغلب GenAI الحديث يعتمد على DL، لكن ليس كل DL GenAI",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-69",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 69,
-    "type": "mcq",
-    "title": "التفريق بين المظلة والفرع والأسلوب والمهمة",
-    "cognitiveLevel": "تطبيق مركب",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentOrigin": "authored",
     "question": "أي عبارة تفرق بين مستويات المفاهيم دون خلط؟",
     "options": [
       "AI مجال، ML فرع، DL أسلوب، وGenAI يصف أنظمة تنشئ محتوى جديدًا",
@@ -3659,62 +763,10 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "GenAI مجال أوسع من AI",
       "DL هو نوع من التقارير المدرسية"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "AI مجال، ML فرع، DL أسلوب، وGenAI يصف أنظمة تنشئ محتوى جديدًا",
-    "misconceptionTrap": "الخلط بين مستوى المجال والفرع والأسلوب والمهمة",
-    "depthExplanation": "الطالب الفاهم يميز وظيفة كل مصطلح بدل حفظها كأسماء مترادفة.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "level_confusion",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-05"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "AI مجال، ML فرع، DL أسلوب، وGenAI يصف أنظمة تنشئ محتوى جديدًا",
+    "difficulty": "hard"
   },
   {
-    "id": "q-hard-1-2-70",
-    "lessonId": "lesson-1-2",
-    "lessonNumber": "1-2",
-    "index": 70,
-    "type": "mcq",
-    "title": "السؤال الشامل النهائي",
-    "cognitiveLevel": "أسئلة مركبة صعبة",
-    "difficulty": "very-hard",
-    "conceptIds": [
-      "concept-1-2-01",
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-04",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentOrigin": "authored",
     "question": "أي تحليل يمثل فهمًا متكاملًا للدرس؟",
     "options": [
       "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML يعتمد على شبكات متعددة الطبقات، GenAI ينشئ محتوى جديدًا، وقد تحدث هلوسة تستلزم التحقق",
@@ -3722,44 +774,7 @@ export const LESSON_1_2_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "DL أوسع من AI",
       "الهلوسة تعني عدم الإجابة"
     ],
-    "correctAnswer": 0,
-    "correctAnswerText": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML يعتمد على شبكات متعددة الطبقات، GenAI ينشئ محتوى جديدًا، وقد تحدث هلوسة تستلزم التحقق",
-    "misconceptionTrap": "اختبار التكامل النهائي للعلاقات والمخاطر",
-    "depthExplanation": "الإجابة تجمع أهم المفاهيم والعلاقات والضابط العملي المذكور في الدرس.",
-    "teacherDiscussionPrompt": "ما الدليل من نص الدرس الذي يدعم إجابتك؟",
-    "trapType": "full_synthesis",
-    "isExamLikely": true,
-    "source": {
-      "term": 1,
-      "lessonId": "lesson-1-2",
-      "pages": [
-        13,
-        15,
-        16,
-        17
-      ],
-      "primaryPage": 13,
-      "sourceType": "official-page-scan"
-    },
-    "secondaryConceptIds": [
-      "concept-1-2-02",
-      "concept-1-2-03",
-      "concept-1-2-04",
-      "concept-1-2-05",
-      "concept-1-2-06"
-    ],
-    "contentProvenance": {
-      "question": "derived-from-curriculum",
-      "explanation": "pedagogical-explanation",
-      "teacherPrompt": "pedagogical-extension"
-    },
-    "validation": {
-      "distractorsPlausible": true,
-      "noExternalKnowledge": true,
-      "noDuplicate": true,
-      "conceptAligned": true,
-      "noAnswerLeakage": true,
-      "optionsIndependent": true
-    }
+    "answer": "AI مجال واسع، ML فرع منه، DL أسلوب ضمن ML يعتمد على شبكات متعددة الطبقات، GenAI ينشئ محتوى جديدًا، وقد تحدث هلوسة تستلزم التحقق",
+    "difficulty": "hard"
   }
 ];
