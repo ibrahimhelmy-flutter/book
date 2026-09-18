@@ -235,7 +235,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
           >
             <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-            <span>الامتحانات</span>
+            <span>الأسئلة والامتحانات</span>
           </Link>
         </div>
       </div>

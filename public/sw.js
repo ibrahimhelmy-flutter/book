@@ -3,7 +3,7 @@
  * Provides robust offline support, App Shell caching, and custom offline-pack caching.
  */
 
-const APP_VERSION = '1.0.1';
+const APP_VERSION = '1.0.3';
 const CONTENT_VERSION = '2026.09.11';
 const CACHE_VERSION = `v${APP_VERSION}`;
 const APP_SHELL_CACHE = `ai-curriculum-shell-${CACHE_VERSION}`;
@@ -23,7 +23,7 @@ const PRECACHE_ASSETS = [
   './dashboard/'
 ];
 
-// Install Event: Cache App Shell (does NOT force skipWaiting to prevent mid-session chunk mismatch)
+// Install Event: Cache App Shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(APP_SHELL_CACHE).then((cache) => {
@@ -34,7 +34,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate Event: Clean up stale caches
+// Activate Event: Clean up stale caches and claim clients
 self.addEventListener('activate', (event) => {
   const currentCaches = [APP_SHELL_CACHE, OFFLINE_PACK_CACHE];
   event.waitUntil(
@@ -61,6 +61,9 @@ self.addEventListener('fetch', (event) => {
 
   // Ignore browser extensions or non-http protocols
   if (!url.protocol.startsWith('http')) return;
+
+  // On localhost in development, bypass caching so code changes are visible immediately
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return;
 
   // Strategy 1: Static assets (Images, Fonts, CSS, JS, Chunks) -> Cache First
   const isStaticAsset =

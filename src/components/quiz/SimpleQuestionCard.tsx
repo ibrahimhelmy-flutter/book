@@ -6,11 +6,14 @@ import {
   SimpleDifficulty,
   DIFFICULTY_LABELS_AR,
 } from "@/lib/practice-data";
-import { Check, X, RotateCcw } from "lucide-react";
+import { Check, X, RotateCcw, Sparkles } from "lucide-react";
 
 interface Props {
   question: SimpleQuestion;
   questionNumber?: number;
+  lessonBadge?: string;
+  chapterBadge?: string;
+  isUnitReview?: boolean;
   onAnswerSelected?: (isCorrect: boolean) => void;
 }
 
@@ -37,6 +40,9 @@ const OPTION_LETTERS = ["أ", "ب", "ج", "د"];
 export function SimpleQuestionCard({
   question,
   questionNumber,
+  lessonBadge,
+  chapterBadge,
+  isUnitReview,
   onAnswerSelected,
 }: Props) {
   // Selected option text (null until student interacts)
@@ -67,14 +73,35 @@ export function SimpleQuestionCard({
       dir="rtl"
       className="bg-slate-900/90 border border-slate-800/90 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 shadow-xl space-y-4 sm:space-y-5 transition-all hover:border-slate-700/80"
     >
-      {/* 1. Header: Difficulty Badge + Question Number */}
-      <div className="flex items-center justify-between gap-3 border-b border-slate-800/70 pb-3 sm:pb-4">
-        <span
-          className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold border ${diffStyle.badge}`}
-        >
-          <span className={`w-1.5 h-1.5 rounded-full ${diffStyle.dot}`} />
-          <span>{diffLabel}</span>
-        </span>
+      {/* 1. Header: Difficulty Badge + Unit Review + Lesson/Chapter info + Question Number */}
+      <div className="flex items-center justify-between gap-3 border-b border-slate-800/70 pb-3 sm:pb-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold border ${diffStyle.badge}`}
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${diffStyle.dot}`} />
+            <span>{diffLabel}</span>
+          </span>
+
+          {isUnitReview && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-xs">
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>مراجعة شاملة على الوحدة</span>
+            </span>
+          )}
+
+          {lessonBadge && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+              <span>{lessonBadge}</span>
+            </span>
+          )}
+
+          {chapterBadge && !lessonBadge && !isUnitReview && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+              <span>{chapterBadge}</span>
+            </span>
+          )}
+        </div>
 
         {questionNumber !== undefined && (
           <span className="text-xs font-mono font-bold text-slate-400">
@@ -171,14 +198,20 @@ export function SimpleQuestionCard({
             <span className="shrink-0 mt-0.5 font-bold text-base">
               {isCorrect ? "✓" : "✕"}
             </span>
-            <div className="text-xs sm:text-sm leading-relaxed">
+            <div className="text-xs sm:text-sm leading-relaxed space-y-1">
               <div className="font-bold">
                 {isCorrect ? "إجابة صحيحة! أحسنت 👏" : "إجابة غير صحيحة"}
               </div>
-              <div className="text-slate-300 mt-0.5">
+              <div className="text-slate-300">
                 <span className="font-bold text-white">الإجابة الصحيحة: </span>
                 <span>{question.answer}</span>
               </div>
+              {(question as any).explanation && (
+                <div className="mt-2 pt-2 border-t border-white/10 text-xs text-slate-200">
+                  <span className="font-bold text-indigo-300">💡 الشرح والتوضيح: </span>
+                  <span>{(question as any).explanation}</span>
+                </div>
+              )}
             </div>
           </div>
 

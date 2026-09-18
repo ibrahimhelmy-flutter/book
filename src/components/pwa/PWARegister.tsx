@@ -11,6 +11,33 @@ export function PWARegister() {
   useEffect(() => {
     // 1. Initial online status check
     if (typeof window !== "undefined") {
+      // In development or on localhost, proactively unregister any active service worker and clear caches.
+      // This prevents stale webpack chunks from being served and causing React hydration mismatches.
+      const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      if (isLocalhost) {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            if (registrations.length > 0) {
+              for (const reg of registrations) {
+                reg.unregister();
+              }
+              if ("caches" in window) {
+                caches.keys().then((keys) => {
+                  for (const key of keys) {
+                    caches.delete(key);
+                  }
+                });
+              }
+              if (navigator.serviceWorker.controller && !sessionStorage.getItem("sw_cleared_dev")) {
+                sessionStorage.setItem("sw_cleared_dev", "1");
+                window.location.reload();
+              }
+            }
+          });
+        }
+        return;
+      }
+
       setIsOffline(!navigator.onLine);
 
       const handleOnline = () => setIsOffline(false);

@@ -68,6 +68,7 @@ export interface DeepChallengingQuestion {
   teacherDiscussionPrompt?: string;
   trapType?: string;
   isExamLikely?: boolean;
+  isUnitReview?: boolean;
   source?: ProvenanceSource & {
     curriculumEvidence?: string | CurriculumEvidenceItem;
   };
