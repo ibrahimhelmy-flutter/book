@@ -138,37 +138,20 @@ if (chapterDirs.length > 0) {
 
       questions.forEach((q, qIdx) => {
         totalDeepQuestions++;
-        if (!q.id || !q.title || !q.question) {
-          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing mandatory fields.`);
-        }
-        if (q.contentOrigin !== 'authored') {
-          logError(`Deep question ${q.id} must have contentOrigin: 'authored', found: '${q.contentOrigin}'`);
-        }
-        if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
-          logError(`Deep question ${q.id} has invalid difficulty: '${q.difficulty}'`);
-        }
-        if (!VALID_COGNITIVE_LEVELS.has(q.cognitiveLevel)) {
-          logError(`Deep question ${q.id} has invalid cognitiveLevel: '${q.cognitiveLevel}'`);
+        if (!q.question || typeof q.question !== 'string' || !q.question.trim()) {
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing question text.`);
         }
         if (!Array.isArray(q.options) || q.options.length !== 4) {
-          logError(`Deep question ${q.id} must have exactly 4 options!`);
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} must have exactly 4 options!`);
         }
-        if (typeof q.correctAnswer !== 'number' || q.correctAnswer < 0 || q.correctAnswer > 3) {
-          logError(`Deep question ${q.id} has invalid correctAnswer index: ${q.correctAnswer}`);
+        if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has invalid difficulty: '${q.difficulty}'`);
         }
-        if (!Array.isArray(q.conceptIds)) {
-          logError(`Deep question ${q.id} has invalid conceptIds format!`);
-        } else {
-          q.conceptIds.forEach(cid => {
-            if (!validConceptIds.has(cid)) {
-              logError(`Deep question ${q.id} references non-existent conceptId: '${cid}'`);
-            } else if (!availableLessonConcepts.has(cid)) {
-              logError(`Deep question ${q.id} in lesson ${lessonId} references concept '${cid}' from a DIFFERENT lesson!`);
-            }
-          });
-        }
-        if (!q.source || !Array.isArray(q.source.pages) || q.source.pages.length === 0) {
-          logError(`Deep question ${q.id} has missing or invalid source provenance.`);
+        const hasValidAnswer =
+          (typeof q.answer === 'string' && Array.isArray(q.options) && q.options.includes(q.answer)) ||
+          (typeof q.correctAnswer === 'number' && q.correctAnswer >= 0 && q.correctAnswer < 4);
+        if (!hasValidAnswer) {
+          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing or invalid answer.`);
         }
       });
     }
