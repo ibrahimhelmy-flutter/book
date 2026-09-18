@@ -9,15 +9,18 @@ import { LESSON_1_1_DEEP_QUESTIONS } from "./lesson-1-1";
 import { LESSON_1_2_DEEP_QUESTIONS } from "./lesson-1-2";
 import { LESSON_1_3_DEEP_QUESTIONS } from "./lesson-1-3";
 import { LESSON_1_4_DEEP_QUESTIONS } from "./lesson-1-4";
+import { UNIT_1_REVIEW_DEEP_QUESTIONS } from "./unit-1-review";
 
 export * from "./lesson-1-1";
 export * from "./lesson-1-2";
 export * from "./lesson-1-3";
 export * from "./lesson-1-4";
+export * from "./unit-1-review";
 
 export const CHAPTER_1_DEEP_QUESTIONS: Record<string, DeepChallengingQuestion[]> = {
   "1-1": LESSON_1_1_DEEP_QUESTIONS,
   "1-2": LESSON_1_2_DEEP_QUESTIONS,
   "1-3": LESSON_1_3_DEEP_QUESTIONS,
   "1-4": LESSON_1_4_DEEP_QUESTIONS,
+  "1-review": UNIT_1_REVIEW_DEEP_QUESTIONS,
 };

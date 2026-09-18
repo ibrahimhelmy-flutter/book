@@ -4,9 +4,17 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud, CheckCircle2 } from "lucide-react";
+import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud } from "lucide-react";
 import { CURRENT_BOOK } from "@/data/books";
 import { BookSelector } from "../common/BookSelector";
+
+const NAV_LINKS = [
+  { href: "/", label: "الرئيسية", icon: BookOpen },
+  { href: "/exams", label: "الأسئلة والامتحانات", icon: Award },
+  { href: "/simulators", label: "المحاكيات التفاعلية", icon: Sparkles },
+  { href: "/glossary", label: "المصطلحات", icon: BookA },
+  { href: "/dashboard", label: "لوحة الإنجاز", icon: LayoutDashboard },
+] as const;
 
 const SearchModal = dynamic(
   () => import("../common/SearchModal").then((mod) => mod.SearchModal),
@@ -41,15 +49,6 @@ export function Navbar() {
     }
   }, [pathname]);
 
-  const navLinks = [
-    { href: "/", label: "الرئيسية", icon: BookOpen },
-    { href: "/practice", label: "أسئلة الدروس", icon: CheckCircle2 },
-    { href: "/simulators", label: "المحاكيات التفاعلية", icon: Sparkles },
-    { href: "/glossary", label: "المصطلحات", icon: BookA },
-    { href: "/exams", label: "الامتحانات", icon: Award },
-    { href: "/dashboard", label: "لوحة الإنجاز", icon: LayoutDashboard },
-  ];
-
   return (
     <>
       {/* Simple, Non-fixed Clean Header */}
@@ -73,14 +72,17 @@ export function Navbar() {
             </div>
 
             {/* Clear, Minimal Navigation Links */}
-            <nav className="hidden md:flex items-center gap-1.5">
-              {navLinks.map((link) => {
+            <nav className="hidden md:flex items-center gap-1.5" suppressHydrationWarning>
+              {NAV_LINKS.map((link) => {
                 const Icon = link.icon;
-                const isActive = pathname === link.href;
+                const isActive =
+                  pathname === link.href ||
+                  (link.href === "/exams" && pathname === "/practice");
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
+                    suppressHydrationWarning
                     className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                       isActive
                         ? "bg-indigo-600 text-white"
@@ -181,13 +183,16 @@ export function Navbar() {
               <span>تحميل المنهج بدون إنترنت (Offline Pack) ⚡</span>
             </button>
 
-            {navLinks.map((link) => {
+            {NAV_LINKS.map((link) => {
               const Icon = link.icon;
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href ||
+                (link.href === "/exams" && pathname === "/practice");
               return (
                 <Link
                   key={link.href}
                   href={link.href}
+                  suppressHydrationWarning
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`p-2.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors block ${
                     isActive ? "bg-indigo-600 text-white" : "text-slate-300 hover:bg-slate-900"
