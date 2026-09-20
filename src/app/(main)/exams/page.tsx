@@ -11,6 +11,7 @@ import {
 } from "@/lib/practice-data";
 import { GeneratedExamModel } from "@/lib/exam-generator/types";
 import { SimpleQuestionCard } from "@/components/quiz/SimpleQuestionCard";
+import { SingleQuestionPlayer, UserAnswerRecord } from "@/components/quiz/SingleQuestionPlayer";
 import { ExamInteractiveRunner } from "@/components/exam-generator/ExamInteractiveRunner";
 import { ComponentErrorBoundary } from "@/components/common/ComponentErrorBoundary";
 import {
@@ -32,6 +33,7 @@ import {
   X,
   ListFilter,
   SlidersHorizontal,
+  Compass,
 } from "lucide-react";
 
 export default function UnifiedQuestionsAndExamsPage() {
@@ -74,6 +76,11 @@ export default function UnifiedQuestionsAndExamsPage() {
   const [isExamConfigModalOpen, setIsExamConfigModalOpen] = useState<boolean>(false);
   const [examCountChoice, setExamCountChoice] = useState<number>(20);
 
+  // 9. Single question player mode & answer tracking
+  const [practiceDisplayMode, setPracticeDisplayMode] = useState<"single" | "list">("single");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [userAnswers, setUserAnswers] = useState<Record<string, UserAnswerRecord>>({});
+
   // Available chapters from curriculum data
   const chapters = CURRICULUM_DATA;
 
@@ -99,6 +106,7 @@ export default function UnifiedQuestionsAndExamsPage() {
       // When chapters change, reset lesson selection so it defaults to all in selected
       setSelectedLessonKeys([]);
       setPage(1);
+      setCurrentQuestionIndex(0);
       return next;
     });
   };
@@ -108,6 +116,7 @@ export default function UnifiedQuestionsAndExamsPage() {
     setSelectedLessonKeys([]);
     setIsUnitReviewOnly(false);
     setPage(1);
+    setCurrentQuestionIndex(0);
   };
 
   // Handle Lesson selection/toggle
@@ -120,6 +129,7 @@ export default function UnifiedQuestionsAndExamsPage() {
         next = [...prev, lessonKey];
       }
       setPage(1);
+      setCurrentQuestionIndex(0);
       return next;
     });
   };
@@ -127,12 +137,14 @@ export default function UnifiedQuestionsAndExamsPage() {
   const handleSelectAllLessons = () => {
     setSelectedLessonKeys([]);
     setPage(1);
+    setCurrentQuestionIndex(0);
   };
 
   const handleClearAllLessons = () => {
     // If cleared, select nothing
     setSelectedLessonKeys(["NONE"]);
     setPage(1);
+    setCurrentQuestionIndex(0);
   };
 
   // Toggle Unit Review Only mode
@@ -144,6 +156,7 @@ export default function UnifiedQuestionsAndExamsPage() {
       }
       setSelectedLessonKeys([]);
       setPage(1);
+      setCurrentQuestionIndex(0);
       return next;
     });
   };
@@ -156,6 +169,7 @@ export default function UnifiedQuestionsAndExamsPage() {
     setSelectedDifficulty("all");
     setSearchQuery("");
     setPage(1);
+    setCurrentQuestionIndex(0);
   };
 
   // Filtered questions
@@ -222,12 +236,44 @@ export default function UnifiedQuestionsAndExamsPage() {
     return filteredQuestions.slice(start, start + pageSize);
   }, [filteredQuestions, safePage, pageSize]);
 
-  // Answer selection tracker
+  // Answer selection tracker for list view
   const handleAnswerSelected = (isCorrect: boolean) => {
     setScoreStats((prev) => ({
       answered: prev.answered + 1,
       correct: isCorrect ? prev.correct + 1 : prev.correct,
     }));
+  };
+
+  // Single question answer tracker
+  const handleAnswerSelectedSingle = (questionId: string, optionText: string, isCorrect: boolean) => {
+    setUserAnswers((prev) => ({
+      ...prev,
+      [questionId]: { selectedOption: optionText, isCorrect },
+    }));
+    setScoreStats((prev) => ({
+      answered: prev.answered + 1,
+      correct: isCorrect ? prev.correct + 1 : prev.correct,
+    }));
+  };
+
+  const handleResetSingleQuestion = (questionId: string) => {
+    const existing = userAnswers[questionId];
+    if (existing) {
+      setScoreStats((prev) => ({
+        answered: Math.max(0, prev.answered - 1),
+        correct: Math.max(0, prev.correct - (existing.isCorrect ? 1 : 0)),
+      }));
+    }
+    setUserAnswers((prev) => {
+      const next = { ...prev };
+      delete next[questionId];
+      return next;
+    });
+  };
+
+  const handleResetAllAnswers = () => {
+    setUserAnswers({});
+    setScoreStats({ answered: 0, correct: 0 });
   };
 
   // Launch timed interactive exam with currently filtered questions
@@ -266,7 +312,7 @@ export default function UnifiedQuestionsAndExamsPage() {
       maxCount = 30;
     } else if (presetKey === "UNIT_1_REVIEW") {
       presetQuestions = allQuestions.filter((q) => q.isUnitReview || q.lessonKey === "1-review");
-      title = "امتحان مراجعة الوحدة الأولى: أسئلة الربط والتحليل (30 سؤالاً)";
+      title = `امتحان مراجعة الوحدة الأولى: أسئلة الربط والتحليل الشاملة (${Math.min(presetQuestions.length, 30)} سؤالاً)`;
       duration = 45;
       maxCount = 30;
     } else {
@@ -655,6 +701,7 @@ export default function UnifiedQuestionsAndExamsPage() {
                 onClick={() => {
                   setSelectedDifficulty("all");
                   setPage(1);
+                  setCurrentQuestionIndex(0);
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   selectedDifficulty === "all"
@@ -673,6 +720,7 @@ export default function UnifiedQuestionsAndExamsPage() {
                 onClick={() => {
                   setSelectedDifficulty("easy");
                   setPage(1);
+                  setCurrentQuestionIndex(0);
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   selectedDifficulty === "easy"
@@ -691,6 +739,7 @@ export default function UnifiedQuestionsAndExamsPage() {
                 onClick={() => {
                   setSelectedDifficulty("medium");
                   setPage(1);
+                  setCurrentQuestionIndex(0);
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   selectedDifficulty === "medium"
@@ -709,6 +758,7 @@ export default function UnifiedQuestionsAndExamsPage() {
                 onClick={() => {
                   setSelectedDifficulty("hard");
                   setPage(1);
+                  setCurrentQuestionIndex(0);
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   selectedDifficulty === "hard"
@@ -732,6 +782,7 @@ export default function UnifiedQuestionsAndExamsPage() {
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   setPage(1);
+                  setCurrentQuestionIndex(0);
                 }}
                 placeholder="بحث في نص السؤال أو الخيارات..."
                 className="w-full pl-8 pr-9 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
@@ -863,12 +914,14 @@ export default function UnifiedQuestionsAndExamsPage() {
                     امتحان المراجعة الشاملة لربط وتحليل مفاهيم الوحدة الأولى
                   </h4>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    30 سؤال اختيار من متعدد من بنك أسئلة (chapter1.md) تغطي الذكاء الاصطناعي، الرعاية الصحية، الأخلاقيات، ومجالات المستقبل مع إحصائيات فورية وتصحيح تفاعلي.
+                    {unitReviewQuestionsCount} سؤال اختيار من متعدد من بنك أسئلة (chapter1.json) تغطي كافة موضوعات ودروس الوحدة الأولى وأسئلة الربط الشاملة مع تصحيح تفاعلي وإحصائيات فورية.
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
-                  <span className="text-xs font-bold text-amber-400">30 سؤالاً • 60 درجة</span>
+                  <span className="text-xs font-bold text-amber-400">
+                    {Math.min(unitReviewQuestionsCount, 30)} سؤالاً في الامتحان • {Math.min(unitReviewQuestionsCount, 30) * 2} درجة (من بنك {unitReviewQuestionsCount} سؤال)
+                  </span>
                   <span className="px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-500 group-hover:from-amber-500 group-hover:to-amber-400 text-slate-950 font-black rounded-xl text-xs transition-all shadow-md flex items-center gap-1.5">
                     <Play className="w-3.5 h-3.5 fill-slate-950" />
                     <span>خوض الامتحان الآن</span>
@@ -923,9 +976,9 @@ export default function UnifiedQuestionsAndExamsPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-black text-white flex items-center gap-2">
-                      <span>أسئلة المراجعة الشاملة على الوحدة الأولى (30 سؤالاً)</span>
+                      <span>أسئلة المراجعة الشاملة على الوحدة الأولى ({filteredQuestions.length} سؤالاً)</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
-                        معتمدة من chapter1.md
+                        معتمدة من chapter1.json
                       </span>
                     </h4>
                     <p className="text-xs text-amber-300/80">
@@ -987,77 +1040,130 @@ export default function UnifiedQuestionsAndExamsPage() {
               </div>
             )}
 
-            {/* Questions List */}
-            <div className="space-y-4 sm:space-y-6">
-              {paginatedQuestions.map((q, idx) => {
-                const questionNumber = (safePage - 1) * pageSize + idx + 1;
-                return (
-                  <SimpleQuestionCard
-                    key={`${safePage}-${q.id}-${idx}`}
-                    question={q}
-                    questionNumber={questionNumber}
-                    lessonBadge={q.isUnitReview ? "مراجعة شاملة" : `درس ${q.lessonKey}: ${q.lessonTitle}`}
-                    chapterBadge={`الوحدة ${q.chapterNumber}`}
-                    isUnitReview={q.isUnitReview}
-                    onAnswerSelected={handleAnswerSelected}
-                  />
-                );
-              })}
-
-              {paginatedQuestions.length === 0 && (
-                <div className="p-12 text-center text-slate-400 bg-slate-900/50 border border-slate-800 rounded-3xl space-y-3">
-                  <Layers className="w-10 h-10 text-slate-600 mx-auto" />
-                  <p className="font-bold text-white text-base">لا توجد أسئلة تطابق الفلتر المحدد حالياً.</p>
-                  <p className="text-xs text-slate-500">
-                    جرب تغيير تحديد الدروس أو اختيار مستوى صعوبة آخر أو مسح كلمة البحث.
-                  </p>
+            {/* View Mode Toggle Bar (سؤال بسؤال vs قائمة) */}
+            <div className="flex items-center justify-between gap-3 flex-wrap bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 sm:px-5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-400 font-bold">طريقة التصفح:</span>
+                <div className="bg-slate-950 border border-slate-800 p-1 rounded-xl flex items-center gap-1">
                   <button
                     type="button"
-                    onClick={handleResetFilters}
-                    className="mt-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
+                    onClick={() => setPracticeDisplayMode("single")}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      practiceDisplayMode === "single"
+                        ? "bg-indigo-600 text-white shadow-sm shadow-indigo-600/30"
+                        : "text-slate-400 hover:text-white"
+                    }`}
                   >
-                    إعادة تعيين الفلتر
+                    <Compass className="w-3.5 h-3.5" />
+                    <span>سؤال بسؤال (مريح وثابت)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPracticeDisplayMode("list")}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                      practiceDisplayMode === "list"
+                        ? "bg-indigo-600 text-white shadow-sm shadow-indigo-600/30"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <ListFilter className="w-3.5 h-3.5" />
+                    <span>عرض كقائمة</span>
                   </button>
                 </div>
-              )}
+              </div>
+
+              <div className="text-xs text-slate-400 font-mono flex items-center gap-2">
+                <span>الأسئلة المطابقة:</span>
+                <span className="text-indigo-400 font-bold bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md">
+                  {filteredQuestions.length} سؤال
+                </span>
+              </div>
             </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <nav
-                aria-label="تصفح صفحات الأسئلة"
-                className="flex items-center justify-between gap-2 p-2.5 bg-slate-900/70 border border-slate-800 rounded-2xl"
-              >
+            {/* Questions Viewport */}
+            {filteredQuestions.length === 0 ? (
+              <div className="p-12 text-center text-slate-400 bg-slate-900/50 border border-slate-800 rounded-3xl space-y-3">
+                <Layers className="w-10 h-10 text-slate-600 mx-auto" />
+                <p className="font-bold text-white text-base">لا توجد أسئلة تطابق الفلتر المحدد حالياً.</p>
+                <p className="text-xs text-slate-500">
+                  جرب تغيير تحديد الدروس أو اختيار مستوى صعوبة آخر أو مسح كلمة البحث.
+                </p>
                 <button
                   type="button"
-                  disabled={safePage <= 1}
-                  onClick={() => {
-                    setPage((p) => Math.max(1, p - 1));
-                    window.scrollTo({ top: 400, behavior: "smooth" });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                  onClick={handleResetFilters}
+                  className="mt-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
                 >
-                  <ChevronRight className="w-4 h-4" />
-                  <span>الصفحة السابقة</span>
+                  إعادة تعيين الفلتر
                 </button>
+              </div>
+            ) : practiceDisplayMode === "single" ? (
+              /* Single Question Viewport - LOCKED BUTTON POSITIONS & SMOOTH TRANSITION */
+              <SingleQuestionPlayer
+                questions={filteredQuestions}
+                currentIndex={currentQuestionIndex}
+                onIndexChange={setCurrentQuestionIndex}
+                userAnswers={userAnswers}
+                onAnswerSelected={handleAnswerSelectedSingle}
+                onResetQuestion={handleResetSingleQuestion}
+                onResetAll={handleResetAllAnswers}
+                onSwitchToListMode={() => setPracticeDisplayMode("list")}
+              />
+            ) : (
+              /* List Mode Viewport */
+              <div className="space-y-4 sm:space-y-6">
+                {paginatedQuestions.map((q, idx) => {
+                  const questionNumber = (safePage - 1) * pageSize + idx + 1;
+                  return (
+                    <SimpleQuestionCard
+                      key={`${safePage}-${q.id}-${idx}`}
+                      question={q}
+                      questionNumber={questionNumber}
+                      lessonBadge={q.isUnitReview ? "مراجعة شاملة" : `درس ${q.lessonKey}: ${q.lessonTitle}`}
+                      chapterBadge={`الوحدة ${q.chapterNumber}`}
+                      isUnitReview={q.isUnitReview}
+                      onAnswerSelected={handleAnswerSelected}
+                    />
+                  );
+                })}
 
-                <span className="text-xs font-mono font-bold text-slate-300">
-                  صفحة {safePage} من {totalPages} ({filteredQuestions.length} سؤال)
-                </span>
+                {/* Pagination Controls for List Mode */}
+                {totalPages > 1 && (
+                  <nav
+                    aria-label="تصفح صفحات الأسئلة"
+                    className="flex items-center justify-between gap-2 p-2.5 bg-slate-900/70 border border-slate-800 rounded-2xl"
+                  >
+                    <button
+                      type="button"
+                      disabled={safePage <= 1}
+                      onClick={() => {
+                        setPage((p) => Math.max(1, p - 1));
+                        window.scrollTo({ top: 400, behavior: "smooth" });
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                      <span>الصفحة السابقة</span>
+                    </button>
 
-                <button
-                  type="button"
-                  disabled={safePage >= totalPages}
-                  onClick={() => {
-                    setPage((p) => Math.min(totalPages, p + 1));
-                    window.scrollTo({ top: 400, behavior: "smooth" });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <span>الصفحة التالية</span>
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-              </nav>
+                    <span className="text-xs font-mono font-bold text-slate-300">
+                      صفحة {safePage} من {totalPages} ({filteredQuestions.length} سؤال)
+                    </span>
+
+                    <button
+                      type="button"
+                      disabled={safePage >= totalPages}
+                      onClick={() => {
+                        setPage((p) => Math.min(totalPages, p + 1));
+                        window.scrollTo({ top: 400, behavior: "smooth" });
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <span>الصفحة التالية</span>
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                  </nav>
+                )}
+              </div>
             )}
           </section>
         )}

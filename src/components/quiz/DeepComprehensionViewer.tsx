@@ -14,6 +14,8 @@ import {
   ChevronRight,
   Filter,
   Brain,
+  Sparkles,
+  HelpCircle,
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 
@@ -130,6 +132,43 @@ export function DeepComprehensionViewer({ lesson }: Props) {
       cardRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   };
+
+  const handlePrevious = () => {
+    if (safeIndex > 0) {
+      handleNavigate(safeIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (safeIndex < totalFiltered - 1) {
+      handleNavigate(safeIndex + 1);
+    }
+  };
+
+  // Keyboard navigation support
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft") {
+        handleNext();
+      } else if (e.key === "ArrowRight") {
+        handlePrevious();
+      } else if (["1", "2", "3", "4"].includes(e.key) && currentQ) {
+        const qKey = currentQ.originalIndex;
+        if (userAnswers[qKey] === undefined) {
+          const optionIdx = parseInt(e.key, 10) - 1;
+          if (currentQ.options && currentQ.options[optionIdx]) {
+            handleSelectOption(currentQ.options[optionIdx]);
+          }
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [safeIndex, totalFiltered, currentQ, userAnswers]);
 
   if (!allQuestions || allQuestions.length === 0) {
     return (
@@ -270,7 +309,7 @@ export function DeepComprehensionViewer({ lesson }: Props) {
           ref={cardRef}
           className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 shadow-xl transition-all"
         >
-          {/* Header: Difficulty Badge + Counter */}
+          {/* Header: Difficulty Badge + Quick Top Controls */}
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <span
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${diffConf.badgeClass}`}
@@ -279,9 +318,30 @@ export function DeepComprehensionViewer({ lesson }: Props) {
               <span>{diffConf.label}</span>
             </span>
 
-            <span className="text-xs font-mono font-bold text-slate-400">
-              سؤال {safeIndex + 1} من {totalFiltered}
-            </span>
+            {/* Top Quick Navigation Buttons (Immovable at Top) */}
+            <div className="flex items-center gap-1 bg-slate-950/80 border border-slate-800 rounded-xl p-0.5 shadow-xs">
+              <button
+                type="button"
+                disabled={safeIndex <= 0}
+                onClick={handlePrevious}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
+                title="السؤال السابق (سهم يمين)"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              <span className="px-2 py-0.5 text-xs font-mono font-bold text-slate-300">
+                سؤال {safeIndex + 1} من {totalFiltered}
+              </span>
+              <button
+                type="button"
+                disabled={safeIndex >= totalFiltered - 1}
+                onClick={handleNext}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:pointer-events-none transition-colors cursor-pointer"
+                title="السؤال التالي (سهم يسار)"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Question Text */}
@@ -351,73 +411,123 @@ export function DeepComprehensionViewer({ lesson }: Props) {
             })}
           </div>
 
-          {/* Answer Feedback (Revealed upon selection) */}
+          {/* ========================================================
+              3. PERMANENT NAVIGATION DOCK (ABOVE THE ANSWER BOX)
+              Placing Next/Previous buttons HERE ensures they NEVER
+              shift or jump when the correct answer & explanation appear!
+              ======================================================== */}
+          <div className="mt-2 py-3 px-3 sm:px-5 rounded-2xl bg-slate-950/80 border border-slate-800/90 shadow-lg flex items-center justify-between gap-3 select-none">
+            {/* Right side (in RTL): Previous Button (السابق) */}
+            <button
+              type="button"
+              disabled={safeIndex <= 0}
+              onClick={handlePrevious}
+              className="h-11 sm:h-12 px-4 sm:px-6 rounded-xl sm:rounded-2xl bg-slate-800 hover:bg-slate-700 disabled:opacity-20 disabled:pointer-events-none text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shrink-0 border border-slate-700/60 active:scale-95 shadow-sm"
+              title="السؤال السابق (سهم يمين)"
+            >
+              <ChevronRight className="w-4 h-4" />
+              <span>السابق</span>
+              <kbd className="hidden lg:inline-flex text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
+                →
+              </kbd>
+            </button>
+
+            {/* Center: Question Progress */}
+            <div className="flex items-center gap-2">
+              <div className="px-3 sm:px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono font-bold flex items-center gap-2">
+                <span className="text-slate-400">سؤال</span>
+                <span className="text-indigo-400 font-black">{safeIndex + 1}</span>
+                <span className="text-slate-600">/</span>
+                <span className="text-slate-400">{totalFiltered}</span>
+              </div>
+            </div>
+
+            {/* Left side (in RTL): Next Button (التالي) */}
+            <button
+              type="button"
+              disabled={safeIndex >= totalFiltered - 1}
+              onClick={handleNext}
+              className="h-11 sm:h-12 px-5 sm:px-8 rounded-xl sm:rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-20 disabled:pointer-events-none text-white text-xs sm:text-sm font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-indigo-600/25 shrink-0 border border-indigo-400/30 active:scale-95"
+              title="السؤال التالي (سهم يسار)"
+            >
+              <span>التالي</span>
+              <ChevronLeft className="w-4 h-4" />
+              <kbd className="hidden lg:inline-flex text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/30 text-indigo-200 border border-white/10">
+                ←
+              </kbd>
+            </button>
+          </div>
+
+          {/* ========================================================
+              4. FEEDBACK & EXPLANATION BOX (BELOW NAVIGATION BUTTONS)
+              Since this is located BELOW the navigation dock, its
+              appearance expands downward and NEVER moves the buttons!
+              ======================================================== */}
           {hasInteracted ? (
             <div
-              className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fadeIn ${
+              className={`p-4 sm:p-5 rounded-2xl border transition-all animate-fadeIn ${
                 isCorrect
                   ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"
                   : "bg-rose-950/40 border-rose-500/40 text-rose-200"
               }`}
             >
-              <div className="flex items-start gap-2.5">
-                <span className="shrink-0 mt-0.5 font-bold text-base">
-                  {isCorrect ? "✓" : "✕"}
-                </span>
-                <div className="text-xs sm:text-sm leading-relaxed">
-                  <div className="font-bold">
-                    {isCorrect ? "إجابة صحيحة! أحسنت 👏" : "إجابة غير صحيحة"}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 flex-1">
+                  <div className="shrink-0 mt-0.5">
+                    {isCorrect ? (
+                      <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
+                        ✓
+                      </div>
+                    ) : (
+                      <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center font-bold">
+                        ✕
+                      </div>
+                    )}
                   </div>
-                  <div className="text-slate-300 mt-0.5">
-                    <span className="font-bold text-white">الإجابة الصحيحة: </span>
-                    <span>{currentQ.answer}</span>
+                  <div className="text-xs sm:text-sm leading-relaxed space-y-2 flex-1">
+                    <div className="font-black text-sm sm:text-base">
+                      {isCorrect ? "إجابة صحيحة! أحسنت 👏" : "إجابة غير صحيحة"}
+                    </div>
+                    {!isCorrect && (
+                      <div className="text-slate-300">
+                        <span className="font-bold text-white">الإجابة الصحيحة: </span>
+                        <span className="text-emerald-300 font-medium">{currentQ.answer}</span>
+                      </div>
+                    )}
+                    {(currentQ.depthExplanation || (currentQ as any).explanation) && (
+                      <div className="mt-2 pt-2 border-t border-white/10 text-xs sm:text-sm text-slate-200 leading-relaxed">
+                        <span className="font-bold text-indigo-300">💡 الشرح والتحليل المعمق: </span>
+                        <span>{currentQ.depthExplanation || (currentQ as any).explanation}</span>
+                      </div>
+                    )}
+                    {currentQ.misconceptionTrap && (
+                      <div className="mt-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-200 text-xs leading-relaxed">
+                        <span className="font-bold text-amber-300">⚠️ انتبه لمصيدة الفهم الشائع: </span>
+                        <span>{currentQ.misconceptionTrap}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              <button
-                type="button"
-                onClick={handleResetCurrent}
-                className="self-end sm:self-center px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>إعادة المحاولة</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={handleResetCurrent}
+                  className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer border border-slate-700 shadow-xs"
+                  title="إعادة المحاولة لهذا السؤال"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">إعادة المحاولة</span>
+                </button>
+              </div>
             </div>
           ) : (
-            <div className="pt-1">
-              <p className="text-xs text-slate-400">
-                💡 اضغط على أي اختيار للتحقق من صحة الإجابة.
+            <div className="pt-1 text-center sm:text-right">
+              <p className="text-xs text-slate-500 flex items-center justify-center sm:justify-start gap-1.5">
+                <HelpCircle className="w-3.5 h-3.5 text-indigo-400/70" />
+                <span>اختر إحدى الإجابات للتحقق الفوري، وستظهر النتيجة والشرح هنا بالأسفل دون التأثير على مكان الأزرار.</span>
               </p>
             </div>
           )}
-
-          {/* Bottom Navigation Buttons */}
-          <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-            <button
-              type="button"
-              disabled={safeIndex <= 0}
-              onClick={() => handleNavigate(safeIndex - 1)}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-            >
-              <ChevronRight className="w-4 h-4" />
-              <span>السابق</span>
-            </button>
-
-            <span className="text-xs font-mono font-bold text-slate-400">
-              {safeIndex + 1} / {totalFiltered}
-            </span>
-
-            <button
-              type="button"
-              disabled={safeIndex >= totalFiltered - 1}
-              onClick={() => handleNavigate(safeIndex + 1)}
-              className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-            >
-              <span>التالي</span>
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-          </div>
         </div>
       ) : (
         <div className="p-8 text-center text-slate-400 bg-slate-900 border border-slate-800 rounded-2xl">

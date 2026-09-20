@@ -151,12 +151,12 @@ describe("Unified Questions & Exams - Filtering & Exam Generation", () => {
     }
   });
 
-  it("Test 10: Filtering with unitReviewOnly returns exactly the 30 unit review questions from chapter1.md", () => {
+  it("Test 10: Filtering with unitReviewOnly returns all 90 unit review MCQs from chapter1.json", () => {
     const unitReviewQuestions = filterEnrichedQuestions(allQuestions, {
       unitReviewOnly: true,
     });
 
-    assert.equal(unitReviewQuestions.length, 30, "Must return exactly 30 questions from chapter1.md");
+    assert.equal(unitReviewQuestions.length, 90, "Must return all 90 unit review MCQs from chapter1.json");
     assert.ok(
       unitReviewQuestions.every((q) => q.isUnitReview === true),
       "All returned questions must have isUnitReview: true"
