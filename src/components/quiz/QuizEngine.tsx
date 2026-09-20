@@ -628,6 +628,40 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
                   </div>
                 )}
 
+                {/* Navigation Controls (Docked ABOVE feedback so feedback reveals below without jumping buttons) */}
+                <div className="w-full flex justify-between items-center gap-2.5 pt-4 pb-2 border-t border-slate-800 select-none">
+                  <button
+                    type="button"
+                    disabled={safeIndex === 0}
+                    onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+                    className="px-4 sm:px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200 shadow-sm active:scale-95"
+                  >
+                    <ChevronRight className="w-4 h-4 shrink-0" /> <span className="truncate">السابق</span>
+                  </button>
+
+                  <div className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-slate-300">
+                    <span>{safeIndex + 1}</span> / <span>{totalQuestions}</span>
+                  </div>
+
+                  {safeIndex < totalQuestions - 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
+                      className="px-4 sm:px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25 active:scale-95"
+                    >
+                      <span className="truncate">التالي</span> <ChevronLeft className="w-4 h-4 shrink-0" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleFinishQuiz}
+                      className="px-5 sm:px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white active:scale-95"
+                    >
+                      <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">تسليم النتيجة</span>
+                    </button>
+                  )}
+                </div>
+
                 {/* Instant Feedback & Model Answer Card */}
                 {shouldShowFeedback && (
                   <div
@@ -706,38 +740,6 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
               </div>
             );
           })()}
-
-          {/* Desktop Navigation Controls */}
-          <div className="hidden md:flex w-full justify-between items-center gap-2.5 pt-6 border-t border-slate-800">
-            <button
-              type="button"
-              disabled={safeIndex === 0}
-              onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-slate-200"
-            >
-              <ChevronRight className="w-4 h-4 shrink-0" /> <span className="truncate">السؤال السابق</span>
-            </button>
-
-            {safeIndex < totalQuestions - 1 ? (
-              <button
-                type="button"
-                onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
-                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-white shadow-lg shadow-indigo-600/25"
-              >
-                <span className="truncate">السؤال التالي</span> <ChevronLeft className="w-4 h-4 shrink-0" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleFinishQuiz}
-                className="px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-black rounded-xl shadow-xl shadow-emerald-600/30 transition-all cursor-pointer flex items-center gap-2 text-white"
-              >
-                <Sparkles className="w-4 h-4 shrink-0" /> <span className="truncate">تسليم الإجابات والنتيجة</span>
-              </button>
-            )}
-          </div>
-
-          {/* Mobile Navigation is now integrated directly at top so button position never jumps */}
         </div>
       ) : (
         /* Results & Answer Review View */

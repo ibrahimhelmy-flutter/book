@@ -19,6 +19,8 @@ export interface ProvenanceSource {
   lessonId?: string;
   sourceType: string;
   pageFiles?: string[];
+  sourceFile?: string;
+  authoredQuestionId?: string;
 }
 
 export interface KeyConcept {

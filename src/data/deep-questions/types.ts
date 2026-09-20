@@ -49,11 +49,13 @@ export interface DeepChallengingQuestion {
   answer: string;
   difficulty: QuestionDifficulty;
   id?: string;
+  authoredId?: string;
   lessonId?: string;
   lessonNumber?: string; // e.g. "1-1", "1-2", "4-4"
   index?: number; // 1 to 50
   type?: "mcq" | "true_false" | "scenario" | "essay";
   title?: string;
+  modelAnswer?: string;
   cognitiveLevel?: CognitiveLevel;
   conceptId?: string;
   secondaryConceptIds?: string[];
