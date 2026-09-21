@@ -9,6 +9,7 @@ import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
 import { getDeepQuestionsForLesson } from "@/data/deep-questions";
+import { getOfficialAssessmentsForLesson } from "@/data/official-assessments";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -29,6 +30,10 @@ const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500):
   });
 };
 
+const LessonOfficialAssessments = dynamic(
+  () => retryDynamicImport(() => import("../quiz/LessonOfficialAssessments").then((mod) => mod.LessonOfficialAssessments)),
+  { ssr: false }
+);
 const QuizEngine = dynamic(
   () => retryDynamicImport(() => import("../quiz/QuizEngine").then((mod) => mod.QuizEngine)),
   { ssr: false }
@@ -59,7 +64,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -154,7 +159,7 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 
 export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [activeTab, setActiveTab] = useState<"lesson" | "quiz">("lesson");
-  const [quizSubTab, setQuizSubTab] = useState<"textbook" | "essay" | "comprehension">("textbook");
+  const [quizSubTab, setQuizSubTab] = useState<"official" | "textbook" | "essay" | "comprehension">("official");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
   const [isLessonHeaderOpen, setIsLessonHeaderOpen] = useState<boolean>(false);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
@@ -165,6 +170,15 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     setIsSimulatorOpen(false);
     setIsEngineerOpen(false);
   }, [lesson.id]);
+
+  // Official Ministry assessments for this lesson
+  const officialAssessments = React.useMemo(() => {
+    return getOfficialAssessmentsForLesson(lesson.number || lesson.id);
+  }, [lesson.number, lesson.id]);
+
+  const officialQuestions = React.useMemo(() => {
+    return officialAssessments ? officialAssessments.questions : [];
+  }, [officialAssessments]);
 
   // Split lesson questions into objective textbook exercises and essay writing questions
   const textbookQuestions = React.useMemo(() => {
@@ -179,7 +193,11 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     return getDeepQuestionsForLesson(lesson);
   }, [lesson]);
 
-  const totalQuestionsCount = textbookQuestions.length + essayQuestions.length + comprehensionQuestions.length;
+  const totalQuestionsCount =
+    officialQuestions.length +
+    textbookQuestions.length +
+    essayQuestions.length +
+    comprehensionQuestions.length;
 
   const quizSectionRef = React.useRef<HTMLDivElement>(null);
 
@@ -610,7 +628,21 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+              {officialQuestions.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("quiz");
+                    setQuizSubTab("official");
+                  }}
+                  className="p-3.5 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
+                >
+                  <Award className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>التقييمات الرسمية ({officialQuestions.length}) 🏛️</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={() => {
@@ -629,9 +661,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                   setActiveTab("quiz");
                   setQuizSubTab("essay");
                 }}
-                className="p-3.5 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/30 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
+                className="p-3.5 rounded-xl bg-blue-950/40 hover:bg-blue-900/60 border border-blue-500/30 text-blue-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
               >
-                <PenTool className="w-4 h-4 text-amber-400 shrink-0" />
+                <PenTool className="w-4 h-4 text-blue-400 shrink-0" />
                 <span>أسئلة مقالية ({essayQuestions.length}) ✍️</span>
               </button>
 
@@ -651,7 +683,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
         </div>
       )}
 
-      {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 3 Clear Tabs) */}
+      {/* Standalone Quiz & Exercise Hub (Enhanced: Exactly 4 Clear Tabs) */}
       {activeTab === "quiz" && (
         <div ref={quizSectionRef} className="space-y-4 sm:space-y-6 mobile-quiz-scroll-anchor">
           {/* Quick Return to Lesson Bar */}
@@ -669,20 +701,37 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             </span>
           </div>
 
-          {/* Exactly 3 Clear Tabs Switcher: Sleek Horizontal Segmented Control */}
+          {/* Exactly 4 Clear Tabs Switcher: Sleek Horizontal Segmented Control */}
           <div
             role="tablist"
             aria-label="أقسام الأسئلة والتمارين"
-            className="h-11 sm:h-12 p-1 bg-slate-900/95 border border-slate-800 rounded-2xl flex items-center gap-1 sm:gap-1.5 shadow-lg"
+            className="h-11 sm:h-12 p-1 bg-slate-900/95 border border-slate-800 rounded-2xl flex items-center gap-1 sm:gap-1.5 shadow-lg overflow-x-auto"
           >
-            {/* 1. أسئلة من الكتاب */}
+            {/* 1. التقييمات الرسمية */}
+            <button
+              type="button"
+              role="tab"
+              aria-selected={quizSubTab === "official"}
+              aria-current={quizSubTab === "official" ? "page" : undefined}
+              onClick={() => setQuizSubTab("official")}
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                quizSubTab === "official"
+                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/30 font-black"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/80"
+              }`}
+            >
+              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
+              <span className="truncate">التقييمات الرسمية ({officialQuestions.length})</span>
+            </button>
+
+            {/* 2. أسئلة من الكتاب */}
             <button
               type="button"
               role="tab"
               aria-selected={quizSubTab === "textbook"}
               aria-current={quizSubTab === "textbook" ? "page" : undefined}
               onClick={() => setQuizSubTab("textbook")}
-              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 quizSubTab === "textbook"
                   ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
@@ -692,31 +741,31 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               <span className="truncate">كتاب ({textbookQuestions.length})</span>
             </button>
 
-            {/* 2. أسئلة مقالية محتاجة كتابة */}
+            {/* 3. أسئلة مقالية محتاجة كتابة */}
             <button
               type="button"
               role="tab"
               aria-selected={quizSubTab === "essay"}
               aria-current={quizSubTab === "essay" ? "page" : undefined}
               onClick={() => setQuizSubTab("essay")}
-              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 quizSubTab === "essay"
-                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/30 font-black"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
               }`}
             >
-              <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
+              <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-300 shrink-0" />
               <span className="truncate">مقالي ({essayQuestions.length})</span>
             </button>
 
-            {/* 3. أسئلة الفهم */}
+            {/* 4. أسئلة الفهم */}
             <button
               type="button"
               role="tab"
               aria-selected={quizSubTab === "comprehension"}
               aria-current={quizSubTab === "comprehension" ? "page" : undefined}
               onClick={() => setQuizSubTab("comprehension")}
-              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
+              className={`h-full min-w-0 flex-1 px-1.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 quizSubTab === "comprehension"
                   ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-black"
                   : "text-slate-400 hover:text-white hover:bg-slate-800/80"
@@ -726,6 +775,16 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               <span className="truncate">فهم ({comprehensionQuestions.length})</span>
             </button>
           </div>
+
+          {/* Tab 0 Content: التقييمات الرسمية للوزارة */}
+          {quizSubTab === "official" && (
+            <ComponentErrorBoundary fallbackTitle="تعذر تشغيل تقييمات الوزارة الرسمية">
+              <LessonOfficialAssessments
+                lesson={lesson}
+                assessments={officialAssessments}
+              />
+            </ComponentErrorBoundary>
+          )}
 
           {/* Tab 1 Content: أسئلة من الكتاب */}
           {quizSubTab === "textbook" && (

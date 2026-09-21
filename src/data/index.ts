@@ -6,3 +6,4 @@ export * from "./simulators";
 export * from "./books";
 export * from "./committee-questions";
 export * from "./deep-questions";
+export * from "./official-assessments";
