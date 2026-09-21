@@ -104,6 +104,93 @@ export const SPECIALIZED_COMMITTEE_QUESTIONS: CommitteeQuestion[] = ${JSON.strin
 safeWriteFileSync(path.resolve('src/data/committee-questions.ts'), committeeTsContent, 'utf-8');
 console.log(`  ✅ Generated src/data/committee-questions.ts (${committeeQuestions.length} questions)`);
 
+// 6.5. Generate src/data/official-assessments.ts from canonical official-assessments
+let officialLessonsData = [];
+if (fs.existsSync(sources.officialAssessmentsDir)) {
+  const fList = fs.readdirSync(sources.officialAssessmentsDir).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+  for (const f of fList) {
+    officialLessonsData.push(JSON.parse(fs.readFileSync(path.join(sources.officialAssessmentsDir, f), 'utf8')));
+  }
+} else if (fs.existsSync(sources.officialAssessmentsFile)) {
+  officialLessonsData = JSON.parse(fs.readFileSync(sources.officialAssessmentsFile, 'utf8'));
+}
+
+const allOfficialQuestions = officialLessonsData.flatMap(l => l.questions);
+const totalOfficialQ = allOfficialQuestions.length;
+
+const officialAssessmentsTsContent = `${AUTO_GEN_BANNER}
+export type OfficialAssessmentSectionType =
+  | "performance_task_1"
+  | "performance_task_2"
+  | "homework"
+  | "weekly_model_a"
+  | "weekly_model_b"
+  | "weekly_model_c";
+
+export interface OfficialAssessmentCitation {
+  page: number;
+  exactText: string;
+  topic?: string;
+}
+
+export interface OfficialAssessmentQuestion {
+  id: string;
+  lessonId: string;
+  lessonNumber: string;
+  lessonTitle: string;
+  chapterNumber: number;
+  chapterTitle: string;
+  sectionType: OfficialAssessmentSectionType;
+  sectionNameAr: string;
+  type: "mcq" | "essay";
+  questionNumber: number;
+  question: string;
+  options?: string[];
+  correctAnswer?: string;
+  correctAnswerIndex?: number;
+  modelAnswer: string;
+  textbookCitation: OfficialAssessmentCitation;
+  pageInPdf: number;
+  difficulty: "easy" | "medium" | "hard";
+  cognitiveLevel: string;
+}
+
+export interface OfficialLessonAssessments {
+  lessonId: string;
+  lessonNumber: string;
+  lessonTitle: string;
+  chapterNumber: number;
+  chapterTitle: string;
+  term: number;
+  bookletPages: string;
+  textbookPages: string;
+  totalQuestions: number;
+  mcqCount: number;
+  essayCount: number;
+  questions: OfficialAssessmentQuestion[];
+}
+
+export const OFFICIAL_LESSONS_ASSESSMENTS: OfficialLessonAssessments[] = ${JSON.stringify(officialLessonsData, null, 2)};
+
+export const ALL_OFFICIAL_QUESTIONS: OfficialAssessmentQuestion[] = ${JSON.stringify(allOfficialQuestions, null, 2)};
+
+export const OFFICIAL_ASSESSMENTS_BY_LESSON: Record<string, OfficialLessonAssessments> = Object.fromEntries(
+  OFFICIAL_LESSONS_ASSESSMENTS.map(l => [l.lessonNumber, l])
+);
+
+export function getOfficialAssessmentsForLesson(lessonKey: string): OfficialLessonAssessments | undefined {
+  const cleanKey = lessonKey.replace(/^lesson-/, "").trim();
+  return OFFICIAL_ASSESSMENTS_BY_LESSON[cleanKey];
+}
+
+export function getOfficialQuestionsForLesson(lessonKey: string): OfficialAssessmentQuestion[] {
+  const lesson = getOfficialAssessmentsForLesson(lessonKey);
+  return lesson ? lesson.questions : [];
+}
+`;
+safeWriteFileSync(path.resolve('src/data/official-assessments.ts'), officialAssessmentsTsContent, 'utf-8');
+console.log(`  ✅ Generated src/data/official-assessments.ts (${totalOfficialQ} official questions across ${officialLessonsData.length} lessons)`);
+
 // 7. Generate src/data/deep-questions/ from canonical modular deep-questions/
 const targetDeepQuestionsDir = path.resolve('src/data/deep-questions');
 if (!fs.existsSync(targetDeepQuestionsDir)) {

@@ -1,0 +1,44 @@
+[1] ID: OFFICIAL-1-1-PERFORMANCE_TASK_1-MCQ-1 | Lesson: lesson-1-1 | Field: question
+Pattern: القرين/القرن broken | Match: 'القرن'
+Snippet: أي من الخيارات التالية يمثل التقنية أو الحدث الرئيسي المرتبط بفترة السبعينيات والثمانينيات من القرن 
+----------------------------------------
+[2] ID: OFFICIAL-1-1-WEEKLY_MODEL_B-MCQ-1 | Lesson: lesson-1-1 | Field: options[3]
+Pattern: القرين/القرن broken | Match: 'القرن'
+Snippet: الأربعينيات من القرن العشرين.
+----------------------------------------
+[3] ID: OFFICIAL-1-1-WEEKLY_MODEL_C-ESSAY-1 | Lesson: lesson-1-1 | Field: question
+Pattern: القرين/القرن broken | Match: 'القرن'
+Snippet: ناقش أثر ظهور الويب وانتشار الإنترنت في تسعينيات القرن العشرين على إتاحة المعلومات للاستخدام التجاري
+----------------------------------------
+[4] ID: OFFICIAL-2-2-PERFORMANCE_TASK_2-MCQ-1 | Lesson: lesson-2-2 | Field: options[0]
+Pattern: Multi-isolated characters with spaces | Match: 'ق ن ا'
+Snippet: شبكة عامة مفتوحة بالكامل تتيح للمخترق ن الوصول إلى قواعد البيانات الحساسة.
+----------------------------------------
+[5] ID: OFFICIAL-4-2-PERFORMANCE_TASK_2-MCQ-1 | Lesson: lesson-4-2 | Field: options[0]
+Pattern: Multi-isolated characters with spaces | Match: 'ر ة ا'
+Snippet: جعل العناوين ضخمة ومتغيير ة الألوان عشوائيا في كل صفحة.
+----------------------------------------
+[6] ID: OFFICIAL-4-3-PERFORMANCE_TASK_1-MCQ-1 | Lesson: lesson-4-3 | Field: options[1]
+Pattern: Multi-isolated characters with spaces | Match: 'ج ا ي'
+Snippet: العدد اإلج ا يل لمرات مشاهدة الصفحة.
+----------------------------------------
+[7] ID: OFFICIAL-4-3-PERFORMANCE_TASK_1-MCQ-1 | Lesson: lesson-4-3 | Field: options[1]
+Pattern: Isolated vowel with spaces | Match: 'ج ا ي'
+Snippet: العدد اإلج ا يل لمرات مشاهدة الصفحة.
+----------------------------------------
+[8] ID: OFFICIAL-4-3-WEEKLY_MODEL_A-MCQ-2 | Lesson: lesson-4-3 | Field: options[1]
+Pattern: Multi-isolated characters with spaces | Match: 'ج ا ي'
+Snippet: العدد اإلج ا يل لمرات مشاهدة الصفحة
+----------------------------------------
+[9] ID: OFFICIAL-4-3-WEEKLY_MODEL_A-MCQ-2 | Lesson: lesson-4-3 | Field: options[1]
+Pattern: Isolated vowel with spaces | Match: 'ج ا ي'
+Snippet: العدد اإلج ا يل لمرات مشاهدة الصفحة
+----------------------------------------
+[10] ID: OFFICIAL-4-4-WEEKLY_MODEL_B-MCQ-2 | Lesson: lesson-4-4 | Field: options[0]
+Pattern: Multi-isolated characters with spaces | Match: 'ه ا ب'
+Snippet: إعداد نمطين ومقارنته ا ببيانات حقيقية.
+----------------------------------------
+[11] ID: OFFICIAL-4-4-WEEKLY_MODEL_B-MCQ-2 | Lesson: lesson-4-4 | Field: options[0]
+Pattern: Isolated vowel with spaces | Match: 'ه ا ب'
+Snippet: إعداد نمطين ومقارنته ا ببيانات حقيقية.
+----------------------------------------

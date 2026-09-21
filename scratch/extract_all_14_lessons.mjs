@@ -1,0 +1,330 @@
+import fs from 'fs';
+
+const rawPages = JSON.parse(fs.readFileSync('scratch/extracted_raw_pages.json', 'utf8'));
+
+const LESSON_DEFS = [
+  { id: 'lesson-1-1', number: '1-1', chapterNumber: 1, chapterTitle: 'تكنولوجيا المعلومات والمجتمع', title: 'تطور تكنولوجيا المعلومات والتحول الاجتماعي', startPage: 3, endPage: 9 },
+  { id: 'lesson-1-2', number: '1-2', chapterNumber: 1, chapterTitle: 'تكنولوجيا المعلومات والمجتمع', title: 'كيف يعمل الذكاء الاصطناعي', startPage: 10, endPage: 16 },
+  { id: 'lesson-1-3', number: '1-3', chapterNumber: 1, chapterTitle: 'تكنولوجيا المعلومات والمجتمع', title: 'الذكاء الاصطناعي في الحياة اليومية والصناعة', startPage: 17, endPage: 22 },
+  { id: 'lesson-1-4', number: '1-4', chapterNumber: 1, chapterTitle: 'تكنولوجيا المعلومات والمجتمع', title: 'القضايا الأخلاقية المتعلقة بالذكاء الاصطناعي', startPage: 23, endPage: 29 },
+  { id: 'lesson-2-1', number: '2-1', chapterNumber: 2, chapterTitle: 'الأمن السيبراني', title: 'تقنيات التشفير والمصادقة', startPage: 30, endPage: 35 },
+  { id: 'lesson-2-2', number: '2-2', chapterNumber: 2, chapterTitle: 'الأمن السيبراني', title: 'تصميم أمان الشبكات', startPage: 36, endPage: 42 },
+  { id: 'lesson-2-3', number: '2-3', chapterNumber: 2, chapterTitle: 'الأمن السيبراني', title: 'الاستجابة للحوادث وإدارة المخاطر', startPage: 43, endPage: 47 },
+  { id: 'lesson-3-1', number: '3-1', chapterNumber: 3, chapterTitle: 'تطبيقات الويب', title: 'البنية العامة لتطبيقات الويب', startPage: 48, endPage: 52 },
+  { id: 'lesson-3-2', number: '3-2', chapterNumber: 3, chapterTitle: 'تطبيقات الويب', title: 'طرق اتصال تطبيقات الويب', startPage: 53, endPage: 57 },
+  { id: 'lesson-3-3', number: '3-3', chapterNumber: 3, chapterTitle: 'تطبيقات الويب', title: 'أساسيات تقنية الواجهة الأمامية', startPage: 58, endPage: 62 },
+  { id: 'lesson-4-1', number: '4-1', chapterNumber: 4, chapterTitle: 'تصميم الويب والوسائط', title: 'أنواع الوسائط وخصائصها', startPage: 63, endPage: 67 },
+  { id: 'lesson-4-2', number: '4-2', chapterNumber: 4, chapterTitle: 'تصميم الويب والوسائط', title: 'تصميم المعلومات وتجربة المستخدم للمواقع الإلكترونية', startPage: 68, endPage: 74 },
+  { id: 'lesson-4-3', number: '4-3', chapterNumber: 4, chapterTitle: 'تصميم الويب والوسائط', title: 'طرق تقييم المواقع الإلكترونية', startPage: 75, endPage: 80 },
+  { id: 'lesson-4-4', number: '4-4', chapterNumber: 4, chapterTitle: 'تصميم الويب والوسائط', title: 'عملية التحسين التكراري للمواقع الإلكترونية', startPage: 81, endPage: 87 },
+];
+
+function clean(l) {
+  return l
+    .replace(/[\u064B-\u0652\u0670]/g, "")
+    .replace(/\u0640/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function fixArabicLigatures(text) {
+  if (!text) return '';
+  return text
+    .replace(/\bامل/g, 'الم')
+    .replace(/\bاملهام\b/g, 'المهام')
+    .replace(/\bاملقالية\b/g, 'المقالية')
+    .replace(/\bاملوضوعية\b/g, 'الموضوعية')
+    .replace(/\bاملعلومات\b/g, 'المعلومات')
+    .replace(/\bفرتة\b/g, 'فترة')
+    .replace(/\bالفرتة\b/g, 'الفترة')
+    .replace(/\bفرتات\b/g, 'فترات')
+    .replace(/\bميثل\b/g, 'يمثل')
+    .replace(/\bالرتانزستورات\b/g, 'الترانزستورات')
+    .replace(/\bالرتاكب\b/g, 'التراكب')
+    .replace(/\bالكالسييك\b/g, 'الكلاسيكي')
+    .replace(/\bع ى\b/g, 'على')
+    .replace(/\bغ ر\b/g, 'غير')
+    .replace(/\bللمستخدم ن\b/g, 'للمستخدمين')
+    .replace(/\bكل عام ن\b/g, 'كل عامين')
+    .replace(/\bعام ن\b/g, 'عامين')
+    .replace(/االجت\s*ا\s*عي/g, 'الاجتماعي')
+    .replace(/االجتامعي/g, 'الاجتماعي')
+    .replace(/\barsh\b/g, 'اشرح')
+    .replace(/\bارشح\b/g, 'اشرح')
+    .replace(/\bبني\b/g, 'بين')
+    .replace(/\bإىل\b/g, 'إلى')
+    .replace(/\bمبصطلح\b/g, 'بمصطلح')
+    .replace(/\bمبثاليني\b/g, 'بمثالين')
+    .replace(/\bكام\b/g, 'كما')
+    .replace(/\bرسعة\b/g, 'سرعة')
+    .replace(/\bنرش\b/g, 'نشر')
+    .replace(/\bرشائها\b/g, 'شرائها')
+    .replace(/\bتقيض\b/g, 'تقضي')
+    .replace(/\bعرب اإلنرتنت\b/g, 'عبر الإنترنت')
+    .replace(/\bعرب\b/g, 'عبر')
+    .replace(/\bاإلنرتنت\b/g, 'الإنترنت')
+    .replace(/\bاالفرتايض\b/g, 'الافتراضي')
+    .replace(/\bالفرتاضية\b/g, 'افتراضية')
+    .replace(/\bافرتائي\b/g, 'افتراضي')
+    .replace(/\bاألوىل\b/g, 'الأولى')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseOptionsRobust(rawLines) {
+  const combined = rawLines.join(" ");
+
+  // Case 1: Inverted format with bracket: e.g. "200 )أ 404 )ب"
+  if (/([^\s()]+)\s*[)）]\s*[أب]/.test(combined)) {
+    const opts = ['', '', '', ''];
+    const invRegex = /([^\s()]+(?:\s+[^\s()]+)*?)\s*[)）]\s*([أبجد])/g;
+    let m;
+    while ((m = invRegex.exec(combined)) !== null) {
+      const text = m[1].replace(/^\./, '').trim();
+      const letter = m[2];
+      const idx = letter === 'أ' ? 0 : letter === 'ب' ? 1 : letter === 'ج' ? 2 : 3;
+      opts[idx] = text;
+    }
+    if (opts.filter(o => o).length >= 3) {
+      return opts;
+    }
+  }
+
+  // Case 2: Inverted format with dash: e.g. "HTTPS -أ FTP -ب SMTP -ج DNS -د"
+  if (/([^\s\-–]+)\s*[-–]\s*[أب]/.test(combined)) {
+    const opts = ['', '', '', ''];
+    const invDashRegex = /([^\s\-–]+(?:\s+[^\s\-–]+)*?)\s*[-–]\s*([أبجد])/g;
+    let m;
+    while ((m = invDashRegex.exec(combined)) !== null) {
+      const text = m[1].replace(/^\./, '').trim();
+      const letter = m[2];
+      const idx = letter === 'أ' ? 0 : letter === 'ب' ? 1 : letter === 'ج' ? 2 : 3;
+      opts[idx] = text;
+    }
+    if (opts.filter(o => o).length >= 3) {
+      return opts;
+    }
+  }
+
+  // Case 3: Standard format: [أبجد] followed by delimiter -, ), ., or bracketed (أ)
+  const optRegex = /(?:^|\s+)(?:[([（]?([أبجد])[\s)\]）\-–.]|([أبجد])[\s)\]）\-–.])\s*([\s\S]*?)(?=(?:\s+(?:[([（]?[أبجد][\s)\]）\-–.]|[أبجد][\s)\]）\-–.]))|$)/g;
+  const matches = [];
+  let match;
+  while ((match = optRegex.exec(combined)) !== null) {
+    const letter = match[1] || match[2];
+    matches.push({ letter, text: match[3].trim() });
+  }
+
+  const opts = ['', '', '', ''];
+  matches.forEach(m => {
+    const idx = m.letter === 'أ' ? 0 : m.letter === 'ب' ? 1 : m.letter === 'ج' ? 2 : 3;
+    opts[idx] = m.text;
+  });
+
+  return opts;
+}
+
+function parseLesson(def) {
+  const linesWithMeta = [];
+  for (let p = def.startPage; p <= def.endPage; p++) {
+    const pageObj = rawPages[p - 1];
+    for (const raw of pageObj.lines) {
+      const l = clean(raw);
+      if (!l) continue;
+      if (/الفصل الدرا[يس]ى? األول|صطءا صطناال|^\d+\s*الفصل|^\s*\d+\s*$/i.test(l)) continue;
+      if (/^\.{4,}$/.test(l)) continue;
+      linesWithMeta.push({ page: p, text: l });
+    }
+  }
+
+  let currentSectionType = "performance_task_1";
+  let currentSectionNameAr = "المهام الأدائية - الفترة الأولى";
+  let currentMode = "essay";
+  
+  const questions = [];
+  let currentQuestion = null;
+
+  function finalizeCurrentQuestion() {
+    if (!currentQuestion) return;
+    currentQuestion.question = fixArabicLigatures(currentQuestion.question);
+    if (currentQuestion.type === "mcq") {
+      if (currentQuestion.optionsRaw && currentQuestion.optionsRaw.length > 0) {
+        currentQuestion.options = parseOptionsRobust(currentQuestion.optionsRaw).map(fixArabicLigatures);
+        currentQuestion.optionsRaw = undefined;
+      }
+    }
+    questions.push(currentQuestion);
+    currentQuestion = null;
+  }
+
+  for (let i = 0; i < linesWithMeta.length; i++) {
+    const { page, text } = linesWithMeta[i];
+
+    if (/أوالً\s*:\s*املهام األدائية|أولاً\s*:\s*المهام الأدائية/i.test(text)) {
+      finalizeCurrentQuestion();
+      if (currentSectionType.includes("task_2") || currentSectionType.includes("homework")) {
+        currentSectionType = "performance_task_2";
+        currentSectionNameAr = "المهام الأدائية - الفترة الثانية";
+      } else {
+        currentSectionType = "performance_task_1";
+        currentSectionNameAr = "المهام الأدائية - الفترة الأولى";
+      }
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/الفرتة الثانية|الفترة الثانية/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "performance_task_2";
+      currentSectionNameAr = "المهام الأدائية - الفترة الثانية";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/ثانيًا\s*:\s*أداءات منزلية|ثانياً\s*:\s*أداءات منزلية|أداءات منزلية/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "homework";
+      currentSectionNameAr = "أداءات منزلية (الواجب المنزلي)";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/الفرتة الثالثة|الفترة الثالثة|التقييامت األسبوعية|التقييمات الأسبوعية/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "weekly_model_a";
+      currentSectionNameAr = "التقييمات الأسبوعية - النموذج (A)";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/النموذج\s*\([Aأ]\)/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "weekly_model_a";
+      currentSectionNameAr = "التقييمات الأسبوعية - النموذج (A)";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/النموذج\s*\([Bب]\)/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "weekly_model_b";
+      currentSectionNameAr = "التقييمات الأسبوعية - النموذج (B)";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/النموذج\s*\([Cج]\)/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentSectionType = "weekly_model_c";
+      currentSectionNameAr = "التقييمات الأسبوعية - النموذج (C)";
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/األسئلة املقالية|االسئلة املقالية|الأسئلة المقالية/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentMode = "essay";
+      continue;
+    }
+
+    if (/اختيار من متعدد|األسئلة املوضوعية/i.test(text)) {
+      finalizeCurrentQuestion();
+      currentMode = "mcq";
+      continue;
+    }
+
+    if (/الوحدة\s+(األوىل|الثانية|الثالثة|الرابعة)|الدرس\s+(األول|الثاني|الثالث|الرابع)|الفرتة األوىل\s+األسبوع/i.test(text)) {
+      continue;
+    }
+
+    const qMatch = text.match(/^(\d+)\s*[-–.]\s*(.*)$/);
+    if (qMatch) {
+      finalizeCurrentQuestion();
+      const qNum = parseInt(qMatch[1], 10);
+      let qBody = qMatch[2].trim();
+
+      // Check inline options in question body
+      let inlineOpts = [];
+      const inlineOptMatch = qBody.match(/(?:^|\s+)(?:[([（]?([أ])[\s)\]）\-–.]|([أ])[\s)\]）\-–.])/);
+      if (inlineOptMatch && currentMode === "mcq") {
+        inlineOpts.push(qBody.slice(inlineOptMatch.index).trim());
+        qBody = qBody.slice(0, inlineOptMatch.index).trim();
+      }
+
+      // Check inverted inline options: e.g. " يعرف ب: HTTPS -أ"
+      const inlineInvMatch = qBody.match(/(?:^|\s+)(?:[^\s\-–]+)\s*[-–]\s*أ/);
+      if (inlineInvMatch && currentMode === "mcq") {
+        inlineOpts.push(qBody.slice(inlineInvMatch.index).trim());
+        qBody = qBody.slice(0, inlineInvMatch.index).trim();
+      }
+
+      currentQuestion = {
+        id: `OFFICIAL-${def.number}-${currentSectionType.toUpperCase()}-${currentMode.toUpperCase()}-${qNum}`,
+        lessonId: def.id,
+        lessonNumber: def.number,
+        lessonTitle: def.title,
+        chapterNumber: def.chapterNumber,
+        chapterTitle: def.chapterTitle,
+        sectionType: currentSectionType,
+        sectionNameAr: currentSectionNameAr,
+        type: currentMode,
+        questionNumber: qNum,
+        question: qBody,
+        optionsRaw: currentMode === "mcq" ? [...inlineOpts] : undefined,
+        options: currentMode === "mcq" ? [] : undefined,
+        pageInPdf: page
+      };
+      continue;
+    }
+
+    if (currentQuestion) {
+      if (currentQuestion.type === "mcq") {
+        if (/^[أبجد]\s*[-–.)]|(?:[^\s()]+)\s*[)）]\s*[أبجد]|(?:[^\s\-–]+)\s*[-–]\s*[أبجد]|(?:^|\s+)[(（][أبجد][)）]/.test(text) ||
+            text.includes(" ب-") || text.includes(" د-") || text.includes(" ب -") || text.includes(" د -") ||
+            text.includes(" ب)") || text.includes(" د)") || text.includes(" )ب") || text.includes(" )د") ||
+            text.includes(" -ب") || text.includes(" -د")) {
+          currentQuestion.optionsRaw.push(text);
+        } else if (currentQuestion.optionsRaw.length === 0) {
+          currentQuestion.question += " " + text;
+        } else {
+          currentQuestion.optionsRaw.push(text);
+        }
+      } else {
+        currentQuestion.question += " " + text;
+      }
+    }
+  }
+
+  finalizeCurrentQuestion();
+  return questions;
+}
+
+let totalQuestions = 0;
+let totalMCQs = 0;
+let totalEssays = 0;
+let incompleteMCQs = [];
+
+for (const def of LESSON_DEFS) {
+  const qs = parseLesson(def);
+  const mcqs = qs.filter(q => q.type === 'mcq');
+  const essays = qs.filter(q => q.type === 'essay');
+  
+  totalQuestions += qs.length;
+  totalMCQs += mcqs.length;
+  totalEssays += essays.length;
+
+  mcqs.forEach(m => {
+    if (!m.options || m.options.length !== 4 || m.options.some(o => !o.trim())) {
+      incompleteMCQs.push({ lesson: def.number, q: m.question, options: m.options, raw: m.optionsRaw, page: m.pageInPdf });
+    }
+  });
+}
+
+console.log(`\n========================================`);
+console.log(`Total Questions: ${totalQuestions} (MCQs: ${totalMCQs}, Essays: ${totalEssays})`);
+console.log(`Incomplete MCQs remaining: ${incompleteMCQs.length}`);
+console.log(`========================================`);
+if (incompleteMCQs.length > 0) {
+  console.log('Sample incomplete MCQs (first 5):');
+  console.log(incompleteMCQs.slice(0, 5));
+}
