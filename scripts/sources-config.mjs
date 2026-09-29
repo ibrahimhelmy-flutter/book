@@ -31,7 +31,6 @@ export function getSources(term = 'term-1') {
     canonicalBaselineSpec: path.join(officialRoot, 'curriculum-baseline-spec.json'),
     officialLessonsDir: path.join(officialRoot, 'official-lessons'),
     officialAssessmentsDir: path.join(officialRoot, 'official-assessments'),
-    officialAssessmentsFile: path.join(officialRoot, 'official-assessments', 'all-assessments.json'),
     deepQuestionsDir: path.join(authoredRoot, 'deep-questions'),
     committeeQuestionsFile: path.join(authoredRoot, 'committee-questions.json'),
     simulatorsFile: path.join(authoredRoot, 'simulators.json'),

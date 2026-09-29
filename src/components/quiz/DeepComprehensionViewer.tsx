@@ -48,6 +48,68 @@ const DIFFICULTY_CONFIG: Record<
 
 const OPTION_LETTERS = ["أ", "ب", "ج", "د"];
 
+function formatParagraphs(text: string) {
+  const paragraphs = text.split("\n");
+  return paragraphs.map((paragraph, pIdx) => {
+    if (!paragraph.trim()) return <div key={pIdx} className="h-1" />;
+
+    const parts = paragraph.split(/(\*\*[^*]+\*\*)/g);
+    return (
+      <p key={pIdx} className="leading-relaxed">
+        {parts.map((part, partIdx) => {
+          if (part.startsWith("**") && part.endsWith("**")) {
+            const inner = part.slice(2, -2);
+            return (
+              <strong key={partIdx} className="font-bold text-indigo-300">
+                {inner}
+              </strong>
+            );
+          }
+          return <span key={partIdx}>{part}</span>;
+        })}
+      </p>
+    );
+  });
+}
+
+function formatExplanationContent(text: string) {
+  if (!text) return null;
+
+  if (text.includes("```")) {
+    const parts = text.split(/(```[\s\S]*?```)/g);
+    return (
+      <div className="space-y-2 leading-relaxed">
+        {parts.map((part, idx) => {
+          if (part.startsWith("```") && part.endsWith("```")) {
+            const lines = part.slice(3, -3).trim().split("\n");
+            const firstLine = lines[0]?.trim();
+            const codeLines =
+              firstLine === "text" || firstLine === "json" || firstLine === "javascript"
+                ? lines.slice(1)
+                : lines;
+            return (
+              <pre
+                key={idx}
+                dir="ltr"
+                className="bg-slate-950/90 border border-slate-800 text-cyan-300 font-mono text-xs p-3 rounded-xl overflow-x-auto shadow-inner my-2 leading-tight select-all"
+              >
+                <code>{codeLines.join("\n")}</code>
+              </pre>
+            );
+          }
+          return (
+            <div key={idx} className="space-y-1.5">
+              {formatParagraphs(part)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return <div className="space-y-2 leading-relaxed">{formatParagraphs(text)}</div>;
+}
+
 export function DeepComprehensionViewer({ lesson }: Props) {
   // Load deep questions for this lesson
   const allQuestions = useMemo<DeepChallengingQuestion[]>(() => {
@@ -495,15 +557,23 @@ export function DeepComprehensionViewer({ lesson }: Props) {
                       </div>
                     )}
                     {(currentQ.depthExplanation || (currentQ as any).explanation) && (
-                      <div className="mt-2 pt-2 border-t border-white/10 text-xs sm:text-sm text-slate-200 leading-relaxed">
-                        <span className="font-bold text-indigo-300">💡 الشرح والتحليل المعمق: </span>
-                        <span>{currentQ.depthExplanation || (currentQ as any).explanation}</span>
+                      <div className="mt-3 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-indigo-500/20 text-xs sm:text-sm text-slate-200 leading-relaxed shadow-inner">
+                        <div className="flex items-center gap-2 font-bold text-indigo-300 mb-2.5 border-b border-indigo-500/20 pb-2">
+                          <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+                          <span>الإجابة النموذجية والشرح والتحليل المعمق</span>
+                        </div>
+                        <div className="text-slate-300">
+                          {formatExplanationContent(currentQ.depthExplanation || (currentQ as any).explanation)}
+                        </div>
                       </div>
                     )}
                     {currentQ.misconceptionTrap && (
-                      <div className="mt-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-200 text-xs leading-relaxed">
-                        <span className="font-bold text-amber-300">⚠️ انتبه لمصيدة الفهم الشائع: </span>
-                        <span>{currentQ.misconceptionTrap}</span>
+                      <div className="mt-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs leading-relaxed flex items-start gap-2 shadow-xs">
+                        <span className="shrink-0 text-base leading-none mt-0.5">⚠️</span>
+                        <div className="space-y-0.5">
+                          <span className="font-bold text-amber-300">انتبه لمصيدة الفهم الشائع: </span>
+                          <span className="text-amber-100">{currentQ.misconceptionTrap}</span>
+                        </div>
                       </div>
                     )}
                   </div>

@@ -269,7 +269,4 @@ lessonFiles.forEach(file => {
   console.log(`✅ Cleaned and verified: ${file}`);
 });
 
-// Master all-assessments.json
-const masterPath = path.join(CANONICAL_DIR, 'all-assessments.json');
-fs.writeFileSync(masterPath, JSON.stringify(updatedLessons, null, 2), 'utf8');
-console.log(`\n✅ Saved master file: ${masterPath}`);
+console.log(`\n✅ All ${updatedLessons.length} canonical official lesson files cleaned and verified.`);

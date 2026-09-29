@@ -242,7 +242,4 @@ for (const file of lessonFiles) {
   console.log(`✅ Enriched ${file} (${data.questions.length} questions)`);
 }
 
-// Update all-assessments.json
-const masterPath = path.join(CANONICAL_DIR, 'all-assessments.json');
-fs.writeFileSync(masterPath, JSON.stringify(updatedMaster, null, 2), 'utf8');
-console.log(`🎉 Master all-assessments.json enriched and saved successfully!`);
+console.log(`🎉 All ${updatedMaster.length} official lesson assessment files enriched and saved successfully!`);

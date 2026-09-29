@@ -9,7 +9,6 @@ import { chapter3Answers } from './chapter3.mjs';
 import { chapter4Answers } from './chapter4.mjs';
 
 const OFFICIAL_DIR = 'book-sources/term-1/05-canonical-data/official/official-assessments';
-const ALL_ASSESSMENTS_PATH = 'book-sources/term-1/05-canonical-data/official/all-assessments.json';
 
 const lessonFiles = [
   'lesson-1-1.json',
@@ -111,27 +110,4 @@ for (const file of lessonFiles) {
   console.log(`✓ ${lessonId}: Updated ${fileUpdatedCount} / ${lessonData.questions.length} questions.`);
 }
 
-// Write combined all-assessments.json for official root
-const combinedData = {
-  metadata: {
-    title: 'التقييمات والواجبات الرسمية - كتاب الحوسبة والذكاء الاصطناعي - الفصل الدراسي الأول',
-    academicYear: '2024/2025',
-    totalLessons: lessonFiles.length,
-    totalQuestions: allQuestionsList.length,
-    totalMcqs: allQuestionsList.filter(q => q.type === 'mcq').length,
-    totalEssays: allQuestionsList.filter(q => q.type === 'essay').length,
-    qualityStandard: 'صياغة نموذجية شاملة مستندة إلى فهم السؤال ونص الكتاب الأصلي',
-    updatedAt: new Date().toISOString()
-  },
-  questions: allQuestionsList
-};
-
-fs.writeFileSync(ALL_ASSESSMENTS_PATH, JSON.stringify(combinedData, null, 2), 'utf8');
-console.log(`\n✓ Combined all assessments written to ${ALL_ASSESSMENTS_PATH}`);
-
-// Also write canonical lessons array to official-assessments/all-assessments.json
-const officialAssessmentsFile = path.join(OFFICIAL_DIR, 'all-assessments.json');
-fs.writeFileSync(officialAssessmentsFile, JSON.stringify(allLessonsList, null, 2), 'utf8');
-console.log(`✓ Canonical lessons array written to ${officialAssessmentsFile}`);
-
-console.log(`Summary: Total Updated: ${totalQuestionsUpdated} | Essays: ${totalEssaysUpdated} | MCQs Checked: ${totalMcqsChecked} | Total: ${allQuestionsList.length}`);
+console.log(`\nSummary: Total Updated: ${totalQuestionsUpdated} | Essays: ${totalEssaysUpdated} | MCQs Checked: ${totalMcqsChecked} | Total: ${allQuestionsList.length}`);

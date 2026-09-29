@@ -87,6 +87,4 @@ for (const file of lessonFiles) {
   updatedLessons.push(data);
 }
 
-// Master file
-fs.writeFileSync(path.join(CANONICAL_DIR, 'all-assessments.json'), JSON.stringify(updatedLessons, null, 2), 'utf8');
 console.log('✅ Canonical official assessments patched and verified.');

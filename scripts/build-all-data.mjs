@@ -111,8 +111,6 @@ if (fs.existsSync(sources.officialAssessmentsDir)) {
   for (const f of fList) {
     officialLessonsData.push(JSON.parse(fs.readFileSync(path.join(sources.officialAssessmentsDir, f), 'utf8')));
   }
-} else if (fs.existsSync(sources.officialAssessmentsFile)) {
-  officialLessonsData = JSON.parse(fs.readFileSync(sources.officialAssessmentsFile, 'utf8'));
 }
 
 const allOfficialQuestions = officialLessonsData.flatMap(l => l.questions);

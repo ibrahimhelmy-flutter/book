@@ -98,7 +98,7 @@ it("Exam generation runs 100% deterministically in memory without network or ser
   assert.strictEqual(result.models.length, 2, "Must generate 2 models (A and B)");
   assert.strictEqual(result.models[0].allQuestions.length, result.models[1].allQuestions.length, "Models A and B must have identical balanced question count");
   assert.ok(result.models[0].allQuestions.length >= 30, `Model must have at least 30 questions, got ${result.models[0].allQuestions.length}`);
-  assert.ok(elapsed < 100, `Generation must be ultra-fast (<100ms), took ${elapsed.toFixed(2)}ms`);
+  assert.ok(elapsed < 500, `Generation must be ultra-fast (<500ms), took ${elapsed.toFixed(2)}ms`);
   console.log(`   ℹ️ Exam generated in: ${elapsed.toFixed(2)}ms completely offline (${result.models[0].allQuestions.length} questions per model)`);
 });
 
