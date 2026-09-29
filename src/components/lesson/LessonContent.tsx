@@ -10,6 +10,7 @@ import { LessonConceptMap } from "./LessonConceptMap";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
 import { getDeepQuestionsForLesson } from "@/data/deep-questions";
 import { getOfficialAssessmentsForLesson } from "@/data/official-assessments";
+import { SIMULATORS_DATA } from "@/data/simulators";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -171,6 +172,25 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     setIsEngineerOpen(false);
   }, [lesson.id]);
 
+  // Discover all simulators belonging to this lesson from SIMULATORS_DATA
+  const lessonSimulators = React.useMemo(() => {
+    const byNumber = SIMULATORS_DATA.filter((s) => s.lessonNumber === lesson.number);
+    if (byNumber.length > 0) return byNumber;
+    if (lesson.simulatorId) {
+      const byId = SIMULATORS_DATA.filter((s) => s.id === lesson.simulatorId);
+      if (byId.length > 0) return byId;
+    }
+    return [];
+  }, [lesson.number, lesson.simulatorId]);
+
+  const [selectedSimId, setSelectedSimId] = useState<string>("");
+
+  React.useEffect(() => {
+    if (lessonSimulators.length > 0) {
+      setSelectedSimId(lessonSimulators[0].id);
+    }
+  }, [lessonSimulators]);
+
   // Official Ministry assessments for this lesson
   const officialAssessments = React.useMemo(() => {
     return getOfficialAssessmentsForLesson(lesson.number || lesson.id);
@@ -305,6 +325,17 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
           {/* Detailed Sections with In-Section Notes Button */}
           <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3 px-1">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
+                <h2 className="text-base sm:text-lg font-bold text-white">أقسام وشرح الدرس</h2>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 font-mono">
+                  ({lesson.sections.length} أقسام)
+                </span>
+              </div>
+              <span className="text-xs text-slate-500">النص المعتمد من كتاب الوزارة</span>
+            </div>
+
             {lesson.sections.map((sec, secIdx) => {
               const sectionNotes = [
                 ...(sec.notes || []),
@@ -321,6 +352,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 >
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
                     <div className="flex flex-wrap items-center gap-2.5">
+                      <span className="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                        القسم {secIdx + 1} من {lesson.sections.length}
+                      </span>
                       <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
                         {sec.title}
                       </h3>
@@ -506,18 +540,21 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           )}
 
           {/* Optional Enrichment Section at End of Lesson (Hidden/Collapsed by default) */}
-          {(lesson.simulatorId || lesson.engineerChallenge) && (
+          {(lessonSimulators.length > 0 || lesson.engineerChallenge) && (
             <div className="pt-6 border-t border-slate-800/80 space-y-3">
               <div className="flex items-center justify-between text-xs px-1">
                 <div className="flex items-center gap-2 text-slate-400">
-                  <span className="w-2 h-2 rounded-full bg-slate-600" />
+                  <span className="w-2 h-2 rounded-full bg-purple-500" />
                   <span className="font-bold text-slate-300">أنشطة وتطبيقات إثرائية (اختيارية)</span>
+                  <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/25 font-mono">
+                    ({(lessonSimulators.length > 0 ? lessonSimulators.length : 0) + (lesson.engineerChallenge ? 1 : 0)} أنشطة)
+                  </span>
                 </div>
                 <span className="text-[11px] text-slate-500">مغلقة افتراضياً — اضغط للاستكشاف</span>
               </div>
 
-              {/* 1. Collapsible Interactive Simulator */}
-              {lesson.simulatorId && (
+              {/* 1. Collapsible Interactive Simulators */}
+              {lessonSimulators.length > 0 && (
                 <div className="border border-slate-800 hover:border-purple-500/30 bg-slate-900/60 rounded-2xl overflow-hidden transition-all duration-200 shadow-md">
                   <button
                     type="button"
@@ -531,19 +568,24 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                       </div>
                       <div className="min-w-0 text-right">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-sm sm:text-base font-bold text-white">المحاكي التفاعلي المعملي ⚡</span>
+                          <span className="text-sm sm:text-base font-bold text-white">المحاكيات التفاعلية المعملية ⚡</span>
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 font-mono">
+                            ({lessonSimulators.length} محاكيات)
+                          </span>
                           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/25">
                             إثرائي اختياري
                           </span>
                         </div>
                         <p className="text-xs text-slate-400 mt-0.5">
-                          محاكاة تفاعلية لتجربة المفاهيم عملياً (غير مطلوب للامتحان)
+                          {lessonSimulators.length > 1
+                            ? `يتوفر لهذا الدرس ${lessonSimulators.length} محاكيات تفاعلية لتجربة المفاهيم عملياً`
+                            : "محاكاة تفاعلية لتجربة المفاهيم عملياً (غير مطلوب للامتحان)"}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-slate-400 text-xs shrink-0">
                       <span className="hidden sm:inline font-medium">
-                        {isSimulatorOpen ? "إخفاء المحاكي" : "فتح المحاكي"}
+                        {isSimulatorOpen ? "إخفاء المحاكيات" : `فتح المحاكيات (${lessonSimulators.length})`}
                       </span>
                       {isSimulatorOpen ? (
                         <ChevronUp className="w-5 h-5 text-purple-400 transition-transform" />
@@ -555,8 +597,32 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
                   {isSimulatorOpen && (
                     <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-950/70 animate-fadeIn">
+                      {/* Tabs switcher if lesson has multiple simulators */}
+                      {lessonSimulators.length > 1 && (
+                        <div className="flex flex-wrap gap-2 mb-6 p-2 bg-slate-900 border border-slate-800 rounded-2xl">
+                          {lessonSimulators.map((sim, idx) => {
+                            const isSelected = (selectedSimId || lessonSimulators[0].id) === sim.id;
+                            return (
+                              <button
+                                key={sim.id}
+                                type="button"
+                                onClick={() => setSelectedSimId(sim.id)}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                                  isSelected
+                                    ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-2 ring-purple-400/40"
+                                    : "bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800"
+                                }`}
+                              >
+                                <span className="font-mono text-[10px] opacity-75">#{idx + 1}</span>
+                                <span>{sim.title.replace(/^\d+\.\s*/, "")}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+
                       <ComponentErrorBoundary fallbackTitle="تعذر تشغيل المحاكي التفاعلي">
-                        <SimulatorRenderer simulatorId={lesson.simulatorId} />
+                        <SimulatorRenderer simulatorId={selectedSimId || lessonSimulators[0].id} />
                       </ComponentErrorBoundary>
                     </div>
                   )}
