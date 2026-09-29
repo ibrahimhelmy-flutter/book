@@ -764,7 +764,7 @@ export const SPECIALIZED_COMMITTEE_QUESTIONS: CommitteeQuestion[] = [
     "contentOrigin": "authored",
     "questionOrigin": "specialized-committee-style",
     "conceptIds": [
-      "concept-2-1-05"
+      "concept-2-1-08"
     ],
     "source": {
       "term": 1,
@@ -853,7 +853,8 @@ export const SPECIALIZED_COMMITTEE_QUESTIONS: CommitteeQuestion[] = [
     "conceptIds": [
       "concept-2-3-01",
       "concept-2-3-02",
-      "concept-2-3-03"
+      "concept-2-3-03",
+      "concept-2-3-04"
     ],
     "source": {
       "term": 1,

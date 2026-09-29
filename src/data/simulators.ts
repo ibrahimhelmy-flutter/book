@@ -68,7 +68,8 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
       "term": 1,
       "lessonId": "lesson-2-1",
       "pages": [
-        32
+        4,
+        5
       ],
       "sourceType": "curriculum-derived"
     }
@@ -90,7 +91,8 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
       "term": 1,
       "lessonId": "lesson-2-2",
       "pages": [
-        39
+        4,
+        5
       ],
       "sourceType": "curriculum-derived"
     }
@@ -112,7 +114,8 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
       "term": 1,
       "lessonId": "lesson-2-3",
       "pages": [
-        45
+        4,
+        5
       ],
       "sourceType": "curriculum-derived"
     }

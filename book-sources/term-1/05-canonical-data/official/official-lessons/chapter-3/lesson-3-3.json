@@ -225,26 +225,5 @@
       "text": "HTML يبني البنية، وCSS ينسق المظهر، وJavaScript يضيف السلوك — وتجعل HTML الدلالية والتصميم المتجاوب وأطر العمل الواجهة الأمامية الحديثة ذات معنى وقابلة للتكيف وفعالة."
     }
   ],
-  "source": {
-    "term": 1,
-    "pages": [
-      62,
-      63,
-      64,
-      65,
-      66,
-      67
-    ],
-    "primaryPage": 62,
-    "sourceType": "official-page-scan",
-    "pageFiles": [
-      "page_62.png",
-      "page_63.png",
-      "page_64.png",
-      "page_65.png",
-      "page_66.png",
-      "page_67.png"
-    ]
-  },
   "contentOrigin": "official"
 }
