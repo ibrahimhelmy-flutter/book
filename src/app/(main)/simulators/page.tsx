@@ -3,12 +3,16 @@
 import React, { useState } from "react";
 import { SimulatorRenderer } from "@/components/simulators/SimulatorRenderer";
 import { SIMULATORS_DATA } from "@/data/simulators";
-import { Sparkles, Cpu, Brain, Lock, Shield, ShieldAlert, Globe, Layout, BarChart3, LucideIcon } from "lucide-react";
+import { Sparkles, Cpu, Brain, Lock, Shield, ShieldAlert, Globe, Layout, BarChart3, Key, UserCheck, Filter, Layers, LucideIcon } from "lucide-react";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Cpu: Cpu,
   Brain: Brain,
   Lock: Lock,
+  Key: Key,
+  UserCheck: UserCheck,
+  Filter: Filter,
+  Layers: Layers,
   Shield: Shield,
   ShieldAlert: ShieldAlert,
   Globe: Globe,

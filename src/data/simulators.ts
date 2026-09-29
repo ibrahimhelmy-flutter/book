@@ -52,77 +52,196 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
     }
   },
   {
-    "id": "tls-handshake-sim",
-    "title": "3. محاكي مصافحة TLS وتشفير HTTPS",
+    "id": "crypto-lab-sim",
+    "title": "3. مختبر التشفير المتناظر وغير المتناظر",
     "category": "الفصل 2 (الدرس 2-1)",
-    "iconName": "Lock",
-    "color": "border-emerald-500 text-emerald-400",
-    "description": "تتبع مراحل الاتصال الآمن بالمفتاح العام واشتقاق مفاتيح الجلسة وحماية البيانات من المتنصت.",
+    "iconName": "Key",
+    "color": "border-indigo-500 text-indigo-400",
+    "description": "تجربة حية للتشفير بالمفتاح المشترك وزوج المفاتيح العام/الخاص واكتشاف معضلة تبادل المفاتيح.",
     "lessonNumber": "2-1",
     "chapterNumber": 2,
     "contentOrigin": "authored",
     "conceptIds": [
-      "concept-2-1-01"
+      "concept-2-1-02",
+      "concept-2-1-03"
     ],
     "source": {
       "term": 1,
       "lessonId": "lesson-2-1",
       "pages": [
-        4,
-        5
+        32,
+        33
       ],
       "sourceType": "curriculum-derived"
     }
   },
   {
-    "id": "network-defense-sim",
-    "title": "4. مختبر الدفاع في العمق والـ DMZ و Zero Trust",
+    "id": "tls-handshake-sim",
+    "title": "4. محاكي مصافحة TLS وتشفير اتصالات HTTPS",
+    "category": "الفصل 2 (الدرس 2-1)",
+    "iconName": "Lock",
+    "color": "border-emerald-500 text-emerald-400",
+    "description": "تتبع مراحل الاتصال الآمن بالمفتاح العام واشتقاق مفاتيح الجلسة وفحص الشهادات واكتشاف المتنصت.",
+    "lessonNumber": "2-1",
+    "chapterNumber": 2,
+    "contentOrigin": "authored",
+    "conceptIds": [
+      "concept-2-1-04",
+      "concept-2-1-05"
+    ],
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        32,
+        33
+      ],
+      "sourceType": "curriculum-derived"
+    }
+  },
+  {
+    "id": "mfa-matrix-lab-sim",
+    "title": "5. مختبر المصادقة متعددة العوامل (MFA) ومصفوفة الأمان",
+    "category": "الفصل 2 (الدرس 2-1)",
+    "iconName": "UserCheck",
+    "color": "border-teal-500 text-teal-400",
+    "description": "اختبار العوامل الثلاثة (معرفة، امتلاك، حيوية)، وصد هجمات تسريب كلمات المرور وفق مصفوفة الكتاب.",
+    "lessonNumber": "2-1",
+    "chapterNumber": 2,
+    "contentOrigin": "authored",
+    "conceptIds": [
+      "concept-2-1-06",
+      "concept-2-1-07"
+    ],
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        33,
+        34
+      ],
+      "sourceType": "curriculum-derived"
+    }
+  },
+  {
+    "id": "dmz-architecture-sim",
+    "title": "6. مهندس معماريات الشبكات والمنطقة المعزولة (DMZ)",
     "category": "الفصل 2 (الدرس 2-2)",
     "iconName": "Shield",
     "color": "border-teal-500 text-teal-400",
-    "description": "بناء وتعديل دفاعات الشبكة واختبار صمود خوادم المؤسسة وقواعد البيانات ضد هجمات الويب والتصيد.",
+    "description": "تصميم واختبار عزل خوادم الويب العامة عن قواعد البيانات الحساسة باستخدام جداري حماية خارجي وداخلي.",
     "lessonNumber": "2-2",
     "chapterNumber": 2,
     "contentOrigin": "authored",
     "conceptIds": [
-      "concept-2-2-01"
+      "concept-2-2-04"
     ],
     "source": {
       "term": 1,
       "lessonId": "lesson-2-2",
       "pages": [
-        4,
-        5
+        40,
+        41
       ],
       "sourceType": "curriculum-derived"
     }
   },
   {
-    "id": "incident-response-sim",
-    "title": "5. قائد الاستجابة للحوادث ومصفوفة المخاطر",
+    "id": "firewall-packet-filter-sim",
+    "title": "7. محاكي جدار الحماية وقواعد تصفية الحزم (Packet Filter)",
+    "category": "الفصل 2 (الدرس 2-2)",
+    "iconName": "Filter",
+    "color": "border-blue-500 text-blue-400",
+    "description": "فحص منافذ الشبكة والبروتوكولات (80, 443, 22, 3306) وتهيئة قواعد ALLOW/DROP لصد الهجمات.",
+    "lessonNumber": "2-2",
+    "chapterNumber": 2,
+    "contentOrigin": "authored",
+    "conceptIds": [
+      "concept-2-2-02"
+    ],
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-2",
+      "pages": [
+        39,
+        40
+      ],
+      "sourceType": "curriculum-derived"
+    }
+  },
+  {
+    "id": "zero-trust-battleground-sim",
+    "title": "8. مختبر انعدام الثقة (Zero Trust) مقابل الأمان المحيطي",
+    "category": "الفصل 2 (الدرس 2-2)",
+    "iconName": "Layers",
+    "color": "border-purple-500 text-purple-400",
+    "description": "مقارنة مبدأ 'لا تثق بأحد أبداً وتحقق دائماً' بالأمان التقليدي عند إصابة جهاز موظف داخلي.",
+    "lessonNumber": "2-2",
+    "chapterNumber": 2,
+    "contentOrigin": "authored",
+    "conceptIds": [
+      "concept-2-2-05"
+    ],
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-2",
+      "pages": [
+        41,
+        42
+      ],
+      "sourceType": "curriculum-derived"
+    }
+  },
+  {
+    "id": "incident-response-soc-sim",
+    "title": "9. غرفة عمليات الاستجابة للحوادث السيبرانية (CIRT Command)",
     "category": "الفصل 2 (الدرس 2-3)",
     "iconName": "ShieldAlert",
     "color": "border-red-500 text-red-400",
-    "description": "إدارة سيناريو هجوم الفدية عبر 6 خطوات (الاحتواء أولاً) وحساب درجة الخطر (التأثير × الاحتمالية).",
+    "description": "قيادة مراحل الاستجابة الست لحادث هجوم فدية وتجنب فخ الاستعادة قبل الاحتواء والاستئصال.",
     "lessonNumber": "2-3",
     "chapterNumber": 2,
     "contentOrigin": "authored",
     "conceptIds": [
-      "concept-2-3-01"
+      "concept-2-3-02",
+      "concept-2-3-03"
     ],
     "source": {
       "term": 1,
       "lessonId": "lesson-2-3",
       "pages": [
-        4,
-        5
+        45,
+        46
+      ],
+      "sourceType": "curriculum-derived"
+    }
+  },
+  {
+    "id": "risk-matrix-lab-sim",
+    "title": "10. حاسبة ومصفوفة تقييم المخاطر 3×3 واستراتيجيات المعالجة",
+    "category": "الفصل 2 (الدرس 2-3)",
+    "iconName": "BarChart3",
+    "color": "border-amber-500 text-amber-400",
+    "description": "تطبيق معادلة الخطر (التأثير × الاحتمالية) على سيناريوهات واقعية وتطبيق استراتيجيات المعالجة الأربع.",
+    "lessonNumber": "2-3",
+    "chapterNumber": 2,
+    "contentOrigin": "authored",
+    "conceptIds": [
+      "concept-2-3-04",
+      "concept-2-3-05"
+    ],
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-3",
+      "pages": [
+        47
       ],
       "sourceType": "curriculum-derived"
     }
   },
   {
     "id": "web-request-flow-sim",
-    "title": "6. مفتش طلبات الويب الثلاثية وصيغة JSON",
+    "title": "11. مفتش طلبات الويب الثلاثية وصيغة JSON",
     "category": "الفصل 3 (الدرس 3-1 و 3-2)",
     "iconName": "Globe",
     "color": "border-amber-500 text-amber-400",
@@ -144,7 +263,7 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
   },
   {
     "id": "crap-design-studio-sim",
-    "title": "7. استوديو مبادئ التصميم البصري (CRAP)",
+    "title": "12. استوديو مبادئ التصميم البصري (CRAP)",
     "category": "الفصل 4 (الدرس 4-2)",
     "iconName": "Layout",
     "color": "border-pink-500 text-pink-400",
@@ -166,7 +285,7 @@ export const SIMULATORS_DATA: SimulatorMeta[] = [
   },
   {
     "id": "ab-test-lab-sim",
-    "title": "8. مختبر اختبارات A/B وحلقة PDCA",
+    "title": "13. مختبر اختبارات A/B وحلقة PDCA",
     "category": "الفصل 4 (الدرس 4-4)",
     "iconName": "BarChart3",
     "color": "border-indigo-500 text-indigo-400",
