@@ -342,7 +342,4 @@ for (const def of LESSON_DEFS) {
   console.log(`Saved ${outPath} (${qs.length} questions: ${lessonObj.mcqCount} MCQ, ${lessonObj.essayCount} Essay)`);
 }
 
-// Master all-assessments.json
-const masterPath = path.join(CANONICAL_OUTPUT_DIR, 'all-assessments.json');
-fs.writeFileSync(masterPath, JSON.stringify(allLessonsCanonical, null, 2), 'utf8');
-console.log(`✅ Master file saved: ${masterPath} (Total ${allLessonsCanonical.reduce((a, b) => a + b.totalQuestions, 0)} questions across 14 lessons)`);
+console.log(`✅ All ${allLessonsCanonical.length} official lesson assessments generated and saved individually (Total ${allLessonsCanonical.reduce((a, b) => a + b.totalQuestions, 0)} questions across 14 lessons).`);

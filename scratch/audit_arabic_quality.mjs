@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-const allAssessmentsPath = path.resolve('book-sources/term-1/05-canonical-data/official/official-assessments/all-assessments.json');
-const lessons = JSON.parse(fs.readFileSync(allAssessmentsPath, 'utf8'));
+const dir = path.resolve('book-sources/term-1/05-canonical-data/official/official-assessments');
+const lessonFiles = fs.readdirSync(dir).filter(f => /^lesson-.*\.json$/.test(f)).sort();
+const lessons = lessonFiles.map(f => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
 
 let totalQuestions = 0;
 let issues = [];
