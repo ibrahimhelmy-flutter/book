@@ -193,26 +193,5 @@
       "text": "الواجهة الأمامية تعرض وتجمع، والواجهة الخلفية تقرر وتعالج، وقاعدة البيانات تخزن وتسترجع — ثلاث طبقات متعاونة تجعل تطبيق الويب يعمل."
     }
   ],
-  "source": {
-    "term": 1,
-    "pages": [
-      50,
-      51,
-      52,
-      53,
-      54,
-      55
-    ],
-    "primaryPage": 50,
-    "sourceType": "official-page-scan",
-    "pageFiles": [
-      "page_50.png",
-      "page_51.png",
-      "page_52.png",
-      "page_53.png",
-      "page_54.png",
-      "page_55.png"
-    ]
-  },
   "contentOrigin": "official"
 }

@@ -232,26 +232,5 @@
       "text": "العميل يطلب، والخادم يستجيب — عبر HTTP/HTTPS، بأسلوب (GET/POST)، ورمز حالة، وغالبًا واجهة برمجة تطبيقات تعيد البيانات بصيغة JSON."
     }
   ],
-  "source": {
-    "term": 1,
-    "pages": [
-      56,
-      57,
-      58,
-      59,
-      60,
-      61
-    ],
-    "primaryPage": 56,
-    "sourceType": "official-page-scan",
-    "pageFiles": [
-      "page_56.png",
-      "page_57.png",
-      "page_58.png",
-      "page_59.png",
-      "page_60.png",
-      "page_61.png"
-    ]
-  },
   "contentOrigin": "official"
 }

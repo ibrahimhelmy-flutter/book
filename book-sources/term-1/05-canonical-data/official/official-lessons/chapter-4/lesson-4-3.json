@@ -220,26 +220,5 @@
       "text": "التقييم الكمي (PV، معدل الارتداد، CVR) يُظهر مقدار الاستخدام؛ والتقييم النوعي (اختبارات قابلية الاستخدام، المقابلات، التقييم الإرشادي) يُظهر السبب. اجمع بينهما لتقييم موقع بوضوح."
     }
   ],
-  "source": {
-    "term": 1,
-    "pages": [
-      81,
-      82,
-      83,
-      84,
-      85,
-      86
-    ],
-    "primaryPage": 81,
-    "sourceType": "official-page-scan",
-    "pageFiles": [
-      "page_81.png",
-      "page_82.png",
-      "page_83.png",
-      "page_84.png",
-      "page_85.png",
-      "page_86.png"
-    ]
-  },
   "contentOrigin": "official"
 }
