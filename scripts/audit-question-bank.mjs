@@ -107,7 +107,7 @@ lessonStats.forEach(stat => {
 });
 
 if (issues.length === 0) {
-  console.log('\n✅ ALL 252 QUESTIONS PASSED INTEGRITY & FORMAT VALIDATION (0 DEFECTS).');
+  console.log(`\n✅ ALL ${totalQuestions} QUESTIONS PASSED INTEGRITY & FORMAT VALIDATION (0 DEFECTS).`);
 } else {
   console.log(`\n⚠️ Found ${issues.length} question defects:\n`);
   issues.forEach(iss => console.log(`   - ${iss}`));

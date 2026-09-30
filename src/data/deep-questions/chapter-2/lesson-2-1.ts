@@ -8,6 +8,19 @@ import { DeepChallengingQuestion } from "../types";
 
 export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
   {
+    "id": "deep-2-1-1",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 1,
+    "title": "ما الذي يعبّر بدقة عن الهدف الأساسي من HTTPS في الدرس؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-04"
+    ],
+    "contentOrigin": "authored",
     "question": "ما الذي يعبّر بدقة عن الهدف الأساسي من HTTPS في الدرس؟",
     "options": [
       "تأمين اتصال الويب عبر TLS لحماية البيانات أثناء النقل والمساعدة في التحقق من هوية الخادم",
@@ -16,9 +29,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "تخزين كلمات المرور بدل نقلها"
     ],
     "answer": "تأمين اتصال الويب عبر TLS لحماية البيانات أثناء النقل والمساعدة في التحقق من هوية الخادم",
-    "difficulty": "medium"
+    "correctAnswer": 0,
+    "correctAnswerText": "تأمين اتصال الويب عبر TLS لحماية البيانات أثناء النقل والمساعدة في التحقق من هوية الخادم",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** تأمين اتصال الويب عبر TLS لحماية البيانات أثناء النقل والمساعدة في التحقق من هوية الخادم\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-2",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 2,
+    "title": "لماذا لا يكفي وجود HTTPS وحده لحماية خدمة إلكترونية كاملة؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-07"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا لا يكفي وجود HTTPS وحده لحماية خدمة إلكترونية كاملة؟",
     "options": [
       "لأن HTTPS لا يستخدم أي تشفير",
@@ -27,9 +73,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن HTTPS يمنع استخدام الشهادات الرقمية"
     ],
     "answer": "لأن الدرس يوضح أن الأمان يعتمد على الجمع بين التشفير والشهادات والتوقيعات و2FA حسب الحاجة",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "لأن الدرس يوضح أن الأمان يعتمد على الجمع بين التشفير والشهادات والتوقيعات و2FA حسب الحاجة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأن الدرس يوضح أن الأمان يعتمد على الجمع بين التشفير والشهادات والتوقيعات و2FA حسب الحاجة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-3",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 3,
+    "title": "ما الوظيفة الأساسية لمصافحة TLS كما وردت في الشرح؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-04"
+    ],
+    "contentOrigin": "authored",
     "question": "ما الوظيفة الأساسية لمصافحة TLS كما وردت في الشرح؟",
     "options": [
       "تخزين بيانات الطلب في الخادم",
@@ -38,9 +115,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "إرسال بيانات الجلسة قبل إنشاء المفاتيح"
     ],
     "answer": "إنشاء الاتصال الآمن بين المتصفح والخادم والتحقق من الهوية واشتقاق مفاتيح الجلسة",
-    "difficulty": "medium"
+    "correctAnswer": 1,
+    "correctAnswerText": "إنشاء الاتصال الآمن بين المتصفح والخادم والتحقق من الهوية واشتقاق مفاتيح الجلسة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** إنشاء الاتصال الآمن بين المتصفح والخادم والتحقق من الهوية واشتقاق مفاتيح الجلسة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-4",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 4,
+    "title": "لماذا تظهر الشهادة الرقمية داخل مصافحة TLS في شرح الدرس؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا تظهر الشهادة الرقمية داخل مصافحة TLS في شرح الدرس؟",
     "options": [
       "لتشفير كل بيانات الجلسة بالتشفير المتماثل",
@@ -49,9 +159,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لمساعدة المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به"
     ],
     "answer": "لمساعدة المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "لمساعدة المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لمساعدة المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-5",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 5,
+    "title": "أي عبارة توافق شرح الدرس عن مفاتيح الجلسة؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-04"
+    ],
+    "contentOrigin": "authored",
     "question": "أي عبارة توافق شرح الدرس عن مفاتيح الجلسة؟",
     "options": [
       "يُرسل مفتاح الجلسة مكشوفًا إلى الخادم بعد فتح الصفحة",
@@ -60,9 +201,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يُستخدم مفتاح الجلسة فقط للتحقق من اسم النطاق"
     ],
     "answer": "تُشتق مفاتيح الجلسة داخل مصافحة TLS بعد إجراءات المصادقة والاتفاق الآمن",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "تُشتق مفاتيح الجلسة داخل مصافحة TLS بعد إجراءات المصادقة والاتفاق الآمن",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** تُشتق مفاتيح الجلسة داخل مصافحة TLS بعد إجراءات المصادقة والاتفاق الآمن\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-6",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 6,
+    "title": "لماذا يُستخدم التشفير المتماثل بعد إنشاء مفاتيح الجلسة؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا يُستخدم التشفير المتماثل بعد إنشاء مفاتيح الجلسة؟",
     "options": [
       "لأنه يثبت هوية الخادم",
@@ -71,9 +244,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأنه يحمي بيانات الاتصال بسرعة وكفاءة"
     ],
     "answer": "لأنه يحمي بيانات الاتصال بسرعة وكفاءة",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "لأنه يحمي بيانات الاتصال بسرعة وكفاءة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأنه يحمي بيانات الاتصال بسرعة وكفاءة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-7",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 7,
+    "title": "أي وصف يوضح العلاقة بين آليات المفتاح العام والتشفير المتماث",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-02"
+    ],
+    "contentOrigin": "authored",
     "question": "أي وصف يوضح العلاقة بين آليات المفتاح العام والتشفير المتماثل في HTTPS؟",
     "options": [
       "كلاهما يؤدي الوظيفة نفسها طوال الاتصال",
@@ -82,9 +287,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المفتاح العام يلغي الحاجة إلى مفاتيح الجلسة"
     ],
     "answer": "آليات المفتاح العام تدعم المصادقة والاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة بسرعة",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "آليات المفتاح العام تدعم المصادقة والاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة بسرعة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** آليات المفتاح العام تدعم المصادقة والاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة بسرعة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-8",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 8,
+    "title": "أي تسلسل يطابق خطوات HTTPS المذكورة في الدرس؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "أي تسلسل يطابق خطوات HTTPS المذكورة في الدرس؟",
     "options": [
       "التحقق والمصادقة داخل مصافحة TLS ثم اشتقاق مفاتيح الجلسة ثم حماية بيانات الاتصال بالتشفير المتماثل",
@@ -93,9 +332,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "إرسال مفتاح الجلسة علنًا ثم بدء TLS"
     ],
     "answer": "التحقق والمصادقة داخل مصافحة TLS ثم اشتقاق مفاتيح الجلسة ثم حماية بيانات الاتصال بالتشفير المتماثل",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "التحقق والمصادقة داخل مصافحة TLS ثم اشتقاق مفاتيح الجلسة ثم حماية بيانات الاتصال بالتشفير المتماثل",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التحقق والمصادقة داخل مصافحة TLS ثم اشتقاق مفاتيح الجلسة ثم حماية بيانات الاتصال بالتشفير المتماثل\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-9",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 9,
+    "title": "إذا كان الهدف تقليل التنصت والتلاعب وانتحال هوية الخادم والد",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا كان الهدف تقليل التنصت والتلاعب وانتحال هوية الخادم والدخول غير المصرح به في خدمة واحدة فأي فهم يطابق الدرس؟",
     "options": [
       "توزيع الأدوار بين التشفير والشهادة و2FA والتوقيع الرقمي بدل الاعتماد على تقنية واحدة",
@@ -104,9 +377,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "استخدام الشهادة بدل مصادقة المستخدم"
     ],
     "answer": "توزيع الأدوار بين التشفير والشهادة و2FA والتوقيع الرقمي بدل الاعتماد على تقنية واحدة",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "توزيع الأدوار بين التشفير والشهادة و2FA والتوقيع الرقمي بدل الاعتماد على تقنية واحدة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** توزيع الأدوار بين التشفير والشهادة و2FA والتوقيع الرقمي بدل الاعتماد على تقنية واحدة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-10",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 10,
+    "title": "إذا كان الاتصال يستخدم TLS لكن المتصفح لم يتحقق من الشهادة ف",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-08",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا كان الاتصال يستخدم TLS لكن المتصفح لم يتحقق من الشهادة فما الجانب الذي لم يتحقق منه كما ينبغي؟",
     "options": [
       "سرعة التشفير المتماثل",
@@ -115,9 +422,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "عدم التنصل من الرسالة"
     ],
     "answer": "هوية الخادم واسم النطاق",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "هوية الخادم واسم النطاق",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** هوية الخادم واسم النطاق\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-11",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 11,
+    "title": "متى تكون طريقة الدخول 2FA فعلًا؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "easy",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "متى تكون طريقة الدخول 2FA فعلًا؟",
     "options": [
       "عندما تستخدم كلمة مرور طويلة",
@@ -126,9 +464,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "عندما تستخدم ثلاثة عوامل من الفئة نفسها"
     ],
     "answer": "عندما تستخدم عاملين مستقلين من فئتين مختلفتين لإثبات الهوية",
-    "difficulty": "easy"
+    "correctAnswer": 1,
+    "correctAnswerText": "عندما تستخدم عاملين مستقلين من فئتين مختلفتين لإثبات الهوية",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** عندما تستخدم عاملين مستقلين من فئتين مختلفتين لإثبات الهوية\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-12",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 12,
+    "title": "لماذا لا تُعد كلمتا مرور مختلفتان 2FA؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا لا تُعد كلمتا مرور مختلفتان 2FA؟",
     "options": [
       "لأن 2FA تمنع استخدام كلمات المرور",
@@ -137,9 +506,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن العاملين من فئة المعرفة نفسها"
     ],
     "answer": "لأن العاملين من فئة المعرفة نفسها",
-    "difficulty": "medium"
+    "correctAnswer": 3,
+    "correctAnswerText": "لأن العاملين من فئة المعرفة نفسها",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأن العاملين من فئة المعرفة نفسها\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-13",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 13,
+    "title": "إذا تسربت كلمة المرور فما الذي يضيفه العامل الثاني إلى الحما",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-06"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا تسربت كلمة المرور فما الذي يضيفه العامل الثاني إلى الحماية؟",
     "options": [
       "يلغي الحاجة إلى كلمة المرور",
@@ -148,9 +550,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يثبت هوية الخادم بدل المستخدم"
     ],
     "answer": "يجعل معرفة كلمة المرور وحدها غير كافية للدخول",
-    "difficulty": "medium"
+    "correctAnswer": 1,
+    "correctAnswerText": "يجعل معرفة كلمة المرور وحدها غير كافية للدخول",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** يجعل معرفة كلمة المرور وحدها غير كافية للدخول\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-14",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 14,
+    "title": "أي مجموعة تمثل فئات عوامل المصادقة المذكورة في الدرس؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-06",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "أي مجموعة تمثل فئات عوامل المصادقة المذكورة في الدرس؟",
     "options": [
       "التشفير والتوقيع والشهادة",
@@ -159,9 +594,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المعرفة والحيازة والسمات الحيوية"
     ],
     "answer": "المعرفة والحيازة والسمات الحيوية",
-    "difficulty": "medium"
+    "correctAnswer": 3,
+    "correctAnswerText": "المعرفة والحيازة والسمات الحيوية",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** المعرفة والحيازة والسمات الحيوية\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-15",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 15,
+    "title": "أي عبارة تميز MFA عن 2FA؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-06"
+    ],
+    "contentOrigin": "authored",
     "question": "أي عبارة تميز MFA عن 2FA؟",
     "options": [
       "2FA تستخدم عاملًا واحدًا وMFA تستخدم عاملين من الفئة نفسها",
@@ -170,9 +637,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "المصطلحان متطابقان دائمًا"
     ],
     "answer": "2FA تستخدم عاملين من فئتين مختلفتين بينما MFA تستخدم عاملين أو أكثر من فئات مختلفة",
-    "difficulty": "medium"
+    "correctAnswer": 2,
+    "correctAnswerText": "2FA تستخدم عاملين من فئتين مختلفتين بينما MFA تستخدم عاملين أو أكثر من فئات مختلفة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** 2FA تستخدم عاملين من فئتين مختلفتين بينما MFA تستخدم عاملين أو أكثر من فئات مختلفة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-16",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 16,
+    "title": "أي تسجيل دخول يطابق مثال الدرس على عاملين من فئتين مختلفتين؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-06"
+    ],
+    "contentOrigin": "authored",
     "question": "أي تسجيل دخول يطابق مثال الدرس على عاملين من فئتين مختلفتين؟",
     "options": [
       "كلمة مرور مع رمز من تطبيق مصادقة أو جهاز يملكه المستخدم",
@@ -181,9 +680,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "كلمة مرور مع إعادة إدخالها"
     ],
     "answer": "كلمة مرور مع رمز من تطبيق مصادقة أو جهاز يملكه المستخدم",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "كلمة مرور مع رمز من تطبيق مصادقة أو جهاز يملكه المستخدم",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** كلمة مرور مع رمز من تطبيق مصادقة أو جهاز يملكه المستخدم\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-17",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 17,
+    "title": "ما الاختبار الأهم قبل أن تسمي إجراءً ما 2FA؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "ما الاختبار الأهم قبل أن تسمي إجراءً ما 2FA؟",
     "options": [
       "التأكد من أن العاملين مستقلان وينتميان إلى فئتين مختلفتين",
@@ -192,9 +723,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التأكد من أن أحد العاملين هو اسم المستخدم"
     ],
     "answer": "التأكد من أن العاملين مستقلان وينتميان إلى فئتين مختلفتين",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "التأكد من أن العاملين مستقلان وينتميان إلى فئتين مختلفتين",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التأكد من أن العاملين مستقلان وينتميان إلى فئتين مختلفتين\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-18",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 18,
+    "title": "مدرسة تريد تقليل خطر الدخول غير المصرح به بعد تسرب كلمة المر",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-06"
+    ],
+    "contentOrigin": "authored",
     "question": "مدرسة تريد تقليل خطر الدخول غير المصرح به بعد تسرب كلمة المرور أي خيار يحقق ما يشرحه الدرس؟",
     "options": [
       "كلمتا مرور من فئة المعرفة",
@@ -203,9 +766,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اسم المستخدم مع كلمة المرور فقط"
     ],
     "answer": "كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-19",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 19,
+    "title": "أرسل موظف رسالة ويريد المستلم التأكد من هوية المرسل واكتشاف ",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "أرسل موظف رسالة ويريد المستلم التأكد من هوية المرسل واكتشاف العبث بالرسالة أي تقنية تناسب ذلك وفق الدرس؟",
     "options": [
       "الشهادة الرقمية وحدها",
@@ -214,9 +811,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التشفير المتماثل وحده"
     ],
     "answer": "التوقيع الرقمي",
-    "difficulty": "medium"
+    "correctAnswer": 1,
+    "correctAnswerText": "التوقيع الرقمي",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التوقيع الرقمي\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-20",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 20,
+    "title": "أي عبارة تصف الفرق بين التوقيع الرقمي والتشفير كما ورد في ال",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-07"
+    ],
+    "contentOrigin": "authored",
     "question": "أي عبارة تصف الفرق بين التوقيع الرقمي والتشفير كما ورد في الشرح؟",
     "options": [
       "التوقيع الرقمي هو اسم آخر للتشفير المتماثل",
@@ -225,9 +854,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التوقيع الرقمي يركز على هوية المرسل وسلامة الرسالة ولا يعني بالضرورة إخفاء نصها"
     ],
     "answer": "التوقيع الرقمي يركز على هوية المرسل وسلامة الرسالة ولا يعني بالضرورة إخفاء نصها",
-    "difficulty": "medium"
+    "correctAnswer": 3,
+    "correctAnswerText": "التوقيع الرقمي يركز على هوية المرسل وسلامة الرسالة ولا يعني بالضرورة إخفاء نصها",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التوقيع الرقمي يركز على هوية المرسل وسلامة الرسالة ولا يعني بالضرورة إخفاء نصها\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-21",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 21,
+    "title": "كيف يرتبط التوقيع الرقمي بمفهوم عدم التنصل؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-07",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "كيف يرتبط التوقيع الرقمي بمفهوم عدم التنصل؟",
     "options": [
       "يمنع المرسل من قراءة الرسالة بعد إرسالها",
@@ -236,9 +897,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يثبت اسم نطاق الخادم"
     ],
     "answer": "يوفر دليلًا رقميًا يدعم إثبات هوية المرسل وصحة الرسالة بحيث يصعب إنكارها",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "يوفر دليلًا رقميًا يدعم إثبات هوية المرسل وصحة الرسالة بحيث يصعب إنكارها",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** يوفر دليلًا رقميًا يدعم إثبات هوية المرسل وصحة الرسالة بحيث يصعب إنكارها\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-22",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 22,
+    "title": "في نفس النظام يحتاج المتصفح للتحقق من الخادم ويحتاج المستلم ",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-07",
+      "concept-2-1-08",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "في نفس النظام يحتاج المتصفح للتحقق من الخادم ويحتاج المستلم إلى التحقق من رسالة محددة أي تمييز صحيح؟",
     "options": [
       "الشهادة والتوقيع يؤديان الوظيفة نفسها",
@@ -247,9 +941,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الشهادة الرقمية تساعد في التحقق من الخادم واسم النطاق والتوقيع الرقمي يتحقق من المرسل وسلامة الرسالة"
     ],
     "answer": "الشهادة الرقمية تساعد في التحقق من الخادم واسم النطاق والتوقيع الرقمي يتحقق من المرسل وسلامة الرسالة",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "الشهادة الرقمية تساعد في التحقق من الخادم واسم النطاق والتوقيع الرقمي يتحقق من المرسل وسلامة الرسالة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** الشهادة الرقمية تساعد في التحقق من الخادم واسم النطاق والتوقيع الرقمي يتحقق من المرسل وسلامة الرسالة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-23",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 23,
+    "title": "لماذا تكون الشهادة الرقمية مهمة عند الاتصال بموقع؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا تكون الشهادة الرقمية مهمة عند الاتصال بموقع؟",
     "options": [
       "لأنها تضيف عاملًا ثانيًا للمستخدم تلقائيًا",
@@ -258,9 +984,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأنها تلغي الحاجة إلى HTTPS"
     ],
     "answer": "لأنها تساعد المتصفح على التحقق من هوية الخادم واسم النطاق",
-    "difficulty": "medium"
+    "correctAnswer": 2,
+    "correctAnswerText": "لأنها تساعد المتصفح على التحقق من هوية الخادم واسم النطاق",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأنها تساعد المتصفح على التحقق من هوية الخادم واسم النطاق\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-24",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 24,
+    "title": "ما العنصر الذي يوضح سبب الثقة في الشهادة الرقمية وفق الشرح؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-03",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "ما العنصر الذي يوضح سبب الثقة في الشهادة الرقمية وفق الشرح؟",
     "options": [
       "أنها تصدر من جهة موثوقة لإثبات هوية مالك المفتاح العام",
@@ -269,9 +1027,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أنها تستخدم فقط لإخفاء الرسائل"
     ],
     "answer": "أنها تصدر من جهة موثوقة لإثبات هوية مالك المفتاح العام",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "أنها تصدر من جهة موثوقة لإثبات هوية مالك المفتاح العام",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** أنها تصدر من جهة موثوقة لإثبات هوية مالك المفتاح العام\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-25",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 25,
+    "title": "أي تعريف يطابق التشفير بالمفتاح المتماثل؟",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "easy",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02"
+    ],
+    "contentOrigin": "authored",
     "question": "أي تعريف يطابق التشفير بالمفتاح المتماثل؟",
     "options": [
       "طريقة تستخدم المفتاح نفسه للتشفير وفك التشفير وتتميز بسرعة تبادل البيانات",
@@ -280,9 +1069,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "طريقة تثبت هوية المرسل"
     ],
     "answer": "طريقة تستخدم المفتاح نفسه للتشفير وفك التشفير وتتميز بسرعة تبادل البيانات",
-    "difficulty": "easy"
+    "correctAnswer": 0,
+    "correctAnswerText": "طريقة تستخدم المفتاح نفسه للتشفير وفك التشفير وتتميز بسرعة تبادل البيانات",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** طريقة تستخدم المفتاح نفسه للتشفير وفك التشفير وتتميز بسرعة تبادل البيانات\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-26",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 26,
+    "title": "ما التحدي الذي يجب فهمه عند استخدام التشفير بالمفتاح المتماث",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02"
+    ],
+    "contentOrigin": "authored",
     "question": "ما التحدي الذي يجب فهمه عند استخدام التشفير بالمفتاح المتماثل؟",
     "options": [
       "عدم وجود أي مفتاح أثناء التشفير",
@@ -291,9 +1111,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن التشفير المتماثل يثبت اسم النطاق"
     ],
     "answer": "ضرورة مشاركة المفتاح نفسه بأمان بين الطرفين",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "ضرورة مشاركة المفتاح نفسه بأمان بين الطرفين",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** ضرورة مشاركة المفتاح نفسه بأمان بين الطرفين\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-27",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 27,
+    "title": "بعد إنشاء مفاتيح الجلسة أرسل الموقع كمية كبيرة من بيانات الط",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-05",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "بعد إنشاء مفاتيح الجلسة أرسل الموقع كمية كبيرة من بيانات الطلب لماذا يناسبها التشفير المتماثل؟",
     "options": [
       "لأنه يتحقق من هوية الخادم",
@@ -302,9 +1155,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأنه يقدم دليل عدم التنصل"
     ],
     "answer": "لأنه يحمي بيانات الاتصال بسرعة وكفاءة",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "لأنه يحمي بيانات الاتصال بسرعة وكفاءة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأنه يحمي بيانات الاتصال بسرعة وكفاءة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-28",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 28,
+    "title": "ما الذي يميز التشفير بالمفتاح العام عن التشفير بالمفتاح المت",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "ما الذي يميز التشفير بالمفتاح العام عن التشفير بالمفتاح المتماثل وفق الدرس؟",
     "options": [
       "أنه يستخدم العاملين نفسيهما في 2FA",
@@ -313,9 +1198,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أنه يعتمد على زوج مرتبط من المفاتيح أحدهما عام والآخر خاص"
     ],
     "answer": "أنه يعتمد على زوج مرتبط من المفاتيح أحدهما عام والآخر خاص",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "أنه يعتمد على زوج مرتبط من المفاتيح أحدهما عام والآخر خاص",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** أنه يعتمد على زوج مرتبط من المفاتيح أحدهما عام والآخر خاص\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-29",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 29,
+    "title": "لماذا تستخدم آليات المفتاح العام في مصافحة TLS بحسب الشرح؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-04",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا تستخدم آليات المفتاح العام في مصافحة TLS بحسب الشرح؟",
     "options": [
       "لتشفير كل بيانات الجلسة بأعلى سرعة",
@@ -324,9 +1241,44 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لإضافة عامل حيازة إلى 2FA"
     ],
     "answer": "للمصادقة والاتفاق الآمن على مفاتيح الجلسة",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "للمصادقة والاتفاق الآمن على مفاتيح الجلسة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** للمصادقة والاتفاق الآمن على مفاتيح الجلسة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-30",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 30,
+    "title": "إذا كان المطلوب هو الاتفاق الآمن على مفتاح جلسة ثم حماية كمي",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا كان المطلوب هو الاتفاق الآمن على مفتاح جلسة ثم حماية كمية كبيرة من البيانات فما التسلسل الأنسب؟",
     "options": [
       "2FA أولًا ثم الشهادة لتشفير البيانات",
@@ -335,9 +1287,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "آليات المفتاح العام أولًا في المصافحة ثم التشفير المتماثل لبيانات الجلسة"
     ],
     "answer": "آليات المفتاح العام أولًا في المصافحة ثم التشفير المتماثل لبيانات الجلسة",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "آليات المفتاح العام أولًا في المصافحة ثم التشفير المتماثل لبيانات الجلسة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** آليات المفتاح العام أولًا في المصافحة ثم التشفير المتماثل لبيانات الجلسة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-31",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 31,
+    "title": "قال طالب إن HTTPS يعني أن الموقع نفسه لا يمكن أن يمثل أي خطر",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "قال طالب إن HTTPS يعني أن الموقع نفسه لا يمكن أن يمثل أي خطر ماذا يجب تصحيح؟",
     "options": [
       "HTTPS يضمن سلامة كل ملفات الموقع",
@@ -346,9 +1330,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "HTTPS يضمن أن كل مستخدم هو المستخدم الحقيقي"
     ],
     "answer": "HTTPS يقلل مخاطر مرتبطة بالاتصال ولا يعني أن تقنية واحدة تمنع كل الأخطار مطلقًا",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "HTTPS يقلل مخاطر مرتبطة بالاتصال ولا يعني أن تقنية واحدة تمنع كل الأخطار مطلقًا",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** HTTPS يقلل مخاطر مرتبطة بالاتصال ولا يعني أن تقنية واحدة تمنع كل الأخطار مطلقًا\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-32",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 32,
+    "title": "في متجر إلكتروني أي سيناريو يطابق المثال التطبيقي في الدرس؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "في متجر إلكتروني أي سيناريو يطابق المثال التطبيقي في الدرس؟",
     "options": [
       "يبدأ HTTPS ويحمي الاتصال ثم يتحقق المتصفح من الشهادة واسم النطاق وتقلل 2FA خطر الدخول غير المصرح به ويستخدم التوقيع عند الحاجة",
@@ -357,9 +1375,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "يتم التوقيع على كل شيء قبل بدء HTTPS"
     ],
     "answer": "يبدأ HTTPS ويحمي الاتصال ثم يتحقق المتصفح من الشهادة واسم النطاق وتقلل 2FA خطر الدخول غير المصرح به ويستخدم التوقيع عند الحاجة",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "يبدأ HTTPS ويحمي الاتصال ثم يتحقق المتصفح من الشهادة واسم النطاق وتقلل 2FA خطر الدخول غير المصرح به ويستخدم التوقيع عند الحاجة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** يبدأ HTTPS ويحمي الاتصال ثم يتحقق المتصفح من الشهادة واسم النطاق وتقلل 2FA خطر الدخول غير المصرح به ويستخدم التوقيع عند الحاجة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-33",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 33,
+    "title": "ماذا يقصد الدرس عندما يقول إن TLS يحافظ على سرية البيانات وس",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-04",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "ماذا يقصد الدرس عندما يقول إن TLS يحافظ على سرية البيانات وسلامتها أثناء النقل؟",
     "options": [
       "أن البيانات تكون محمية أثناء انتقالها عبر الاتصال من القراءة والعبث أثناء النقل",
@@ -368,9 +1418,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن كل رسالة تحقق عدم التنصل تلقائيًا"
     ],
     "answer": "أن البيانات تكون محمية أثناء انتقالها عبر الاتصال من القراءة والعبث أثناء النقل",
-    "difficulty": "medium"
+    "correctAnswer": 0,
+    "correctAnswerText": "أن البيانات تكون محمية أثناء انتقالها عبر الاتصال من القراءة والعبث أثناء النقل",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** أن البيانات تكون محمية أثناء انتقالها عبر الاتصال من القراءة والعبث أثناء النقل\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-34",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 34,
+    "title": "لماذا يذكر الشرح اسم النطاق مع الشهادة الرقمية؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "لماذا يذكر الشرح اسم النطاق مع الشهادة الرقمية؟",
     "options": [
       "لأن اسم النطاق عامل حيازة في 2FA",
@@ -379,9 +1462,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "لأن اسم النطاق هو التوقيع الرقمي"
     ],
     "answer": "لأن الشهادة تساعد المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "لأن الشهادة تساعد المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** لأن الشهادة تساعد المتصفح على التحقق من هوية الخادم واسم النطاق الذي يتصل به\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-35",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 35,
+    "title": "أي عبارة تفرق بين حماية الاتصال ومصادقة المستخدم؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "أي عبارة تفرق بين حماية الاتصال ومصادقة المستخدم؟",
     "options": [
       "التشفير و2FA يؤديان الوظيفة نفسها",
@@ -390,9 +1505,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "وجود HTTPS يعني أن مصادقة المستخدم غير ضرورية"
     ],
     "answer": "التشفير يحمي البيانات أثناء النقل بينما 2FA تتحقق من هوية المستخدم بعاملين مختلفين",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "التشفير يحمي البيانات أثناء النقل بينما 2FA تتحقق من هوية المستخدم بعاملين مختلفين",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التشفير يحمي البيانات أثناء النقل بينما 2FA تتحقق من هوية المستخدم بعاملين مختلفين\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-36",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 36,
+    "title": "أي موقف يختبر مصافحة TLS وأي موقف يختبر 2FA؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "أي موقف يختبر مصافحة TLS وأي موقف يختبر 2FA؟",
     "options": [
       "كلاهما يخص الرمز المرسل للهاتف",
@@ -401,9 +1549,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التحقق من الخادم واشتقاق مفاتيح الجلسة يخص TLS أما كلمة المرور مع عامل مستقل ثانٍ فيخص 2FA"
     ],
     "answer": "التحقق من الخادم واشتقاق مفاتيح الجلسة يخص TLS أما كلمة المرور مع عامل مستقل ثانٍ فيخص 2FA",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "التحقق من الخادم واشتقاق مفاتيح الجلسة يخص TLS أما كلمة المرور مع عامل مستقل ثانٍ فيخص 2FA",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** التحقق من الخادم واشتقاق مفاتيح الجلسة يخص TLS أما كلمة المرور مع عامل مستقل ثانٍ فيخص 2FA\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-37",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 37,
+    "title": "بعد تحقق المتصفح من شهادة موقع المدرسة بدأ الطالب تسجيل الدخ",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "بعد تحقق المتصفح من شهادة موقع المدرسة بدأ الطالب تسجيل الدخول ماذا يمكننا أن نستنتج؟",
     "options": [
       "الشهادة تحققت بالفعل من هوية الطالب",
@@ -412,9 +1592,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "2FA تخص اسم النطاق"
     ],
     "answer": "تحقق الشهادة يتعلق بهوية الخادم بينما مصادقة الطالب هي وظيفة منفصلة يمكن دعمها بـ2FA",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "تحقق الشهادة يتعلق بهوية الخادم بينما مصادقة الطالب هي وظيفة منفصلة يمكن دعمها بـ2FA",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** تحقق الشهادة يتعلق بهوية الخادم بينما مصادقة الطالب هي وظيفة منفصلة يمكن دعمها بـ2FA\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-38",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 38,
+    "title": "إذا أرادت مدرسة بوابة لعرض الدرجات وتحصيل الرسوم فأي تصميم ي",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا أرادت مدرسة بوابة لعرض الدرجات وتحصيل الرسوم فأي تصميم يطابق متطلبات الدرس؟",
     "options": [
       "كلمتا مرور وتجاهل HTTPS",
@@ -423,9 +1636,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "حماية الاتصال بـHTTPS واستخدام كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة"
     ],
     "answer": "حماية الاتصال بـHTTPS واستخدام كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "حماية الاتصال بـHTTPS واستخدام كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** حماية الاتصال بـHTTPS واستخدام كلمة مرور مع عامل ثانٍ مستقل من فئة مختلفة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-39",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 39,
+    "title": "إذا أراد فريق تقليل أربعة مخاطر مختلفة في خدمة واحدة فما الا",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-07",
+      "concept-2-1-08",
+      "concept-2-1-01",
+      "concept-2-1-05"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا أراد فريق تقليل أربعة مخاطر مختلفة في خدمة واحدة فما الاستنتاج الصحيح من الدرس؟",
     "options": [
       "تقنية واحدة كافية لكل الحالات",
@@ -434,9 +1681,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الشهادة الرقمية وحدها تمنع الدخول غير المصرح به"
     ],
     "answer": "يجب جمع تقنيات متعددة لأن التهديدات مختلفة ولكل تقنية دور محدد",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "يجب جمع تقنيات متعددة لأن التهديدات مختلفة ولكل تقنية دور محدد",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** يجب جمع تقنيات متعددة لأن التهديدات مختلفة ولكل تقنية دور محدد\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-40",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 40,
+    "title": "أي ربط مما يلي ينسب وظيفة إلى التقنية الخطأ؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "أي ربط مما يلي ينسب وظيفة إلى التقنية الخطأ؟",
     "options": [
       "استخدام الشهادة الرقمية لإرسال العامل الثاني للمستخدم في 2FA",
@@ -445,9 +1725,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "استخدام التوقيع الرقمي لاكتشاف التلاعب"
     ],
     "answer": "استخدام الشهادة الرقمية لإرسال العامل الثاني للمستخدم في 2FA",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "استخدام الشهادة الرقمية لإرسال العامل الثاني للمستخدم في 2FA",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** استخدام الشهادة الرقمية لإرسال العامل الثاني للمستخدم في 2FA\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-41",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 41,
+    "title": "ما الذي يقصده الدرس بتكديس تقنيات الأمان؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-04",
+      "concept-2-1-05",
+      "concept-2-1-07"
+    ],
+    "contentOrigin": "authored",
     "question": "ما الذي يقصده الدرس بتكديس تقنيات الأمان؟",
     "options": [
       "أن التقنيات تعمل معًا وتضيف كل واحدة طبقة أو هدف حماية مختلفًا",
@@ -456,9 +1770,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "أن 2FA تشفر البيانات بدل TLS"
     ],
     "answer": "أن التقنيات تعمل معًا وتضيف كل واحدة طبقة أو هدف حماية مختلفًا",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "أن التقنيات تعمل معًا وتضيف كل واحدة طبقة أو هدف حماية مختلفًا",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** أن التقنيات تعمل معًا وتضيف كل واحدة طبقة أو هدف حماية مختلفًا\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-42",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 42,
+    "title": "قال طالب من الأفضل إرسال مفتاح متماثل إلى الخادم علنًا ثم ال",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-05",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "قال طالب من الأفضل إرسال مفتاح متماثل إلى الخادم علنًا ثم البدء في تشفير البيانات ما الخطأ؟",
     "options": [
       "الشرح يقول إن التشفير المتماثل لا يستخدم مفاتيح",
@@ -467,9 +1815,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الشرح يستخدم الشهادة وحدها لتشفير كل البيانات"
     ],
     "answer": "الشرح يضع المصادقة والاتفاق الآمن على أسرار الجلسة داخل مصافحة TLS قبل استخدام التشفير المتماثل لبيانات الجلسة",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "الشرح يضع المصادقة والاتفاق الآمن على أسرار الجلسة داخل مصافحة TLS قبل استخدام التشفير المتماثل لبيانات الجلسة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** الشرح يضع المصادقة والاتفاق الآمن على أسرار الجلسة داخل مصافحة TLS قبل استخدام التشفير المتماثل لبيانات الجلسة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-43",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 43,
+    "title": "أي مجموعة من الوظائف يذكرها الدرس داخل مصافحة TLS؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-04",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "أي مجموعة من الوظائف يذكرها الدرس داخل مصافحة TLS؟",
     "options": [
       "تخزين الطلب وتحصيل الرسوم فقط",
@@ -478,9 +1860,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "توقيع كل صفحات الموقع ومنع تسجيل الدخول"
     ],
     "answer": "المصادقة بالشهادة الرقمية واشتقاق مفاتيح الجلسة مع استخدام آليات المفتاح العام في الاتفاق الآمن",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "المصادقة بالشهادة الرقمية واشتقاق مفاتيح الجلسة مع استخدام آليات المفتاح العام في الاتفاق الآمن",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** المصادقة بالشهادة الرقمية واشتقاق مفاتيح الجلسة مع استخدام آليات المفتاح العام في الاتفاق الآمن\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-44",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 44,
+    "title": "إذا كان حساب الطالب يستخدم HTTPS لكن كلمة المرور تسربت فما ا",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "إذا كان حساب الطالب يستخدم HTTPS لكن كلمة المرور تسربت فما الذي يوضح الحاجة إلى 2FA؟",
     "options": [
       "HTTPS لا يستخدم تشفيرًا أصلًا",
@@ -489,9 +1905,44 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "HTTPS يحمي الاتصال أثناء النقل لكن 2FA تضيف عاملًا مستقلًا لتقليل الدخول غير المصرح به"
     ],
     "answer": "HTTPS يحمي الاتصال أثناء النقل لكن 2FA تضيف عاملًا مستقلًا لتقليل الدخول غير المصرح به",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "HTTPS يحمي الاتصال أثناء النقل لكن 2FA تضيف عاملًا مستقلًا لتقليل الدخول غير المصرح به",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** HTTPS يحمي الاتصال أثناء النقل لكن 2FA تضيف عاملًا مستقلًا لتقليل الدخول غير المصرح به\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-45",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 45,
+    "title": "طُلب التحقق من هوية الخادم ثم إثبات مرسل رسالة محددة واكتشاف",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-02",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "طُلب التحقق من هوية الخادم ثم إثبات مرسل رسالة محددة واكتشاف التلاعب بها ما الاختيار المطابق للدرس؟",
     "options": [
       "2FA للخادم والتشفير المتماثل للمرسل",
@@ -500,9 +1951,42 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "مفتاح الجلسة للخادم و2FA للرسالة"
     ],
     "answer": "الشهادة الرقمية للخادم والتوقيع الرقمي للمرسل وسلامة الرسالة",
-    "difficulty": "hard"
+    "correctAnswer": 1,
+    "correctAnswerText": "الشهادة الرقمية للخادم والتوقيع الرقمي للمرسل وسلامة الرسالة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** الشهادة الرقمية للخادم والتوقيع الرقمي للمرسل وسلامة الرسالة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-46",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 46,
+    "title": "في بوابة مدرسية ما الاختيار الذي يجمع بين حماية الاتصال ومصا",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-05",
+      "concept-2-1-08"
+    ],
+    "contentOrigin": "authored",
     "question": "في بوابة مدرسية ما الاختيار الذي يجمع بين حماية الاتصال ومصادقة المستخدم كما يشرح الدرس؟",
     "options": [
       "كلمتا مرور فقط مع إلغاء HTTPS",
@@ -511,9 +1995,46 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "HTTPS لحماية الاتصال وكلمة مرور مع عامل ثانٍ من فئة مختلفة للمستخدم"
     ],
     "answer": "HTTPS لحماية الاتصال وكلمة مرور مع عامل ثانٍ من فئة مختلفة للمستخدم",
-    "difficulty": "hard"
+    "correctAnswer": 3,
+    "correctAnswerText": "HTTPS لحماية الاتصال وكلمة مرور مع عامل ثانٍ من فئة مختلفة للمستخدم",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** HTTPS لحماية الاتصال وكلمة مرور مع عامل ثانٍ من فئة مختلفة للمستخدم\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-47",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 47,
+    "title": "أي عبارة تلخص تكامل تقنيات الدرس بصورة صحيحة؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-01",
+      "concept-2-1-02",
+      "concept-2-1-04",
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "أي عبارة تلخص تكامل تقنيات الدرس بصورة صحيحة؟",
     "options": [
       "كل التقنيات تؤدي الوظيفة نفسها في الوقت نفسه",
@@ -522,9 +2043,43 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "التشفير المتماثل وحده يقوم بكل وظائف المصادقة وعدم التنصل"
     ],
     "answer": "تبدأ الحماية باتصال HTTPS ومصافحة TLS وتتحقق الشهادة من الخادم وتدعم آليات المفتاح العام الاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة وتضاف 2FA والتوقيعات عند الحاجة",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "تبدأ الحماية باتصال HTTPS ومصافحة TLS وتتحقق الشهادة من الخادم وتدعم آليات المفتاح العام الاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة وتضاف 2FA والتوقيعات عند الحاجة",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** تبدأ الحماية باتصال HTTPS ومصافحة TLS وتتحقق الشهادة من الخادم وتدعم آليات المفتاح العام الاتفاق الآمن على مفاتيح الجلسة ثم يحمي التشفير المتماثل بيانات الجلسة وتضاف 2FA والتوقيعات عند الحاجة\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-48",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 48,
+    "title": "قال طالب إن الشهادة الرقمية تمنع التنصت و2FA تتحقق من اسم ال",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-07",
+      "concept-2-1-08",
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "قال طالب إن الشهادة الرقمية تمنع التنصت و2FA تتحقق من اسم النطاق والتوقيع الرقمي يشفر بيانات الطلب أي تصحيح يكشف الفهم الصحيح؟",
     "options": [
       "الشهادة تتحقق من الخادم واسم النطاق و2FA تتحقق من هوية المستخدم والتوقيع يتحقق من المرسل ويكشف التلاعب ويدعم عدم التنصل",
@@ -533,9 +2088,41 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "الشهادة تشفر الجلسة و2FA تثبت عدم التنصل والتوقيع يتحقق من اسم النطاق"
     ],
     "answer": "الشهادة تتحقق من الخادم واسم النطاق و2FA تتحقق من هوية المستخدم والتوقيع يتحقق من المرسل ويكشف التلاعب ويدعم عدم التنصل",
-    "difficulty": "hard"
+    "correctAnswer": 0,
+    "correctAnswerText": "الشهادة تتحقق من الخادم واسم النطاق و2FA تتحقق من هوية المستخدم والتوقيع يتحقق من المرسل ويكشف التلاعب ويدعم عدم التنصل",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** الشهادة تتحقق من الخادم واسم النطاق و2FA تتحقق من هوية المستخدم والتوقيع يتحقق من المرسل ويكشف التلاعب ويدعم عدم التنصل\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-49",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 49,
+    "title": "عند اختيار طريقة مصادقة لخدمة محددة ما المعياران اللذان يطلب",
+    "cognitiveLevel": "فهم وتعريف",
+    "difficulty": "medium",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-05",
+      "concept-2-1-06"
+    ],
+    "contentOrigin": "authored",
     "question": "عند اختيار طريقة مصادقة لخدمة محددة ما المعياران اللذان يطلب هدف الدرس مراعاتهما عند تبرير الاختيار؟",
     "options": [
       "متطلبات الأمان وإمكانية الوصول",
@@ -544,9 +2131,40 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "اسم لغة البرمجة وعدد صفحات الموقع"
     ],
     "answer": "متطلبات الأمان وإمكانية الوصول",
-    "difficulty": "medium"
+    "correctAnswer": 0,
+    "correctAnswerText": "متطلبات الأمان وإمكانية الوصول",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** متطلبات الأمان وإمكانية الوصول\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   },
   {
+    "id": "deep-2-1-50",
+    "lessonId": "lesson-2-1",
+    "lessonNumber": "2-1",
+    "index": 50,
+    "title": "أي هدف أمني يميز عدم التنصل داخل هذا الدرس؟",
+    "cognitiveLevel": "تحليل واستنتاج",
+    "difficulty": "hard",
+    "type": "mcq",
+    "conceptIds": [
+      "concept-2-1-09"
+    ],
+    "contentOrigin": "authored",
     "question": "أي هدف أمني يميز عدم التنصل داخل هذا الدرس؟",
     "options": [
       "حماية البيانات من القراءة أثناء النقل",
@@ -555,6 +2173,25 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
       "إضافة عامل ثانٍ لتسجيل دخول المستخدم"
     ],
     "answer": "توفير دليل رقمي يدعم إثبات هوية المرسل وصحة الرسالة بحيث لا يمكن إنكارها",
-    "difficulty": "hard"
+    "correctAnswer": 2,
+    "correctAnswerText": "توفير دليل رقمي يدعم إثبات هوية المرسل وصحة الرسالة بحيث لا يمكن إنكارها",
+    "misconceptionTrap": "الخلط بين أدوار تقنيات الأمان المختلفة في اتصالات الويب.",
+    "depthExplanation": "**الإجابة النموذجية:** توفير دليل رقمي يدعم إثبات هوية المرسل وصحة الرسالة بحيث لا يمكن إنكارها\n\n**الشرح والتوضيح:** يستند هذا السؤال إلى الشرح الوارد في الدرس 2-1 (تقنيات التشفير والمصادقة) بخصوص تكامل طبقات الحماية المتعددة.",
+    "teacherDiscussionPrompt": "ناقش مع الطلاب كيف تتكامل هذه التقنية مع بقية عناصر أمان الاتصال والخدمات الرقمية.",
+    "source": {
+      "term": 1,
+      "lessonId": "lesson-2-1",
+      "pages": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-page-scan"
+    }
   }
 ];

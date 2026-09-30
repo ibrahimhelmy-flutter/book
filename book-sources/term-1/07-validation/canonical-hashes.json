@@ -39,9 +39,9 @@
       "lastModified": "2026-09-19T08:30:17.012Z"
     },
     "authored/deep-questions/chapter-2/lesson-2-1.json": {
-      "sha256": "021045742888732b04c8fc2f0f896ba2906115f505689c441aaf91f75cf3c9ef",
-      "sizeBytes": 170624,
-      "lastModified": "2026-09-21T13:07:12.224Z"
+      "sha256": "bd39b4488005dc6e844a6a68e5d68b16bcaec44ed637121277dae762f7165b5f",
+      "sizeBytes": 114395,
+      "lastModified": "2026-09-30T06:43:51.434Z"
     },
     "authored/deep-questions/chapter-2/lesson-2-2.json": {
       "sha256": "6425609e02e7e27d43f7efa4dca45d368fdae99a1b0a84c78dcdcf966a09a37c",
@@ -99,9 +99,9 @@
       "lastModified": "2026-09-29T20:45:24.913Z"
     },
     "official/book.json": {
-      "sha256": "b4578071ccbe8c2df6f641d9058db7d0f554e2bf51b3d8a256455a746388e9a3",
-      "sizeBytes": 577278,
-      "lastModified": "2026-09-29T20:52:53.683Z"
+      "sha256": "c0597844f1b1643e905768e5007fd89a78bde4245bc077406a6a5c8879eacb8e",
+      "sizeBytes": 585998,
+      "lastModified": "2026-09-30T06:43:10.632Z"
     },
     "official/curriculum-baseline-spec.json": {
       "sha256": "5fff04addfe9308a8681068504d140f552b13176723ce15dcc4a1969ec1ae7ca",

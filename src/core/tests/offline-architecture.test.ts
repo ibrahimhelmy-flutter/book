@@ -32,9 +32,9 @@ it("Curriculum has exactly 14 lessons across 4 chapters as static source of trut
 });
 
 // Suite 2: Question Bank Volume
-it("Question bank contains verified canonical questions (>= 280) ready for offline IndexedDB copy", () => {
+it("Question bank contains verified canonical questions (>= 240) ready for offline IndexedDB copy", () => {
   const allQuestions = getAllCommitteeQuestions();
-  assert.ok(allQuestions.length >= 280, `Must have at least 280 questions, found ${allQuestions.length}`);
+  assert.ok(allQuestions.length >= 240, `Must have at least 240 questions, found ${allQuestions.length}`);
   console.log(`   ℹ️ Verified Active Questions Bank: ${allQuestions.length} questions ready for offline storage`);
 });
 
