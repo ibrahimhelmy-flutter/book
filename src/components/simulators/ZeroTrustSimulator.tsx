@@ -1,52 +1,84 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShieldCheck, ShieldAlert, Laptop, Lock, Unlock, CheckCircle2, XCircle, RotateCcw, AlertOctagon, UserX, Shield } from "lucide-react";
+import {
+  ShieldCheck,
+  ShieldAlert,
+  Laptop,
+  Database,
+  RotateCcw,
+  Sparkles,
+  Lock,
+  Unlock,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Play,
+} from "lucide-react";
 
 export function ZeroTrustSimulator() {
-  const [stage, setStage] = useState<number>(0);
-  const [policyEnforced, setPolicyEnforced] = useState<boolean>(true); // Zero trust vs Traditional
+  const [model, setModel] = useState<"perimeter" | "zero_trust">("zero_trust");
+  const [simStep, setSimStep] = useState<number>(0); // 0=idle, 1=login, 2=inspection, 3=verdict
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
 
   const runSimulation = () => {
-    setStage(1);
-    setTimeout(() => setStage(2), 700);
-    setTimeout(() => setStage(3), 1500);
+    if (isSimulating) return;
+    setIsSimulating(true);
+    setSimStep(1); // Step 1: Laptop attempts access
+
+    setTimeout(() => {
+      setSimStep(2); // Step 2: Policy check
+    }, 900);
+
+    setTimeout(() => {
+      setSimStep(3); // Step 3: Final outcome
+      setIsSimulating(false);
+    }, 2000);
   };
 
-  const resetSim = () => {
-    setStage(0);
+  const resetAll = () => {
+    setSimStep(0);
+    setIsSimulating(false);
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-white shadow-2xl">
+    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 text-white shadow-2xl">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-5 mb-6 gap-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-purple-600/20 text-purple-400 rounded-2xl border border-purple-500/30">
-            <Shield className="w-6 h-6" />
+            <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl sm:text-2xl font-black">مختبر انعدام الثقة (Zero Trust) مقابل الأمان المحيطي</h3>
+            <h3 className="text-xl sm:text-2xl font-black">
+              مختبر انعدام الثقة (Zero Trust) مقابل الأمان المحيطي
+            </h3>
             <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-              مقارنة مبدأ "لا تثق بأحد أبداً وتحقق دائماً" مع الأمان المحيطي التقليدي (ص 41-42)
+              مقارنة مبدأ &quot;لا تثق بأحد أبداً وتحقق دائماً&quot; مع الثقة العمياء داخل الشبكة (ص 41 - 42)
             </p>
           </div>
         </div>
 
-        {/* Policy Switcher */}
+        {/* Model Switcher */}
         <div className="flex bg-slate-950 p-1.5 rounded-2xl border border-slate-800 self-start sm:self-auto">
           <button
-            onClick={() => { setPolicyEnforced(false); setStage(0); }}
+            onClick={() => {
+              setModel("perimeter");
+              resetAll();
+            }}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              !policyEnforced ? "bg-red-600 text-white shadow-lg" : "text-slate-400 hover:text-white"
+              model === "perimeter" ? "bg-red-600 text-white shadow-lg" : "text-slate-400 hover:text-white"
             }`}
           >
             الأمان المحيطي التقليدي 🏰
           </button>
           <button
-            onClick={() => { setPolicyEnforced(true); setStage(0); }}
+            onClick={() => {
+              setModel("zero_trust");
+              resetAll();
+            }}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              policyEnforced ? "bg-purple-600 text-white shadow-lg" : "text-slate-400 hover:text-white"
+              model === "zero_trust" ? "bg-purple-600 text-white shadow-lg" : "text-slate-400 hover:text-white"
             }`}
           >
             نموذج Zero Trust الحديث 🛡️
@@ -54,151 +86,184 @@ export function ZeroTrustSimulator() {
         </div>
       </div>
 
-      {/* Concept Definition Banner */}
-      <div className="bg-purple-950/40 border border-purple-500/30 rounded-2xl p-4 text-xs sm:text-sm text-purple-200 leading-relaxed flex items-start gap-3 mb-6">
-        <span className="p-1 bg-purple-500/20 rounded text-purple-300 font-bold shrink-0">المفهوم الوزاري (ص 41-42):</span>
+      {/* Core Idea Banner */}
+      <div className="bg-purple-950/30 border border-purple-500/20 rounded-2xl p-4 mb-6 text-xs sm:text-sm text-purple-200 flex items-start gap-3">
+        <Sparkles className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
         <div>
-          <strong>نموذج انعدام الثقة (Zero Trust Architecture):</strong> استراتيجية أمنية تقوم على مبدأ 
-          <strong> "لا تثق بأحد أبداً، وتحقق دائماً وبشكل مستمر" (Never Trust, Always Verify)</strong>.
-          لا يمنح النظام أي ثقة تلقائية للمستخدمين أو الأجهزة بمجرد وجودهم داخل الشبكة، بل يتحقق من الهوية، وسلامة الجهاز، والحد الأدنى من الصلاحيات لكل طلب وصول.
+          {model === "perimeter" ? (
+            <span>
+              <strong>الأمان المحيطي (القلعة والخندق):</strong> يفترض أن أي جهاز داخل الشبكة هو جهاز &quot;موثوق تلقائياً&quot;.
+              إذا اخترق المهاجم لابتوب موظف عبر بريد تصيد، يستطيع التجول بحرية وسرقة بيانات الطلاب دون أن يوقفه أحد!
+            </span>
+          ) : (
+            <span>
+              <strong>مبدأ انعدام الثقة (Zero Trust):</strong> شعاره:{" "}
+              <strong>&quot;Never Trust, Always Verify&quot; (لا تثق بأحد أبداً، وتحقق دائماً)</strong>.
+              لا ثقة تلقائية لأي جهاز حتى لو كان داخل مكتب المدير! يتم فحص سلامة الجهاز وسلوكه مع كل طلب.
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Scenario Context */}
-      <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-xs font-mono text-purple-400 font-bold block mb-1">السيناريو الواقعي:</span>
-            <h4 className="font-bold text-sm text-white">
-              جهاز موظف مصاب ببرمجية خبيثة عبر بريد تصيد احتيالي يحاول الاتصال بشبكة المدرسة الداخلية
-            </h4>
-            <p className="text-xs text-slate-400 mt-1">
-              الموظف يمتلك بيانات تسجيل دخول حقيقية، لكن جهازه مخترق سراً من قبل مهاجم خارجي.
-            </p>
+      {/* Scenario Bar */}
+      <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div>
+          <span className="text-[10px] font-mono text-purple-400 font-bold uppercase">السيناريو:</span>
+          <div className="text-xs font-bold text-white mt-0.5">
+            لابتوب موظف مصاب ببرمجية خبيثة سراً، يحاول الوصول لقاعدة بيانات درجات الطلاب.
           </div>
+        </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={runSimulation}
-              disabled={stage > 0 && stage < 3}
-              className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
-            >
-              تشغيل المحاكاة 🚀
-            </button>
-            {stage > 0 && (
-              <button
-                onClick={resetSim}
-                className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all cursor-pointer"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button
+            onClick={runSimulation}
+            disabled={isSimulating}
+            className="flex-1 sm:flex-initial px-5 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg"
+          >
+            <Play className="w-4 h-4" />
+            تشغيل المحاكاة 🚀
+          </button>
+          <button
+            onClick={resetAll}
+            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all cursor-pointer"
+            title="إعادة الضبط"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Visual Animated Arena */}
+      <div className="bg-slate-950 border border-slate-800 rounded-3xl p-5 sm:p-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr_1fr] gap-4 items-center">
+          
+          {/* INFECTED LAPTOP */}
+          <div className={`p-4 rounded-2xl border text-center transition-all ${
+            simStep >= 1 ? "bg-red-950/30 border-red-500/50" : "bg-slate-900/70 border-slate-800"
+          }`}>
+            <div className="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 mx-auto flex items-center justify-center mb-2 border border-red-500/30">
+              <Laptop className="w-6 h-6" />
+            </div>
+            <div className="font-bold text-xs sm:text-sm text-white">جهاز الموظف المخترق</div>
+            <div className="text-[10px] text-red-400 font-bold mt-0.5">⚠️ مصاب بفيروس تصيد</div>
+
+            {simStep >= 1 && (
+              <div className="mt-2 text-[10px] text-slate-300 font-mono">
+                يرسل طلب: SELECT * FROM grades;
+              </div>
             )}
           </div>
+
+          {/* INSPECTION / VERIFICATION ZONE */}
+          <div className="flex flex-col items-center justify-center py-4 px-2">
+            <div className="text-[10px] font-mono text-slate-400 mb-2">
+              {model === "zero_trust" ? "مدقق الأمان المستمر (Zero Trust Sensor)" : "نقطة تفتيش الحدود (Perimeter)"}
+            </div>
+
+            {/* Central Animated Gate */}
+            <div className={`w-24 h-24 rounded-3xl border-2 flex flex-col items-center justify-center transition-all duration-500 ${
+              simStep === 3
+                ? model === "zero_trust"
+                  ? "bg-emerald-950/70 border-emerald-500 text-emerald-400 shadow-xl shadow-emerald-950/40"
+                  : "bg-red-950/70 border-red-500 text-red-400 shadow-xl shadow-red-950/40 animate-shake"
+                : simStep === 2
+                ? "bg-purple-950/70 border-purple-500 text-purple-400 animate-pulse"
+                : "bg-slate-900 border-slate-700 text-slate-400"
+            }`}>
+              {simStep === 3 ? (
+                model === "zero_trust" ? (
+                  <>
+                    <ShieldCheck className="w-8 h-8 mb-1" />
+                    <span className="text-[10px] font-bold">عزل الجهاز 🛑</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldAlert className="w-8 h-8 mb-1" />
+                    <span className="text-[10px] font-bold">عبور حر 🔓</span>
+                  </>
+                )
+              ) : simStep === 2 ? (
+                <>
+                  <Sparkles className="w-8 h-8 mb-1 animate-spin" />
+                  <span className="text-[10px] font-bold">فحص الجهاز...</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-8 h-8 mb-1" />
+                  <span className="text-[10px] font-bold">في الانتظار</span>
+                </>
+              )}
+            </div>
+
+            {/* Step text */}
+            <div className="mt-3 text-center">
+              {simStep === 2 && (
+                <span className="text-xs text-purple-300 font-bold animate-pulse">
+                  {model === "zero_trust"
+                    ? "🔍 رصد برمجية ضارة وفشل فحص سلامة الجهاز!"
+                    : "⚠️ الجهاز داخل شبكة المؤسسة: ثقة عمياء تلقائية!"}
+                </span>
+              )}
+              {simStep === 3 && (
+                <span className={`text-xs font-bold px-3 py-1 rounded-full border ${
+                  model === "zero_trust"
+                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                    : "bg-red-500/20 text-red-300 border-red-500/30"
+                }`}>
+                  {model === "zero_trust"
+                    ? "✅ تم حظر الطلب وعزل اللابتوب المصاب"
+                    : "❌ تسلل المهاجم وسرق قاعدة البيانات بالكامل"}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* TARGET: Database Server */}
+          <div className={`p-4 rounded-2xl border text-center transition-all ${
+            simStep === 3 && model === "perimeter"
+              ? "bg-red-950/70 border-red-500 text-red-300 animate-shake"
+              : "bg-slate-900/70 border-slate-800"
+          }`}>
+            <div className={`w-12 h-12 rounded-2xl mx-auto flex items-center justify-center mb-2 border ${
+              simStep === 3 && model === "perimeter"
+                ? "bg-red-600/30 text-red-400 border-red-500/50"
+                : "bg-emerald-600/20 text-emerald-400 border-emerald-500/30"
+            }`}>
+              <Database className="w-6 h-6" />
+            </div>
+            <div className="font-bold text-xs sm:text-sm text-white">قاعدة بيانات الطلاب</div>
+            <div className="text-[10px] font-mono mt-0.5 text-slate-400">سجلات سرية</div>
+
+            <div className="mt-2 text-[10px] font-bold">
+              {simStep === 3 ? (
+                model === "zero_trust" ? (
+                  <span className="text-emerald-400">محمية بالكامل 🔒</span>
+                ) : (
+                  <span className="text-red-400">💥 تم تسريب الدرجات!</span>
+                )
+              ) : (
+                <span className="text-slate-500">جاهزة وآمنة</span>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Step by Step Progression */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        {/* Step 1: Authentication */}
-        <div className={`p-5 rounded-2xl border transition-all ${
-          stage >= 1 ? "bg-slate-950 border-purple-500/50" : "bg-slate-950/40 border-slate-800 opacity-60"
-        }`}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400">المرحلة 1</span>
-            <Laptop className="w-4 h-4 text-purple-400" />
-          </div>
-          <h5 className="font-bold text-sm text-white">1. تسجيل الدخول</h5>
-          <p className="text-xs text-slate-400 mt-1">
-            الجهاز يقدم اسم المستخدم وكلمة المرور للدخول للشبكة.
+      {/* Pedagogical Takeaway Box */}
+      <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 text-xs leading-relaxed text-slate-300">
+        <div className="font-bold text-white mb-1">الخلاصة للامتحان الوزاري:</div>
+        {model === "zero_trust" ? (
+          <p>
+            في نموذج <strong>انعدام الثقة (Zero Trust)</strong>، لا تُمنح الثقة لأي كيان لمجرد وجوده داخل الشبكة.
+            كل معاملة تخضع للمصادقة الصارمة والتحقق المستمر وتطبيق الحد الأدنى من الصلاحيات (Least Privilege).
           </p>
-          {stage >= 1 && (
-            <div className="mt-3 p-2 bg-slate-900 rounded-lg text-[11px] text-emerald-400 font-mono">
-              ✅ تم التحقق من كلمة المرور
-            </div>
-          )}
-        </div>
-
-        {/* Step 2: Verification Policy */}
-        <div className={`p-5 rounded-2xl border transition-all ${
-          stage >= 2 ? "bg-slate-950 border-purple-500/50" : "bg-slate-950/40 border-slate-800 opacity-60"
-        }`}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400">المرحلة 2</span>
-            <Shield className="w-4 h-4 text-purple-400" />
-          </div>
-          <h5 className="font-bold text-sm text-white">2. فحص الثقة وسلامة الجهاز</h5>
-          <p className="text-xs text-slate-400 mt-1">
-            {policyEnforced
-              ? "فحص أمني لحظي لحالة نظام التشغيل، ومضاد الفيروسات، وسلوك الطلب."
-              : "افتراض أن الجهاز آمن تلقائياً لأنه نجح في تسجيل الدخول!"}
+        ) : (
+          <p>
+            في <strong>الأمان المحيطي التقليدي</strong>، بمجرد اختراق أي نقطة طرفية (Endpoint) داخل الشركة،
+            يستطيع المهاجم التحرك أفقياً (Lateral Movement) والوصول لكافة الخوادم بسبب الثقة الضمنية الممنوحة للشبكة الداخلية.
           </p>
-          {stage >= 2 && (
-            <div className={`mt-3 p-2 rounded-lg text-[11px] font-mono ${
-              policyEnforced
-                ? "bg-purple-950 text-purple-300 border border-purple-800"
-                : "bg-amber-950 text-amber-300 border border-amber-800"
-            }`}>
-              {policyEnforced ? "🔍 رصد برمجية مشبوهة وسلوك شاذ" : "⚠️ ثقة عمياء ضمنية (Implicit Trust)"}
-            </div>
-          )}
-        </div>
-
-        {/* Step 3: Access Outcome */}
-        <div className={`p-5 rounded-2xl border transition-all ${
-          stage >= 3 ? "bg-slate-950 border-purple-500/50" : "bg-slate-950/40 border-slate-800 opacity-60"
-        }`}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono text-slate-400">المرحلة 3</span>
-            {policyEnforced ? (
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            ) : (
-              <ShieldAlert className="w-4 h-4 text-red-400" />
-            )}
-          </div>
-          <h5 className="font-bold text-sm text-white">3. القرار النهائي والنتيجة</h5>
-          <p className="text-xs text-slate-400 mt-1">
-            {policyEnforced ? "تطبيق مبدأ انعدام الثقة وعزل التهديد." : "نتيجة الأمان المحيطي المفتوح."}
-          </p>
-          {stage >= 3 && (
-            <div className={`mt-3 p-2 rounded-lg text-[11px] font-bold ${
-              policyEnforced
-                ? "bg-emerald-950/60 text-emerald-300 border border-emerald-500/40"
-                : "bg-red-950/60 text-red-300 border border-red-500/40"
-            }`}>
-              {policyEnforced ? "🛡️ تم عزل الجهاز وحظر الوصول لقواعد البيانات!" : "💥 كارثة! انتشرت البرمجية الخبيثة وشفرت الخوادم!"}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* In-depth Comparison Table */}
-      <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-        <h4 className="text-xs font-bold text-slate-300 mb-3 uppercase tracking-wider font-mono">
-          مقارنة الفلسفة الأمنية بين النموذجين:
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800">
-            <div className="font-bold text-red-400 mb-1 flex items-center gap-1.5">
-              <UserX className="w-4 h-4" /> الأمان المحيطي التقليدي (Perimeter Security)
-            </div>
-            <ul className="text-slate-400 space-y-1 list-disc list-inside leading-relaxed mt-2">
-              <li>يركز الدفاع فقط على الأطراف الخارجية والحدود (Firewall + VPN).</li>
-              <li>بمجرد دخول المهاجم للشبكة، يصبح حراً في التحرك أفقياً (Lateral Movement).</li>
-              <li>يفترض أن الداخل موثوق تماماً (Trust but Verify).</li>
-            </ul>
-          </div>
-
-          <div className="p-3.5 bg-slate-900 rounded-xl border border-purple-500/30">
-            <div className="font-bold text-purple-400 mb-1 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4" /> نموذج انعدام الثقة (Zero Trust Architecture)
-            </div>
-            <ul className="text-slate-300 space-y-1 list-disc list-inside leading-relaxed mt-2">
-              <li>المبدأ الثابت: "Never Trust, Always Verify" (لا تثق، وتحقق دائماً).</li>
-              <li>التحقق الصارم والمستمر من الهوية وسلامة الجهاز لكل معاملة بمفردها.</li>
-              <li>صلاحيات دنيا محدودة (Least Privilege) وتقسيم شبكي دقيق (Micro-segmentation).</li>
-            </ul>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
