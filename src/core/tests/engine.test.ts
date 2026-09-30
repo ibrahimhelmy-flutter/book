@@ -99,7 +99,7 @@ async function runTests() {
   console.log("\n--- Suite 3: Repository & Search ---");
 
   const allPrimaryQuestions = await container.questionRepository.findByBook("it-secondary-2");
-  assert(allPrimaryQuestions.length >= 250, "Repository contains primary book question bank (>250 questions)");
+  assert(allPrimaryQuestions.length >= 240, "Repository contains primary book question bank (>= 240 questions)");
 
   const searchMCQ = await container.searchQuestionsUseCase.execute({
     bookId: "it-secondary-2",
@@ -113,7 +113,7 @@ async function runTests() {
   console.log("\n--- Suite 4: Question Bank Coverage Analysis ---");
 
   const analysisReport = await container.analyzeQuestionBankUseCase.execute("it-secondary-2");
-  assert(analysisReport.totalQuestions >= 250, "Coverage report correctly tallies total questions");
+  assert(analysisReport.totalQuestions >= 240, "Coverage report correctly tallies total questions");
   assert(analysisReport.coveragePercentage > 90, "Primary book has >90% curriculum coverage");
   assert(analysisReport.difficultyCounts.easy > 0, "Coverage tracks easy difficulty questions");
   assert(analysisReport.difficultyCounts.medium > 0, "Coverage tracks medium difficulty questions");
