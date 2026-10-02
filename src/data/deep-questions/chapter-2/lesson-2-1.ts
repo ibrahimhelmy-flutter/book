@@ -276,7 +276,8 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
     "type": "mcq",
     "conceptIds": [
       "concept-2-1-01",
-      "concept-2-1-02"
+      "concept-2-1-02",
+      "concept-2-1-10"
     ],
     "contentOrigin": "authored",
     "question": "أي وصف يوضح العلاقة بين آليات المفتاح العام والتشفير المتماثل في HTTPS؟",
@@ -843,7 +844,8 @@ export const LESSON_2_1_DEEP_QUESTIONS: DeepChallengingQuestion[] = [
     "type": "mcq",
     "conceptIds": [
       "concept-2-1-02",
-      "concept-2-1-07"
+      "concept-2-1-07",
+      "concept-2-1-10"
     ],
     "contentOrigin": "authored",
     "question": "أي عبارة تصف الفرق بين التوقيع الرقمي والتشفير كما ورد في الشرح؟",

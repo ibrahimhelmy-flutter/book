@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { Lesson } from "@/types";
 import Link from "next/link";
-import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen, Compass } from "lucide-react";
+import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen, Compass, MoreVertical, Type, Plus, Minus } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
+
+export type LessonFontSize = "normal" | "large" | "xlarge";
 
 interface Props {
   lesson: Lesson;
@@ -12,6 +14,8 @@ interface Props {
   activeTab?: "lesson" | "quiz";
   onToggleTab?: () => void;
   questionsCount?: number;
+  fontSize?: LessonFontSize;
+  onFontSizeChange?: (size: LessonFontSize) => void;
 }
 
 export function LessonHeader({
@@ -20,11 +24,32 @@ export function LessonHeader({
   activeTab = "lesson",
   onToggleTab,
   questionsCount,
+  fontSize = "normal",
+  onFontSizeChange,
 }: Props) {
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
-  const [showExplorePopover, setShowExplorePopover] = useState<boolean>(false);
+  const [isActionsMenuOpen, setIsActionsMenuOpen] = useState<boolean>(false);
+  const actionsMenuRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (actionsMenuRef.current && !actionsMenuRef.current.contains(event.target as Node)) {
+        setIsActionsMenuOpen(false);
+      }
+    }
+    if (isActionsMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isActionsMenuOpen]);
+
+  useEffect(() => {
+    setIsActionsMenuOpen(false);
+  }, [lesson.id]);
 
   useEffect(() => {
     const p = getStoredProgress();
@@ -120,80 +145,6 @@ export function LessonHeader({
             </button>
           )}
 
-          {/* Explore in Pairs Hover Button */}
-          {lesson.exploreInPairs && (
-            <div className="relative group">
-              <button
-                type="button"
-                onClick={() => setShowExplorePopover((prev) => !prev)}
-                onMouseEnter={() => setShowExplorePopover(true)}
-                onMouseLeave={() => setShowExplorePopover(false)}
-                className="px-2.5 py-1.5 rounded-lg border border-purple-500/30 bg-purple-950/30 hover:bg-purple-900/50 text-purple-300 hover:text-white text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5"
-                title="استكشف في ثنائيات"
-              >
-                <Users className="w-3.5 h-3.5 text-purple-400" />
-                <span className="hidden sm:inline">نشاط تعاوني</span>
-              </button>
-
-              {/* Hover Popover (rendered only when visible to prevent GPU layer bloat) */}
-              {showExplorePopover && (
-                <div
-                  onMouseEnter={() => setShowExplorePopover(true)}
-                  onMouseLeave={() => setShowExplorePopover(false)}
-                  className="absolute left-0 top-full mt-2 w-72 sm:w-80 p-3.5 bg-slate-950 border border-purple-500/40 rounded-xl shadow-2xl z-50 text-right animate-fadeIn"
-                >
-                  <div className="flex items-center gap-1.5 text-purple-400 font-bold text-xs mb-1.5 border-b border-purple-500/20 pb-1.5">
-                    <Users className="w-3.5 h-3.5" />
-                    <span>نشاط تفاعلي تعاوني:</span>
-                  </div>
-                  <p className="text-xs text-slate-200 leading-relaxed font-normal">
-                    {lesson.exploreInPairs}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Audio TTS */}
-          <button
-            onClick={handleTTSAudio}
-            className={`px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1 text-xs font-medium ${
-              isPlayingAudio
-                ? "bg-amber-500/20 border-amber-500 text-amber-300 animate-pulse"
-                : "bg-slate-800/60 hover:bg-slate-700 border-slate-700/60 text-slate-300"
-            }`}
-            title="القارئ الصوتي"
-          >
-            {isPlayingAudio ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">{isPlayingAudio ? "إيقاف" : "استماع"}</span>
-          </button>
-
-          {/* Bookmark Button */}
-          <button
-            onClick={handleBookmarkToggle}
-            className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
-              isBookmarked
-                ? "bg-purple-600 border-purple-500 text-white"
-                : "bg-slate-800/60 hover:bg-slate-700 border-slate-700/60 text-slate-300"
-            }`}
-            title={isBookmarked ? "إزالة الإشارة المرجعية" : "حفظ في الإشارات المرجعية"}
-          >
-            <Bookmark className="w-3.5 h-3.5" />
-          </button>
-
-          {/* Complete Toggle Button */}
-          <button
-            onClick={handleCompleteToggle}
-            className={`px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-              isCompleted
-                ? "bg-emerald-600 border-emerald-500 text-white shadow-md shadow-emerald-600/20"
-                : "bg-slate-800/60 hover:bg-slate-700 border-slate-700/60 text-slate-300"
-            }`}
-          >
-            <CheckCircle className="w-3.5 h-3.5" />
-            <span>{isCompleted ? "مكتمل ✅" : "تحديد كمكتمل"}</span>
-          </button>
-
           {/* Optional Compact Presentation Launcher */}
           {onOpenPresentation && (
             <button
@@ -206,6 +157,246 @@ export function LessonHeader({
               <span className="hidden sm:inline">عرض تقديمي</span>
             </button>
           )}
+
+          {/* Single Icon Actions Menu (استماع، حفظ، إكمال، نشاط تعاوني) */}
+          <div className="relative" ref={actionsMenuRef}>
+            <button
+              type="button"
+              onClick={() => setIsActionsMenuOpen((prev) => !prev)}
+              className={`relative p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-center shadow-sm ${
+                isActionsMenuOpen
+                  ? "bg-indigo-600 border-indigo-500 text-white ring-2 ring-indigo-500/30 shadow-indigo-600/20"
+                  : isPlayingAudio
+                  ? "bg-amber-500/20 border-amber-500/50 text-amber-300 animate-pulse"
+                  : isCompleted
+                  ? "bg-emerald-950/60 border-emerald-500/40 text-emerald-300"
+                  : isBookmarked
+                  ? "bg-purple-950/50 border-purple-500/40 text-purple-300"
+                  : "bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-300 hover:text-white"
+              }`}
+              title="أدوات وإجراءات الدرس (استماع، حفظ، إكمال، نشاط تعاوني)"
+              aria-label="أدوات الدرس"
+              aria-expanded={isActionsMenuOpen}
+            >
+              <MoreVertical className="w-4 h-4" />
+              {(isPlayingAudio || isCompleted || isBookmarked) && (
+                <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                  {isPlayingAudio ? (
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                  ) : null}
+                  <span
+                    className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                      isPlayingAudio
+                        ? "bg-amber-500"
+                        : isCompleted
+                        ? "bg-emerald-500"
+                        : "bg-purple-500"
+                    }`}
+                  />
+                </span>
+              )}
+            </button>
+
+            {/* Dropdown Menu */}
+            {isActionsMenuOpen && (
+              <div className="absolute left-0 top-full mt-2 w-72 sm:w-80 p-3 bg-slate-950/95 border border-slate-800 backdrop-blur-md rounded-2xl shadow-2xl z-50 text-right space-y-2.5 animate-fadeIn">
+                <div className="flex items-center justify-between border-b border-slate-800/80 pb-2 px-1 text-xs">
+                  <span className="font-bold text-white flex items-center gap-1.5">
+                    <span>أدوات وإجراءات الدرس</span>
+                  </span>
+                  <span className="text-[10px] text-slate-500">إجراءات سريعة</span>
+                </div>
+
+                {/* Font Size Zoom Controller with 3 Shortcuts */}
+                <div className="p-2.5 bg-slate-900/90 border border-slate-800/90 rounded-xl space-y-2">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-0.5">
+                    <div className="flex items-center gap-1.5 text-indigo-400">
+                      <Type className="w-4 h-4 shrink-0" />
+                      <span className="text-slate-200 font-bold">حجم خط الدرس</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (fontSize === "xlarge") onFontSizeChange?.("large");
+                          else if (fontSize === "large") onFontSizeChange?.("normal");
+                        }}
+                        disabled={fontSize === "normal"}
+                        className="w-6 h-6 rounded-md bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
+                        title="تصغير الخط"
+                        aria-label="تصغير الخط"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (fontSize === "normal") onFontSizeChange?.("large");
+                          else if (fontSize === "large") onFontSizeChange?.("xlarge");
+                        }}
+                        disabled={fontSize === "xlarge"}
+                        className="w-6 h-6 rounded-md bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
+                        title="تكبير الخط"
+                        aria-label="تكبير الخط"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 3 Presets / Shortcuts: عادي - كبير - كبير جداً */}
+                  <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-950 rounded-lg border border-slate-800/80">
+                    <button
+                      type="button"
+                      onClick={() => onFontSizeChange?.("normal")}
+                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                        fontSize === "normal"
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                      }`}
+                      title="حجم الخط الافتراضي (عادي)"
+                    >
+                      <span className="text-xs font-bold">A</span>
+                      <span className="text-[10px]">عادي</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => onFontSizeChange?.("large")}
+                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                        fontSize === "large"
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                      }`}
+                      title="حجم خط كبير (+25%)"
+                    >
+                      <span className="text-sm font-bold">A</span>
+                      <span className="text-[10px]">كبير</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => onFontSizeChange?.("xlarge")}
+                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                        fontSize === "xlarge"
+                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                      }`}
+                      title="حجم خط كبير جداً (+50%)"
+                    >
+                      <span className="text-base font-bold">A</span>
+                      <span className="text-[10px]">كبير جداً</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 1. استماع (TTS) */}
+                <button
+                  type="button"
+                  onClick={handleTTSAudio}
+                  className={`w-full p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-xs font-semibold ${
+                    isPlayingAudio
+                      ? "bg-amber-500/20 border-amber-500/40 text-amber-300 animate-pulse"
+                      : "bg-slate-900 hover:bg-slate-850 border-slate-800 text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className={`p-1.5 rounded-lg ${isPlayingAudio ? "bg-amber-500/30 text-amber-300" : "bg-slate-800 text-slate-400"}`}>
+                      {isPlayingAudio ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </div>
+                    <div className="text-right">
+                      <span className="block font-bold">القارئ الصوتي للدرس</span>
+                      <span className="text-[10px] text-slate-400">
+                        {isPlayingAudio ? "جاري القراءة (اضغط للإيقاف)" : "استماع للشرح والملخص"}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 font-mono">
+                    {isPlayingAudio ? "إيقاف" : "استماع"}
+                  </span>
+                </button>
+
+                {/* 2. حفظ في الإشارات المرجعية */}
+                <button
+                  type="button"
+                  onClick={handleBookmarkToggle}
+                  className={`w-full p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-xs font-semibold ${
+                    isBookmarked
+                      ? "bg-purple-950/40 border-purple-500/40 text-purple-300"
+                      : "bg-slate-900 hover:bg-slate-850 border-slate-800 text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className={`p-1.5 rounded-lg ${
+                        isBookmarked ? "bg-purple-500/20 text-purple-400" : "bg-slate-800 text-slate-400"
+                      }`}
+                    >
+                      <Bookmark className="w-4 h-4" />
+                    </div>
+                    <div className="text-right">
+                      <span className="block font-bold">الإشارة المرجعية</span>
+                      <span className="text-[10px] text-slate-400">
+                        {isBookmarked ? "محفوظ في إشاراتك المرجعية" : "حفظ الدرس للرجوع إليه لاحقاً"}
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-md border font-mono ${
+                      isBookmarked
+                        ? "bg-purple-500/20 text-purple-300 border-purple-500/30"
+                        : "bg-slate-800 text-slate-400 border-slate-700"
+                    }`}
+                  >
+                    {isBookmarked ? "محفوظ 🔖" : "حفظ"}
+                  </span>
+                </button>
+
+                {/* 3. تحديد كمكتمل */}
+                <button
+                  type="button"
+                  onClick={handleCompleteToggle}
+                  className={`w-full p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between text-xs font-semibold ${
+                    isCompleted
+                      ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
+                      : "bg-slate-900 hover:bg-slate-850 border-slate-800 text-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className={`p-1.5 rounded-lg ${isCompleted ? "bg-emerald-500/20 text-emerald-400" : "bg-slate-800 text-slate-400"}`}>
+                      <CheckCircle className="w-4 h-4" />
+                    </div>
+                    <div className="text-right">
+                      <span className="block font-bold">حالة إكمال الدرس</span>
+                      <span className="text-[10px] text-slate-400">
+                        {isCompleted ? "تمت المذاكرة والإكمال" : "اضغط لتمييزه كمكتمل"}
+                      </span>
+                    </div>
+                  </div>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md border font-mono ${
+                    isCompleted
+                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                      : "bg-slate-800 text-slate-400 border-slate-700"
+                  }`}>
+                    {isCompleted ? "مكتمل ✅" : "تحديد كمكتمل"}
+                  </span>
+                </button>
+
+                {/* 4. نشاط تعاوني */}
+                {lesson.exploreInPairs && (
+                  <div className="p-3 bg-purple-950/40 border border-purple-500/30 rounded-xl space-y-1.5 text-right">
+                    <div className="flex items-center gap-1.5 text-purple-400 font-bold text-xs">
+                      <Users className="w-4 h-4 text-purple-400 shrink-0" />
+                      <span>نشاط تعاوني (استكشف في ثنائيات):</span>
+                    </div>
+                    <p className="text-xs text-slate-200 leading-relaxed font-normal">
+                      {lesson.exploreInPairs}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -219,11 +410,27 @@ export function LessonHeader({
         </p>
       </div>
 
-      {/* Simplified Core Idea */}
-      <div className="bg-slate-950/60 border-r-4 border-r-indigo-500 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-slate-200 text-xs sm:text-sm leading-relaxed mb-3">
-        <span className="font-bold text-indigo-400 ml-1.5">💡 الفكرة الأساسية:</span>
-        <span>{lesson.coreIdea}</span>
+      {/* Core Idea & Key Question */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+        <div className="bg-slate-950/60 border-r-4 border-r-indigo-500 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-slate-200 text-xs sm:text-sm leading-relaxed">
+          <span className="font-bold text-indigo-400 ml-1.5">💡 الفكرة الأساسية:</span>
+          <span>{lesson.coreIdea}</span>
+        </div>
+        {lesson.keyQuestion && (
+          <div className="bg-slate-950/60 border-r-4 border-r-amber-500 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-slate-200 text-xs sm:text-sm leading-relaxed">
+            <span className="font-bold text-amber-400 ml-1.5">❓ السؤال الرئيسي:</span>
+            <span>{lesson.keyQuestion}</span>
+          </div>
+        )}
       </div>
+
+      {/* Learning Path */}
+      {lesson.learningPath?.current && (
+        <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mb-3 px-1">
+          <span className="text-slate-500 font-medium">مسار التعلم:</span>
+          <span className="text-slate-300 font-semibold">{lesson.learningPath.current}</span>
+        </div>
+      )}
 
       {/* Compact Learning Objectives Toggle */}
       <div>

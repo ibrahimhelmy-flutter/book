@@ -96,6 +96,27 @@
   text-align: left;
 }
 
+/* Dynamic Lesson Body Font Scaling */
+.lesson-font-large {
+  --lesson-body-size: 1.125rem;
+}
+.lesson-font-large p,
+.lesson-font-large .font-body,
+.lesson-font-large table {
+  font-size: 1.125rem;
+  line-height: 2;
+}
+
+.lesson-font-xlarge {
+  --lesson-body-size: 1.25rem;
+}
+.lesson-font-xlarge p,
+.lesson-font-xlarge .font-body,
+.lesson-font-xlarge table {
+  font-size: 1.25rem;
+  line-height: 2.2;
+}
+
 /* Print Styles for Official Exam Booklets and Answer Sheets */
 @media print {
   body {

@@ -30,6 +30,7 @@ export interface StoryMilestone {
     | "ecommerce-symphony"
     | string;
   diagramCaption: string;
+  glossaryTermIds?: string[];
   nextDilemma: {
     title: string;
     hook: string;

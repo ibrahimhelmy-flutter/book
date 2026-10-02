@@ -1,5 +1,7 @@
 import { LessonStoryline } from "@/types/storyline";
 import { CHAPTER_2_STORYLINES } from "./chapter-2";
+import { GLOSSARY_DATA } from "@/data/glossary";
+import { GlossaryTerm } from "@/types";
 
 const ALL_STORYLINES: Record<string, Record<string, LessonStoryline>> = {
   "chapter-2": CHAPTER_2_STORYLINES,
@@ -35,4 +37,14 @@ export function getAllStorylinesList() {
     }
   }
   return list;
+}
+
+export function getLessonGlossaryTerms(lessonNumber: string): GlossaryTerm[] {
+  return GLOSSARY_DATA.filter((term) => term.lessonNumber === lessonNumber);
+}
+
+export function getGlossaryTermsByIds(ids: string[]): GlossaryTerm[] {
+  if (!ids || ids.length === 0) return [];
+  const set = new Set(ids);
+  return GLOSSARY_DATA.filter((term) => set.has(term.id));
 }

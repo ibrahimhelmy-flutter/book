@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { Lesson, KeyConcept } from "@/types";
+import { GLOSSARY_DATA } from "@/data/glossary";
 import {
   Lightbulb,
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   Sparkles,
   GitBranch,
   BookOpen,
+  List,
 } from "lucide-react";
 
 interface Props {
@@ -18,8 +20,55 @@ interface Props {
 }
 
 export function LessonConceptMap({ lesson }: Props) {
-  const [viewMode, setViewMode] = useState<"tree" | "flow">("tree");
+  const [viewMode, setViewMode] = useState<"tree" | "flow" | "list">("tree");
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
+
+  // Unified list of verified lesson terms from lesson.keyConcepts and GLOSSARY_DATA
+  const lessonTerms = useMemo(() => {
+    const list: Array<{
+      id?: string;
+      termAr: string;
+      termEn?: string;
+      definition: string;
+      page?: number;
+    }> = [];
+
+    const seen = new Set<string>();
+
+    (lesson.keyConcepts || []).forEach((c) => {
+      const norm = c.termAr.trim().toLowerCase();
+      if (!seen.has(norm)) {
+        seen.add(norm);
+        list.push({
+          id: c.id,
+          termAr: c.termAr,
+          termEn: c.termEn,
+          definition: c.definition,
+          page: c.source?.primaryPage || c.source?.pages?.[0],
+        });
+      }
+    });
+
+    const glossaryForLesson = GLOSSARY_DATA.filter(
+      (g) => g.lessonNumber === lesson.number || (g.chapterId === lesson.chapterId && g.lessonNumber === lesson.number)
+    );
+
+    glossaryForLesson.forEach((g) => {
+      const norm = g.termAr.trim().toLowerCase();
+      if (!seen.has(norm)) {
+        seen.add(norm);
+        list.push({
+          id: g.id,
+          termAr: g.termAr,
+          termEn: g.termEn,
+          definition: g.definitionAr,
+          page: g.source?.primaryPage || g.source?.pages?.[0],
+        });
+      }
+    });
+
+    return list;
+  }, [lesson]);
 
   // Map concepts to their matching sections based on section title & content
   const { sectionMap, unassignedConcepts } = useMemo(() => {
@@ -118,6 +167,18 @@ export function LessonConceptMap({ lesson }: Props) {
               <Layers className="w-3.5 h-3.5" />
               <span>مسار انسيابي</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                viewMode === "list"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <List className="w-3.5 h-3.5" />
+              <span>مصطلحات الدرس ({lessonTerms.length})</span>
+            </button>
           </div>
 
           <Link
@@ -133,21 +194,23 @@ export function LessonConceptMap({ lesson }: Props) {
       </div>
 
       {/* Root Node: Core Idea */}
-      <div className="relative z-10 max-w-2xl mx-auto mb-6">
-        <div className="bg-gradient-to-r from-indigo-950/90 via-slate-950 to-purple-950/90 border-2 border-indigo-500/40 rounded-2xl p-4 sm:p-5 shadow-xl text-center space-y-2 relative group hover:border-indigo-400 transition-all">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold mb-1">
-            <Lightbulb className="w-3.5 h-3.5" />
-            <span>الفكرة الأساسية للدرس</span>
+      {viewMode !== "list" && (
+        <div className="relative z-10 max-w-2xl mx-auto mb-6">
+          <div className="bg-gradient-to-r from-indigo-950/90 via-slate-950 to-purple-950/90 border-2 border-indigo-500/40 rounded-2xl p-4 sm:p-5 shadow-xl text-center space-y-2 relative group hover:border-indigo-400 transition-all">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold mb-1">
+              <Lightbulb className="w-3.5 h-3.5" />
+              <span>الفكرة الأساسية للدرس</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
+              {lesson.coreIdea}
+            </p>
           </div>
-          <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
-            {lesson.coreIdea}
-          </p>
-        </div>
 
-        {/* Central Connecting Branch Line */}
-        <div className="w-0.5 h-6 bg-gradient-to-b from-indigo-500/80 to-slate-700 mx-auto" />
-        <div className="w-3 h-3 rounded-full bg-indigo-500 mx-auto -mt-1 ring-4 ring-slate-900" />
-      </div>
+          {/* Central Connecting Branch Line */}
+          <div className="w-0.5 h-6 bg-gradient-to-b from-indigo-500/80 to-slate-700 mx-auto" />
+          <div className="w-3 h-3 rounded-full bg-indigo-500 mx-auto -mt-1 ring-4 ring-slate-900" />
+        </div>
+      )}
 
       {/* VIEW MODE 1: Tree Schematic Grid */}
       {viewMode === "tree" && (
@@ -298,6 +361,63 @@ export function LessonConceptMap({ lesson }: Props) {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* VIEW MODE 3: Simple List of Lesson Terms */}
+      {viewMode === "list" && (
+        <div className="relative z-10 space-y-3">
+          {/* Quick Header Summary */}
+          <div className="flex items-center justify-between text-xs text-slate-400 px-1 pb-1 border-b border-slate-800/60">
+            <span>
+              قائمة مصطلحات ومفاهيم الدرس الرسمية المعتمدة في كتاب الوزارة
+            </span>
+            <span className="font-bold text-indigo-400 font-mono">
+              {lessonTerms.length} مصطلحات
+            </span>
+          </div>
+
+          {lessonTerms.length === 0 ? (
+            <div className="text-center py-8 text-slate-400 text-sm bg-slate-950/50 rounded-xl border border-slate-800">
+              لا توجد مصطلحات مسجلة لهذا الدرس حالياً.
+            </div>
+          ) : (
+            <div className="divide-y divide-slate-800/80 bg-slate-950/70 border border-slate-800 rounded-xl overflow-hidden">
+              {lessonTerms.map((term, idx) => (
+                <div
+                  key={term.id || idx}
+                  className="p-3.5 sm:p-4 hover:bg-slate-900/60 transition-colors flex items-start gap-3 group"
+                >
+                  <span className="w-6 h-6 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1 space-y-1.5 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                        {term.termAr}
+                      </span>
+                      {term.termEn && (
+                        <span
+                          dir="ltr"
+                          className="text-sky-300 font-mono text-[11px] px-2 py-0.5 rounded-md bg-sky-950/60 border border-sky-500/30 font-medium"
+                        >
+                          {term.termEn}
+                        </span>
+                      )}
+                      {term.page && (
+                        <span className="text-[10px] text-slate-400 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 font-mono">
+                          ص {term.page}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      {term.definition}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

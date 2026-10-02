@@ -726,6 +726,53 @@
     "contentOrigin": "official"
   },
   {
+    "id": "g-encryption",
+    "termAr": "التشفير",
+    "termEn": "Encryption",
+    "definitionAr": "عملية تحويل البيانات من نص مفهوم وصريح إلى نص مشفر غير مفهوم، بهدف منع قراءة محتوى الاتصال من قِبل أطراف ثالثة متطفلة أثناء النقل (يحافظ على خصوصية وسرية المحتوى).",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-1",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        32,
+        37
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_33.png",
+        "page_38.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-tls-handshake",
+    "termAr": "مصافحة TLS",
+    "termEn": "TLS Handshake",
+    "definitionAr": "خطوات إنشاء الاتصال الآمن بين المتصفح والخادم للتحقق من الهوية وصلاحية الشهادة واشتقاق مفاتيح الجلسة المشتركة.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-1",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        32,
+        33
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_33.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
     "id": "g-symmetric-key-encryption",
     "termAr": "التشفير بالمفتاح المتناظر",
     "termEn": "Symmetric-Key Encryption",
@@ -748,6 +795,53 @@
     "contentOrigin": "official"
   },
   {
+    "id": "g-two-factor-authentication",
+    "termAr": "المصادقة الثنائية (2FA)",
+    "termEn": "2FA - Two-Factor Authentication",
+    "definitionAr": "استخدام عاملين مستقلين من فئتين مختلفتين (مثل المعرفة والحيازة) لإثبات الهوية.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-1",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        33,
+        36
+      ],
+      "primaryPage": 33,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_34.png",
+        "page_37.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-multi-factor-authentication",
+    "termAr": "المصادقة متعددة العوامل (MFA)",
+    "termEn": "MFA - Multi-Factor Authentication",
+    "definitionAr": "استخدام عاملين أو أكثر من فئات مختلفة (مثل المعرفة والحيازة والسمات الحيوية) لتأكيد الهوية.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-1",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        33,
+        36
+      ],
+      "primaryPage": 33,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_34.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
     "id": "g-public-key-encryption",
     "termAr": "التشفير بالمفتاح العام",
     "termEn": "Public-Key Encryption",
@@ -765,6 +859,31 @@
       "sourceType": "official-margin-definition",
       "pageFiles": [
         "page_34.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-non-repudiation",
+    "termAr": "عدم التنصل",
+    "termEn": "Non-Repudiation",
+    "definitionAr": "توفير دليل رقمي يثبت هوية المرسل وصحة الرسالة وسلامتها بحيث لا يمكن إنكارها.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-1",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        32,
+        34,
+        37
+      ],
+      "primaryPage": 34,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_35.png",
+        "page_38.png"
       ]
     },
     "contentOrigin": "official"
@@ -814,28 +933,6 @@
     "contentOrigin": "official"
   },
   {
-    "id": "g-2fa-mfa",
-    "termAr": "المصادقة الثنائية / متعددة العوامل",
-    "termEn": "2FA / MFA",
-    "definitionAr": "طريقة مصادقة تجمع بين عنصرين مختلفين أو أكثر (المعرفة، الحيازة، السمات الحيوية) لتأكيد الهوية.",
-    "definitionEn": "",
-    "chapterId": "chapter-2",
-    "lessonNumber": "2-1",
-    "category": "Cybersecurity",
-    "source": {
-      "term": 1,
-      "pages": [
-        37
-      ],
-      "primaryPage": 37,
-      "sourceType": "official-margin-definition",
-      "pageFiles": [
-        "page_37.png"
-      ]
-    },
-    "contentOrigin": "official"
-  },
-  {
     "id": "g-firewall",
     "termAr": "جدار الحماية",
     "termEn": "Firewall",
@@ -875,6 +972,29 @@
       "sourceType": "official-margin-definition",
       "pageFiles": [
         "page_40.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-security-perimeter",
+    "termAr": "المحيط الأمني",
+    "termEn": "Security Perimeter",
+    "definitionAr": "الحدود التقليدية التي تفترض أن داخل شبكة المؤسسة آمن وخارجها خطر، والتي طمستها الخدمات السحابية والعمل عن بُعد.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-2",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        40,
+        44
+      ],
+      "primaryPage": 40,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_41.png"
       ]
     },
     "contentOrigin": "official"
@@ -1012,6 +1132,30 @@
     "contentOrigin": "official"
   },
   {
+    "id": "g-six-stages-incident-response",
+    "termAr": "المراحل الست للاستجابة",
+    "termEn": "Six Incident Response Stages",
+    "definitionAr": "النموذج العام المنظم للاستجابة للحوادث: التحضير، الاكتشاف، الاحتواء، إزالة التهديد (الاستئصال)، الاستعادة، والدروس المستفادة والتحسين.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-3",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        46,
+        48,
+        50
+      ],
+      "primaryPage": 46,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_47.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
     "id": "g-containment",
     "termAr": "الاحتواء",
     "termEn": "Containment",
@@ -1051,6 +1195,73 @@
       "sourceType": "official-margin-definition",
       "pageFiles": [
         "page_48.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-recovery",
+    "termAr": "الاستعادة",
+    "termEn": "Recovery",
+    "definitionAr": "إعادة تشغيل الأنظمة والخدمات والبيانات المتضررة إلى حالة عمل آمنة وطبيعية والتأكد من استقرارها.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-3",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        48,
+        50
+      ],
+      "primaryPage": 48,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_49.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-impact",
+    "termAr": "التأثير",
+    "termEn": "Impact",
+    "definitionAr": "مقدار وحجم الضرر أو الخسارة المحتملة إذا وقعت المخاطرة الأمنية.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-3",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        48
+      ],
+      "primaryPage": 48,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_49.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-likelihood",
+    "termAr": "الاحتمالية",
+    "termEn": "Likelihood",
+    "definitionAr": "مدى وفرصة إمكانية وقوع المخاطرة الأمنية.",
+    "definitionEn": "",
+    "chapterId": "chapter-2",
+    "lessonNumber": "2-3",
+    "category": "Cybersecurity",
+    "source": {
+      "term": 1,
+      "pages": [
+        48
+      ],
+      "primaryPage": 48,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_49.png"
       ]
     },
     "contentOrigin": "official"

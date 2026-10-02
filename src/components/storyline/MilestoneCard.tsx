@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { StoryMilestone } from "@/types/storyline";
 import { StorylineDiagram } from "./StorylineDiagram";
+import { getGlossaryTermsByIds } from "@/data/storylines";
 import {
   AlertCircle,
   Lightbulb,
@@ -13,6 +15,8 @@ import {
   ChevronUp,
   BookmarkCheck,
   Check,
+  BookA,
+  ExternalLink,
 } from "lucide-react";
 
 interface Props {
@@ -22,6 +26,10 @@ interface Props {
 
 export function MilestoneCard({ milestone, isLast }: Props) {
   const [isConceptExpanded, setIsConceptExpanded] = useState<boolean>(true);
+  const nodeGlossaryTerms = useMemo(
+    () => getGlossaryTermsByIds(milestone.glossaryTermIds || []),
+    [milestone.glossaryTermIds]
+  );
 
   return (
     <div
@@ -128,6 +136,51 @@ export function MilestoneCard({ milestone, isLast }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Glossary Terms List Section (سيكشن مصطلحات النود من صفحة glossary/ - عرض list بسيط) */}
+        {nodeGlossaryTerms.length > 0 && (
+          <div className="rounded-xl bg-slate-950/80 border border-slate-800/80 p-4 space-y-2.5 text-right">
+            <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-indigo-300">
+                <BookA className="w-4 h-4 text-indigo-400" />
+                <span>مصطلحات المحطة في المعجم (Glossary):</span>
+              </div>
+              <Link
+                href="/glossary"
+                className="text-[11px] text-slate-400 hover:text-indigo-300 transition-colors flex items-center gap-1 font-medium"
+                title="فتح صفحة المعجم الشامل"
+              >
+                <span>صفحة المعجم</span>
+                <ExternalLink className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <ul className="space-y-2 text-right">
+              {nodeGlossaryTerms.map((t) => (
+                <li
+                  key={t.id}
+                  className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/60 hover:border-indigo-500/30 transition-all text-right space-y-1"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                      <strong className="text-xs font-bold text-white">{t.termAr}</strong>
+                      <span className="text-[10px] text-indigo-300 font-mono">({t.termEn})</span>
+                    </div>
+                    {t.source?.primaryPage && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/90 text-slate-400 font-mono">
+                        ص {t.source.primaryPage} بالكتاب
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-300 pr-3.5 leading-relaxed font-normal">
+                    {t.definitionAr}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Next Dilemma Transition Hook (⚠️ المأزق التالي) */}
         {!isLast && (
