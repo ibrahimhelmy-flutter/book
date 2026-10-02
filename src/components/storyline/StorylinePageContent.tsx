@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { LessonStoryline } from "@/types/storyline";
 import { MilestoneCard } from "./MilestoneCard";
+import { getLessonGlossaryTerms } from "@/data/storylines";
 import {
   Compass,
   ArrowRight,
@@ -16,6 +17,8 @@ import {
   CheckCircle2,
   Lock,
   ChevronLeft,
+  BookA,
+  ExternalLink,
 } from "lucide-react";
 
 interface Props {
@@ -27,6 +30,11 @@ export function StorylinePageContent({ storyline }: Props) {
     storyline.milestones[0]?.id || ""
   );
   const [readingProgress, setReadingProgress] = useState<number>(0);
+
+  const lessonGlossaryTerms = useMemo(
+    () => getLessonGlossaryTerms(storyline.lessonNumber),
+    [storyline.lessonNumber]
+  );
 
   // Scrollspy & Reading Progress Tracker
   useEffect(() => {
@@ -40,6 +48,7 @@ export function StorylinePageContent({ storyline }: Props) {
       const sectionIds = [
         ...storyline.milestones.map((m) => m.id),
         "grand-finale-section",
+        "lesson-glossary-section",
       ];
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
@@ -258,6 +267,77 @@ export function StorylinePageContent({ storyline }: Props) {
                 </div>
               </div>
             </section>
+
+            {/* Lesson Glossary Section (سيكشن مصطلحات الدرس متاخد من صفحة glossary/ - عرض list بسيط) */}
+            {lessonGlossaryTerms.length > 0 && (
+              <section
+                id="lesson-glossary-section"
+                className="relative pl-0 sm:pr-12 md:pr-14 transition-all duration-300 scroll-mt-24 pt-4"
+              >
+                {/* Spine Node for Glossary */}
+                <div className="hidden sm:flex absolute right-0 top-8 w-9 h-9 rounded-full bg-indigo-950 border-2 border-indigo-400 items-center justify-center text-xs font-black text-indigo-300 shadow-lg shadow-indigo-950/60 z-10">
+                  📖
+                </div>
+
+                <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-6 sm:p-8 text-right space-y-5 shadow-2xl">
+                  {/* Header */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/30">
+                        <BookA className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base sm:text-lg font-black text-white">
+                          مصطلحات الدرس في المعجم ({lessonGlossaryTerms.length} مصطلحات)
+                        </h3>
+                        <p className="text-xs text-slate-400">
+                          التعريفات الرسمية المعتمدة من صفحة المعجم (Glossary) لكتاب الوزارة
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link
+                      href="/glossary"
+                      className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-700"
+                    >
+                      <span>تصفح المعجم الشامل</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+
+                  {/* Simple List (عرض list بسيط) */}
+                  <ul className="space-y-2.5 text-right">
+                    {lessonGlossaryTerms.map((term, index) => (
+                      <li
+                        key={term.id}
+                        className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 hover:border-indigo-500/30 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5"
+                      >
+                        <div className="space-y-1 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold flex items-center justify-center shrink-0">
+                              {index + 1}
+                            </span>
+                            <strong className="text-sm font-bold text-white">{term.termAr}</strong>
+                            <span className="text-xs font-mono text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/50">
+                              {term.termEn}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-300 leading-relaxed pr-7 font-normal">
+                            {term.definitionAr}
+                          </p>
+                        </div>
+
+                        {term.source?.primaryPage && (
+                          <span className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 text-slate-400 border border-slate-800 font-mono shrink-0">
+                            ص {term.source.primaryPage} بالكتاب
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+            )}
           </div>
 
           {/* Right Sticky Sidebar (Navigator & Milestone Jump) */}
@@ -319,12 +399,35 @@ export function StorylinePageContent({ storyline }: Props) {
                     <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[10px] shrink-0 font-bold">
                       ★
                     </span>
-                    <span className="truncate text-xs font-bold">محطة التتويج: التسوق الإلكتروني</span>
+                    <span className="truncate text-xs font-bold">{storyline.grandFinale.title}</span>
                   </div>
                   {activeMilestoneId === "grand-finale-section" && (
                     <ChevronLeft className="w-4 h-4 shrink-0" />
                   )}
                 </button>
+
+                {/* Lesson Glossary Nav Button */}
+                {lessonGlossaryTerms.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => scrollToMilestone("lesson-glossary-section")}
+                    className={`w-full text-right p-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-between gap-2 mt-1.5 ${
+                      activeMilestoneId === "lesson-glossary-section"
+                        ? "bg-indigo-600 text-white font-bold shadow-md shadow-indigo-950/50 scale-[1.02]"
+                        : "text-indigo-300 hover:bg-indigo-950/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-[10px] shrink-0 font-bold">
+                        📖
+                      </span>
+                      <span className="truncate text-xs font-bold">مصطلحات الدرس (Glossary)</span>
+                    </div>
+                    {activeMilestoneId === "lesson-glossary-section" && (
+                      <ChevronLeft className="w-4 h-4 shrink-0" />
+                    )}
+                  </button>
+                )}
               </nav>
 
               {/* Quick Info Box */}

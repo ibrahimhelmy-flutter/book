@@ -8,6 +8,7 @@ interface EyeComfortTextProps {
   content: string;
   theme?: "dark" | "light";
   className?: string;
+  fontSize?: "normal" | "large" | "xlarge";
 }
 
 /**
@@ -81,7 +82,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
         return (
           <code
             key={index}
-            className="font-mono text-xs text-pink-700 bg-pink-50 border border-pink-200 px-1.5 py-0.5 rounded-md mx-0.5"
+            className="font-mono text-[0.88em] text-pink-700 bg-pink-50 border border-pink-200 px-1.5 py-0.5 rounded-md mx-0.5"
           >
             {inner}
           </code>
@@ -90,7 +91,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
       return (
         <code
           key={index}
-          className="font-mono text-xs text-rose-300 bg-rose-950/50 border border-rose-500/30 px-1.5 py-0.5 rounded-md mx-0.5"
+          className="font-mono text-[0.88em] text-rose-300 bg-rose-950/50 border border-rose-500/30 px-1.5 py-0.5 rounded-md mx-0.5"
         >
           {inner}
         </code>
@@ -104,9 +105,9 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
       if (acr) {
         return (
           <span key={index} className="inline-flex items-center mx-0.5 align-baseline">
-            <span className="text-slate-500 font-mono text-xs select-none">(</span>
+            <span className="text-slate-500 font-mono text-[0.85em] select-none">(</span>
             <AcronymTooltip acronym={acr} displayText={inner} theme={theme} />
-            <span className="text-slate-500 font-mono text-xs select-none">)</span>
+            <span className="text-slate-500 font-mono text-[0.85em] select-none">)</span>
           </span>
         );
       }
@@ -116,7 +117,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
           return (
             <span
               key={index}
-              className="font-mono text-xs font-semibold text-indigo-800 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
+              className="font-mono text-[0.88em] font-semibold text-indigo-800 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
             >
               {renderTextWithAcronyms(inner, theme)}
             </span>
@@ -125,7 +126,7 @@ function renderInlineTokens(text: string, theme: "dark" | "light" = "dark") {
         return (
           <span
             key={index}
-            className="font-mono text-[11px] sm:text-xs font-semibold text-sky-300 bg-sky-950/60 border border-sky-500/30 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
+            className="font-mono text-[0.88em] font-semibold text-sky-300 bg-sky-950/60 border border-sky-500/30 px-1.5 py-0.5 rounded-md mx-1 inline-block dir-ltr"
           >
             {renderTextWithAcronyms(inner, theme)}
           </span>
@@ -146,8 +147,16 @@ export function EyeComfortText({
   content,
   theme = "dark",
   className = "",
+  fontSize = "normal",
 }: EyeComfortTextProps) {
   if (!content) return null;
+
+  const fontClass =
+    fontSize === "large"
+      ? "text-base sm:text-lg md:text-xl leading-loose"
+      : fontSize === "xlarge"
+      ? "text-lg sm:text-xl md:text-2xl leading-loose font-medium"
+      : "text-sm sm:text-base leading-relaxed";
 
   // Split by code blocks
   const codeBlockRegex = /```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g;
@@ -179,7 +188,7 @@ export function EyeComfortText({
   }
 
   return (
-    <div className={`space-y-3 ${className}`}>
+    <div className={`space-y-3 ${fontClass} ${className}`}>
       {sections.map((section, secIdx) => {
         if (section.type === "code") {
           return (
@@ -192,7 +201,15 @@ export function EyeComfortText({
                   {section.lang}
                 </div>
               )}
-              <pre className="p-3.5 text-xs font-mono text-emerald-300 overflow-x-auto leading-relaxed">
+              <pre
+                className={`p-3.5 font-mono text-emerald-300 overflow-x-auto leading-relaxed transition-all duration-200 ${
+                  fontSize === "xlarge"
+                    ? "text-sm sm:text-base"
+                    : fontSize === "large"
+                    ? "text-xs sm:text-sm"
+                    : "text-xs"
+                }`}
+              >
                 <code>{section.value.trim()}</code>
               </pre>
             </div>
@@ -214,7 +231,9 @@ export function EyeComfortText({
                 return (
                   <div
                     key={lineIdx}
-                    className="my-3 p-3 bg-slate-950/90 border border-indigo-500/30 rounded-xl text-center font-mono text-xs sm:text-sm text-indigo-300 shadow-inner dir-ltr"
+                    className={`my-3 p-3 bg-slate-950/90 border border-indigo-500/30 rounded-xl text-center font-mono text-indigo-300 shadow-inner dir-ltr ${
+                      fontSize === "xlarge" ? "text-base" : fontSize === "large" ? "text-sm" : "text-xs sm:text-sm"
+                    }`}
                   >
                     {formula}
                   </div>
@@ -228,10 +247,14 @@ export function EyeComfortText({
                 const rest = numberedMatch[2];
                 return (
                   <div key={lineIdx} className="flex items-start gap-2.5 pr-1 leading-relaxed">
-                    <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold font-mono shrink-0 text-[11px] border border-indigo-500/30 mt-0.5">
+                    <span
+                      className={`rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold font-mono shrink-0 border border-indigo-500/30 mt-0.5 ${
+                        fontSize === "xlarge" ? "w-6 h-6 text-xs" : "w-5 h-5 text-[11px]"
+                      }`}
+                    >
                       {num}
                     </span>
-                    <div className="flex-1 text-slate-300 text-sm sm:text-base leading-relaxed">
+                    <div className={`flex-1 text-slate-200 transition-all duration-200 ${fontClass}`}>
                       {renderInlineTokens(rest, theme)}
                     </div>
                   </div>
@@ -251,7 +274,7 @@ export function EyeComfortText({
                     }`}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-2.5 shadow-sm shadow-indigo-500/50" />
-                    <div className="flex-1 text-slate-300 text-sm sm:text-base leading-relaxed">
+                    <div className={`flex-1 text-slate-200 transition-all duration-200 ${fontClass}`}>
                       {renderInlineTokens(rest, theme)}
                     </div>
                   </div>
@@ -262,7 +285,7 @@ export function EyeComfortText({
               return (
                 <p
                   key={lineIdx}
-                  className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal"
+                  className={`${fontClass} text-slate-200 font-normal transition-all duration-200`}
                 >
                   {renderInlineTokens(trimmed, theme)}
                 </p>

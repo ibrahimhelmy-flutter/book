@@ -48,6 +48,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "open-channel",
       diagramCaption: "مقارنة بين إرسال البيانات كنص واضح مكشوف عبر HTTP، وإرسالها كنص مشفر يحجب المتنصتين",
+      glossaryTermIds: ["g-hypertext-transfer-protocol-secure"],
       nextDilemma: {
         title: "المأزق التالي: بالقفل نفسه نفتح ونغلق... فكيف نتبادل المفتاح؟",
         hook: "التشفير كان فكرة مبهرة، لكنه خلق على الفور معضلة أكثر تعقيداً: إذا استخدمنا نفس المفتاح السري للقفل والفتح، فكيف نرسل هذا المفتاح للشخص المقابل دون أن يراه الجواسيس في الطريق؟",
@@ -83,6 +84,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "symmetric-crisis",
       diagramCaption: "معضلة التشفير المتماثل: المفتاح السري المشترك معرض للاعتراض عند محاولة إرساله للطرف الآخر لأول مرة",
+      glossaryTermIds: ["g-symmetric-key-encryption"],
       nextDilemma: {
         title: "المأزق التالي: ولادة المفتاح العام... لكن من صاحب هذا المفتاح حقاً؟",
         hook: "أصبح لدينا الآن حل عبقري بمفتاحين، لكنه جلب معه ثغرة أكثر خطورة: إذا كان المفتاح العام منشوراً في الهواء للجميع، فكيف أتأكد أن المفتاح الذي استلمته يخص البنك فعلاً وليس مخترقاً يتنكر في ثوب البنك؟",
@@ -118,6 +120,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "asymmetric-keys",
       diagramCaption: "آلية عمل التشفير بالمفتاح العام: المفتاح العام يغلق الرسالة، والمفتاح الخاص ينفرد بفتحها",
+      glossaryTermIds: ["g-public-key-encryption"],
       nextDilemma: {
         title: "المأزق التالي: انتحال الشخصية والتلاعب... من يضمن هوية المرسل؟",
         hook: "لو اعترض مخترق اتصالك وقال لك: 'أنا موقع البنك وهذا مفتاحي العام!'، كيف سيكتشف متصفحك هذه الخدعة؟ وكيف نتأكد أن البيانات لم يتم التلاعب بها في الطريق؟",
@@ -153,6 +156,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "digital-certificate-signature",
       diagramCaption: "الشهادة الرقمية تثبت هوية الموقع ونطاقه، والتوقيع الرقمي يكشف التلاعب ويثبت عدم التنصل",
+      glossaryTermIds: ["g-digital-signature", "g-digital-certificate"],
       nextDilemma: {
         title: "المأزق التالي: الرياضيات الثقيلة... الإنترنت يكاد يتوقف من البطء!",
         hook: "التشفير بالمفتاح العام والشهادات والتوقيعات حلت مشكلة الأمان والهوية بالكامل، لكن ظهرت عقبة تقنية ضخمة: التشفير غير المتماثل بطيء وثقيل جداً في الحسابات، فكيف نشفر ملايين الصفحات والفيديوهات في ثوانٍ؟",
@@ -188,6 +192,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "tls-handshake",
       diagramCaption: "خطوات مصافحة TLS: المصادقة بالشهادة والاتفاق بالمفتاح العام، يليه التشفير المتماثل للبيانات السريعة",
+      glossaryTermIds: ["g-hypertext-transfer-protocol-secure"],
       nextDilemma: {
         title: "المأزق التالي: نفق الاتصال آمن 100%، لكن من الجالس خلف الشاشة؟",
         hook: "أصبح نفق الاتصال مشفراً ومحمياً تماماً بين جهازك والخادم، ولا يمكن لأحد في الكوكب اختراقه. لكن ماذا لو كان المستخدم نفسه قد سُرقت كلمة مروره عبر رسالة تصيد احتيالي أو تخمين؟ هل تحميه HTTPS حينها؟",
@@ -223,6 +228,7 @@ export const LESSON_2_1_STORYLINE: LessonStoryline = {
       },
       diagramType: "mfa-factors",
       diagramCaption: "فئات عوامل المصادقة الثلاث: المعرفة (ما تعرفه) + الحيازة (ما تملكه) + السمات الحيوية (ما أنت عليه)",
+      glossaryTermIds: ["g-2fa-mfa"],
       nextDilemma: {
         title: "محطة التتويج: سيمفونية الأمان في الواقع الفعلي",
         hook: "كيف تجتمع كل هذه الابتكارات في مشهد واقعي واحد يومي نعيشه جميعاً عند التسوق عبر الإنترنت؟ دعنا نرى المنظومة وهي تعمل بتناغم مذهل!",
@@ -320,6 +326,7 @@ export const LESSON_2_2_STORYLINE: LessonStoryline = {
       },
       diagramType: "firewall-gate",
       diagramCaption: "جدار الحماية يسمح بمرور حركة الويب المشروعة ويحجب محاولات الاتصال المباشر بقواعد البيانات",
+      glossaryTermIds: ["g-firewall"],
       nextDilemma: {
         title: "المأزق التالي: الموظفون يعملون من المنزل... فكيف يدخلون الحصن؟",
         hook: "أقفلنا البوابات بإحكام، لكن الشركة توسعت وأصبح الموظفون بحاجة للعمل من منازلهم أو أثناء السفر عبر شبكات Wi-Fi عامة. فكيف نسمح لهم بالوصول للملفات الداخلية دون أن نفتح ثغرة في جدار الحماية للإنترنت كله؟",
@@ -355,6 +362,7 @@ export const LESSON_2_2_STORYLINE: LessonStoryline = {
       },
       diagramType: "vpn-tunnel",
       diagramCaption: "نفق VPN المشفر يحمي بيانات الموظف عن بُعد أثناء عبورها للإنترنت العام نحو شبكة المؤسسة",
+      glossaryTermIds: ["g-vpn-virtual-private-network"],
       nextDilemma: {
         title: "المأزق التالي: خوادم الويب العامة يزورها كل الناس... فأين نضعها؟",
         hook: "خوادم الويب والبريد الإلكتروني للشركة يجب أن تكون متاحة للجمهور 24 ساعة. إذا وضعناها داخل شبكتنا الداخلية وتعرضت للاختراق، فسيصل المخترق لكل شيء! فكيف نعزلها؟",
@@ -390,6 +398,7 @@ export const LESSON_2_2_STORYLINE: LessonStoryline = {
       },
       diagramType: "dmz-architecture",
       diagramCaption: "خوادم الويب معزولة في DMZ؛ واختراقها لا يسمح للمهاجم بالعبور إلى الشبكة الداخلية وقواعد البيانات",
+      glossaryTermIds: ["g-dmz-demilitarized-zone"],
       nextDilemma: {
         title: "المأزق التالي: ماذا لو سقط جدار الحماية نفسه؟",
         hook: "لدينا جدار حماية وDMZ وVPN... ولكن ماذا لو أخطأ المهندس في ضبط إعدادات الجدار، أو ظهرت فيه ثغرة لم تكن معروفة وسقط؟ هل تنهار الشركة كلها بسقوط حاجز واحد؟",
@@ -425,6 +434,7 @@ export const LESSON_2_2_STORYLINE: LessonStoryline = {
       },
       diagramType: "defense-in-depth-layers",
       diagramCaption: "طبقات الدفاع في العمق: تكديس الضوابط الأمنية يحمي الأصول الحساسة حتى لو سقطت إحدى الطبقات",
+      glossaryTermIds: ["g-defense-in-depth", "g-endpoint-security"],
       nextDilemma: {
         title: "المأزق التالي: خرافة 'الداخل آمن' في عصر السحابة والأجهزة الشخصية!",
         hook: "أحكمنا محيط الشبكة بالطبقات، لكن ظهر تحول زلزالي: الموظفون يستخدمون السحابة وهواتفهم الخاصة. فماذا لو كان المهاجم يجلس 'داخل' الشبكة بالفعل؟",
@@ -460,6 +470,7 @@ export const LESSON_2_2_STORYLINE: LessonStoryline = {
       },
       diagramType: "zero-trust-principle",
       diagramCaption: "المقارنة بين فرضية المحيط الأمني التقليدي 'الداخل آمن' ونهج انعدام الثقة 'تحقق من كل وصول دائماً'",
+      glossaryTermIds: ["g-zero-trust"],
       nextDilemma: {
         title: "محطة التتويج: التصميم المتكامل لشبكة المؤسسة",
         hook: "كيف تتكامل هذه الدفاعات في تصميم شبكة مؤسسة حقيقية لديها موقع ويب، وعاملون من المنزل، وقواعد بيانات سرية؟ لنرَ المخطط الكامل قيد التشغيل!",
@@ -551,6 +562,7 @@ export const LESSON_2_3_STORYLINE: LessonStoryline = {
       },
       diagramType: "incident-definition",
       diagramCaption: "أركان الحادث الأمني الثلاثة: تهديد سرية البيانات، أو سلامتها، أو توافرها",
+      glossaryTermIds: ["g-security-incident"],
       nextDilemma: {
         title: "المأزق التالي: الفوضى والذعر... كيف ننظم تحركات فريق الدفاع؟",
         hook: "وقع الحادث بالفعل، وبدأ الموظفون في التصرف عشوائياً: هذا يطفئ جهازه، وذاك يحذف ملفات عشوائية فتمتزج الأدلة بالتهديد. فكيف نحول هذه الفوضى إلى خطوات متتالية منضبطة؟",
@@ -586,6 +598,7 @@ export const LESSON_2_3_STORYLINE: LessonStoryline = {
       },
       diagramType: "six-stages-flow",
       diagramCaption: "المراحل الست للاستجابة للحوادث مع حلقة التغذية الراجعة والعودة لمراحل سابقة عند اكتشاف بقايا للتهديد",
+      glossaryTermIds: ["g-incident-response"],
       nextDilemma: {
         title: "المأزق التالي: الاحتواء أولاً أم الاستئصال أولاً؟",
         hook: "اكتشفنا برمجية فدية تشفر خادماً في المدرسة؛ هل نجلس نحلل الفيروس ونحذفه (استئصال)، أم نفصل كابل الشبكة فوراً (احتواء)؟ ولماذا يُعد الترتيب مسألة حياة أو موت للشبكة؟",
@@ -621,6 +634,7 @@ export const LESSON_2_3_STORYLINE: LessonStoryline = {
       },
       diagramType: "containment-vs-eradication",
       diagramCaption: "لماذا يأتي الاحتواء أولاً؟ عزل الجهاز المصاب يوقف تفشي العدوى قبل التفرغ للاستئصال الجذري",
+      glossaryTermIds: ["g-containment"],
       nextDilemma: {
         title: "المأزق التالي: العودة للتشغيل... كيف نضمن سلامة البيانات المستعادة؟",
         hook: "استأصلنا الفيروس بنجاح والحمد لله، ولكن ملفات المدرسة مشفرة والخدمات متوقفة؛ كيف نعيد التشغيل الآمن وماذا نتعلم من الكارثة لكي لا تتكرر غداً؟",
@@ -656,6 +670,7 @@ export const LESSON_2_3_STORYLINE: LessonStoryline = {
       },
       diagramType: "six-stages-flow",
       diagramCaption: "اكتمال دورة الاستجابة: الاستعادة الآمنة من النسخ السليمة يعقبها التحسين وسد الثغرات للمستقبل",
+      glossaryTermIds: ["g-eradication"],
       nextDilemma: {
         title: "المأزق التالي: مئات التهديدات المحتملة وميزانية محدودة... أيها نعالج أولاً؟",
         hook: "لدينا قائمة طويلة بالمخاطر: تسريب بيانات، فيروسات فدية، انقطاع كهرباء، أخطاء موظفين... والميزانية لا تكفي لحل كل شيء في يوم واحد! فكيف نحدد الأولويات رياضياً وعلمياً؟",
@@ -691,6 +706,7 @@ export const LESSON_2_3_STORYLINE: LessonStoryline = {
       },
       diagramType: "risk-matrix-formula",
       diagramCaption: "معادلة تقييم المخاطر: درجة الخطر = درجة التأثير × درجة الاحتمالية ومصفوفة تحديد الأولويات",
+      glossaryTermIds: ["g-risk-assessment"],
       nextDilemma: {
         title: "محطة التتويج: قيادة الاستجابة لكارثة برمجية فدية واقعية",
         hook: "مدرسة في مدينتك شُفرت سجلاتها بالكامل ببرمجية فدية والموظفون عاجزون عن العمل؛ وأنت القائد المعين للاستجابة. كيف تقود خطة الإنقاذ خطوة بخطوة؟",

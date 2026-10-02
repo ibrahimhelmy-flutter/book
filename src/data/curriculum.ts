@@ -2856,6 +2856,26 @@ export const CURRICULUM_DATA: Chapter[] = [
         "exploreInPairs": "مع زميل، فكّرا في آخر مرة سجّلتما فيها الدخول إلى حساب أو اشتريتما شيئًا عبر الإنترنت. ما الإشارات أو الخطوات التي أخبرتكما أن الاتصال آمن؟ (تلميحات: انظرا إلى شريط عنوان المتصفح، أو رموز التحقق عبر الهاتف). ثم اتفقا على ما قد يحدث إذا فُقدت إحدى تلك الخطوات.",
         "keyConcepts": [
           {
+            "termAr": "التشفير",
+            "termEn": "Encryption",
+            "definition": "عملية تحويل البيانات من نص مفهوم وصريح إلى نص مشفر غير مفهوم، بهدف منع قراءة محتوى الاتصال من قِبل أطراف ثالثة متطفلة أثناء النقل (يحافظ على خصوصية وسرية المحتوى).",
+            "id": "concept-2-1-10",
+            "contentOrigin": "official",
+            "source": {
+              "term": 1,
+              "pages": [
+                32,
+                37
+              ],
+              "primaryPage": 32,
+              "sourceType": "official-margin-definition",
+              "pageFiles": [
+                "page_33.png",
+                "page_38.png"
+              ]
+            }
+          },
+          {
             "termAr": "HTTPS",
             "termEn": "Hypertext Transfer Protocol Secure",
             "definition": "نظام لإجراء اتصالات الويب بأمان (التشفير، واكتشاف التلاعب، والتحقق من الطرف المقابل).",
@@ -3451,6 +3471,25 @@ export const CURRICULUM_DATA: Chapter[] = [
                 "page_44.png"
               ]
             }
+          },
+          {
+            "termAr": "حماية الأجهزة الطرفية",
+            "termEn": "Endpoint Security",
+            "definition": "ضوابط وإجراءات أمنية تُطبق على أجهزة المستخدمين النهائية المتصلة بالشبكة لمنع تسلل التهديدات.",
+            "id": "concept-2-2-07",
+            "contentOrigin": "official",
+            "source": {
+              "term": 1,
+              "pages": [
+                40,
+                43
+              ],
+              "primaryPage": 40,
+              "sourceType": "official-margin-definition",
+              "pageFiles": [
+                "page_41.png"
+              ]
+            }
           }
         ],
         "sections": [
@@ -3822,6 +3861,44 @@ export const CURRICULUM_DATA: Chapter[] = [
               "pageFiles": [
                 "page_47.png",
                 "page_48.png"
+              ]
+            }
+          },
+          {
+            "termAr": "التأثير",
+            "termEn": "Impact",
+            "definition": "مقدار الضرر أو الخسارة المحتملة إذا وقعت المخاطرة الأمنية.",
+            "id": "concept-2-3-07",
+            "contentOrigin": "official",
+            "source": {
+              "term": 1,
+              "pages": [
+                48,
+                49
+              ],
+              "primaryPage": 48,
+              "sourceType": "official-margin-definition",
+              "pageFiles": [
+                "page_49.png"
+              ]
+            }
+          },
+          {
+            "termAr": "الاحتمالية",
+            "termEn": "Likelihood",
+            "definition": "مدى وفرصة إمكانية وقوع المخاطرة الأمنية.",
+            "id": "concept-2-3-08",
+            "contentOrigin": "official",
+            "source": {
+              "term": 1,
+              "pages": [
+                48,
+                49
+              ],
+              "primaryPage": 48,
+              "sourceType": "official-margin-definition",
+              "pageFiles": [
+                "page_49.png"
               ]
             }
           }

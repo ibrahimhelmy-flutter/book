@@ -65,7 +65,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award, Compass } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award, BookmarkCheck, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -165,11 +165,31 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [isLessonHeaderOpen, setIsLessonHeaderOpen] = useState<boolean>(false);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
   const [isEngineerOpen, setIsEngineerOpen] = useState<boolean>(false);
+  const [isClosureRecapOpen, setIsClosureRecapOpen] = useState<boolean>(false);
+  const [fontSize, setFontSize] = useState<"normal" | "large" | "xlarge">("normal");
 
-  // Reset optional enrichment accordions on lesson switch so they remain closed by default
+  // Load font size preference from localStorage on mount
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("lesson_font_size") as "normal" | "large" | "xlarge";
+      if (saved && ["normal", "large", "xlarge"].includes(saved)) {
+        setFontSize(saved);
+      }
+    } catch {}
+  }, []);
+
+  const handleFontSizeChange = (size: "normal" | "large" | "xlarge") => {
+    setFontSize(size);
+    try {
+      localStorage.setItem("lesson_font_size", size);
+    } catch {}
+  };
+
+  // Reset optional accordions on lesson switch so they remain closed by default
   React.useEffect(() => {
     setIsSimulatorOpen(false);
     setIsEngineerOpen(false);
+    setIsClosureRecapOpen(false);
   }, [lesson.id]);
 
   // Discover all simulators belonging to this lesson from SIMULATORS_DATA
@@ -218,6 +238,24 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     textbookQuestions.length +
     essayQuestions.length +
     comprehensionQuestions.length;
+
+  const hasClosureContent = Boolean(
+    lesson.appliedTask ||
+    lesson.solvedExample ||
+    lesson.mainQuestionAnswer ||
+    lesson.summary ||
+    lesson.challengeYourself?.reflect ||
+    lesson.challengeYourself?.challenge
+  );
+
+  const closureItemsCount = [
+    lesson.appliedTask ? 1 : 0,
+    lesson.solvedExample ? 1 : 0,
+    lesson.mainQuestionAnswer ? 1 : 0,
+    lesson.summary ? 1 : 0,
+    lesson.challengeYourself?.reflect ? 1 : 0,
+    lesson.challengeYourself?.challenge ? 1 : 0,
+  ].reduce((a, b) => a + b, 0);
 
   const quizSectionRef = React.useRef<HTMLDivElement>(null);
 
@@ -290,6 +328,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           activeTab={activeTab}
           onToggleTab={() => setActiveTab((prev) => (prev === "lesson" ? "quiz" : "lesson"))}
           questionsCount={totalQuestionsCount}
+          fontSize={fontSize}
+          onFontSizeChange={handleFontSizeChange}
         />
       </div>
 
@@ -305,49 +345,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
       {/* Main Lesson View */}
       {activeTab === "lesson" && (
-        <div className="space-y-8">
-          {/* Key Question & Learning Path - Compact Banner */}
-          <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-white flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs sm:text-sm">
-            <div className="flex items-start gap-2 flex-1">
-              <HelpCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-              <p className="text-slate-100 font-medium leading-relaxed">
-                <span className="text-amber-400 font-bold ml-1">السؤال الرئيسي:</span>
-                {lesson.keyQuestion}
-              </p>
-            </div>
-            {lesson.learningPath?.current && (
-              <div className="flex items-start gap-2 md:max-w-xs border-t md:border-t-0 md:border-r border-slate-800 pt-2 md:pt-0 md:pr-3 text-slate-300 text-xs">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
-                <span>{lesson.learningPath.current}</span>
-              </div>
-            )}
-          </div>
+        <div className={`space-y-8 lesson-font-${fontSize}`} data-font-size={fontSize}>
 
-          {/* Storyline Prompt Banner */}
-          <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-right shadow-lg">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/30">
-                <Compass className="w-5 h-5 text-purple-400" />
-              </div>
-              <div>
-                <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
-                  <span>تسلسل الأفكار: الرواية الهندسية الواقعية لنشأة الدرس</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">جديد 🧭</span>
-                </h3>
-                <p className="text-xs text-slate-300 mt-0.5">
-                  استكشف كيف قادت كل مشكلة واقعية واجهت المهندسين إلى ابتكار حل بالمنهج، وصولاً إلى سيمفونية التسوق الإلكتروني.
-                </p>
-              </div>
-            </div>
-
-            <Link
-              href={`/chapters/${lesson.chapterId || "chapter-2"}/${lesson.slug}/storyline`}
-              className="shrink-0 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md shadow-purple-950/50 flex items-center gap-1.5 cursor-pointer"
-            >
-              <span>بدء رحلة الأفكار</span>
-              <ArrowLeft className="w-3.5 h-3.5" />
-            </Link>
-          </div>
 
           {/* Detailed Sections with In-Section Notes Button */}
           <div className="space-y-6">
@@ -381,7 +380,15 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                       <span className="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
                         القسم {secIdx + 1} من {lesson.sections.length}
                       </span>
-                      <h3 className="text-lg sm:text-xl font-bold text-white leading-snug">
+                      <h3
+                        className={`font-bold text-white leading-snug transition-all duration-200 ${
+                          fontSize === "large"
+                            ? "text-xl sm:text-2xl"
+                            : fontSize === "xlarge"
+                            ? "text-2xl sm:text-3xl"
+                            : "text-lg sm:text-xl"
+                        }`}
+                      >
                         {sec.title}
                       </h3>
                       {sec.origin === "explanation" ? (
@@ -407,8 +414,16 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                     )}
                   </div>
 
-                  <div className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    <EyeComfortText content={sec.content} theme="dark" />
+                  <div
+                    className={`transition-all duration-200 ${
+                      fontSize === "large"
+                        ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
+                        : fontSize === "xlarge"
+                        ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
+                        : "text-sm sm:text-base text-slate-300 leading-relaxed"
+                    }`}
+                  >
+                    <EyeComfortText content={sec.content} theme="dark" fontSize={fontSize} />
                   </div>
 
                   {/* Section Diagram / Image from PDF if present */}
@@ -440,11 +455,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                               }
                             }
                           }}
-
                         />
                       </div>
                       {sec.image.caption && (
-                        <p className="text-center text-xs text-slate-400 mt-2 font-medium">
+                        <p
+                          className={`text-center mt-2 font-medium transition-all duration-200 ${
+                            fontSize === "large"
+                              ? "text-sm text-slate-300"
+                              : fontSize === "xlarge"
+                              ? "text-base text-slate-200"
+                              : "text-xs text-slate-400"
+                          }`}
+                        >
                           📷 {sec.image.caption}
                         </p>
                       )}
@@ -454,11 +476,28 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                   {/* Section Table if present */}
                   {sec.table && (
                     <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950 custom-scrollbar">
-                      <table className="w-full min-w-[420px] text-right text-xs">
+                      <table
+                        className={`w-full min-w-[420px] text-right transition-all duration-200 ${
+                          fontSize === "large"
+                            ? "text-sm sm:text-base"
+                            : fontSize === "xlarge"
+                            ? "text-base sm:text-lg"
+                            : "text-xs"
+                        }`}
+                      >
                         <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
                           <tr>
                             {sec.table.headers.map((h, i) => (
-                              <th key={i} className="p-3 font-semibold text-slate-200">
+                              <th
+                                key={i}
+                                className={`font-semibold text-slate-200 ${
+                                  fontSize === "large"
+                                    ? "p-3.5"
+                                    : fontSize === "xlarge"
+                                    ? "p-4"
+                                    : "p-3"
+                                }`}
+                              >
                                 {formatInlineText(h, "dark")}
                               </th>
                             ))}
@@ -468,7 +507,16 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                           {sec.table.rows.map((row, rIdx) => (
                             <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
                               {row.map((cell, cIdx) => (
-                                <td key={cIdx} className="p-3 leading-relaxed">
+                                <td
+                                  key={cIdx}
+                                  className={`leading-relaxed ${
+                                    fontSize === "large"
+                                      ? "p-3.5"
+                                      : fontSize === "xlarge"
+                                      ? "p-4"
+                                      : "p-3"
+                                  }`}
+                                >
                                   {formatInlineText(cell, "dark")}
                                 </td>
                               ))}
@@ -488,82 +536,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             <LessonConceptMap lesson={lesson} />
           )}
 
-          {/* Applied Task Box */}
-          {lesson.appliedTask && (
-            <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 text-white shadow-xl my-6">
-              <div className="flex items-center gap-2.5 font-bold text-sm text-indigo-400 mb-2">
-                <FileCheck className="w-5 h-5" />
-                <span>{lesson.appliedTask.title || "تطبيق عملي"}</span>
-              </div>
-              {lesson.appliedTask.scenario && (
-                <p className="text-xs text-slate-400 mb-2">{lesson.appliedTask.scenario}</p>
-              )}
-              <p className="text-xs sm:text-sm font-semibold text-slate-200 leading-relaxed mb-4">
-                {lesson.appliedTask.prompt}
-              </p>
-              {lesson.appliedTask.sampleAnswer && (
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs leading-relaxed text-slate-300">
-                  <strong className="text-emerald-400 block mb-1">نموذج الإجابة المقترحة:</strong>
-                  {lesson.appliedTask.sampleAnswer}
-                </div>
-              )}
-            </div>
-          )}
 
-          {/* Solved Examples */}
-          {lesson.solvedExample && <SolvedExampleAccordion example={lesson.solvedExample} />}
-
-          {/* Main Question Official Answer */}
-          {lesson.mainQuestionAnswer && (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white space-y-2">
-              <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
-                <HelpCircle className="w-5 h-5" />
-                <span>إجابة السؤال الرئيسي المعتمدة:</span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                {lesson.mainQuestionAnswer}
-              </p>
-            </div>
-          )}
-
-          {/* Lesson Summary & Flashcard Takeaway */}
-          {lesson.summary && (
-            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 text-white">
-              <h3 className="font-bold text-base text-amber-400 mb-3 flex items-center gap-2">
-                <span>⭐ خلاصة وتذكرة الدرس:</span>
-              </h3>
-              {Array.isArray(lesson.summary) ? (
-                <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
-                  {lesson.summary.map((sumItem, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-amber-400 font-bold">•</span>
-                      <span>{sumItem}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{lesson.summary}</p>
-              )}
-            </div>
-          )}
-
-          {/* Challenge Yourself Box */}
-          {lesson.challengeYourself && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {lesson.challengeYourself.reflect && (
-                <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
-                  <span className="text-xs font-bold text-purple-400 block mb-1">⭐ تأمل ذاتي:</span>
-                  <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.reflect}</p>
-                </div>
-              )}
-              {lesson.challengeYourself.challenge && (
-                <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
-                  <span className="text-xs font-bold text-pink-400 block mb-1">⚡ تحدّ نفسك:</span>
-                  <p className="text-xs text-slate-300 leading-relaxed">{lesson.challengeYourself.challenge}</p>
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Optional Enrichment Section at End of Lesson (Hidden/Collapsed by default) */}
           {(lessonSimulators.length > 0 || lesson.engineerChallenge) && (
@@ -699,6 +672,262 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                   )}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Lesson Closure, Applied Practice & Solved Examples (Consolidated, Collapsed by Default) */}
+          {hasClosureContent && (
+            <div className="pt-4 border-t border-slate-800/80 space-y-3">
+              <div className="flex items-center justify-between text-xs px-1">
+                <div className="flex items-center gap-2 text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                  <span className="font-bold text-slate-300">خلاصة وتطبيقات الدرس والحلول النموذجية</span>
+                  <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 font-mono">
+                    ({closureItemsCount} أقسام)
+                  </span>
+                </div>
+                <span className="text-[11px] text-slate-500">مغلق افتراضياً — اضغط للاستعراض</span>
+              </div>
+
+              <div className="border border-slate-800 hover:border-indigo-500/40 bg-slate-900/60 rounded-3xl overflow-hidden transition-all duration-200 shadow-xl">
+                <button
+                  type="button"
+                  onClick={() => setIsClosureRecapOpen((prev) => !prev)}
+                  className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-right hover:bg-slate-800/40 transition-colors cursor-pointer"
+                  aria-expanded={isClosureRecapOpen}
+                >
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="w-11 h-11 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center shrink-0 text-indigo-400">
+                      <BookmarkCheck className="w-6 h-6" />
+                    </div>
+                    <div className="min-w-0 text-right">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm sm:text-base font-bold text-white">
+                          خلاصة الدرس، الأنشطة التطبيقية والأمثلة المحلولة 📌
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">
+                          ({closureItemsCount} أقسام)
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                          مغلق افتراضياً
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+                        طبّق ما تعلمته • التدريب والحل النموذجي • مثال محلول من الكتاب • إجابة السؤال الرئيسي • خلاصة الدرس • تأمل وتحدّ
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-400 text-xs shrink-0">
+                    <span className="hidden sm:inline font-medium">
+                      {isClosureRecapOpen ? "إخفاء القسم" : `عرض الأقسام (${closureItemsCount})`}
+                    </span>
+                    {isClosureRecapOpen ? (
+                      <ChevronUp className="w-5 h-5 text-indigo-400 transition-transform" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-slate-400 transition-transform" />
+                    )}
+                  </div>
+                </button>
+
+                {isClosureRecapOpen && (
+                  <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-950/80 animate-fadeIn space-y-6">
+                    {/* 1. Applied Task (طبّق ما تعلمته) */}
+                    {lesson.appliedTask && (
+                      <div className="bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-5 sm:p-6 text-white shadow-lg space-y-4">
+                        <div className="flex items-center justify-between gap-2 flex-wrap border-b border-slate-800/80 pb-3">
+                          <div className="flex items-center gap-2.5 font-bold text-sm text-indigo-400">
+                            <FileCheck className="w-5 h-5 text-indigo-400" />
+                            <span>{lesson.appliedTask.title || "طبّق ما تعلمته"}</span>
+                          </div>
+                          <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+                            تطبيق عملي
+                          </span>
+                        </div>
+
+                        {lesson.appliedTask.scenario && (
+                          <div
+                            className={`p-3.5 bg-slate-950/60 rounded-xl border border-slate-800/80 leading-relaxed transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-sm sm:text-base text-slate-200"
+                                : fontSize === "xlarge"
+                                ? "text-base sm:text-lg text-slate-100 font-medium"
+                                : "text-xs text-slate-300"
+                            }`}
+                          >
+                            <span className="font-bold text-indigo-400 ml-1">السيناريو:</span>
+                            {lesson.appliedTask.scenario}
+                          </div>
+                        )}
+
+                        <div className="space-y-1.5">
+                          <span
+                            className={`font-bold text-slate-300 block transition-all duration-200 ${
+                              fontSize === "large" ? "text-sm" : fontSize === "xlarge" ? "text-base" : "text-xs"
+                            }`}
+                          >
+                            التدريب المطلوب:
+                          </span>
+                          <p
+                            className={`font-semibold text-slate-200 leading-relaxed transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-base sm:text-lg"
+                                : fontSize === "xlarge"
+                                ? "text-lg sm:text-xl font-bold"
+                                : "text-xs sm:text-sm"
+                            }`}
+                          >
+                            {lesson.appliedTask.prompt}
+                          </p>
+                        </div>
+
+                        {lesson.appliedTask.sampleAnswer && (
+                          <div
+                            className={`p-4 bg-emerald-950/25 rounded-xl border border-emerald-500/30 leading-relaxed text-slate-300 shadow-inner transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-sm sm:text-base text-slate-200"
+                                : fontSize === "xlarge"
+                                ? "text-base sm:text-lg text-slate-100"
+                                : "text-xs text-slate-300"
+                            }`}
+                          >
+                            <strong className="text-emerald-400 flex items-center gap-1.5 font-bold mb-1.5">
+                              <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                              <span>الحل النموذجي (نموذج الإجابة المقترحة):</span>
+                            </strong>
+                            <p className="text-slate-300 leading-relaxed">{lesson.appliedTask.sampleAnswer}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* 2. Solved Examples (مثال محلول من الكتاب المدرسي / التدريب والحل النموذجي) */}
+                    {lesson.solvedExample && (
+                      <div className="rounded-2xl overflow-hidden">
+                        <SolvedExampleAccordion example={lesson.solvedExample} fontSize={fontSize} />
+                      </div>
+                    )}
+
+                    {/* 3. Main Question Official Answer (إجابة السؤال الرئيسي المعتمدة) */}
+                    {lesson.mainQuestionAnswer && (
+                      <div className="bg-slate-900 border border-indigo-500/25 rounded-2xl p-5 sm:p-6 text-white space-y-3 shadow-md">
+                        <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+                          <HelpCircle className="w-5 h-5 text-indigo-400 shrink-0" />
+                          <span>إجابة السؤال الرئيسي المعتمدة:</span>
+                        </div>
+                        {lesson.keyQuestion && (
+                          <div
+                            className={`p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl leading-relaxed transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-sm sm:text-base text-amber-100"
+                                : fontSize === "xlarge"
+                                ? "text-base sm:text-lg text-amber-50 font-medium"
+                                : "text-xs text-amber-200"
+                            }`}
+                          >
+                            <span className="font-bold text-amber-400 ml-1">السؤال الرئيسي:</span>
+                            <span>{lesson.keyQuestion}</span>
+                          </div>
+                        )}
+                        <p
+                          className={`leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800 transition-all duration-200 ${
+                            fontSize === "large"
+                              ? "text-base sm:text-lg text-slate-200 leading-loose"
+                              : fontSize === "xlarge"
+                              ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
+                              : "text-xs sm:text-sm text-slate-300"
+                          }`}
+                        >
+                          {lesson.mainQuestionAnswer}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 4. Lesson Summary & Flashcard Takeaway (⭐ خلاصة وتذكرة الدرس) */}
+                    {lesson.summary && (
+                      <div className="bg-slate-950 border border-amber-500/30 rounded-2xl p-5 sm:p-6 text-white shadow-md space-y-3">
+                        <div className="flex items-center gap-2 font-bold text-sm sm:text-base text-amber-400">
+                          <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
+                          <span>⭐ خلاصة وتذكرة الدرس:</span>
+                        </div>
+                        {Array.isArray(lesson.summary) ? (
+                          <ul
+                            className={`space-y-2.5 transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-base sm:text-lg text-slate-200 leading-loose"
+                                : fontSize === "xlarge"
+                                ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
+                                : "text-xs sm:text-sm text-slate-300"
+                            }`}
+                          >
+                            {lesson.summary.map((sumItem, i) => (
+                              <li key={i} className="flex items-start gap-2.5 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80">
+                                <span className="text-amber-400 font-bold text-base leading-none">•</span>
+                                <span className="leading-relaxed">{sumItem}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p
+                            className={`leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800 transition-all duration-200 ${
+                              fontSize === "large"
+                                ? "text-base sm:text-lg text-slate-200 leading-loose"
+                                : fontSize === "xlarge"
+                                ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
+                                : "text-xs sm:text-sm text-slate-300"
+                            }`}
+                          >
+                            {lesson.summary}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* 5 & 6. Challenge Yourself (⭐ تأمل ذاتي & ⚡ تحدّ نفسك) */}
+                    {lesson.challengeYourself && (lesson.challengeYourself.reflect || lesson.challengeYourself.challenge) && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {lesson.challengeYourself.reflect && (
+                          <div className="p-5 bg-slate-900 border border-purple-500/30 rounded-2xl shadow-md space-y-2">
+                            <div className="flex items-center gap-2 text-xs font-bold text-purple-400">
+                              <Lightbulb className="w-4 h-4 text-purple-400 shrink-0" />
+                              <span>⭐ تأمل ذاتي:</span>
+                            </div>
+                            <p
+                              className={`leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 transition-all duration-200 ${
+                                fontSize === "large"
+                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
+                                  : fontSize === "xlarge"
+                                  ? "text-base sm:text-lg text-slate-100 leading-loose font-medium"
+                                  : "text-xs sm:text-sm text-slate-300"
+                              }`}
+                            >
+                              {lesson.challengeYourself.reflect}
+                            </p>
+                          </div>
+                        )}
+                        {lesson.challengeYourself.challenge && (
+                          <div className="p-5 bg-slate-900 border border-pink-500/30 rounded-2xl shadow-md space-y-2">
+                            <div className="flex items-center gap-2 text-xs font-bold text-pink-400">
+                              <Sparkles className="w-4 h-4 text-pink-400 shrink-0" />
+                              <span>⚡ تحدّ نفسك:</span>
+                            </div>
+                            <p
+                              className={`leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 transition-all duration-200 ${
+                                fontSize === "large"
+                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
+                                  : fontSize === "xlarge"
+                                  ? "text-base sm:text-lg text-slate-100 leading-loose font-medium"
+                                  : "text-xs sm:text-sm text-slate-300"
+                              }`}
+                            >
+                              {lesson.challengeYourself.challenge}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
