@@ -1,2192 +1,762 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { Lesson } from "@/types";
+import { Lesson, LessonSection, KeyConcept } from "@/types";
 import { SlideAnnotationCanvas, DrawToolType } from "./SlideAnnotationCanvas";
-import { TeacherWhiteboardModal } from "./TeacherWhiteboardModal";
-import { AIPresentationAssistant } from "./AIPresentationAssistant";
-import { PresentationFlowView } from "./PresentationFlowView";
-import { TeacherToolsDrawer } from "./TeacherToolsDrawer";
+import { formatInlineText } from "../common/EyeComfortText";
+import { getAssetPath } from "@/lib/utils";
 import {
   ChevronRight,
   ChevronLeft,
-  ChevronsRight,
-  ChevronsLeft,
   Maximize2,
   Minimize2,
-  Sparkles,
-  Layers,
-  Pen,
-  Highlighter,
-  Eraser,
-  MousePointer2,
-  Type,
-  RotateCcw,
-  RotateCw,
-  Trash2,
-  ArrowRight,
-  Square,
-  Circle,
-  Minus,
-  ChevronDown,
-  Volume2,
-  Wrench,
-  Search,
-  Eye,
-  EyeOff,
-  Compass,
-  Play,
-  Pause,
-  ZoomIn,
-  ZoomOut,
   Sun,
   Moon,
   X,
   LayoutGrid,
   HelpCircle,
-  Zap,
-  BookOpenCheck,
-  CheckCircle2,
-  Target,
   Lightbulb,
-  GitBranch,
+  Target,
+  BookOpen,
+  Sparkles,
+  Pen,
+  Eraser,
+  MousePointer2,
+  Trash2,
+  Volume2,
+  CheckCircle2,
+  Image as ImageIcon,
+  Table as TableIcon,
+  Layers,
+  Search,
+  ZoomIn,
+  Info,
+  Eye,
+  EyeOff,
 } from "lucide-react";
-import { formatInlineText } from "../common/EyeComfortText";
-import { getAssetPath } from "@/lib/utils";
+
+/**
+ * SlideItem interface maintained for backward compatibility with external views
+ */
+export interface SlideItem {
+  id: string;
+  type: "intro" | "section" | "concepts" | "engineer" | "example" | "summary" | "callout" | "applied_task";
+  title: string;
+  subtitle?: string;
+  badge: string;
+  bullets: string[];
+  image?: { src: string; caption: string; alt?: string };
+  table?: { headers: string[]; rows: string[][] };
+  sectionIndex?: number;
+  stageIndex?: number;
+  customData?: Record<string, unknown>;
+}
 
 interface Props {
   lesson: Lesson;
   onExitPresentation?: () => void;
 }
 
-export interface SlideItem {
+export interface ParsedSection {
   id: string;
-  type: "intro" | "concepts" | "section" | "engineer" | "example" | "summary" | "callout" | "applied_task";
   title: string;
-  subtitle?: string;
-  bullets: string[];
-  image?: {
-    src: string;
-    caption: string;
-  };
-  table?: {
-    headers: string[];
-    rows: string[][];
-  };
-  badge: string;
-  customData?: Record<string, unknown>;
+  index: number;
+  conceptIntro: string;
+  detailedPoints: string[];
+  image?: { src: string; caption: string; alt?: string };
+  table?: { headers: string[]; rows: string[][] };
+  keyConcepts: KeyConcept[];
+}
+
+export type SectionStepItem =
+  | { id: string; type: "detailed_point"; index: number; label: string }
+  | { id: string; type: "image"; label: string }
+  | { id: string; type: "table_row"; index: number; label: string }
+  | { id: string; type: "key_concepts"; label: string };
+
+/**
+ * Helper to speak Arabic/English text using Web Speech API
+ */
+function speakText(text: string) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const cleanText = text.replace(/[*#`_()]/g, "").trim();
+    if (!cleanText) return;
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = /^[A-Za-z0-9\s.,!?-]+$/.test(cleanText) ? "en-US" : "ar-SA";
+    utterance.rate = 0.95;
+    window.speechSynthesis.speak(utterance);
+  } catch {
+    // Ignore speech synthesis failures
+  }
+}
+
+/**
+ * Parses a textbook section into concept intro, detailed points, and visual artifacts
+ */
+function parseSectionStoryline(sec: LessonSection, secIndex: number, allConcepts: KeyConcept[] = []): ParsedSection {
+  const rawLines = sec.content.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
+  let conceptIntro = rawLines[0] || "";
+  const detailedPoints = rawLines.slice(1);
+
+  if (sec.subsections && sec.subsections.length > 0) {
+    sec.subsections.forEach((sub) => detailedPoints.push(`**${sub.title}:** ${sub.content}`));
+  }
+
+  if (detailedPoints.length === 0 && conceptIntro.length > 120) {
+    const sentences = conceptIntro.split(/(?<=[.؛])\s+/);
+    if (sentences.length > 1) {
+      conceptIntro = sentences[0];
+      detailedPoints.push(...sentences.slice(1));
+    }
+  }
+
+  const titleLower = sec.title.toLowerCase();
+  const contentLower = sec.content.toLowerCase();
+  const keyConcepts = allConcepts.filter((c) => {
+    const ar = c.termAr.toLowerCase();
+    const en = (c.termEn || "").toLowerCase();
+    return titleLower.includes(ar) || contentLower.includes(ar) || (en.length > 3 && (titleLower.includes(en) || contentLower.includes(en)));
+  });
+
+  return { id: sec.id, title: sec.title, index: secIndex, conceptIntro, detailedPoints, image: sec.image, table: sec.table, keyConcepts };
 }
 
 export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
-  // Navigation & Animation State
+  // Navigation State (Slide 0: Cover, Slide 1..N: Official Section Slides)
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
-  const [revealedLineIndex, setRevealedLineIndex] = useState<number>(0);
+  const [revealedIntroStep, setRevealedIntroStep] = useState<number>(0);
+  const [revealedSectionStep, setRevealedSectionStep] = useState<number>(0);
+  const [isAllRevealed, setIsAllRevealed] = useState<boolean>(false);
+
+  // UI Modes & Modals
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [showSlideIndexDrawer, setShowSlideIndexDrawer] = useState<boolean>(false);
-  const [searchSlideQuery, setSearchSlideQuery] = useState<string>("");
+  const [showSlideDrawer, setShowSlideDrawer] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; caption: string } | null>(null);
+  const [isImageMinimized, setIsImageMinimized] = useState<boolean>(false);
 
-  // Smooth Zoom & Panning State (50% to 400%)
-  const [zoomLevel, setZoomLevel] = useState<number>(1.0);
-  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [isPanning, setIsPanning] = useState<boolean>(false);
-  const [showZoomMenu, setShowZoomMenu] = useState<boolean>(false);
-  const panStartRef = useRef<{ x: number; y: number; originX: number; originY: number } | null>(null);
-
-  // Presentation Modes: "slides" | "flow"
-  const [presentationMode, setPresentationMode] = useState<"slides" | "flow">("slides");
-
-  // Presentation Themes: "light" | "dark" (Default is Dark)
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-
-  // Concept Map slide display mode: "tree" | "cards"
-  const [conceptSlideMode, setConceptSlideMode] = useState<"tree" | "cards">("tree");
-
-  // Font Size Scaling: "normal" | "large" | "xlarge"
-  const [fontSizeLevel] = useState<"normal" | "large" | "xlarge">("large");
-
-  // Auto-play slideshow
-  const [isAutoPlay, setIsAutoPlay] = useState<boolean>(false);
-  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Modals & Drawers
-  const [isWhiteboardOpen, setIsWhiteboardOpen] = useState<boolean>(false);
-  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState<boolean>(false);
-  const [isTeacherToolsOpen, setIsTeacherToolsOpen] = useState<boolean>(false);
-
-  // Drawing Tools State (Unified in Floating Center Pill)
+  // Drawing Tools State
+  const [isDrawingMode, setIsDrawingMode] = useState<boolean>(false);
   const [activeDrawTool, setActiveDrawTool] = useState<DrawToolType>("pointer");
-  const [drawColor, setDrawColor] = useState<string>("#2563eb");
-  const [drawSize, setDrawSize] = useState<number>(3.5);
-  const [showShapesPicker, setShowShapesPicker] = useState<boolean>(false);
+  const [drawColor, setDrawColor] = useState<string>("#3b82f6");
+  const [drawSize] = useState<number>(3.5);
 
-  const undoRef = useRef<(() => void) | null>(null);
-  const redoRef = useRef<(() => void) | null>(null);
-  const clearRef = useRef<(() => void) | null>(null);
-  const downloadRef = useRef<(() => void) | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const stepperRef = useRef<HTMLDivElement | null>(null);
+  const clearCanvasRef = useRef<(() => void) | null>(null);
+  const undoCanvasRef = useRef<(() => void) | null>(null);
 
-  // Dynamic custom slides injected by AI Assistant
-  const [customSlides, setCustomSlides] = useState<SlideItem[]>([]);
-
-  const presentationContainerRef = useRef<HTMLDivElement | null>(null);
-
-  // Smooth zoom handlers (50% to 400%)
-  const handleZoomIn = useCallback(() => {
-    setZoomLevel((prev) => Math.min(4.0, +(prev + (prev >= 2.0 ? 0.5 : 0.25)).toFixed(2)));
-  }, []);
-
-  const handleZoomOut = useCallback(() => {
-    setZoomLevel((prev) => Math.max(0.5, +(prev - (prev > 2.0 ? 0.5 : 0.25)).toFixed(2)));
-  }, []);
-
-  const handleZoomReset = useCallback(() => {
-    setZoomLevel(1.0);
-    setPanOffset({ x: 0, y: 0 });
-    setShowZoomMenu(false);
-  }, []);
-
-  const handleSetZoom = useCallback((zoom: number) => {
-    setZoomLevel(Math.max(0.5, Math.min(4.0, +zoom.toFixed(2))));
-    if (zoom === 1.0) {
-      setPanOffset({ x: 0, y: 0 });
-    }
-    setShowZoomMenu(false);
-  }, []);
-
-  // Reset pan offset when slide changes
-  useEffect(() => {
-    setPanOffset({ x: 0, y: 0 });
-  }, [currentSlideIndex]);
-
-  // Viewport Pan/Drag handlers to move page anywhere
-  const handleViewportPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    const isInteractive = (e.target as HTMLElement).closest(
-      "button, input, textarea, a, select, [role='button'], [data-no-pan]"
-    );
-    if (isInteractive) return;
-
-    if (activeDrawTool === "pointer" || e.button === 1) {
-      panStartRef.current = {
-        x: e.clientX,
-        y: e.clientY,
-        originX: panOffset.x,
-        originY: panOffset.y,
-      };
-      setIsPanning(true);
-      try {
-        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      } catch {
-        // ignore
-      }
-    }
-  };
-
-  const handleViewportPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isPanning || !panStartRef.current) return;
-    const dx = e.clientX - panStartRef.current.x;
-    const dy = e.clientY - panStartRef.current.y;
-    setPanOffset({
-      x: Math.round(panStartRef.current.originX + dx),
-      y: Math.round(panStartRef.current.originY + dy),
-    });
-  };
-
-  const handleViewportPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (isPanning) {
-      setIsPanning(false);
-      panStartRef.current = null;
-      try {
-        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-      } catch {
-        // ignore
-      }
-    }
-  };
-
-  // Dedicated Non-Passive Wheel & Gesture Listener to stop browser page-zoom on trackpad pinch
-  useEffect(() => {
-    const handleWheelCapture = (e: WheelEvent) => {
-      // 1. Touchpad Pinch or Ctrl + Wheel -> Scale zoom of slide ONLY
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Continuous smooth zoom delta proportional to touchpad pinch intensity
-        const zoomDelta = -e.deltaY * 0.005;
-        setZoomLevel((prev) => {
-          const next = +(prev + zoomDelta).toFixed(3);
-          return Math.max(0.5, Math.min(4.0, next));
-        });
-      }
-      // 2. Touchpad 2-finger Pan or regular wheel scroll when zoomed/panned
-      else if (zoomLevel > 1.0 || panOffset.x !== 0 || panOffset.y !== 0) {
-        const target = e.target as HTMLElement;
-        if (target && target.closest("[data-scrollable], .overflow-y-auto")) {
-          return;
-        }
-
-        e.preventDefault();
-        e.stopPropagation();
-        setPanOffset((prev) => ({
-          x: Math.round(prev.x - (e.shiftKey ? e.deltaY : e.deltaX)),
-          y: Math.round(prev.y - (e.shiftKey ? 0 : e.deltaY)),
-        }));
-      }
-    };
-
-    // Prevent browser zoom with Ctrl + (+/- / 0)
-    const handleKeyDownCapture = (e: KeyboardEvent) => {
-      if (
-        (e.ctrlKey || e.metaKey) &&
-        (e.key === "+" || e.key === "=" || e.key === "-" || e.key === "_" || e.key === "0")
-      ) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.key === "+" || e.key === "=") handleZoomIn();
-        else if (e.key === "-" || e.key === "_") handleZoomOut();
-        else if (e.key === "0") handleZoomReset();
-      }
-    };
-
-    // Safari Gesture events for trackpad pinch
-    const handleGesture = (e: Event) => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-
-    // Touch pinch-to-zoom support for mobile/touchscreen trackpads
-    let touchStartDistance = 0;
-    let touchStartZoom = zoomLevel;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        touchStartDistance = Math.hypot(dx, dy);
-        touchStartZoom = zoomLevel;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 2 && touchStartDistance > 0) {
-        e.preventDefault();
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        const dist = Math.hypot(dx, dy);
-        const scaleFactor = dist / touchStartDistance;
-        setZoomLevel(Math.max(0.5, Math.min(4.0, +(touchStartZoom * scaleFactor).toFixed(2))));
-      }
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (e.touches.length < 2) {
-        touchStartDistance = 0;
-      }
-    };
-
-    // Attach with { passive: false, capture: true } on window and document to intercept before browser engine zoom
-    window.addEventListener("wheel", handleWheelCapture, { passive: false, capture: true });
-    document.addEventListener("wheel", handleWheelCapture, { passive: false, capture: true });
-    window.addEventListener("keydown", handleKeyDownCapture, { capture: true });
-    window.addEventListener("gesturestart", handleGesture, { passive: false, capture: true });
-    window.addEventListener("gesturechange", handleGesture, { passive: false, capture: true });
-    window.addEventListener("gestureend", handleGesture, { passive: false, capture: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: false, capture: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false, capture: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
-
-    return () => {
-      window.removeEventListener("wheel", handleWheelCapture, { capture: true });
-      document.removeEventListener("wheel", handleWheelCapture, { capture: true });
-      window.removeEventListener("keydown", handleKeyDownCapture, { capture: true });
-      window.removeEventListener("gesturestart", handleGesture, { capture: true });
-      window.removeEventListener("gesturechange", handleGesture, { capture: true });
-      window.removeEventListener("gestureend", handleGesture, { capture: true });
-      window.removeEventListener("touchstart", handleTouchStart, { capture: true });
-      window.removeEventListener("touchmove", handleTouchMove, { capture: true });
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [zoomLevel, panOffset, handleZoomIn, handleZoomOut, handleZoomReset]);
-
-  // Theme toggle: Light / Dark
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
-
-  // Speech synthesis for English terms
-  const speakText = (text: string) => {
-    if (typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined") {
-      try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = "en-US";
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
-      } catch {
-        // ignore speech synthesis errors gracefully
-      }
-    }
-  };
-
-  // Map key concepts to lesson sections for the concept map presentation slide
-  const presentationConceptMapping = useMemo(() => {
-    const map: Record<string, typeof lesson.keyConcepts> = {};
-    const unassigned: typeof lesson.keyConcepts = [];
-
-    lesson.sections.forEach((s) => (map[s.id] = []));
-
-    (lesson.keyConcepts || []).forEach((c) => {
-      let matched = false;
-      const termArClean = c.termAr.replace(/[()]/g, "").trim().toLowerCase();
-      const termWords = termArClean.split(/\s+/).filter((w) => w.length > 2);
-      const termEnClean = (c.termEn || "").replace(/[()]/g, "").trim().toLowerCase();
-
-      for (const sec of lesson.sections) {
-        const text = (sec.title + " " + (sec.content || "")).toLowerCase();
-        const hasAr =
-          text.includes(termArClean) ||
-          (termWords.length > 0 && termWords.every((w) => text.includes(w)));
-        const hasEn = termEnClean && text.includes(termEnClean);
-
-        if (hasAr || hasEn) {
-          map[sec.id].push(c);
-          matched = true;
-          break;
-        }
-      }
-
-      if (!matched) unassigned.push(c);
-    });
-
-    return { map, unassigned };
-  }, [lesson]);
-
-  // Build master slides array from curriculum lesson data
-  const baseSlides: SlideItem[] = useMemo(() => {
-    const list: SlideItem[] = [];
-
-    // 1. Intro Slide: Title, Key Question, and Objectives
-    list.push({
-      id: "slide-intro",
-      type: "intro",
-      title: `${lesson.number} ${lesson.title}`,
-      subtitle: lesson.englishTitle,
-      badge: `الفصل ${lesson.chapterNumber} — تمهيد الدرس 🚀`,
-      bullets: [
-        `السؤال الجوهري: ${lesson.keyQuestion}`,
-        `الفكرة الأساسية: ${lesson.coreIdea}`,
-        ...lesson.learningObjectives.map(
-          (obj, i) =>
-            `الهدف ${i + 1}: ${
-              typeof obj === "string" ? obj : (obj as unknown as { text: string }).text
-            }`
-        ),
-      ],
-    });
-
-    // 2. Lesson Sections Slides (Full lesson explanation with comfortable pacing & smart chunking)
-    lesson.sections.forEach((sec, idx) => {
-      const lines = sec.content
-        .split("\n")
-        .map((l) => l.trim())
-        .filter((l) => l.length > 0);
-
-      if (sec.image) {
-        // Slide with Diagram
-        if (lines.length > 1) {
-          // Slide A: Visual Diagram + Core Key Takeaway
-          list.push({
-            id: `slide-sec-${sec.id}-img`,
-            type: "section",
-            title: sec.title,
-            subtitle: `المحور العلمي ${idx + 1} — المخطط والتحليل البصري`,
-            badge: "الشكل والمخطط 📊",
-            bullets: [lines[0]],
-            image: sec.image,
-            table: sec.table,
-          });
-
-          // Slide B: Deep Dive Technical Concepts
-          list.push({
-            id: `slide-sec-${sec.id}-detail`,
-            type: "section",
-            title: sec.title,
-            subtitle: `المحور العلمي ${idx + 1} — الشرح والتحليل المعمق`,
-            badge: "المحتوى العلمي 💡",
-            bullets: lines.slice(1),
-          });
-        } else {
-          list.push({
-            id: `slide-sec-${sec.id}`,
-            type: "section",
-            title: sec.title,
-            subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
-            badge: "المحتوى العلمي 💡",
-            bullets: lines,
-            image: sec.image,
-            table: sec.table,
-          });
-        }
-      } else if (lines.length > 3) {
-        // Chunk long section into comfortable slices of 2-3 bullets
-        const chunkSize = 2;
-        const totalParts = Math.ceil(lines.length / chunkSize);
-        for (let p = 0; p < totalParts; p++) {
-          const chunkLines = lines.slice(p * chunkSize, (p + 1) * chunkSize);
-          list.push({
-            id: `slide-sec-${sec.id}-p${p + 1}`,
-            type: "section",
-            title: `${sec.title} (${p + 1}/${totalParts})`,
-            subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
-            badge: "المحتوى العلمي 💡",
-            bullets: chunkLines,
-            table: p === 0 ? sec.table : undefined,
-          });
-        }
-      } else {
-        list.push({
-          id: `slide-sec-${sec.id}`,
-          type: "section",
-          title: sec.title,
-          subtitle: `المحور العلمي ${idx + 1} من ${lesson.sections.length}`,
-          badge: "المحتوى العلمي 💡",
-          bullets: lines,
-          table: sec.table,
-        });
-      }
-    });
-
-    // 3. Interactive Pause & Reflect Slides ("توقّف وفكّر" بعد انتهاء شرح محاور الدرس)
-    if (lesson.callouts && lesson.callouts.length > 0) {
-      lesson.callouts.forEach((c, cIdx) => {
-        list.push({
-          id: `slide-callout-${c.id}`,
-          type: "callout",
-          title: c.title,
-          subtitle: `محطة تفاعلية (${cIdx + 1}/${lesson.callouts.length}) — مناقشة صفية بعد انتهاء شرح الدرس 💡`,
-          badge: "توقّف وفكّر 💡",
-          bullets: [
-            c.question ? c.question : c.title,
-            ...c.content.split("\n").map((l) => l.trim()).filter((l) => l.length > 0),
-          ],
-        });
-      });
-    }
-
-    // 3. Lesson Concept Map & Technical Vocabulary Slide
-    if (lesson.keyConcepts && lesson.keyConcepts.length > 0) {
-      list.push({
-        id: "slide-concepts",
-        type: "concepts",
-        title: "خريطة المفاهيم والروابط الهيكلية للدرس",
-        subtitle: "Lesson Concept Map & Technical Architecture",
-        badge: "خريطة الدرس 🗺️",
-        bullets: lesson.keyConcepts.map((c) =>
-          c.termEn ? `${c.termAr} (${c.termEn})` : c.termAr
-        ),
-      });
-    }
-
-    // 4. Applied Task Slide (طبّق ما تعلمته)
-    if (lesson.appliedTask) {
-      list.push({
-        id: "slide-applied-task",
-        type: "applied_task",
-        title: lesson.appliedTask.title,
-        subtitle: "تطبيق مهام واقعية وميدانية",
-        badge: "طبّق ما تعلمته 🌍",
-        bullets: [
-          `السيناريو الواقعي: ${lesson.appliedTask.scenario}`,
-          `المطلوب: ${lesson.appliedTask.prompt}`,
-          ...(lesson.appliedTask.sampleAnswer
-            ? [`💡 الحل والتحليل النموذجي: ${lesson.appliedTask.sampleAnswer}`]
-            : []),
-        ],
-      });
-    }
-
-    // 5. Think Like an Engineer Slide
-    if (lesson.engineerChallenge) {
-      const bullets = [
-        `السيناريو الواقعي: ${lesson.engineerChallenge.scenario}`,
-        ...lesson.engineerChallenge.steps.map(
-          (st) => `خطوة ${st.number} (${st.title}): ${st.description}`
-        ),
-        `توجيه هندسي: ${lesson.engineerChallenge.hint}`,
-      ];
-      if (lesson.engineerChallenge.modelAnswer) {
-        bullets.push(`الإجابة والقرار الهندسي النموذجي: ${lesson.engineerChallenge.modelAnswer}`);
-      }
-
-      list.push({
-        id: "slide-engineer",
-        type: "engineer",
-        title: lesson.engineerChallenge.title,
-        subtitle: "Engineering Problem Solving & Decisions",
-        badge: "فكر كمهندس ⚙️",
-        bullets,
-      });
-    }
-
-    // 6. Solved Example Slides
-    if (lesson.solvedExample && lesson.solvedExample.items && lesson.solvedExample.items.length > 0) {
-      lesson.solvedExample.items.forEach((ex, exIdx) => {
-        const bullets: string[] = [
-          `المسألة / السؤال: ${ex.question}`,
-        ];
-        if (ex.options && ex.options.length > 0) {
-          bullets.push(`الخيارات المتاحة: ${ex.options.map((o) => `${o.id.toUpperCase()}) ${o.text}`).join(" | ")}`);
-        }
-        if (ex.matchingPairs && ex.matchingPairs.length > 0) {
-          bullets.push(`العبارات والمطابقة: ${ex.matchingPairs.map((p) => `${p.left} ← ${p.right}`).join(" | ")}`);
-        }
-        const answerLabel =
-          typeof ex.correctAnswer === "string"
-            ? ex.correctAnswer
-            : JSON.stringify(ex.correctAnswer);
-        bullets.push(`🏆 الإجابة النموذجية المعتمدة: ${answerLabel}`);
-        bullets.push(`💡 خطوات الحل والتعليل العلمي: ${ex.explanation}`);
-
-        list.push({
-          id: `slide-example-${exIdx}`,
-          type: "example",
-          title:
-            lesson.solvedExample.items.length > 1
-              ? `تطبيق محلول نموذجي (${exIdx + 1} من ${lesson.solvedExample.items.length})`
-              : "تطبيق محلول نموذجي مع خطوات التفكير",
-          subtitle: "Model Solved Example",
-          badge: `تطبيق عملي ${exIdx + 1} 📝`,
-          bullets,
-        });
-      });
-    }
-
-    // 7. Summary Slide (Comfortable Multi-Slide Takeaways & Golden Rules)
-    if (lesson.summary && lesson.summary.length > 0) {
-      if (lesson.summary.length > 3) {
-        list.push({
-          id: "slide-summary-1",
-          type: "summary",
-          title: "ملخص الدرس والخلاصة التعليمية (1/2)",
-          subtitle: "Key Takeaways & Core Concepts",
-          badge: "الخلاصة 🎯",
-          bullets: lesson.summary.slice(0, 2),
-        });
-        list.push({
-          id: "slide-summary-2",
-          type: "summary",
-          title: "ملخص الدرس والوصايا الذهبية (2/2)",
-          subtitle: "Key Takeaways & Golden Rules",
-          badge: "الوصايا الذهبية 🏆",
-          bullets: lesson.summary.slice(2),
-        });
-      } else {
-        list.push({
-          id: "slide-summary",
-          type: "summary",
-          title: "ملخص الدرس والخلاصة التعليمية والوصايا",
-          subtitle: "Key Takeaways & Summary",
-          badge: "الخلاصة 🎯",
-          bullets: lesson.summary,
-        });
-      }
-    }
-
-    return list;
-  }, [lesson]);
-
-  // Combined slides including any AI-generated custom slides
-  const slides: SlideItem[] = useMemo(() => {
-    return [...baseSlides, ...customSlides];
-  }, [baseSlides, customSlides]);
-
-  const currentSlide = slides[currentSlideIndex] || slides[0];
-
-  const exampleItemIndex = useMemo(() => {
-    if (currentSlide.type !== "example") return 0;
-    const match = currentSlide.id.match(/slide-example-(\d+)/);
-    if (match) return parseInt(match[1], 10);
-    return 0;
-  }, [currentSlide.id, currentSlide.type]);
-
-  const currentExampleItem = useMemo(() => {
-    return lesson.solvedExample?.items?.[exampleItemIndex] || lesson.solvedExample?.items?.[0];
-  }, [lesson.solvedExample, exampleItemIndex]);
-
-  // Helper to compute total reveal steps on any slide index
-  const getSlideTotalSteps = useCallback(
-    (slideIdx: number) => {
-      const targetSlide = slides[slideIdx];
-      if (!targetSlide) return 1;
-      if (targetSlide.type === "concepts" && lesson.keyConcepts && lesson.keyConcepts.length > 0) {
-        const extraGroup = presentationConceptMapping.unassigned.length > 0 ? 1 : 0;
-        return lesson.sections.length + 1 + extraGroup;
-      }
-      const bCount = targetSlide.bullets.length;
-      const rCount = targetSlide.table ? targetSlide.table.rows.length : 0;
-      return Math.max(1, bCount + rCount);
-    },
-    [slides, lesson.keyConcepts, lesson.sections, presentationConceptMapping]
+  // Parse sections according to Storyline
+  const parsedSections = useMemo<ParsedSection[]>(
+    () => (lesson.sections || []).map((sec, idx) => parseSectionStoryline(sec, idx, lesson.keyConcepts || [])),
+    [lesson.sections, lesson.keyConcepts]
   );
 
-  // Total steps for current slide
-  const totalSteps = useMemo(() => {
-    return getSlideTotalSteps(currentSlideIndex);
-  }, [getSlideTotalSteps, currentSlideIndex]);
+  // Stations for Storyline Stepper
+  const stations = useMemo(() => {
+    const list = [{ index: 0, id: "station-intro", number: "01", label: "تمهيد الدرس", badge: "الغلاف والأساسيات" }];
+    parsedSections.forEach((sec, idx) => {
+      const numStr = (idx + 2).toString().padStart(2, "0");
+      list.push({ index: idx + 1, id: `station-sec-${sec.id}`, number: numStr, label: sec.title.replace(/^\d+[\s.-]*/, ""), badge: `المحور ${idx + 1}` });
+    });
+    return list;
+  }, [parsedSections]);
 
-  // Font styling dynamic classes for pristine legibility
-  const fontStyles = useMemo(() => {
-    switch (fontSizeLevel) {
-      case "xlarge":
-        return {
-          slideTitle: "text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight",
-          bulletText: "text-xl sm:text-2xl lg:text-3xl leading-loose font-bold",
-          conceptText: "text-base sm:text-lg lg:text-xl leading-relaxed font-semibold",
-          tableHead: "text-base sm:text-lg font-black",
-          tableCell: "text-base sm:text-lg font-bold",
-          badge: "text-xs sm:text-sm font-extrabold",
-        };
-      case "normal":
-        return {
-          slideTitle: "text-lg sm:text-xl font-extrabold tracking-tight",
-          bulletText: "text-base sm:text-lg leading-relaxed font-semibold",
-          conceptText: "text-sm sm:text-base leading-relaxed font-medium",
-          tableHead: "text-xs sm:text-sm font-bold",
-          tableCell: "text-xs sm:text-sm font-medium",
-          badge: "text-[11px] font-bold",
-        };
-      case "large":
-      default:
-        return {
-          slideTitle: "text-xl sm:text-2xl lg:text-3xl font-black tracking-tight",
-          bulletText: "text-lg sm:text-xl lg:text-2xl leading-relaxed font-bold",
-          conceptText: "text-base sm:text-lg leading-relaxed font-semibold",
-          tableHead: "text-sm sm:text-base font-bold",
-          tableCell: "text-sm sm:text-base font-semibold",
-          badge: "text-xs font-bold",
-        };
+  const totalStations = stations.length;
+  const currentSection = currentSlideIndex > 0 ? parsedSections[currentSlideIndex - 1] : null;
+
+  // Ordered progressive reveal steps for current section
+  const sectionSteps = useMemo<SectionStepItem[]>(() => {
+    if (!currentSection) return [];
+    const steps: SectionStepItem[] = [];
+
+    // 1. Detailed explanation points
+    currentSection.detailedPoints.forEach((_, idx) => {
+      steps.push({
+        id: `pt-${idx}`,
+        type: "detailed_point",
+        index: idx,
+        label: `نقطة ${idx + 1}`,
+      });
+    });
+
+    // 2. Visual Diagram Image (if present)
+    if (currentSection.image) {
+      steps.push({
+        id: "sec-image",
+        type: "image",
+        label: "المخطط البياني",
+      });
     }
-  }, [fontSizeLevel]);
 
-  // Filtered slides for slide drawer search
-  const filteredSlides = useMemo(() => {
-    if (!searchSlideQuery.trim()) return slides;
-    const q = searchSlideQuery.toLowerCase();
-    return slides.filter(
-      (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.badge.toLowerCase().includes(q) ||
-        s.bullets.some((b) => b.toLowerCase().includes(q))
-    );
-  }, [slides, searchSlideQuery]);
-
-  // Step-by-step Next navigation: reveals bullet/row, then advances slide
-  const handleNextStep = useCallback(() => {
-    const currentTotal = getSlideTotalSteps(currentSlideIndex);
-    if (revealedLineIndex < currentTotal - 1) {
-      setRevealedLineIndex((prev) => prev + 1);
-    } else if (currentSlideIndex < slides.length - 1) {
-      setCurrentSlideIndex((prev) => prev + 1);
-      setRevealedLineIndex(0);
+    // 3. Official Table Rows (if present)
+    if (currentSection.table && currentSection.table.rows.length > 0) {
+      currentSection.table.rows.forEach((_, rIdx) => {
+        steps.push({
+          id: `tbl-row-${rIdx}`,
+          type: "table_row",
+          index: rIdx,
+          label: `الجدول: صف ${rIdx + 1}`,
+        });
+      });
     }
-  }, [revealedLineIndex, currentSlideIndex, slides.length, getSlideTotalSteps]);
 
-  // Step-by-step Back navigation: reverses revealed step, or moves to previous slide's end
-  const handlePrevStep = useCallback(() => {
-    if (revealedLineIndex > 0) {
-      setRevealedLineIndex((prev) => prev - 1);
-    } else if (currentSlideIndex > 0) {
-      const prevSlideIdx = currentSlideIndex - 1;
-      const prevSteps = getSlideTotalSteps(prevSlideIdx);
-      setCurrentSlideIndex(prevSlideIdx);
-      setRevealedLineIndex(prevSteps - 1);
+    // 4. Linked Key Concepts (if present)
+    if (currentSection.keyConcepts.length > 0) {
+      steps.push({
+        id: "sec-concepts",
+        type: "key_concepts",
+        label: "المفاهيم المرتبطة",
+      });
     }
-  }, [revealedLineIndex, currentSlideIndex, getSlideTotalSteps]);
 
-  // Direct slide jumping
-  const handlePrevSlideDirect = useCallback(() => {
-    if (currentSlideIndex > 0) {
-      setCurrentSlideIndex((prev) => prev - 1);
-      setRevealedLineIndex(0);
+    return steps;
+  }, [currentSection]);
+
+  const isPointRevealed = useCallback((pIdx: number) => {
+    if (isAllRevealed) return true;
+    const stepIdx = sectionSteps.findIndex((s) => s.type === "detailed_point" && s.index === pIdx);
+    return stepIdx !== -1 && stepIdx < revealedSectionStep;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isPointCurrent = useCallback((pIdx: number) => {
+    if (isAllRevealed) return false;
+    const activeStep = sectionSteps[revealedSectionStep - 1];
+    return activeStep?.type === "detailed_point" && activeStep?.index === pIdx;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isImageRevealed = useMemo(() => {
+    if (isAllRevealed) return true;
+    const stepIdx = sectionSteps.findIndex((s) => s.type === "image");
+    return stepIdx !== -1 && stepIdx < revealedSectionStep;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isImageCurrent = useMemo(() => {
+    if (isAllRevealed) return false;
+    const activeStep = sectionSteps[revealedSectionStep - 1];
+    return activeStep?.type === "image";
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isTableRowRevealed = useCallback((rIdx: number) => {
+    if (isAllRevealed) return true;
+    const stepIdx = sectionSteps.findIndex((s) => s.type === "table_row" && s.index === rIdx);
+    return stepIdx !== -1 && stepIdx < revealedSectionStep;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isTableRowCurrent = useCallback((rIdx: number) => {
+    if (isAllRevealed) return false;
+    const activeStep = sectionSteps[revealedSectionStep - 1];
+    return activeStep?.type === "table_row" && activeStep?.index === rIdx;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const areConceptsRevealed = useMemo(() => {
+    if (isAllRevealed) return true;
+    const stepIdx = sectionSteps.findIndex((s) => s.type === "key_concepts");
+    return stepIdx !== -1 && stepIdx < revealedSectionStep;
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const isConceptsCurrent = useMemo(() => {
+    if (isAllRevealed) return false;
+    const activeStep = sectionSteps[revealedSectionStep - 1];
+    return activeStep?.type === "key_concepts";
+  }, [isAllRevealed, sectionSteps, revealedSectionStep]);
+
+  const revealImageNow = useCallback(() => {
+    const imgStepIdx = sectionSteps.findIndex((s) => s.type === "image");
+    if (imgStepIdx !== -1) {
+      setRevealedSectionStep((prev) => Math.max(prev, imgStepIdx + 1));
     }
+  }, [sectionSteps]);
+
+  const revealUpToTableRow = useCallback((rIdx: number) => {
+    const stepIdx = sectionSteps.findIndex((s) => s.type === "table_row" && s.index === rIdx);
+    if (stepIdx !== -1) {
+      setRevealedSectionStep((prev) => Math.max(prev, stepIdx + 1));
+    }
+  }, [sectionSteps]);
+
+  const revealAllTableRows = useCallback(() => {
+    const lastTableStepIdx = sectionSteps.reduce((acc, s, idx) => (s.type === "table_row" ? idx : acc), -1);
+    if (lastTableStepIdx !== -1) {
+      setRevealedSectionStep((prev) => Math.max(prev, lastTableStepIdx + 1));
+    }
+  }, [sectionSteps]);
+
+  useEffect(() => {
+    setRevealedIntroStep(0);
+    setRevealedSectionStep(0);
+    setIsAllRevealed(false);
+    setIsImageMinimized(false);
   }, [currentSlideIndex]);
 
-  const handleNextSlideDirect = useCallback(() => {
-    if (currentSlideIndex < slides.length - 1) {
-      setCurrentSlideIndex((prev) => prev + 1);
-      setRevealedLineIndex(0);
-    }
-  }, [currentSlideIndex, slides.length]);
+  useEffect(() => {
+    if (!stepperRef.current) return;
+    const activeEl = stepperRef.current.querySelector<HTMLElement>("[data-active='true']");
+    if (activeEl) activeEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [currentSlideIndex]);
 
-  // Reveal all or reset steps on this slide
-  const handleRevealAllLines = useCallback(() => {
-    setRevealedLineIndex(totalSteps - 1);
-  }, [totalSteps]);
-
-  const handleResetSlideLines = useCallback(() => {
-    setRevealedLineIndex(0);
+  useEffect(() => {
+    const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // Auto-play slideshow logic
-  useEffect(() => {
-    if (isAutoPlay) {
-      autoPlayTimerRef.current = setInterval(() => {
-        setRevealedLineIndex((prev) => {
-          if (prev < totalSteps - 1) {
-            return prev + 1;
-          } else {
-            setCurrentSlideIndex((slidePrev) => {
-              if (slidePrev < slides.length - 1) {
-                return slidePrev + 1;
-              } else {
-                setIsAutoPlay(false);
-                return slidePrev;
-              }
-            });
-            return 0;
-          }
-        });
-      }, 3500);
-    } else {
-      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) await containerRef.current?.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch {
+      setIsFullscreen((prev) => !prev);
     }
-    return () => {
-      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
-    };
-  }, [isAutoPlay, totalSteps, slides.length]);
+  }, []);
 
-  // Fullscreen toggle
-  const toggleFullscreen = () => {
-    if (!presentationContainerRef.current) return;
-    if (!document.fullscreenElement) {
-      presentationContainerRef.current
-        .requestFullscreen()
-        .then(() => setIsFullscreen(true))
-        .catch(() => {});
-    } else {
-      document
-        .exitFullscreen()
-        .then(() => setIsFullscreen(false))
-        .catch(() => {});
+  const goToStation = useCallback((slideIdx: number) => {
+    setCurrentSlideIndex(Math.max(0, Math.min(slideIdx, totalStations - 1)));
+    setRevealedSectionStep(0);
+    setIsAllRevealed(false);
+    setShowSlideDrawer(false);
+  }, [totalStations]);
+
+  const handleNext = useCallback(() => {
+    // 1. Slide 0 (Intro)
+    if (currentSlideIndex === 0) {
+      const maxIntroSteps = (lesson.learningObjectives?.length || 0) + 1;
+      if (!isAllRevealed && revealedIntroStep < maxIntroSteps) {
+        setRevealedIntroStep((prev) => prev + 1);
+        return;
+      }
+      if (totalStations > 1) goToStation(1);
+      return;
     }
-  };
 
-  // Keyboard navigation & Shortcuts
+    // 2. Section Slide
+    if (currentSection) {
+      const maxSteps = sectionSteps.length;
+      if (!isAllRevealed && revealedSectionStep < maxSteps) {
+        setRevealedSectionStep((prev) => prev + 1);
+        return;
+      }
+      if (currentSlideIndex < totalStations - 1) {
+        goToStation(currentSlideIndex + 1);
+      }
+    }
+  }, [currentSlideIndex, isAllRevealed, revealedIntroStep, revealedSectionStep, lesson.learningObjectives, totalStations, currentSection, sectionSteps.length, goToStation]);
+
+  const handlePrev = useCallback(() => {
+    // 1. Slide 0 (Intro)
+    if (currentSlideIndex === 0) {
+      if (revealedIntroStep > 0 && !isAllRevealed) {
+        setRevealedIntroStep((prev) => prev - 1);
+      }
+      return;
+    }
+
+    // 2. Section Slide
+    if (currentSection) {
+      if (revealedSectionStep > 0 && !isAllRevealed) {
+        setRevealedSectionStep((prev) => prev - 1);
+        return;
+      }
+      if (currentSlideIndex > 0) {
+        goToStation(currentSlideIndex - 1);
+      }
+    }
+  }, [currentSlideIndex, isAllRevealed, revealedIntroStep, revealedSectionStep, currentSection, goToStation]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === "INPUT" ||
-        document.activeElement?.tagName === "TEXTAREA"
-      ) {
-        return;
-      }
-
-      // Undo / Redo Shortcuts: Ctrl + Z / Cmd + Z, Ctrl + Y / Cmd + Y
-      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "z" || e.code === "KeyZ")) {
+      if ((e.target as HTMLElement)?.tagName === "INPUT") return;
+      if (e.key === "ArrowLeft" || e.key === " " || e.key === "PageDown") {
         e.preventDefault();
-        e.stopPropagation();
-        if (e.shiftKey) {
-          if (redoRef.current) redoRef.current();
-        } else {
-          if (undoRef.current) undoRef.current();
-        }
-        return;
-      }
-      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === "y" || e.code === "KeyY")) {
+        handleNext();
+      } else if (e.key === "ArrowRight" || e.key === "Backspace" || e.key === "PageUp") {
         e.preventDefault();
-        e.stopPropagation();
-        if (redoRef.current) redoRef.current();
-        return;
-      }
-
-      // Zoom Shortcuts: + / = to zoom in, - to zoom out, 0 to reset
-      if (e.key === "+" || e.key === "=") {
+        handlePrev();
+      } else if (e.key === "Home") {
         e.preventDefault();
-        handleZoomIn();
-        return;
-      }
-      if (e.key === "-" || e.key === "_") {
+        goToStation(0);
+      } else if (e.key === "End") {
         e.preventDefault();
-        handleZoomOut();
-        return;
-      }
-      if (e.key === "0") {
-        e.preventDefault();
-        handleZoomReset();
-        return;
-      }
-
-      // Step Backward: Right Arrow / Up Arrow / Backspace
-      if (e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "Backspace") {
-        e.preventDefault();
-        handlePrevStep();
-      }
-      // Step Forward: Left Arrow / Space / Down Arrow / Enter
-      else if (e.key === "ArrowLeft" || e.key === " " || e.key === "ArrowDown" || e.key === "Enter") {
-        e.preventDefault();
-        handleNextStep();
-      }
-      // Direct Prev Slide: PageUp / Shift+Right
-      else if (e.key === "PageUp" || (e.shiftKey && e.key === "ArrowRight")) {
-        e.preventDefault();
-        handlePrevSlideDirect();
-      }
-      // Direct Next Slide: PageDown / Shift+Left
-      else if (e.key === "PageDown" || (e.shiftKey && e.key === "ArrowLeft")) {
-        e.preventDefault();
-        handleNextSlideDirect();
-      }
-      // Drawing Pen: 'P' or 'D'
-      else if (e.key.toLowerCase() === "p" || e.key.toLowerCase() === "d") {
-        e.preventDefault();
-        setActiveDrawTool("pen");
-      }
-      // Highlighter: 'H'
-      else if (e.key.toLowerCase() === "h") {
-        e.preventDefault();
-        setActiveDrawTool("highlighter");
-      }
-      // Laser: 'L'
-      else if (e.key.toLowerCase() === "l") {
-        e.preventDefault();
-        setActiveDrawTool("laser");
-      }
-      // Eraser: 'E'
-      else if (e.key.toLowerCase() === "e") {
-        e.preventDefault();
-        setActiveDrawTool("eraser");
-      }
-      // Pointer: 'V'
-      else if (e.key.toLowerCase() === "v") {
-        e.preventDefault();
-        setActiveDrawTool("pointer");
-      }
-      // Fullscreen: 'F'
-      else if (e.key.toLowerCase() === "f") {
-        e.preventDefault();
-        toggleFullscreen();
-      }
-      // Whiteboard: 'W'
-      else if (e.key.toLowerCase() === "w") {
-        e.preventDefault();
-        setIsWhiteboardOpen((prev) => !prev);
-      }
-      // AI Assistant: 'Q'
-      else if (e.key.toLowerCase() === "q") {
-        e.preventDefault();
-        setIsAIAssistantOpen((prev) => !prev);
-      }
-      // Teacher Tools: 'T'
-      else if (e.key.toLowerCase() === "t") {
-        e.preventDefault();
-        setIsTeacherToolsOpen((prev) => !prev);
-      }
-      // Reveal/Reset: 'R'
-      else if (e.key.toLowerCase() === "r") {
-        e.preventDefault();
-        if (revealedLineIndex >= totalSteps - 1) {
-          handleResetSlideLines();
-        } else {
-          handleRevealAllLines();
-        }
-      }
-      // Escape
-      else if (e.key === "Escape") {
-        if (isWhiteboardOpen) setIsWhiteboardOpen(false);
-        else if (isAIAssistantOpen) setIsAIAssistantOpen(false);
-        else if (isTeacherToolsOpen) setIsTeacherToolsOpen(false);
-        else if (showSlideIndexDrawer) setShowSlideIndexDrawer(false);
+        goToStation(totalStations - 1);
+      } else if (e.key === "Escape") {
+        if (zoomedImage) setZoomedImage(null);
+        else if (showSlideDrawer) setShowSlideDrawer(false);
         else if (onExitPresentation) onExitPresentation();
-      }
+      } else if (e.key.toLowerCase() === "f") toggleFullscreen();
+      else if (e.key.toLowerCase() === "t") setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+      else if (e.key.toLowerCase() === "r") setIsAllRevealed((prev) => !prev);
+      else if (e.key.toLowerCase() === "d") setIsDrawingMode((prev) => !prev);
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [
-    handleNextStep,
-    handlePrevStep,
-    handlePrevSlideDirect,
-    handleNextSlideDirect,
-    handleZoomIn,
-    handleZoomOut,
-    handleZoomReset,
-    isWhiteboardOpen,
-    isAIAssistantOpen,
-    isTeacherToolsOpen,
-    showSlideIndexDrawer,
-    revealedLineIndex,
-    totalSteps,
-    onExitPresentation,
-    handleRevealAllLines,
-    handleResetSlideLines,
-  ]);
+  }, [handleNext, handlePrev, goToStation, totalStations, zoomedImage, showSlideDrawer, onExitPresentation, toggleFullscreen]);
 
-  // Add custom AI diagram/concept slide handler
-  const handleAddCustomSlide = (slideData: {
-    title: string;
-    badge: string;
-    bullets: string[];
-  }) => {
-    const newSlide: SlideItem = {
-      id: `slide-ai-custom-${Date.now()}`,
-      type: "section",
-      title: slideData.title,
-      subtitle: "مخطط مفاهيمي إضافي للشرح والعرض",
-      badge: slideData.badge,
-      bullets: slideData.bullets,
-    };
-    setCustomSlides((prev) => [...prev, newSlide]);
-    setCurrentSlideIndex(slides.length);
-    setRevealedLineIndex(0);
-  };
-
-  // Theme styling helpers: Light & Dark
-  const themeStyles = useMemo(() => {
-    if (theme === "light") {
-      return {
-        container: "bg-slate-100 text-slate-900",
-        header: "bg-white/95 border-slate-200 text-slate-900 shadow-md",
-        slideCard: "bg-slate-100 text-slate-900",
-        bulletLatest: "bg-white border-blue-500 text-slate-900 shadow-lg ring-2 ring-blue-400/40 scale-[1.01]",
-        bulletNormal: "bg-white/90 border-slate-200/90 text-slate-800 shadow-xs",
-        textPrimary: "text-slate-900",
-        textSecondary: "text-slate-600",
-        dotLatest: "bg-blue-600 text-white ring-2 ring-blue-300 shadow-md",
-        dotNormal: "bg-blue-100 text-blue-800",
-        tableHead: "bg-blue-50 text-blue-900 border-blue-200",
-        tableRowLatest: "bg-blue-50 font-bold ring-1 ring-blue-400",
-        tableRowNormal: "hover:bg-slate-100/60",
-        tableBorder: "border-slate-200",
-        floatingPill: "bg-white/95 border-slate-300 text-slate-900 shadow-2xl shadow-slate-900/15",
-        activeTool: "bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105 ring-1 ring-blue-400",
-        inactiveTool: "text-slate-700 hover:text-slate-950 hover:bg-slate-100",
-        navBtn: "text-slate-700 hover:text-slate-950 hover:bg-slate-100 disabled:opacity-30",
-        divider: "bg-slate-200",
-        floatingPopup: "bg-white/95 border-slate-200 text-slate-900",
-      };
-    }
-
-    // Default: Dark Theme
+  const themeClasses = useMemo(() => {
+    const isDark = theme === "dark";
     return {
-      container: "bg-slate-950 text-slate-100",
-      header: "bg-slate-900/90 border-slate-800 text-white shadow-lg",
-      slideCard: "bg-slate-950 text-slate-100",
-      bulletLatest: "bg-indigo-950/70 border-indigo-500 text-white shadow-lg ring-2 ring-indigo-400/40 scale-[1.01]",
-      bulletNormal: "bg-slate-900/80 border-slate-800/90 text-slate-200 shadow-sm",
-      textPrimary: "text-white",
-      textSecondary: "text-slate-400",
-      dotLatest: "bg-indigo-600 text-white ring-2 ring-indigo-400 shadow-md",
-      dotNormal: "bg-slate-800 text-slate-300",
-      tableHead: "bg-slate-900 text-indigo-300 border-slate-800",
-      tableRowLatest: "bg-indigo-950/80 font-bold ring-1 ring-indigo-500",
-      tableRowNormal: "hover:bg-slate-900/40",
-      tableBorder: "border-slate-800",
-      floatingPill: "bg-slate-900/95 border-slate-700/80 text-white shadow-2xl shadow-black/60",
-      activeTool: "bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-105 ring-1 ring-blue-400",
-      inactiveTool: "text-slate-200 hover:text-white hover:bg-slate-800",
-      navBtn: "text-slate-200 hover:text-white hover:bg-slate-800 disabled:opacity-30",
-      divider: "bg-slate-700/80",
-      floatingPopup: "bg-slate-900/95 border-slate-700 text-white",
+      root: isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900",
+      topBar: isDark ? "bg-slate-900/95 border-slate-800 text-white shadow-2xl shadow-black/50" : "bg-white/95 border-slate-200 text-slate-900 shadow-xl shadow-slate-200/50",
+      card: isDark ? "bg-slate-900/80 border-slate-800 text-slate-100 shadow-xl" : "bg-white border-slate-200 text-slate-900 shadow-lg shadow-slate-100",
+      cardHighlight: isDark ? "bg-indigo-950/40 border-indigo-500/50 text-white shadow-xl shadow-indigo-950/20" : "bg-blue-50/70 border-blue-200 text-blue-950 shadow-md",
+      textSubtle: isDark ? "text-slate-400" : "text-slate-500",
+      pillInactive: isDark ? "bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-950",
+      btnSecondary: isDark ? "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white" : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+      tableHeader: isDark ? "bg-slate-900 text-indigo-300 border-slate-800" : "bg-blue-50 text-blue-900 border-blue-200",
+      tableRow: isDark ? "border-slate-800/80 hover:bg-slate-900/40" : "border-slate-200 hover:bg-slate-50",
+      tooltip: isDark ? "bg-slate-900/95 border-indigo-500/50 text-white shadow-2xl shadow-black/80" : "bg-white/95 border-indigo-200 text-slate-900 shadow-2xl shadow-indigo-500/15",
+      floatingPill: isDark ? "bg-slate-900/95 border-slate-700/80 text-white shadow-2xl shadow-black/80" : "bg-white/95 border-slate-200/90 text-slate-900 shadow-2xl shadow-slate-900/15",
     };
   }, [theme]);
 
+  const filteredStations = useMemo(() => {
+    if (!searchQuery.trim()) return stations;
+    const q = searchQuery.toLowerCase();
+    return stations.filter((s) => s.label.toLowerCase().includes(q) || s.badge.toLowerCase().includes(q) || s.number.includes(q));
+  }, [stations, searchQuery]);
+
   return (
-    <div
-      ref={presentationContainerRef}
-      className={`fixed inset-0 z-50 h-screen w-screen flex flex-col font-sans select-none overflow-hidden touch-none ${themeStyles.container}`}
-      style={{ touchAction: "none" }}
-      dir="rtl"
-    >
-      {/* 0. Top Progress Bar */}
-      <div className="fixed top-0 inset-x-0 h-1 bg-slate-200/50 dark:bg-slate-800 shrink-0 overflow-hidden z-50 pointer-events-none">
-        <div
-          className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-300"
-          style={{ width: `${((currentSlideIndex + 1) / slides.length) * 100}%` }}
-        />
-      </div>
-
-      {/* 1. Floating Fixed Top Bar (Outside zoom area, never scales) */}
-      <div className="fixed top-3 left-3 right-3 sm:left-6 sm:right-6 z-50 flex items-center justify-between pointer-events-none select-none">
-        {/* Right side: Lesson badge, number, slide title, slide drawer */}
-        <div className={`flex items-center gap-2 sm:gap-3 p-1.5 px-3 sm:px-4 rounded-2xl border backdrop-blur-xl shadow-2xl pointer-events-auto max-w-[70vw] sm:max-w-2xl ${themeStyles.floatingPill}`}>
-          <span className="shrink-0 px-2.5 py-0.5 rounded-xl bg-blue-600 text-white font-black text-xs shadow-xs">
-            {lesson.number}
-          </span>
-          <span className="shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/20 hidden md:inline-block">
-            {currentSlide.badge}
-          </span>
-          <h1 className="text-xs sm:text-sm font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight break-words">
-            {currentSlide.title}
-          </h1>
-          <button
-            onClick={() => setShowSlideIndexDrawer(!showSlideIndexDrawer)}
-            className="px-2 py-1 rounded-lg bg-slate-200/80 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
-            title="فهرس جميع الشرائح"
-          >
-            <LayoutGrid className="w-3.5 h-3.5 text-blue-500" />
-            <span>
-              {currentSlideIndex + 1}/{slides.length}
-            </span>
-          </button>
-        </div>
-
-        {/* Left side: Header Actions */}
-        <div className={`flex items-center gap-1 p-1 sm:p-1.5 rounded-2xl border backdrop-blur-xl shadow-2xl pointer-events-auto ${themeStyles.floatingPill}`}>
-          {/* Mode Switcher: Slides vs Flow */}
-          <button
-            onClick={() => setPresentationMode(presentationMode === "slides" ? "flow" : "slides")}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${
-              presentationMode === "flow"
-                ? "bg-blue-600 text-white shadow-md"
-                : themeStyles.inactiveTool
-            }`}
-            title={presentationMode === "slides" ? "التبديل إلى خريطة التدفق (Flow)" : "التبديل إلى عرض الشرائح"}
-          >
-            <Compass className="w-4 h-4" />
-          </button>
-
-          {/* Theme Switcher: Light / Dark */}
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.inactiveTool}`}
-            title={theme === "dark" ? "التبديل إلى المظهر الفاتح (Light)" : "التبديل إلى المظهر الداكن (Dark)"}
-          >
-            {theme === "dark" ? (
-              <Sun className="w-4 h-4 text-amber-400" />
-            ) : (
-              <Moon className="w-4 h-4 text-blue-600" />
-            )}
-          </button>
-
-          {/* Dedicated Digital Whiteboard */}
-          <button
-            onClick={() => setIsWhiteboardOpen(true)}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.inactiveTool}`}
-            title="السبورة الرقمية الكاملة (W)"
-          >
-            <Layers className="w-4 h-4" />
-          </button>
-
-          {/* AI Assistant */}
-          <button
-            onClick={() => setIsAIAssistantOpen(true)}
-            className="p-2 rounded-xl text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors cursor-pointer"
-            title="مساعد الذكاء الاصطناعي (Q)"
-          >
-            <Sparkles className="w-4 h-4" />
-          </button>
-
-          {/* Teacher Toolbox (Timer & Randomizer) */}
-          <button
-            onClick={() => setIsTeacherToolsOpen(true)}
-            className="p-2 rounded-xl text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-colors cursor-pointer"
-            title="صندوق أدوات المعلم (T)"
-          >
-            <Wrench className="w-4 h-4" />
-          </button>
-
-          {/* Fullscreen Toggle */}
-          <button
-            onClick={toggleFullscreen}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.inactiveTool}`}
-            title={isFullscreen ? "إنهاء ملء الشاشة (F)" : "عرض بملء الشاشة (F)"}
-          >
-            {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-          </button>
-
-          {/* Exit / Close Presentation */}
-          {onExitPresentation && (
-            <button
-              onClick={onExitPresentation}
-              className="p-2 rounded-xl text-slate-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
-              title="إغلاق العرض (Esc)"
-            >
-              <X className="w-4.5 h-4.5" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Slide Thumbnails Drawer Modal */}
-      {showSlideIndexDrawer && (
-        <div className="fixed top-14 right-4 sm:right-6 z-50 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-2xl w-84 max-h-[75vh] overflow-y-auto custom-scrollbar animate-fadeIn text-right">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800 mb-3">
-            <span className="text-xs font-bold text-slate-900 dark:text-white">فهرس شرائح الدرس</span>
-            <button
-              onClick={() => setShowSlideIndexDrawer(false)}
-              className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-white cursor-pointer"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="relative mb-3">
-            <input
-              type="text"
-              value={searchSlideQuery}
-              onChange={(e) => setSearchSlideQuery(e.target.value)}
-              placeholder="بحث في الشرائح..."
-              className="w-full text-xs px-3 py-2 pr-8 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white outline-none focus:border-blue-500"
-            />
-            <Search className="w-3.5 h-3.5 absolute right-2.5 top-2.5 text-slate-400" />
-          </div>
-
-          <div className="space-y-1.5">
-            {filteredSlides.map((s) => {
-              const originalIndex = slides.findIndex((orig) => orig.id === s.id);
-              const isActive = currentSlideIndex === originalIndex;
-
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => {
-                    setCurrentSlideIndex(originalIndex);
-                    setRevealedLineIndex(0);
-                    setShowSlideIndexDrawer(false);
-                  }}
-                  className={`w-full text-right p-2.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    isActive
-                      ? "bg-blue-600 text-white shadow-sm"
-                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                  }`}
-                >
-                  <div className="flex-1 leading-normal">
-                    <span className="opacity-70 ml-1">{originalIndex + 1}.</span> {s.title}
-                  </div>
-                  <span className="text-[10px] opacity-75 shrink-0 mr-2">{s.badge}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 3. Main Slide Presentation View Area with Smooth Zoom (50%-400%) and Free Panning */}
-      {presentationMode === "slides" ? (
-        <main
-          className={`relative flex-1 w-full h-full overflow-hidden select-none flex flex-col justify-center pt-16 sm:pt-20 pb-20 sm:pb-24 ${
-            themeStyles.slideCard
-          } ${
-            activeDrawTool === "pointer"
-              ? isPanning
-                ? "cursor-grabbing"
-                : "cursor-grab"
-              : ""
-          }`}
-          onPointerDown={handleViewportPointerDown}
-          onPointerMove={handleViewportPointerMove}
-          onPointerUp={handleViewportPointerUp}
-          onPointerCancel={handleViewportPointerUp}
-        >
-          {/* Slide Annotation Canvas */}
-          <SlideAnnotationCanvas
-            slideIndex={currentSlideIndex}
-            activeTool={activeDrawTool}
-            color={drawColor}
-            size={drawSize}
-            undoRef={undoRef}
-            redoRef={redoRef}
-            clearRef={clearRef}
-            downloadRef={downloadRef}
+    <div ref={containerRef} className={`fixed inset-0 z-50 h-screen w-screen flex flex-col font-sans select-none overflow-hidden ${themeClasses.root}`} dir="rtl">
+      {/* 1. TOP STORYLINE STEPPER */}
+      <header className={`shrink-0 z-40 border-b backdrop-blur-xl transition-colors duration-300 ${themeClasses.topBar}`}>
+        <div className="h-1 w-full bg-slate-200/40 dark:bg-slate-800 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 transition-all duration-300"
+            style={{ width: `${((currentSlideIndex + 1) / totalStations) * 100}%` }}
           />
+        </div>
 
-          {/* Smooth Zoom Scaled & Panned Slide Content Container */}
-          <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-12 py-8 sm:py-12 flex-1 flex flex-col justify-center pointer-events-none">
-            <div
-              className="w-full space-y-6 will-change-transform pointer-events-auto"
-              style={{
-                transform: `translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoomLevel})`,
-                transformOrigin: "center center",
-                transition: isPanning ? "none" : "transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1)",
-              }}
+        <div className="px-3 sm:px-6 py-2 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <div className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 text-white font-extrabold text-xs shadow-md shadow-blue-500/20">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>الدرس {lesson.number}</span>
+            </div>
+
+            {/* Storyline Stepper Ribbon */}
+            <div ref={stepperRef} className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 px-1 max-w-full">
+              {stations.map((st, idx) => {
+                const isActive = st.index === currentSlideIndex;
+                const isPast = st.index < currentSlideIndex;
+                return (
+                  <React.Fragment key={st.id}>
+                    {idx > 0 && (
+                      <span className={`shrink-0 text-xs font-black transition-colors ${isPast ? "text-blue-500 dark:text-blue-400" : themeClasses.textSubtle}`}>
+                        ──▶
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      data-active={isActive}
+                      onClick={() => goToStation(st.index)}
+                      className={`shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400/40 scale-[1.02]"
+                          : isPast
+                          ? "bg-blue-500/10 text-blue-700 dark:text-blue-300 hover:bg-blue-500/20"
+                          : themeClasses.pillInactive
+                      }`}
+                      title={`${st.number} ${st.label}`}
+                    >
+                      <span className={`w-5 h-5 rounded-lg flex items-center justify-center font-mono text-[11px] font-black shrink-0 ${
+                        isActive ? "bg-white text-blue-700 shadow-xs" : isPast ? "bg-blue-600 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
+                      }`}>
+                        {isPast ? <CheckCircle2 className="w-3.5 h-3.5" /> : st.number}
+                      </span>
+                      <span className="truncate max-w-[130px] sm:max-w-[200px] text-right">{st.label}</span>
+                    </button>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Header Actions */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setShowSlideDrawer(true)}
+              className={`p-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+              title="فهرس محطات الدرس"
             >
-              {/* Prominent Full Slide Title & Badge Header (Shows complete slide title inside canvas) */}
-              <div className="flex items-center justify-between gap-3 pb-3 border-b-2 border-slate-200/80 dark:border-slate-800/80 animate-fadeIn">
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-300 border border-blue-500/30 text-xs sm:text-sm font-black shrink-0 shadow-xs">
-                    {currentSlide.badge}
-                  </span>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-relaxed">
-                    {currentSlide.title}
-                  </h2>
+              <LayoutGrid className="w-4 h-4 text-blue-500" />
+              <span className="hidden sm:inline">{currentSlideIndex + 1}/{totalStations}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsDrawingMode((prev) => !prev);
+                if (!isDrawingMode && activeDrawTool === "pointer") setActiveDrawTool("pen");
+              }}
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${isDrawingMode ? "bg-blue-600 text-white border-blue-500 shadow-md" : themeClasses.btnSecondary}`}
+              title={isDrawingMode ? "إغلاق لوحة الرسم" : "تفعيل قلم التعليق (D)"}
+            >
+              <Pen className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+              title="تبديل المظهر النهاري/الليلي (T)"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            </button>
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+              title="ملء الشاشة (F)"
+            >
+              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            {onExitPresentation && (
+              <button
+                type="button"
+                onClick={onExitPresentation}
+                className="p-2 rounded-xl border border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
+                title="إنهاء العرض (Esc)"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* 2. MAIN SLIDE VIEWPORT (WIDESCREEN LAPTOP OPTIMIZED) */}
+      <main className="flex-1 relative overflow-y-auto overflow-x-hidden p-3 sm:p-6 lg:p-7 pb-20 sm:pb-24 flex flex-col justify-center items-center">
+        {isDrawingMode && (
+          <div className="absolute inset-0 z-30 pointer-events-auto">
+            <SlideAnnotationCanvas
+              slideIndex={currentSlideIndex}
+              activeTool={activeDrawTool}
+              color={drawColor}
+              size={drawSize}
+              clearRef={clearCanvasRef}
+              undoRef={undoCanvasRef}
+            />
+          </div>
+        )}
+
+        <div className="w-full max-w-[96vw] xl:max-w-[1550px] mx-auto my-auto relative z-10 animate-fadeIn">
+          {/* SLIDE 0: COVER & TEXTBOOK SCOPE */}
+          {currentSlideIndex === 0 && (
+            <div className="space-y-6 sm:space-y-7">
+              <div className="text-center space-y-2">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400 font-extrabold text-xs">
+                  <Sparkles className="w-4 h-4" />
+                  <span>الفصل {lesson.chapterNumber} — الدرس الرسمي في الكتاب المدرسي</span>
                 </div>
-                {currentSlide.subtitle && (
-                  <span className="text-xs sm:text-sm font-bold text-slate-400 dark:text-slate-500 dir-ltr hidden sm:inline-block">
-                    {currentSlide.subtitle}
-                  </span>
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+                  {lesson.number} {lesson.title}
+                </h1>
+                {lesson.englishTitle && (
+                  <p className="text-sm sm:text-base font-mono text-slate-500 dark:text-slate-400 dir-ltr">
+                    {lesson.englishTitle}
+                  </p>
                 )}
               </div>
 
-              {/* Section Diagram Image from PDF if available */}
-              {currentSlide.image && (
-                <div className="bg-white/80 dark:bg-slate-900/80 rounded-3xl p-4 border border-slate-200 dark:border-slate-800 shadow-md flex flex-col items-center backdrop-blur-sm">
-                  <div className="max-h-84 flex items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3 shadow-inner">
-                    <img
-                      src={getAssetPath(currentSlide.image.src)}
-                      alt={currentSlide.image.caption}
-                      className="max-h-76 w-auto object-contain rounded-lg"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        const attempts = parseInt(target.dataset.attempts || "0", 10);
-                        const rawSrc = currentSlide.image?.src ? (currentSlide.image.src.startsWith("/") ? currentSlide.image.src : `/${currentSlide.image.src}`) : "";
-                        if (attempts === 0 && rawSrc) {
-                          target.dataset.attempts = "1";
-                          if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
-                            target.src = rawSrc;
-                          } else if (!target.src.includes("/book/")) {
-                            target.src = `/book${rawSrc}`;
-                          }
-                        } else if (attempts === 1 && rawSrc) {
-                          target.dataset.attempts = "2";
-                          const filename = rawSrc.split("/").pop();
-                          if (filename) {
-                            target.src = `../../images/extracted/${filename}`;
-                          }
-                        }
-                      }}
-
-                    />
-                  </div>
-                  <p className="text-xs sm:text-sm font-bold text-blue-900 dark:text-blue-300 mt-3 text-center">
-                    📊 {currentSlide.image.caption}
-                  </p>
-                </div>
-              )}
-
-              {/* Table Data Visualization with Progressive Row-by-Row Reveal */}
-              {currentSlide.table && (
-                <div
-                  className={`overflow-x-auto rounded-3xl ${
-                    theme === "light"
-                      ? "border-2 border-slate-300 bg-white shadow-md"
-                      : "border-2 border-slate-800 bg-slate-950 shadow-lg"
-                  } my-4`}
-                >
-                  <table className="w-full text-right border-collapse">
-                    <thead
-                      className={`border-b-2 ${
-                        theme === "light"
-                          ? "bg-slate-100/90 text-slate-950 border-slate-300"
-                          : "bg-slate-900 text-indigo-300 border-slate-800"
-                      }`}
-                    >
-                      <tr>
-                        {currentSlide.table.headers.map((h, i) => (
-                          <th
-                            key={i}
-                            className={`p-4 sm:p-5 font-black text-sm sm:text-base ${
-                              theme === "light" ? "text-slate-950" : "text-indigo-200"
-                            }`}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody
-                      className={`${
-                        theme === "light"
-                          ? "divide-y divide-slate-200 text-slate-950"
-                          : "divide-y divide-slate-800 text-slate-100"
-                      }`}
-                    >
-                      {currentSlide.table.rows.map((row, rIdx) => {
-                        const rowStepIndex = currentSlide.bullets.length + rIdx;
-                        const isRowRevealed = rowStepIndex <= revealedLineIndex;
-                        const isLatestRow = rowStepIndex === revealedLineIndex;
-
-                        return (
-                          <tr
-                            key={rIdx}
-                            className={`transition-all duration-300 ${
-                              isRowRevealed
-                                ? isLatestRow
-                                  ? theme === "light"
-                                    ? "bg-blue-50/95 font-bold text-slate-950 ring-2 ring-blue-500/30"
-                                    : "bg-indigo-950/80 font-bold text-white ring-1 ring-indigo-500"
-                                  : theme === "light"
-                                    ? "hover:bg-slate-50/90 text-slate-900"
-                                    : "hover:bg-slate-900/40 text-slate-200"
-                                : "opacity-0 translate-y-3 pointer-events-none"
-                            }`}
-                          >
-                            {row.map((cell, cIdx) => (
-                              <td
-                                key={cIdx}
-                                className={`p-4 sm:p-5 leading-relaxed font-bold text-sm sm:text-base ${
-                                  theme === "light" ? "text-slate-950" : "text-slate-100"
-                                }`}
-                              >
-                                {formatInlineText(cell, theme === "light" ? "light" : "dark")}
-                              </td>
-                            ))}
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {/* 1. Intro Slide: Clean, Simple & High-Impact Horizontal Layout */}
-              {currentSlide.type === "intro" && (
-                <div className="space-y-5 animate-fadeIn">
-                  {/* Top Horizontal Row: Key Question & Core Idea Side-by-Side */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
-                    {/* 1.1 Key Question Card (السؤال الجوهري) */}
-                    <div
-                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md flex flex-col justify-between ${
-                        theme === "light"
-                          ? "bg-gradient-to-br from-blue-50/95 via-sky-50/70 to-white border-blue-300 text-blue-950 shadow-blue-500/5"
-                          : "bg-gradient-to-br from-blue-950/40 via-slate-900 to-sky-950/40 border-blue-500/40 text-blue-100 shadow-blue-950/20"
-                      } ${
-                        revealedLineIndex === 0
-                          ? theme === "light"
-                            ? "ring-2 ring-blue-400/50 scale-[1.01]"
-                            : "ring-2 ring-blue-500/50 scale-[1.01]"
-                          : "opacity-95"
-                      }`}
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span
-                            className={`text-xs font-black px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
-                              theme === "light"
-                                ? "bg-blue-100 text-blue-900 border-blue-200"
-                                : "bg-blue-500/20 text-blue-300 border-blue-500/30"
-                            }`}
-                          >
-                            <HelpCircle className="w-3.5 h-3.5" />
-                            <span>السؤال الجوهري المحفّز ❓</span>
-                          </span>
-                          <button
-                            onClick={() => speakText(lesson.keyQuestion)}
-                            className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
-                              theme === "light"
-                                ? "hover:bg-blue-100 text-blue-700"
-                                : "hover:bg-slate-800 text-blue-400"
-                            }`}
-                            title="استماع للسؤال الجوهري"
-                          >
-                            <Volume2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <p
-                          className={`font-black text-base sm:text-lg lg:text-xl leading-relaxed ${
-                            theme === "light" ? "text-blue-950" : "text-white"
-                          }`}
-                        >
-                          {lesson.keyQuestion}
-                        </p>
-                      </div>
-                      <div className="pt-3 mt-3 border-t border-blue-200/60 dark:border-blue-900/50 flex items-center justify-between text-xs text-blue-600 dark:text-blue-400 font-semibold">
-                        <span>نقطة الانطلاق والتفكير الصفي</span>
-                        <Sparkles className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    {/* 1.2 Core Idea Card (الفكرة الأساسية) */}
-                    <div
-                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md flex flex-col justify-between ${
-                        theme === "light"
-                          ? "bg-gradient-to-br from-indigo-50/95 via-purple-50/70 to-white border-indigo-300 text-indigo-950 shadow-indigo-500/5"
-                          : "bg-gradient-to-br from-indigo-950/40 via-slate-900 to-purple-950/40 border-indigo-500/40 text-indigo-100 shadow-indigo-950/20"
-                      } ${
-                        revealedLineIndex >= 1
-                          ? revealedLineIndex === 1
-                            ? theme === "light"
-                              ? "ring-2 ring-indigo-400/50 scale-[1.01]"
-                              : "ring-2 ring-indigo-500/50 scale-[1.01]"
-                            : "opacity-95"
-                          : "opacity-60"
-                      }`}
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span
-                            className={`text-xs font-black px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
-                              theme === "light"
-                                ? "bg-indigo-100 text-indigo-900 border-indigo-200"
-                                : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
-                            }`}
-                          >
-                            <Lightbulb className="w-3.5 h-3.5" />
-                            <span>الفكرة الأساسية والمحورية 💡</span>
-                          </span>
-                          <button
-                            onClick={() => speakText(lesson.coreIdea)}
-                            className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
-                              theme === "light"
-                                ? "hover:bg-indigo-100 text-indigo-700"
-                                : "hover:bg-slate-800 text-indigo-400"
-                            }`}
-                            title="استماع للفكرة الأساسية"
-                          >
-                            <Volume2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <p
-                          className={`font-black text-base sm:text-lg lg:text-xl leading-relaxed ${
-                            theme === "light" ? "text-indigo-950" : "text-white"
-                          }`}
-                        >
-                          {lesson.coreIdea}
-                        </p>
-                      </div>
-                      <div className="pt-3 mt-3 border-t border-indigo-200/60 dark:border-indigo-900/50 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
-                        <span>الجوهر المعرفي المستهدف</span>
-                        <Compass className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Horizontal Row: Learning Objectives (نواتج التعلم المستهدفة) */}
-                  {lesson.learningObjectives && lesson.learningObjectives.length > 0 && (
-                    <div
-                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-md ${
-                        theme === "light"
-                          ? "bg-white/95 border-emerald-300 text-slate-900 shadow-emerald-500/5"
-                          : "bg-slate-900/90 border-emerald-500/30 text-white shadow-emerald-950/20"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-3 mb-4">
-                        <div className="flex items-center gap-2.5">
-                          <div
-                            className={`w-9 h-9 rounded-2xl flex items-center justify-center font-bold ${
-                              theme === "light"
-                                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
-                                : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                            }`}
-                          >
-                            <Target className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <span
-                              className={`text-xs font-black uppercase tracking-wide ${
-                                theme === "light" ? "text-emerald-700" : "text-emerald-400"
-                              }`}
-                            >
-                              أهداف ونواتج التعلم المستهدفة:
-                            </span>
-                            <h4
-                              className={`text-sm sm:text-base font-black ${
-                                theme === "light" ? "text-slate-900" : "text-white"
-                              }`}
-                            >
-                              ما سيكتسبه الطالب بنهاية هذا الدرس ({lesson.learningObjectives.length} أهداف)
-                            </h4>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Horizontal Grid of Learning Objective Cards */}
-                      <div
-                        className={`grid grid-cols-1 ${
-                          lesson.learningObjectives.length === 2
-                            ? "md:grid-cols-2"
-                            : lesson.learningObjectives.length >= 3
-                              ? "md:grid-cols-3"
-                              : "grid-cols-1"
-                        } gap-3.5`}
-                      >
-                        {lesson.learningObjectives.map((obj, i) => {
-                          const objText =
-                            typeof obj === "string" ? obj : (obj as unknown as { text: string }).text;
-                          const objStepIndex = 2 + i;
-                          const isRevealed = objStepIndex <= revealedLineIndex;
-                          const isLatest = objStepIndex === revealedLineIndex;
-
-                          return (
-                            <div
-                              key={i}
-                              className={`p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 flex items-start gap-3 ${
-                                isRevealed
-                                  ? isLatest
-                                    ? theme === "light"
-                                      ? "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-md scale-[1.02] ring-2 ring-emerald-400/30"
-                                      : "bg-emerald-950/60 border-emerald-400 text-emerald-100 font-bold shadow-md scale-[1.02] ring-1 ring-emerald-400"
-                                    : theme === "light"
-                                      ? "bg-slate-50/90 border-slate-200 text-slate-800"
-                                      : "bg-slate-950/80 border-slate-800 text-slate-200"
-                                  : "opacity-40 translate-y-1"
-                              }`}
-                            >
-                              <span
-                                className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shrink-0 mt-0.5 ${
-                                  isRevealed && isLatest
-                                    ? "bg-emerald-600 text-white shadow-xs"
-                                    : theme === "light"
-                                      ? "bg-emerald-100 text-emerald-900 border border-emerald-200"
-                                      : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                                }`}
-                              >
-                                {i + 1}
-                              </span>
-                              <p className="flex-1 text-xs sm:text-sm leading-relaxed font-bold">
-                                {formatInlineText(objText, theme === "light" ? "light" : "dark")}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Concepts Slide: Enhanced Interactive Lesson Concept Map & Architecture */}
-              {currentSlide.type === "concepts" && lesson.keyConcepts && (
-                <div className="space-y-6 pt-1 animate-fadeIn">
-                  {/* Slide Top Sub-bar with View Switcher & Reveal All */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-3 border-slate-700/60">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs font-bold px-3 py-1 rounded-xl border flex items-center gap-1.5 ${
-                          theme === "light"
-                            ? "bg-indigo-50 text-indigo-900 border-indigo-200"
-                            : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
-                        }`}
-                      >
-                        <GitBranch className="w-3.5 h-3.5" />
-                        <span>خريطة الدرس التخطيطية 🗺️</span>
+              {/* Key Question & Core Idea (Side-by-side Widescreen) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between ${themeClasses.cardHighlight} ${revealedIntroStep >= 0 ? "opacity-100" : "opacity-40"}`}>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs">
+                        <HelpCircle className="w-3.5 h-3.5" />
+                        <span>السؤال الجوهري المحفّز</span>
                       </span>
-                      <span
-                        className={`text-xs ${
-                          theme === "light" ? "text-slate-600" : "text-slate-400"
-                        }`}
-                      >
-                        ترابط بصري يجمع الفكرة الأساسية بمحاور الدرس والمفاهيم العلمية ({lesson.keyConcepts.length} مفاهيم)
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {/* View Mode Toggle */}
-                      <div
-                        className={`p-1 rounded-xl border flex items-center gap-1 text-xs ${
-                          theme === "light" ? "bg-slate-100 border-slate-300" : "bg-slate-950 border-slate-800"
-                        }`}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => setConceptSlideMode("tree")}
-                          className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                            conceptSlideMode === "tree"
-                              ? "bg-indigo-600 text-white shadow-md"
-                              : theme === "light"
-                              ? "text-slate-600 hover:text-slate-900"
-                              : "text-slate-400 hover:text-white"
-                          }`}
-                        >
-                          <GitBranch className="w-3.5 h-3.5" />
-                          <span>مخطط المحاور الشجري</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setConceptSlideMode("cards")}
-                          className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                            conceptSlideMode === "cards"
-                              ? "bg-indigo-600 text-white shadow-md"
-                              : theme === "light"
-                              ? "text-slate-600 hover:text-slate-900"
-                              : "text-slate-400 hover:text-white"
-                          }`}
-                        >
-                          <LayoutGrid className="w-3.5 h-3.5" />
-                          <span>بطاقات المصطلحات</span>
-                        </button>
-                      </div>
-
-                      {/* Reveal All Button */}
                       <button
                         type="button"
-                        onClick={() => setRevealedLineIndex(totalSteps - 1)}
-                        className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                          theme === "light"
-                            ? "bg-white hover:bg-slate-50 border-slate-300 text-slate-700"
-                            : "bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-200"
-                        }`}
-                        title="كشف كامل عناصر الخريطة على البروجيكتور"
+                        onClick={() => speakText(lesson.keyQuestion)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+                        title="استماع"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        <span>كشف الكل ⚡</span>
+                        <Volume2 className="w-4 h-4" />
                       </button>
                     </div>
+                    <p className="text-base sm:text-xl lg:text-2xl font-black leading-relaxed">{lesson.keyQuestion}</p>
                   </div>
-
-                  {/* 1. ROOT NODE: Core Idea (الفكرة الأساسية للدرس) */}
-                  <div className="max-w-3xl mx-auto">
-                    <div
-                      className={`p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 text-center space-y-2 relative shadow-xl ${
-                        revealedLineIndex === 0
-                          ? theme === "light"
-                            ? "bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-500 ring-4 ring-indigo-400/20 scale-[1.01]"
-                            : "bg-gradient-to-r from-indigo-950/80 via-slate-950 to-purple-950/80 border-indigo-500 ring-4 ring-indigo-500/20 scale-[1.01]"
-                          : theme === "light"
-                          ? "bg-white border-slate-200"
-                          : "bg-slate-950/90 border-slate-800"
-                      }`}
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold">
-                          <Lightbulb className="w-4 h-4" />
-                          <span>الفكرة الأساسية للدرس</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => speakText(lesson.coreIdea)}
-                          className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-amber-400 transition-colors"
-                          title="استماع للفكرة الأساسية"
-                        >
-                          <Volume2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <p
-                        className={`font-bold leading-relaxed ${
-                          theme === "light" ? "text-slate-900" : "text-slate-100"
-                        } ${fontStyles.conceptText}`}
-                      >
-                        {lesson.coreIdea}
-                      </p>
-                    </div>
-
-                    {/* Central Connector Line */}
-                    <div className="w-0.5 h-5 bg-gradient-to-b from-indigo-500 to-slate-700 mx-auto" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 mx-auto -mt-1 ring-4 ring-slate-900" />
-                  </div>
-
-                  {/* 2. VIEW MODE: Tree Schematic Grid */}
-                  {conceptSlideMode === "tree" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
-                      {lesson.sections.map((sec, sIdx) => {
-                        const concepts = presentationConceptMapping.map[sec.id] || [];
-                        const stepIdx = sIdx + 1;
-                        const isRevealed = stepIdx <= revealedLineIndex || revealedLineIndex >= totalSteps - 1;
-                        const isFocused = stepIdx === revealedLineIndex;
-
-                        return (
-                          <div
-                            key={sec.id}
-                            className={`p-5 rounded-3xl border-2 transition-all duration-300 space-y-3 flex flex-col justify-between ${
-                              isRevealed
-                                ? isFocused
-                                  ? theme === "light"
-                                    ? "bg-white border-indigo-600 shadow-xl ring-4 ring-indigo-400/20 scale-[1.02]"
-                                    : "bg-indigo-950/40 border-indigo-400 shadow-xl ring-4 ring-indigo-500/30 scale-[1.02]"
-                                  : theme === "light"
-                                  ? "bg-white/95 border-slate-200 shadow-xs"
-                                  : "bg-slate-950/80 border-slate-800 shadow-md"
-                                : "opacity-30 blur-[0.5px] scale-98"
-                            }`}
-                          >
-                            <div>
-                              <div className="flex items-center justify-between mb-2">
-                                <span
-                                  className={`font-black text-xs px-2.5 py-1 rounded-lg border ${
-                                    theme === "light"
-                                      ? "bg-indigo-50 text-indigo-900 border-indigo-200"
-                                      : "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
-                                  }`}
-                                >
-                                  المحور {sIdx + 1}
-                                </span>
-                                <span
-                                  className={`text-[11px] font-semibold ${
-                                    theme === "light" ? "text-slate-500" : "text-slate-400"
-                                  }`}
-                                >
-                                  {concepts.length} مفاهيم
-                                </span>
-                              </div>
-
-                              <h4
-                                className={`font-bold leading-snug ${
-                                  theme === "light" ? "text-slate-900" : "text-white"
-                                } ${fontStyles.bulletText}`}
-                              >
-                                {sec.title}
-                              </h4>
-                            </div>
-
-                            {/* Section Concepts Badges */}
-                            <div className="pt-3 border-t border-slate-700/60 space-y-2">
-                              {concepts.length > 0 ? (
-                                <div className="flex flex-wrap gap-2">
-                                  {concepts.map((c, cIdx) => (
-                                    <div
-                                      key={cIdx}
-                                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs transition-all ${
-                                        theme === "light"
-                                          ? "bg-slate-50 border-slate-300 text-slate-800 shadow-xs hover:border-indigo-400"
-                                          : "bg-slate-900/90 border-slate-700 text-slate-100 hover:border-amber-400/60"
-                                      }`}
-                                    >
-                                      <span className="font-bold text-amber-300">{c.termAr}</span>
-                                      {c.termEn && (
-                                        <div className="flex items-center gap-1">
-                                          <span className="font-mono text-[11px] text-sky-400 dir-ltr">
-                                            ({c.termEn})
-                                          </span>
-                                          <button
-                                            type="button"
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              speakText(c.termEn || "");
-                                            }}
-                                            className="p-0.5 rounded hover:bg-slate-700 text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
-                                            title="نطق المصطلح بالإنجليزية"
-                                          >
-                                            <Volume2 className="w-3.5 h-3.5" />
-                                          </button>
-                                        </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <p
-                                  className={`text-xs italic ${
-                                    theme === "light" ? "text-slate-500" : "text-slate-400"
-                                  }`}
-                                >
-                                  محور تطبيقي وشرح مفصل للموضوع.
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-
-                      {/* Unassigned Concepts Card if any */}
-                      {presentationConceptMapping.unassigned.length > 0 && (
-                        <div
-                          className={`p-5 rounded-3xl border-2 space-y-3 ${
-                            theme === "light"
-                              ? "bg-white border-slate-200"
-                              : "bg-slate-950/80 border-slate-800"
-                          }`}
-                        >
-                          <span
-                            className={`font-black text-xs px-2.5 py-1 rounded-lg border ${
-                              theme === "light"
-                                ? "bg-amber-50 text-amber-900 border-amber-200"
-                                : "bg-amber-500/20 text-amber-300 border-amber-500/30"
-                            }`}
-                          >
-                            مفاهيم عامة تابعة للدرس
-                          </span>
-                          <div className="flex flex-wrap gap-2 pt-2">
-                            {presentationConceptMapping.unassigned.map((c, cIdx) => (
-                              <span
-                                key={cIdx}
-                                className={`px-2.5 py-1 rounded-lg border text-xs font-semibold ${
-                                  theme === "light"
-                                    ? "bg-slate-50 border-slate-300 text-slate-800"
-                                    : "bg-slate-900 border-slate-700 text-slate-200"
-                                }`}
-                              >
-                                {c.termAr} {c.termEn ? `(${c.termEn})` : ""}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* 3. VIEW MODE: Vocabulary Cards Grid */}
-                  {conceptSlideMode === "cards" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 pt-1">
-                      {lesson.keyConcepts.map((concept, cIdx) => (
-                        <div
-                          key={cIdx}
-                          className={`p-4 rounded-2xl border-2 transition-all space-y-2 ${
-                            theme === "light"
-                              ? "bg-white border-slate-200 shadow-xs hover:border-indigo-400"
-                              : "bg-slate-950/80 border-slate-800 hover:border-indigo-500/50"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-bold text-sm sm:text-base text-amber-300">
-                              {concept.termAr}
-                            </span>
-                            {concept.termEn && (
-                              <button
-                                type="button"
-                                onClick={() => speakText(concept.termEn || "")}
-                                className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
-                                title="نطق المصطلح"
-                              >
-                                <Volume2 className="w-4 h-4" />
-                              </button>
-                            )}
-                          </div>
-                          {concept.termEn && (
-                            <p className="text-xs font-mono text-sky-400 dir-ltr text-right">
-                              {concept.termEn}
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Slide Footnote */}
-                  <div
-                    className={`text-center text-xs pt-3 border-t border-slate-800/80 font-medium ${
-                      theme === "light" ? "text-slate-500" : "text-slate-400"
-                    }`}
-                  >
-                    💡 خريطة الدرس والمفاهيم مطابقة تماماً لكتاب الوزارة الرسمي لمادة البرمجة والذكاء الاصطناعي.
+                  <div className="pt-3 mt-4 border-t border-blue-500/20 text-xs font-bold text-blue-600 dark:text-blue-400">
+                    نقطة الانطلاق والتفكير الصفي
                   </div>
                 </div>
-              )}
 
-              {/* 4. Think Like an Engineer Slide: Dedicated Engineering Challenge & Model Answer UI */}
-              {currentSlide.type === "engineer" && lesson.engineerChallenge && (
-                <div className="space-y-6 animate-fadeIn">
-                  {/* Scenario & Challenge Header */}
-                  <div
-                    className={`p-6 sm:p-7 rounded-3xl border-2 transition-all shadow-md backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-amber-50/90 border-amber-300 text-amber-950"
-                        : "bg-amber-950/30 border-amber-500/40 text-amber-100"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-3 mb-2.5">
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                            theme === "light"
-                              ? "bg-amber-500 text-white shadow-md shadow-amber-500/30"
-                              : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
-                          }`}
-                        >
-                          <Wrench className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <span
-                            className={`text-xs font-extrabold uppercase tracking-wide ${
-                              theme === "light" ? "text-amber-800" : "text-amber-300"
-                            }`}
-                          >
-                            السيناريو والمهمة الهندسية الواقعية:
-                          </span>
-                          <h3
-                            className={`text-lg sm:text-xl font-black ${
-                              theme === "light" ? "text-amber-950" : "text-white"
-                            }`}
-                          >
-                            {lesson.engineerChallenge.title}
-                          </h3>
-                        </div>
+                <div className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between ${themeClasses.card} ${revealedIntroStep >= 1 ? "opacity-100" : "opacity-40"}`}>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-xs">
+                        <Lightbulb className="w-3.5 h-3.5" />
+                        <span>الفكرة الأساسية للدرس</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speakText(lesson.coreIdea)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+                        title="استماع"
+                      >
+                        <Volume2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed">{lesson.coreIdea}</p>
+                  </div>
+                  <div className="pt-3 mt-4 border-t border-slate-700/30 text-xs font-bold text-indigo-500 dark:text-indigo-400">
+                    الجوهر المعرفي المستهدف
+                  </div>
+                </div>
+              </div>
+
+              {/* Textbook Official Learning Objectives Only */}
+              {lesson.learningObjectives && lesson.learningObjectives.length > 0 && (
+                <div className={`p-6 sm:p-7 rounded-3xl border-2 ${themeClasses.card}`}>
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-600/30">
+                        <Target className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-black">
+                          أهداف ونواتج التعلم المعتمدة في الكتاب المدرسي ({lesson.learningObjectives.length} أهداف)
+                        </h3>
+                        <p className={`text-xs ${themeClasses.textSubtle}`}>المعارف والمهارات المعتمدة للدرس</p>
                       </div>
                     </div>
-                    <p
-                      className={`leading-relaxed font-bold text-sm sm:text-base ${
-                        theme === "light" ? "text-amber-900" : "text-amber-200"
+
+                    <button
+                      type="button"
+                      onClick={() => setIsAllRevealed((prev) => !prev)}
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                        isAllRevealed
+                          ? "bg-slate-500/10 text-slate-400 border-slate-700/60 hover:text-white"
+                          : "bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/25 hover:brightness-110 active:scale-95"
                       }`}
+                      title={isAllRevealed ? "إعادة التدرج خطوة بخطوة (R)" : "كشف كافة أهداف الدرس دفعة واحدة (R)"}
                     >
-                      {lesson.engineerChallenge.scenario}
-                    </p>
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>{isAllRevealed ? "إعادة التدرج ⏱️" : "كشف الكل ⚡"}</span>
+                    </button>
                   </div>
 
-                  {/* Engineering Steps with Progressive Step Reveal */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {lesson.engineerChallenge.steps.map((st, sIdx) => {
-                      const isRevealed = sIdx <= revealedLineIndex;
-                      const isLatest = sIdx === revealedLineIndex;
-
+                  <div className={`grid grid-cols-1 ${lesson.learningObjectives.length === 2 ? "md:grid-cols-2" : lesson.learningObjectives.length >= 3 ? "md:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"} gap-3`}>
+                    {lesson.learningObjectives.map((obj, i) => {
+                      const text = typeof obj === "string" ? obj : (obj as unknown as { text: string }).text;
+                      const isRevealed = isAllRevealed || revealedIntroStep >= 2 + i || revealedIntroStep >= lesson.learningObjectives.length;
                       return (
-                        <div
-                          key={sIdx}
-                          className={`p-5 rounded-3xl border-2 transition-all duration-300 flex flex-col justify-between space-y-3 ${
-                            isRevealed
-                              ? isLatest
-                                ? theme === "light"
-                                  ? "bg-white border-amber-500 shadow-xl ring-2 ring-amber-400/30 scale-[1.02]"
-                                  : "bg-amber-950/50 border-amber-400 shadow-xl scale-[1.02]"
-                                : theme === "light"
-                                  ? "bg-white/95 border-amber-200 shadow-xs opacity-95"
-                                  : "bg-slate-900/90 border-slate-800 opacity-90"
-                              : "opacity-0 translate-y-4 pointer-events-none"
-                          }`}
-                        >
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              <span
-                                className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs ${
-                                  theme === "light"
-                                    ? "bg-amber-100 text-amber-900 border border-amber-300"
-                                    : "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                                }`}
-                              >
-                                {st.number}
-                              </span>
-                              <h4
-                                className={`font-black text-sm sm:text-base ${
-                                  theme === "light" ? "text-slate-900" : "text-white"
-                                }`}
-                              >
-                                {st.title}
-                              </h4>
-                            </div>
-                            <p
-                              className={`text-xs sm:text-sm leading-relaxed font-semibold ${
-                                theme === "light" ? "text-slate-700" : "text-slate-300"
-                              }`}
-                            >
-                              {st.description}
-                            </p>
-                          </div>
-
-                          {st.options && st.options.length > 0 && (
-                            <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
-                              <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 block">
-                                الخيارات المتاحة:
-                              </span>
-                              {st.options.map((opt, oIdx) => (
-                                <div
-                                  key={oIdx}
-                                  className={`p-2 rounded-xl text-xs font-semibold ${
-                                    theme === "light"
-                                      ? "bg-amber-50 text-amber-900 border border-amber-200"
-                                      : "bg-slate-950 text-amber-200 border border-amber-500/20"
-                                  }`}
-                                >
-                                  • {opt}
-                                </div>
-                              ))}
-                            </div>
-                          )}
+                        <div key={i} className={`p-4 rounded-2xl border transition-all duration-300 flex items-start gap-3 ${isRevealed ? "border-emerald-500/40 bg-emerald-500/5 font-bold animate-fadeIn" : "opacity-40 border-slate-700/30"}`}>
+                          <span className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-mono text-xs font-black shrink-0 mt-0.5 shadow-xs">
+                            {i + 1}
+                          </span>
+                          <p className="text-xs sm:text-sm leading-relaxed">{formatInlineText(text, theme)}</p>
                         </div>
                       );
                     })}
                   </div>
-
-                  {/* Engineering Guidance Hint */}
-                  {lesson.engineerChallenge.hint && (
-                    <div
-                      className={`p-5 rounded-3xl border-2 transition-all flex items-start gap-3.5 ${
-                        theme === "light"
-                          ? "bg-blue-50/90 border-blue-200 text-blue-950 shadow-xs"
-                          : "bg-blue-950/30 border-blue-500/40 text-blue-200"
-                      } ${
-                        revealedLineIndex >= lesson.engineerChallenge.steps.length
-                          ? "opacity-100 scale-100"
-                          : "opacity-0 translate-y-3 pointer-events-none"
-                      }`}
-                    >
-                      <div
-                        className={`w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 ${
-                          theme === "light"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-blue-500/20 text-blue-300"
-                        }`}
-                      >
-                        <HelpCircle className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <strong
-                          className={`text-xs sm:text-sm font-black block mb-0.5 ${
-                            theme === "light" ? "text-blue-900" : "text-blue-300"
-                          }`}
-                        >
-                          توجيه التفكير الهندسي:
-                        </strong>
-                        <p
-                          className={`text-xs sm:text-sm leading-relaxed font-bold ${
-                            theme === "light" ? "text-blue-950" : "text-slate-200"
-                          }`}
-                        >
-                          {lesson.engineerChallenge.hint}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* MODEL ANSWER & STANDARD SOLUTION (الإجابة والقرار الهندسي النموذجي) */}
-                  {lesson.engineerChallenge.modelAnswer && (
-                    <div
-                      className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-xl ${
-                        theme === "light"
-                          ? "bg-gradient-to-br from-emerald-50 via-teal-50 to-white border-emerald-400 text-emerald-950 shadow-emerald-500/10"
-                          : "bg-gradient-to-br from-emerald-950/60 via-slate-900 to-teal-950/60 border-emerald-500/60 text-white shadow-emerald-950/40"
-                      } ${
-                        revealedLineIndex >= lesson.engineerChallenge.steps.length + 1
-                          ? "opacity-100 scale-100 ring-2 ring-emerald-500/30"
-                          : "opacity-90 hover:opacity-100"
-                      }`}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-300/40 dark:border-emerald-700/50 pb-3 mb-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                              theme === "light"
-                                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
-                                : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                            }`}
-                          >
-                            <Sparkles className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <span className="text-[11px] font-extrabold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 block">
-                              الحل والقرار المنهجي المعتمد 🏆
-                            </span>
-                            <h4 className="text-base sm:text-lg font-black text-emerald-950 dark:text-emerald-200">
-                              الإجابة النموذجية للتحدي الهندسي
-                            </h4>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-xs px-3 py-1 rounded-full font-bold border ${
-                              theme === "light"
-                                ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-                                : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
-                            }`}
-                          >
-                            معايير الكتاب المدرسي
-                          </span>
-                          <button
-                            onClick={() => speakText(lesson.engineerChallenge.modelAnswer || "")}
-                            className={`p-2 rounded-xl transition-colors cursor-pointer ${
-                              theme === "light"
-                                ? "hover:bg-emerald-100 text-emerald-800"
-                                : "hover:bg-slate-800 text-emerald-400"
-                            }`}
-                            title="استماع للإجابة النموذجية"
-                          >
-                            <Volume2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Model Answer Body */}
-                      <div className="space-y-3">
-                        {lesson.engineerChallenge.modelAnswer.split("\n").map((line, lIdx) => {
-                          const trimmed = line.trim();
-                          if (!trimmed) return null;
-                          return (
-                            <div
-                              key={lIdx}
-                              className={`p-3.5 sm:p-4 rounded-2xl border leading-relaxed font-bold text-xs sm:text-sm sm:leading-relaxed ${
-                                theme === "light"
-                                  ? "bg-white/90 border-emerald-200 text-slate-900 shadow-xs"
-                                  : "bg-slate-950/80 border-emerald-500/30 text-slate-100 shadow-inner"
-                              }`}
-                            >
-                              {formatInlineText(trimmed, theme === "light" ? "light" : "dark")}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
+            </div>
+          )}
 
-              {/* 5. Solved Example Slide: Dedicated Model Solved Example UI with Model Answer & Scientific Reasoning */}
-              {currentSlide.type === "example" && currentExampleItem && (
-                <div className="space-y-6 animate-fadeIn">
-                  {/* Question Header Card */}
-                  <div
-                    className={`p-6 sm:p-7 rounded-3xl border-2 transition-all shadow-md backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-teal-50/90 border-teal-300 text-teal-950"
-                        : "bg-teal-950/30 border-teal-500/40 text-teal-100"
+          {/* OFFICIAL SECTION SLIDES (WIDESCREEN FULL SECTION VIEW ONLY) */}
+          {currentSection && (
+            <div className="space-y-4 sm:space-y-5">
+              {/* Header Bar */}
+              <div className="flex items-center justify-between gap-4 pb-3 border-b border-slate-700/40">
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-xl bg-blue-600 text-white font-black text-xs shadow-sm shadow-blue-500/20">
+                    المحور {currentSection.index + 1} من {parsedSections.length}
+                  </span>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight">{currentSection.title}</h2>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAllRevealed((prev) => !prev)}
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      isAllRevealed
+                        ? "bg-slate-500/10 text-slate-400 border-slate-700/60 hover:text-white"
+                        : "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25 hover:brightness-110 active:scale-95"
                     }`}
+                    title={isAllRevealed ? "إعادة التدرج خطوة بخطوة (R)" : "كشف كافة نقاط المحور دفعة واحدة (R)"}
                   >
-                    <div className="flex items-center justify-between gap-3 mb-2.5">
-                      <div className="flex items-center gap-2.5">
-                        <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                            theme === "light"
-                              ? "bg-teal-600 text-white shadow-md shadow-teal-600/30"
-                              : "bg-teal-500/20 text-teal-400 border border-teal-500/40"
-                          }`}
-                        >
-                          <BookOpenCheck className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <span
-                            className={`text-xs font-extrabold uppercase tracking-wide ${
-                              theme === "light" ? "text-teal-800" : "text-teal-300"
-                            }`}
-                          >
-                            المسألة والتطبيق العملي من الكتاب المدرسي:
-                          </span>
-                          <h3
-                            className={`text-lg sm:text-xl font-black ${
-                              theme === "light" ? "text-teal-950" : "text-white"
-                            }`}
-                          >
-                            {lesson.solvedExample?.title || "تطبيق محلول نموذجي"}
-                          </h3>
-                        </div>
-                      </div>
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{isAllRevealed ? "إعادة التدرج ⏱️" : "كشف الكل ⚡"}</span>
+                  </button>
+                </div>
+              </div>
 
-                      {lesson.solvedExample?.items && lesson.solvedExample.items.length > 1 && (
-                        <span
-                          className={`text-xs font-bold px-3 py-1 rounded-full border ${
-                            theme === "light"
-                              ? "bg-teal-100 text-teal-900 border-teal-300"
-                              : "bg-teal-500/20 text-teal-300 border-teal-500/30"
-                          }`}
-                        >
-                          تطبيق {exampleItemIndex + 1} من {lesson.solvedExample.items.length}
-                        </span>
-                      )}
+              {/* Full Widescreen Grid: Adapts cleanly based on visuals */}
+              <div className={`grid grid-cols-1 ${currentSection.image || currentSection.table ? "lg:grid-cols-12" : "lg:grid-cols-2"} gap-5 sm:gap-6 items-start animate-fadeIn`}>
+                {/* Column 1: Core Concept & Detailed Explanation Breakdown */}
+                <div className={`${currentSection.image || currentSection.table ? "lg:col-span-7" : "lg:col-span-1"} space-y-4`}>
+                  {/* Concept Intro Card */}
+                  <div className={`p-5 sm:p-6 rounded-2xl border-2 space-y-3 ${themeClasses.cardHighlight}`}>
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black bg-blue-600 text-white shadow-xs">
+                        <Lightbulb className="w-3.5 h-3.5" />
+                        <span>مدخل المفهوم وتأسيس الفكرة</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speakText(currentSection.conceptIntro)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+                        title="استماع"
+                      >
+                        <Volume2 className="w-4 h-4" />
+                      </button>
                     </div>
-
-                    <p
-                      className={`leading-relaxed font-bold text-base sm:text-lg ${
-                        theme === "light" ? "text-slate-900" : "text-white"
-                      }`}
-                    >
-                      {currentExampleItem.question}
+                    <p className="text-sm sm:text-base lg:text-lg font-bold leading-relaxed">
+                      {formatInlineText(currentSection.conceptIntro, theme)}
                     </p>
                   </div>
 
-                  {/* MCQ Options Display (with Correct Answer Highlighting when revealed) */}
-                  {currentExampleItem.options && currentExampleItem.options.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                      {currentExampleItem.options.map((opt) => {
-                        const isCorrect =
-                          opt.id.toLowerCase() === String(currentExampleItem.correctAnswer).toLowerCase() ||
-                          opt.text === currentExampleItem.correctAnswer;
-                        const isAnswerRevealed = revealedLineIndex >= 1;
+                  {/* Detailed Points with Progressive Step Reveal */}
+                  {currentSection.detailedPoints.length > 0 && (
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs font-black text-indigo-500">
+                        <div className="flex items-center gap-2">
+                          <Layers className="w-3.5 h-3.5" />
+                          <span>الشرح التفصيلي والآلية المعرفية:</span>
+                        </div>
+                        {!isAllRevealed && (
+                          <span className="text-[11px] text-slate-400 font-normal">
+                            (المسطرة / التالي للكشف نقطة بنقطة)
+                          </span>
+                        )}
+                      </div>
+
+                      {currentSection.detailedPoints.map((pt, pIdx) => {
+                        const isRevealed = isPointRevealed(pIdx);
+                        const isCurrent = isPointCurrent(pIdx);
+
+                        if (!isRevealed) return null;
 
                         return (
                           <div
-                            key={opt.id}
-                            className={`p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 flex items-start gap-3 ${
-                              isAnswerRevealed && isCorrect
-                                ? theme === "light"
-                                  ? "bg-emerald-50 border-emerald-500 shadow-md ring-2 ring-emerald-400/30 text-emerald-950 font-bold scale-[1.01]"
-                                  : "bg-emerald-950/60 border-emerald-400 shadow-lg ring-1 ring-emerald-400 text-emerald-100 font-bold scale-[1.01]"
-                                : theme === "light"
-                                  ? "bg-white/95 border-slate-200 text-slate-800 shadow-xs"
-                                  : "bg-slate-900/80 border-slate-800 text-slate-300"
+                            key={pIdx}
+                            className={`p-4 sm:p-4.5 rounded-2xl border-2 transition-all duration-300 flex items-start gap-3.5 animate-fadeIn ${
+                              isCurrent
+                                ? "border-indigo-500 bg-indigo-500/10 shadow-lg shadow-indigo-500/15 ring-2 ring-indigo-400/30 scale-[1.01]"
+                                : themeClasses.card
                             }`}
                           >
                             <span
-                              className={`w-7 h-7 rounded-xl flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 ${
-                                isAnswerRevealed && isCorrect
-                                  ? "bg-emerald-600 text-white shadow-xs"
-                                  : "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                              className={`w-6 h-6 rounded-xl flex items-center justify-center font-mono text-xs font-black shrink-0 mt-0.5 ${
+                                isCurrent
+                                  ? "bg-indigo-600 text-white shadow-xs"
+                                  : "bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30"
                               }`}
                             >
-                              {opt.id.toUpperCase()}
+                              {pIdx + 1}
                             </span>
-                            <div className="flex-1 leading-relaxed text-xs sm:text-sm font-semibold">
-                              {opt.text}
+                            <div className="text-xs sm:text-sm lg:text-base leading-relaxed font-medium flex-1">
+                              {formatInlineText(pt, theme)}
                             </div>
-                            {isAnswerRevealed && isCorrect && (
-                              <span className="text-xs px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 font-bold shrink-0 flex items-center gap-1">
-                                <CheckCircle2 className="w-3.5 h-3.5" />
-                                <span>الإجابة النموذجية</span>
+                            {isCurrent && (
+                              <span className="shrink-0 px-2 py-0.5 rounded-lg bg-indigo-500/20 text-indigo-400 text-[10px] font-black animate-pulse">
+                                النقطة الحالية
                               </span>
                             )}
                           </div>
@@ -2195,788 +765,481 @@ export function LessonPresentationView({ lesson, onExitPresentation }: Props) {
                     </div>
                   )}
 
-                  {/* Matching Pairs / True-False Table Display */}
-                  {currentExampleItem.matchingPairs && currentExampleItem.matchingPairs.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {currentExampleItem.matchingPairs.map((pair, pIdx) => {
-                        const isRevealed = pIdx <= revealedLineIndex;
-                        return (
-                          <div
-                            key={pIdx}
-                            className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-between gap-3 ${
-                              isRevealed ? "opacity-100 shadow-sm" : "opacity-35"
-                            } ${
-                              theme === "light"
-                                ? "bg-white border-slate-200 text-slate-900"
-                                : "bg-slate-900 border-slate-800 text-slate-200"
-                            }`}
-                          >
-                            <span className="text-xs sm:text-sm font-bold leading-relaxed">{pair.left}</span>
-                            <span
-                              className={`px-3 py-1 rounded-xl text-xs font-black shrink-0 ${
-                                pair.right.includes("○") || pair.right.includes("صح") || pair.right.includes("true")
-                                  ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                                  : pair.right.includes("×") || pair.right.includes("خطأ") || pair.right.includes("false")
-                                    ? "bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30"
-                                    : "bg-teal-500/20 text-teal-600 dark:text-teal-300 border border-teal-500/30"
-                              }`}
-                            >
-                              {pair.right}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* MODEL ANSWER & REASONING CARD (الإجابة النموذجية والتعليل العلمي المعتمد) */}
-                  <div
-                    className={`p-6 sm:p-7 rounded-3xl border-2 transition-all duration-300 shadow-xl ${
-                      theme === "light"
-                        ? "bg-gradient-to-br from-emerald-50 via-teal-50 to-white border-emerald-400 text-emerald-950 shadow-emerald-500/10"
-                        : "bg-gradient-to-br from-emerald-950/60 via-slate-900 to-teal-950/60 border-emerald-500/60 text-white shadow-emerald-950/40"
-                    } ${
-                      revealedLineIndex >= 1
-                        ? "opacity-100 scale-100 ring-2 ring-emerald-500/30"
-                        : "opacity-90 hover:opacity-100"
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-300/40 dark:border-emerald-700/50 pb-3 mb-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                            theme === "light"
-                              ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
-                              : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                          }`}
-                        >
-                          <Sparkles className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <span className="text-[11px] font-extrabold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 block">
-                            سلم التصحيح والحل النموذجي 🏆
+                  {/* Linked Key Concepts with Full Definition on Hover */}
+                  {currentSection.keyConcepts.length > 0 && areConceptsRevealed && (
+                    <div className={`p-4 rounded-2xl border transition-all duration-300 ${
+                      isConceptsCurrent ? "border-indigo-500 bg-indigo-500/10 ring-2 ring-indigo-400/30 shadow-lg" : themeClasses.card
+                    } space-y-2.5 animate-fadeIn`}>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black text-indigo-400 flex items-center gap-1.5">
+                          <Info className="w-3.5 h-3.5" />
+                          <span>المفاهيم والمصطلحات المرتبطة بالمحور (مرّر الفأرة لعرض التعريف المعتمد):</span>
+                        </span>
+                        {isConceptsCurrent && (
+                          <span className="shrink-0 px-2 py-0.5 rounded-lg bg-indigo-500/20 text-indigo-400 text-[10px] font-black animate-pulse">
+                            التركيز الحالي
                           </span>
-                          <h4 className="text-base sm:text-lg font-black text-emerald-950 dark:text-emerald-200">
-                            الإجابة النموذجية والتعليل العلمي المعتمد
-                          </h4>
-                        </div>
+                        )}
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`text-xs px-3 py-1 rounded-full font-bold border ${
-                            theme === "light"
-                              ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-                              : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
-                          }`}
-                        >
-                          {typeof currentExampleItem.correctAnswer === "string" && currentExampleItem.options
-                            ? `الخيار الصحيح: (${currentExampleItem.correctAnswer.toUpperCase()})`
-                            : "معتمد وفق سلم التصحيح"}
-                        </span>
-                        <button
-                          onClick={() => speakText(currentExampleItem.explanation)}
-                          className={`p-2 rounded-xl transition-colors cursor-pointer ${
-                            theme === "light"
-                              ? "hover:bg-emerald-100 text-emerald-800"
-                              : "hover:bg-slate-800 text-emerald-400"
-                          }`}
-                          title="استماع للشرح والتعليل العلمي"
-                        >
-                          <Volume2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Explanation Steps */}
-                    <div className="space-y-3">
-                      <div
-                        className={`p-4 rounded-2xl border leading-relaxed font-bold text-xs sm:text-sm sm:leading-relaxed ${
-                          theme === "light"
-                            ? "bg-white/90 border-emerald-200 text-slate-900 shadow-xs"
-                            : "bg-slate-950/80 border-emerald-500/30 text-slate-100 shadow-inner"
-                        }`}
-                      >
-                        <strong className="text-emerald-600 dark:text-emerald-400 block mb-1">
-                          خطوات الحل والتفسير العلمي:
-                        </strong>
-                        <p>{formatInlineText(currentExampleItem.explanation, theme === "light" ? "light" : "dark")}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 5. Callout (Pause & Reflect) Slide: Interactive Classroom Thinking Stop */}
-              {currentSlide.type === "callout" && (
-                <div className="space-y-6 animate-fadeIn">
-                  <div
-                    className={`p-6 sm:p-8 rounded-3xl border-2 transition-all shadow-xl backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-amber-50/90 border-amber-300 text-amber-950 shadow-amber-500/10"
-                        : "bg-amber-950/40 border-amber-500/50 text-amber-100 shadow-amber-950/40"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold shrink-0 ${
-                          theme === "light"
-                            ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30"
-                            : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
-                        }`}
-                      >
-                        <Lightbulb className="w-6 h-6 animate-pulse" />
-                      </div>
-                      <div>
-                        <span
-                          className={`text-xs font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-full ${
-                            theme === "light"
-                              ? "bg-amber-100 text-amber-900 border border-amber-300"
-                              : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                          }`}
-                        >
-                          محطة تفاعلية — توقّف وفكّر 💡
-                        </span>
-                        <h3
-                          className={`text-xl sm:text-2xl font-black mt-1 ${
-                            theme === "light" ? "text-amber-950" : "text-white"
-                          }`}
-                        >
-                          {currentSlide.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {currentSlide.bullets.length > 0 && (
-                      <div
-                        className={`p-5 sm:p-6 rounded-2xl border-2 transition-all duration-300 ${
-                          theme === "light"
-                            ? "bg-white/95 border-amber-400 text-slate-900 shadow-md"
-                            : "bg-slate-900/90 border-amber-500/60 text-white shadow-inner"
-                        }`}
-                      >
-                        <span className="text-xs font-bold text-amber-600 dark:text-amber-400 block mb-1">
-                          💡 سؤال التفكير والمناقشة الصفي:
-                        </span>
-                        <p className="text-lg sm:text-xl lg:text-2xl font-black leading-relaxed">
-                          {formatInlineText(currentSlide.bullets[0], theme === "light" ? "light" : "dark")}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {currentSlide.bullets.length > 1 && (
-                    <div className="space-y-3.5">
-                      {currentSlide.bullets.slice(1).map((bullet, bIdx) => {
-                        const actualIdx = bIdx + 1;
-                        const isRevealed = actualIdx <= revealedLineIndex;
-                        const isLatest = actualIdx === revealedLineIndex;
-
-                        return (
-                          <div
-                            key={bIdx}
-                            className={`flex items-start gap-4 p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 ${
-                              isRevealed
-                                ? isLatest
-                                  ? themeStyles.bulletLatest
-                                  : themeStyles.bulletNormal
-                                : "opacity-0 translate-y-3 pointer-events-none"
-                            }`}
-                          >
-                            <span
-                              className={`w-3 h-3 rounded-full shrink-0 mt-2.5 transition-all ${
-                                isLatest
-                                  ? "bg-amber-500 ring-4 ring-amber-500/20 scale-125"
-                                  : "bg-slate-400 opacity-60"
-                              }`}
-                            />
-                            <div className={`flex-1 ${fontStyles.bulletText}`}>
-                              {formatInlineText(bullet, theme === "light" ? "light" : "dark")}
+                      <div className="flex flex-wrap gap-2.5">
+                        {currentSection.keyConcepts.map((c, cIdx) => (
+                          <div key={cIdx} className="relative group inline-block">
+                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-xs font-bold hover:border-indigo-400 hover:bg-indigo-500/20 transition-all cursor-help shadow-xs">
+                              <span className="text-indigo-400 font-extrabold">{c.termAr}</span>
+                              {c.termEn && <span className="font-mono text-[11px] opacity-75 dir-ltr">({c.termEn})</span>}
+                              {c.termEn && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    speakText(c.termEn || "");
+                                  }}
+                                  className="p-0.5 rounded hover:bg-indigo-500/30 text-indigo-300"
+                                  title="نطق المصطلح"
+                                >
+                                  <Volume2 className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
+
+                            {/* Floating Full Definition on Hover */}
+                            {c.definition && (
+                              <div className={`absolute bottom-full mb-2 right-0 w-72 sm:w-84 p-3.5 rounded-2xl border z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 translate-y-1 group-hover:translate-y-0 text-right backdrop-blur-xl ${themeClasses.tooltip}`}>
+                                <div className="flex items-center justify-between border-b border-indigo-500/30 pb-1.5 mb-2">
+                                  <span className="text-xs font-black text-indigo-400">{c.termAr}</span>
+                                  {c.termEn && <span className="text-[11px] font-mono text-slate-400 dir-ltr">{c.termEn}</span>}
+                                </div>
+                                <p className="text-xs leading-relaxed font-medium">
+                                  {c.definition}
+                                </p>
+                                <div className="absolute -bottom-1.5 right-6 w-3 h-3 border-b border-r border-inherit rotate-45 transform bg-inherit" />
+                              </div>
+                            )}
                           </div>
-                        );
-                      })}
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
-              )}
 
-              {/* 6. Applied Task Slide: Realistic Scenario & Analysis */}
-              {currentSlide.type === "applied_task" && (
-                <div className="space-y-6 animate-fadeIn">
-                  <div
-                    className={`p-6 sm:p-8 rounded-3xl border-2 transition-all shadow-xl backdrop-blur-sm ${
-                      theme === "light"
-                        ? "bg-emerald-50/90 border-emerald-300 text-emerald-950 shadow-emerald-500/10"
-                        : "bg-emerald-950/40 border-emerald-500/50 text-emerald-100 shadow-emerald-950/40"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold shrink-0 ${
-                          theme === "light"
-                            ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30"
-                            : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                        }`}
-                      >
-                        <Target className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <span
-                          className={`text-xs font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-full ${
-                            theme === "light"
-                              ? "bg-emerald-100 text-emerald-900 border border-emerald-300"
-                              : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                          }`}
+                {/* Column 2: Visual Artifacts (Diagram & Official Table with Progressive Reveal) */}
+                {(currentSection.image || currentSection.table) && (
+                  <div className="lg:col-span-5 space-y-4">
+                    {/* Diagram Display with Progressive Reveal & Minimize / Expand Toggle */}
+                    {currentSection.image && (
+                      !isImageRevealed ? (
+                        /* Teaser banner before image is reached */
+                        <div
+                          onClick={revealImageNow}
+                          className={`p-4 rounded-3xl border-2 border-dashed border-indigo-500/40 bg-indigo-500/5 hover:bg-indigo-500/10 hover:border-indigo-500/70 transition-all cursor-pointer flex items-center justify-between gap-3 group animate-fadeIn`}
+                          title="انقر لكشف المخطط البياني الآن"
                         >
-                          تطبيق عملي واقعي 🌍
-                        </span>
-                        <h3
-                          className={`text-xl sm:text-2xl font-black mt-1 ${
-                            theme === "light" ? "text-emerald-950" : "text-white"
-                          }`}
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-9 h-9 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                              <ImageIcon className="w-4.5 h-4.5" />
+                            </div>
+                            <div className="min-w-0 text-right">
+                              <span className="text-[11px] font-black text-indigo-400 block">المخطط البياني المعتمد (الخطوة التالية)</span>
+                              <h4 className="text-xs sm:text-sm font-bold truncate text-slate-700 dark:text-slate-300">
+                                {currentSection.image.caption}
+                              </h4>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              revealImageNow();
+                            }}
+                            className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all shrink-0 cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>كشف المخطط ⚡</span>
+                          </button>
+                        </div>
+                      ) : isImageMinimized ? (
+                        /* Minimized: Compact banner with icon and title only */
+                        <div
+                          onClick={() => setIsImageMinimized(false)}
+                          className={`p-3.5 px-4 rounded-2xl border-2 transition-all flex items-center justify-between gap-3 ${
+                            isImageCurrent ? "border-indigo-500 ring-2 ring-indigo-400/30 bg-indigo-500/10" : themeClasses.card
+                          } shadow-xs hover:border-blue-500/50 cursor-pointer group`}
                         >
-                          {currentSlide.title}
-                        </h3>
-                      </div>
-                    </div>
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center shrink-0">
+                              <ImageIcon className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0 text-right">
+                              <span className="text-[11px] font-bold text-blue-500 block">المخطط البياني المعتمد (مطوي)</span>
+                              <h4 className="text-xs sm:text-sm font-bold truncate text-slate-800 dark:text-slate-200">
+                                {currentSection.image.caption}
+                              </h4>
+                            </div>
+                          </div>
 
-                    {currentSlide.bullets.length > 0 && (
-                      <div
-                        className={`p-5 rounded-2xl border-2 transition-all ${
-                          theme === "light"
-                            ? "bg-white/95 border-emerald-200 text-slate-900 shadow-xs"
-                            : "bg-slate-900/90 border-slate-800 text-white"
-                        }`}
-                      >
-                        <p className="text-base sm:text-lg font-bold leading-relaxed">
-                          {formatInlineText(currentSlide.bullets[0], theme === "light" ? "light" : "dark")}
-                        </p>
+                          <div className="flex items-center gap-2">
+                            {isImageCurrent && (
+                              <span className="px-2 py-0.5 rounded-lg bg-indigo-600 text-white text-[10px] font-black animate-pulse">
+                                التركيز الحالي
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setIsImageMinimized(false);
+                              }}
+                              className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors shrink-0 ${themeClasses.btnSecondary}`}
+                              title="إظهار المخطط بالكامل"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-blue-500" />
+                              <span>إظهار المخطط</span>
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Expanded: Full diagram card with active focus ring when current */
+                        <div className={`p-4 sm:p-5 rounded-3xl border-2 text-center space-y-2.5 transition-all duration-300 ${
+                          isImageCurrent
+                            ? "border-indigo-500 ring-2 ring-indigo-400/40 shadow-xl shadow-indigo-500/20 bg-indigo-500/5"
+                            : themeClasses.card
+                        }`}>
+                          <div className="flex items-center justify-between text-xs font-black px-1">
+                            <div className="flex items-center gap-2">
+                              <span className="flex items-center gap-1.5 text-blue-500">
+                                <ImageIcon className="w-3.5 h-3.5" />
+                                <span>المخطط البياني المعتمد</span>
+                              </span>
+                              {isImageCurrent && (
+                                <span className="px-2 py-0.5 rounded-lg bg-indigo-600 text-white text-[10px] font-black animate-pulse shadow-xs">
+                                  التركيز الحالي
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] opacity-75 hidden sm:inline text-slate-400">انقر للتكبير</span>
+                              <button
+                                type="button"
+                                onClick={() => setIsImageMinimized(true)}
+                                className={`p-1 px-2 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer ${themeClasses.btnSecondary}`}
+                                title="طي المخطط إلى عنوان فقط"
+                              >
+                                <EyeOff className="w-3.5 h-3.5 text-slate-400 hover:text-blue-500" />
+                                <span>تصغير</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div
+                            onClick={() => setZoomedImage(currentSection.image || null)}
+                            className="relative inline-block max-w-full rounded-2xl overflow-hidden border border-slate-700/40 shadow-lg cursor-zoom-in group"
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={getAssetPath(currentSection.image.src)}
+                              alt={currentSection.image.caption}
+                              className="max-h-[320px] sm:max-h-[380px] w-auto mx-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-xs">
+                              <ZoomIn className="w-5 h-5" />
+                              <span>معاينة مكبرة كاملة</span>
+                            </div>
+                          </div>
+
+                          <p className="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300">
+                            {currentSection.image.caption}
+                          </p>
+                        </div>
+                      )
+                    )}
+
+                    {/* Table Display with Progressive Row-by-Row Reveal & Active Focus */}
+                    {currentSection.table && (
+                      <div className={`p-4 rounded-3xl border-2 overflow-hidden space-y-2.5 transition-all duration-300 ${
+                        sectionSteps[revealedSectionStep - 1]?.type === "table_row" && !isAllRevealed
+                          ? "border-blue-500/80 ring-2 ring-blue-400/30 shadow-xl shadow-blue-500/15"
+                          : themeClasses.card
+                      }`}>
+                        <div className="flex items-center justify-between text-xs font-black px-1 border-b border-slate-700/20 dark:border-slate-800/40 pb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="flex items-center gap-1.5 text-indigo-500">
+                              <TableIcon className="w-3.5 h-3.5" />
+                              <span>الجدول التوثيقي المعتمد</span>
+                            </span>
+                            {currentSection.table.rows.length > 0 && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-lg bg-indigo-500/15 text-indigo-400 font-bold">
+                                {isAllRevealed
+                                  ? `كافة الصفوف (${currentSection.table.rows.length})`
+                                  : `تم كشف ${currentSection.table.rows.filter((_, idx) => isTableRowRevealed(idx)).length} من ${currentSection.table.rows.length} صفوف`}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            {!isAllRevealed && currentSection.table.rows.some((_, idx) => !isTableRowRevealed(idx)) ? (
+                              <button
+                                type="button"
+                                onClick={revealAllTableRows}
+                                className={`p-1 px-2.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer ${themeClasses.btnSecondary} hover:border-indigo-400 hover:text-indigo-400`}
+                                title="كشف كافة صفوف هذا الجدول دفعة واحدة"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-indigo-400" />
+                                <span>كشف الجدول كاملاً ⚡</span>
+                              </button>
+                            ) : (
+                              <span className="text-[11px] font-bold text-emerald-500 flex items-center gap-1">
+                                <CheckCircle2 className="w-3 h-3" />
+                                <span>الجدول مكشوف بالكامل</span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="overflow-x-auto max-h-[340px] overflow-y-auto rounded-xl">
+                          <table className="w-full text-right text-xs sm:text-sm border-collapse">
+                            <thead className="sticky top-0 z-10">
+                              <tr className={themeClasses.tableHeader}>
+                                {currentSection.table.headers.map((h, hIdx) => (
+                                  <th key={hIdx} className="p-2.5 sm:p-3 font-black border-b border-inherit">{h}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {currentSection.table.rows.map((row, rIdx) => {
+                                const isRevealed = isTableRowRevealed(rIdx);
+                                const isCurrent = isTableRowCurrent(rIdx);
+
+                                if (isRevealed) {
+                                  return (
+                                    <tr
+                                      key={rIdx}
+                                      className={`border-b transition-all duration-300 animate-fadeIn ${
+                                        isCurrent
+                                          ? "bg-blue-600/20 dark:bg-blue-500/25 border-blue-500 font-bold shadow-xs ring-1 ring-blue-500/40"
+                                          : themeClasses.tableRow
+                                      }`}
+                                    >
+                                      {row.map((cell, cIdx) => (
+                                        <td key={cIdx} className="p-2.5 sm:p-3 leading-relaxed">
+                                          {cIdx === 0 && isCurrent && (
+                                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black shrink-0 ml-1.5 shadow-xs animate-pulse">
+                                              الصف النشط
+                                            </span>
+                                          )}
+                                          {formatInlineText(cell, theme)}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  );
+                                }
+
+                                /* Unrevealed row: veiled placeholder keeping table layout 100% stable */
+                                return (
+                                  <tr
+                                    key={rIdx}
+                                    onClick={() => revealUpToTableRow(rIdx)}
+                                    className="border-b border-slate-700/20 dark:border-slate-800/40 opacity-25 blur-[1px] hover:opacity-50 hover:blur-none transition-all cursor-pointer group"
+                                    title="انقر لكشف هذا الصف الآن"
+                                  >
+                                    {row.map((cell, cIdx) => (
+                                      <td key={cIdx} className="p-2.5 sm:p-3 leading-relaxed select-none">
+                                        {cIdx === 0 && (
+                                          <span className="text-[10px] text-slate-400 group-hover:text-blue-400 font-mono ml-1.5">
+                                            [صف {rIdx + 1}]
+                                          </span>
+                                        )}
+                                        {cell}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
                   </div>
-
-                  {currentSlide.bullets.length > 1 && (
-                    <div className="space-y-3.5">
-                      {currentSlide.bullets.slice(1).map((bullet, bIdx) => {
-                        const actualIdx = bIdx + 1;
-                        const isRevealed = actualIdx <= revealedLineIndex;
-                        const isLatest = actualIdx === revealedLineIndex;
-
-                        return (
-                          <div
-                            key={bIdx}
-                            className={`flex items-start gap-4 p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 ${
-                              isRevealed
-                                ? isLatest
-                                  ? themeStyles.bulletLatest
-                                  : themeStyles.bulletNormal
-                                : "opacity-0 translate-y-3 pointer-events-none"
-                            }`}
-                          >
-                            <span
-                              className={`w-3 h-3 rounded-full shrink-0 mt-2.5 transition-all ${
-                                isLatest
-                                  ? "bg-emerald-500 ring-4 ring-emerald-500/20 scale-125"
-                                  : "bg-slate-400 opacity-60"
-                              }`}
-                            />
-                            <div className={`flex-1 ${fontStyles.bulletText}`}>
-                              {formatInlineText(bullet, theme === "light" ? "light" : "dark")}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Standard Progressive Bullet Points (For Sections, Summary, Custom Slides) */}
-              {currentSlide.type !== "intro" &&
-                currentSlide.type !== "concepts" &&
-                currentSlide.type !== "engineer" &&
-                currentSlide.type !== "example" &&
-                currentSlide.type !== "callout" &&
-                currentSlide.type !== "applied_task" && (
-                <div className="space-y-4">
-                  {currentSlide.bullets.map((bullet, idx) => {
-                    const isRevealed = idx <= revealedLineIndex;
-                    const isLatestRevealed = idx === revealedLineIndex;
-
-                    return (
-                      <div
-                        key={idx}
-                        className={`flex items-start gap-4 p-5 sm:p-6 rounded-3xl border-2 transition-all duration-300 ease-out ${
-                          isRevealed
-                            ? isLatestRevealed
-                              ? themeStyles.bulletLatest
-                              : themeStyles.bulletNormal
-                            : "opacity-0 translate-y-3 pointer-events-none"
-                        }`}
-                      >
-                        {/* Subtle clean bullet point dot */}
-                        <span
-                          className={`w-2.5 h-2.5 rounded-full shrink-0 mt-2.5 sm:mt-3 transition-all ${
-                            isLatestRevealed
-                              ? "bg-blue-600 ring-4 ring-blue-500/20 scale-125 shadow-xs"
-                              : "bg-slate-300 dark:bg-slate-700 opacity-60"
-                          }`}
-                        />
-
-                        {/* Large, crystal-clear bullet text */}
-                        <div className={`flex-1 ${fontStyles.bulletText}`}>
-                          {formatInlineText(bullet, theme === "light" ? "light" : "dark")}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        </main>
-      ) : (
-        /* Flow Mode: Interactive Mindmap Pipeline */
-        <main className="flex-1 p-6 sm:p-10 overflow-y-auto custom-scrollbar pb-28">
-          <PresentationFlowView
-            lesson={lesson}
-            slides={slides}
-            onSelectSlide={(targetIdx) => {
-              setCurrentSlideIndex(targetIdx);
-              setRevealedLineIndex(0);
-              setPresentationMode("slides");
-            }}
-            currentSlideIndex={currentSlideIndex}
-          />
-        </main>
-      )}
-
-      {/* 3. Fixed Bottom Docked Bar (Pinned to the exact bottom edge) */}
-      <footer
-        className={`fixed bottom-0 inset-x-0 w-full z-50 h-14 sm:h-16 px-3 sm:px-6 border-t backdrop-blur-xl transition-colors flex items-center justify-between select-none shadow-2xl ${
-          theme === "light"
-            ? "bg-white/95 border-slate-200 text-slate-900 shadow-md"
-            : "bg-slate-900/95 border-slate-800 text-white shadow-2xl"
-        }`}
-      >
-        {/* Right side: Prev Slide / Prev Step + Zoom Controls */}
-        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          <button
-            onClick={handlePrevSlideDirect}
-            disabled={currentSlideIndex === 0}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${themeStyles.navBtn}`}
-            title="الشريحة السابقة مباشرة (PageUp)"
-          >
-            <ChevronsRight className="w-4.5 h-4.5" />
-          </button>
-
-          <button
-            onClick={handlePrevStep}
-            disabled={currentSlideIndex === 0 && revealedLineIndex === 0}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${themeStyles.navBtn}`}
-            title="الخطوة السابقة (السهم الأيمن / Backspace)"
-          >
-            <ChevronRight className="w-4.5 h-4.5" />
-          </button>
-
-          <div className={`h-5 w-px mx-0.5 sm:mx-1 ${themeStyles.divider}`} />
-
-          {/* Smooth Zoom Controls (50% to 400%) */}
-          <div className="relative flex items-center bg-slate-200/60 dark:bg-slate-800/80 p-0.5 rounded-xl">
-            <button
-              onClick={handleZoomOut}
-              disabled={zoomLevel <= 0.5}
-              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-              title="تصغير الشاشة إلى 50% (-)"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setShowZoomMenu((prev) => !prev)}
-              className="px-1.5 py-0.5 text-[11px] font-mono font-bold text-slate-700 dark:text-slate-300 hover:text-blue-500 hover:bg-white/80 dark:hover:bg-slate-700 rounded-md transition-colors cursor-pointer flex items-center gap-0.5"
-              title="خيارات التكبير (50% - 400%) • انقر للاختيار"
-            >
-              <span>{Math.round(zoomLevel * 100)}%</span>
-              <ChevronDown className="w-3 h-3 opacity-60" />
-            </button>
-            <button
-              onClick={handleZoomIn}
-              disabled={zoomLevel >= 4.0}
-              className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-              title="تكبير الشاشة حتى 400% (+)"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Quick Reset Button if Zoomed or Panned */}
-            {(zoomLevel !== 1.0 || panOffset.x !== 0 || panOffset.y !== 0) && (
-              <button
-                onClick={handleZoomReset}
-                className="p-1 rounded-md text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/60 transition-colors cursor-pointer ml-0.5"
-                title="إعادة ضبط الحجم الطبيعي 100% والموضع (0)"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
-            )}
-
-            {/* Zoom Presets Dropdown */}
-            {showZoomMenu && (
-              <div
-                className="absolute bottom-full mb-2.5 right-0 py-1 px-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-300 dark:border-slate-700 rounded-xl shadow-2xl z-50 min-w-[120px] text-xs font-bold space-y-0.5 animate-fadeIn"
-                dir="rtl"
-              >
-                {[0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0].map((preset) => (
-                  <button
-                    key={preset}
-                    onClick={() => handleSetZoom(preset)}
-                    className={`w-full px-2.5 py-1 text-right flex items-center justify-between rounded-lg transition-colors cursor-pointer ${
-                      Math.abs(zoomLevel - preset) < 0.01
-                        ? "bg-blue-600 text-white"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                    }`}
-                  >
-                    <span>{Math.round(preset * 100)}%</span>
-                    {preset === 1.0 && <span className="text-[10px] opacity-75">(100%)</span>}
-                  </button>
-                ))}
-                <div className="border-t border-slate-200 dark:border-slate-800 my-1 pt-1">
-                  <button
-                    onClick={handleZoomReset}
-                    className="w-full px-2.5 py-1 text-right flex items-center gap-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    <span>إعادة ضبط الحجم والموضع</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          )}
         </div>
+      </main>
 
-        {/* Center: Drawing Tools Toolbar */}
-        <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar max-w-[50vw] sm:max-w-none px-1">
-          {/* Pointer / Drag Mode */}
-          <button
-            onClick={() => setActiveDrawTool("pointer")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "pointer"
-                ? themeStyles.activeTool
-                : themeStyles.inactiveTool
-            }`}
-            title="مؤشر التفاعل وسحب الصفحة في أي اتجاه (V)"
-          >
-            <MousePointer2 className="w-4.5 h-4.5" />
-          </button>
+      {/* 3. FLOATING NAVIGATION & TOOLS DOCK (Zero layout footprint) */}
+      <aside aria-label="أدوات التنقل السريع" className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 p-1.5 px-3 rounded-2xl border backdrop-blur-xl shadow-2xl transition-all duration-300 pointer-events-auto select-none ${themeClasses.floatingPill}`}>
+        <button
+          type="button"
+          onClick={handlePrev}
+          disabled={currentSlideIndex === 0 && revealedIntroStep === 0}
+          className="p-2 rounded-xl hover:bg-slate-500/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          title="السابق (ArrowRight)"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
 
-          {/* Pen */}
-          <button
-            onClick={() => setActiveDrawTool("pen")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "pen"
-                ? themeStyles.activeTool
-                : themeStyles.inactiveTool
-            }`}
-            title="قلم كتابة حر (P)"
-          >
-            <Pen className="w-4.5 h-4.5" />
-          </button>
+        <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-500/15">
+          {currentSlideIndex + 1} / {totalStations}
+        </span>
 
-          {/* Highlighter */}
-          <button
-            onClick={() => setActiveDrawTool("highlighter")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "highlighter"
-                ? "bg-amber-500 text-white shadow-lg shadow-amber-500/30 scale-105"
-                : themeStyles.inactiveTool
-            }`}
-            title="قلم تظليل شفاف (H)"
-          >
-            <Highlighter className="w-4.5 h-4.5" />
-          </button>
-
-          {/* Laser */}
-          <button
-            onClick={() => setActiveDrawTool("laser")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "laser"
-                ? "bg-rose-600 text-white shadow-lg shadow-rose-500/30 scale-105 animate-pulse"
-                : themeStyles.inactiveTool
-            }`}
-            title="مؤشر ليزري (L)"
-          >
-            <Zap className="w-4.5 h-4.5" />
-          </button>
-
-          {/* Shapes Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setShowShapesPicker(!showShapesPicker)}
-              className={`p-2 rounded-xl transition-all cursor-pointer flex items-center gap-0.5 ${
-                ["arrow", "rect", "circle", "line"].includes(activeDrawTool)
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-105"
-                  : themeStyles.inactiveTool
-              }`}
-              title="أشكال هندسية"
-            >
-              <ArrowRight className="w-4.5 h-4.5" />
-              <ChevronDown className="w-3 h-3 opacity-75" />
-            </button>
-
-            {showShapesPicker && (
-              <div className={`absolute bottom-full mb-2.5 right-0 border rounded-2xl p-1.5 shadow-2xl flex items-center gap-1 z-50 animate-fadeIn ${themeStyles.floatingPopup}`}>
-                <button
-                  onClick={() => {
-                    setActiveDrawTool("arrow");
-                    setShowShapesPicker(false);
-                  }}
-                  className={`p-2 rounded-xl transition-colors cursor-pointer ${activeDrawTool === "arrow" ? "bg-indigo-600 text-white" : themeStyles.inactiveTool}`}
-                  title="سهم ➔"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDrawTool("rect");
-                    setShowShapesPicker(false);
-                  }}
-                  className={`p-2 rounded-xl transition-colors cursor-pointer ${activeDrawTool === "rect" ? "bg-indigo-600 text-white" : themeStyles.inactiveTool}`}
-                  title="مستطيل ▢"
-                >
-                  <Square className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDrawTool("circle");
-                    setShowShapesPicker(false);
-                  }}
-                  className={`p-2 rounded-xl transition-colors cursor-pointer ${activeDrawTool === "circle" ? "bg-indigo-600 text-white" : themeStyles.inactiveTool}`}
-                  title="دائرة ◯"
-                >
-                  <Circle className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDrawTool("line");
-                    setShowShapesPicker(false);
-                  }}
-                  className={`p-2 rounded-xl transition-colors cursor-pointer ${activeDrawTool === "line" ? "bg-indigo-600 text-white" : themeStyles.inactiveTool}`}
-                  title="خط مستقيم ─"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-              </div>
-            )}
+        {/* Dynamic step indicator in section */}
+        {currentSection && !isAllRevealed && sectionSteps.length > 0 && (
+          <div className="flex items-center gap-2 px-2.5 py-1 rounded-xl bg-blue-500/10 text-blue-500 dark:text-blue-400 border border-blue-500/25 text-[11px] font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping" />
+            <span>
+              {revealedSectionStep === 0
+                ? "مدخل المفهوم"
+                : `${sectionSteps[revealedSectionStep - 1]?.label || "خطوة"} (${revealedSectionStep}/${sectionSteps.length})`}
+            </span>
           </div>
+        )}
+        {currentSection && isAllRevealed && (
+          <span className="text-[11px] font-bold px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/25">
+            كافة العناصر مكشوفة ⚡
+          </span>
+        )}
 
-          {/* Text Note Tool */}
-          <button
-            onClick={() => setActiveDrawTool("text")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "text"
-                ? "bg-purple-600 text-white shadow-lg shadow-purple-500/30 scale-105"
-                : themeStyles.inactiveTool
-            }`}
-            title="إضافة ملاحظة نصية"
-          >
-            <Type className="w-4.5 h-4.5" />
-          </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={currentSlideIndex === totalStations - 1}
+          className="p-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white disabled:opacity-25 disabled:cursor-not-allowed shadow-md shadow-blue-500/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+          title="التالي (Space / ArrowLeft)"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
 
-          {/* Eraser */}
-          <button
-            onClick={() => setActiveDrawTool("eraser")}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              activeDrawTool === "eraser"
-                ? "bg-rose-600 text-white shadow-lg shadow-rose-500/30 scale-105"
-                : themeStyles.inactiveTool
-            }`}
-            title="ممحاة (E)"
-          >
-            <Eraser className="w-4.5 h-4.5" />
-          </button>
-
-          <div className={`h-5 w-px mx-0.5 ${themeStyles.divider}`} />
-
-          {/* Color Palette Dots */}
-          <div className="flex items-center gap-1.5 px-1">
-            {[
-              { name: "أزرق", value: "#2563eb" },
-              { name: "أحمر", value: "#dc2626" },
-              { name: "أخضر", value: "#16a34a" },
-              { name: "أصفر", value: "#f59e0b" },
-              { name: "بنفسجي", value: "#9333ea" },
-              { name: "أبيض/أسود", value: theme === "light" ? "#0f172a" : "#ffffff" },
-            ].map((c) => (
+        {/* Integrated Floating Drawing Palette */}
+        {isDrawingMode && (
+          <>
+            <div className="h-4 w-[1px] bg-slate-500/30 mx-1" />
+            <button
+              type="button"
+              onClick={() => setActiveDrawTool("pointer")}
+              className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
+                activeDrawTool === "pointer" ? "bg-blue-600 text-white" : "hover:bg-slate-500/20"
+              }`}
+              title="مؤشر"
+            >
+              <MousePointer2 className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveDrawTool("pen")}
+              className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
+                activeDrawTool === "pen" ? "bg-blue-600 text-white" : "hover:bg-slate-500/20"
+              }`}
+              title="قلم"
+            >
+              <Pen className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveDrawTool("eraser")}
+              className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
+                activeDrawTool === "eraser" ? "bg-blue-600 text-white" : "hover:bg-slate-500/20"
+              }`}
+              title="ممحاة"
+            >
+              <Eraser className="w-3.5 h-3.5" />
+            </button>
+            <div className="h-4 w-[1px] bg-slate-500/30 mx-1" />
+            {["#3b82f6", "#ef4444", "#10b981", "#f59e0b"].map((c) => (
               <button
-                key={c.value}
-                onClick={() => {
-                  setDrawColor(c.value);
-                  if (activeDrawTool === "pointer" || activeDrawTool === "eraser") {
-                    setActiveDrawTool("pen");
-                  }
-                }}
-                className={`w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full transition-all cursor-pointer flex items-center justify-center border-2 border-white/20 shadow-xs ${
-                  drawColor === c.value
-                    ? "scale-125 ring-2 ring-blue-400 border-white"
-                    : "hover:scale-110 opacity-75 hover:opacity-100"
+                key={c}
+                type="button"
+                onClick={() => setDrawColor(c)}
+                className={`w-4 h-4 rounded-full border-2 transition-transform cursor-pointer ${
+                  drawColor === c ? "scale-125 border-white shadow-xs" : "border-transparent opacity-80"
                 }`}
-                style={{ backgroundColor: c.value }}
-                title={c.name}
+                style={{ backgroundColor: c }}
+                title="لون"
               />
             ))}
-          </div>
-
-          <div className={`h-5 w-px mx-0.5 hidden md:block ${themeStyles.divider}`} />
-
-          {/* Stroke Sizes */}
-          <div className="hidden md:flex items-center gap-1 px-0.5">
-            {[
-              { label: "رفيع", val: 2.5, dotSize: "w-1.5 h-1.5" },
-              { label: "متوسط", val: 5, dotSize: "w-2.5 h-2.5" },
-              { label: "عريض", val: 9, dotSize: "w-3.5 h-3.5" },
-            ].map((sp) => (
-              <button
-                key={sp.val}
-                onClick={() => setDrawSize(sp.val)}
-                className={`p-1.5 rounded-lg transition-colors cursor-pointer flex items-center justify-center ${
-                  drawSize === sp.val
-                    ? "bg-blue-600/20 text-blue-400 ring-1 ring-blue-400/40"
-                    : "text-slate-400 hover:text-white"
-                }`}
-                title={sp.label}
-              >
-                <span
-                  className={`${sp.dotSize} rounded-full ${
-                    drawSize === sp.val ? "bg-blue-500" : "bg-slate-400 dark:bg-slate-500"
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
-
-          <div className={`h-5 w-px mx-0.5 ${themeStyles.divider}`} />
-
-          {/* Undo / Redo / Clear */}
-          <button
-            onClick={() => undoRef.current && undoRef.current()}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.inactiveTool}`}
-            title="تراجع (Ctrl+Z)"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
-          <button
-            onClick={() => redoRef.current && redoRef.current()}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.inactiveTool}`}
-            title="إعادة (Ctrl+Y)"
-          >
-            <RotateCw className="w-4 h-4" />
-          </button>
-
-          <button
-            onClick={() => clearRef.current && clearRef.current()}
-            className="p-2 text-rose-400 hover:text-rose-300 hover:bg-rose-500/20 rounded-xl transition-colors cursor-pointer"
-            title="مسح كامل الرسومات"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Left side: Next Step / Slide / Reveal / AutoPlay */}
-        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          <span className="text-xs font-mono font-bold px-2 hidden lg:inline-block opacity-80">
-            {revealedLineIndex + 1}/{totalSteps}
-          </span>
-
-          {/* Reveal All / Reset */}
-          {totalSteps > 1 && (
+            <div className="h-4 w-[1px] bg-slate-500/30 mx-1" />
             <button
-              onClick={revealedLineIndex >= totalSteps - 1 ? handleResetSlideLines : handleRevealAllLines}
-              className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.navBtn}`}
-              title={revealedLineIndex >= totalSteps - 1 ? "إعادة إخفاء النقاط (R)" : "كشف كامل نقاط الشريحة (R)"}
+              type="button"
+              onClick={() => clearCanvasRef.current?.()}
+              className="p-1.5 rounded-xl text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+              title="مسح الرسومات"
             >
-              {revealedLineIndex >= totalSteps - 1 ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+              <Trash2 className="w-3.5 h-3.5" />
             </button>
-          )}
+          </>
+        )}
+      </aside>
 
-          {/* Auto Play */}
-          <button
-            onClick={() => setIsAutoPlay(!isAutoPlay)}
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              isAutoPlay
-                ? "bg-amber-600 text-white shadow-md shadow-amber-600/30 animate-pulse"
-                : themeStyles.navBtn
-            }`}
-            title={isAutoPlay ? "إيقاف التشغيل التلقائي" : "تشغيل تلقائي للشرائح"}
-          >
-            {isAutoPlay ? <Pause className="w-4.5 h-4.5" /> : <Play className="w-4.5 h-4.5" />}
-          </button>
-
-          {/* Next Step */}
-          <button
-            onClick={handleNextStep}
-            disabled={currentSlideIndex === slides.length - 1 && revealedLineIndex === totalSteps - 1}
-            className="p-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-30 disabled:pointer-events-none text-white shadow-md shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-            title="الخطوة التالية (السهم الأيسر / المسافة)"
-          >
-            <ChevronLeft className="w-4.5 h-4.5" />
-          </button>
-
-          {/* Next Slide */}
-          <button
-            onClick={handleNextSlideDirect}
-            disabled={currentSlideIndex === slides.length - 1}
-            className={`p-2 rounded-xl transition-colors cursor-pointer ${themeStyles.navBtn}`}
-            title="الشريحة التالية مباشرة (PageDown)"
-          >
-            <ChevronsLeft className="w-4.5 h-4.5" />
-          </button>
+      {/* 4. MODAL: SLIDE INDEX DRAWER */}
+      {showSlideDrawer && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn" onClick={() => setShowSlideDrawer(false)}>
+          <div className={`w-full max-w-2xl rounded-3xl border p-6 space-y-4 shadow-2xl max-h-[85vh] flex flex-col ${themeClasses.card}`} onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b pb-3 border-slate-700/40">
+              <div className="flex items-center gap-2">
+                <LayoutGrid className="w-5 h-5 text-blue-500" />
+                <h3 className="text-base sm:text-lg font-black">فهرس محطات الدرس ({stations.length} محطة معتمدة)</h3>
+              </div>
+              <button type="button" onClick={() => setShowSlideDrawer(false)} className="p-1.5 rounded-xl hover:bg-slate-700/30 text-slate-400 hover:text-white transition-colors cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="relative">
+              <Search className="w-4 h-4 absolute right-3.5 top-3.5 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="ابحث في محطات وأقسام الدرس..."
+                className="w-full pr-10 pl-4 py-2.5 rounded-xl border bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-800 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+              {filteredStations.map((st) => {
+                const isActive = st.index === currentSlideIndex;
+                return (
+                  <button
+                    key={st.id}
+                    type="button"
+                    onClick={() => goToStation(st.index)}
+                    className={`w-full p-3.5 rounded-2xl border text-right transition-all flex items-center justify-between gap-3 cursor-pointer ${
+                      isActive ? "bg-blue-600 text-white border-blue-500 shadow-md scale-[1.01]" : "hover:bg-slate-100 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-mono text-xs font-black shrink-0 ${isActive ? "bg-white text-blue-600" : "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300"}`}>
+                        {st.number}
+                      </span>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-bold">{st.label}</h4>
+                        <span className="text-[11px] opacity-75">{st.badge}</span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold opacity-60">{isActive ? "المحطة الحالية" : "انتقال سريع ──▶"}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </footer>
-
-      {/* Progress Bar along the very bottom */}
-      <div className="fixed bottom-0 inset-x-0 bg-slate-800/40 h-1 z-50 pointer-events-none">
-        <div
-          className="bg-blue-600 h-full transition-all duration-300 shadow-sm"
-          style={{
-            width: `${((currentSlideIndex + 1) / slides.length) * 100}%`,
-          }}
-        />
-      </div>
-
-      {/* Modals & Drawers */}
-      {isAIAssistantOpen && (
-        <AIPresentationAssistant
-          lesson={lesson}
-          currentSlideTitle={currentSlide.title}
-          currentSlideBullets={currentSlide.bullets}
-          currentSlideBadge={currentSlide.badge}
-          currentSlideIndex={currentSlideIndex}
-          onAddCustomSlide={handleAddCustomSlide}
-          onClose={() => setIsAIAssistantOpen(false)}
-        />
       )}
 
-      <TeacherWhiteboardModal
-        isOpen={isWhiteboardOpen}
-        lessonTitle={lesson.title}
-        onClose={() => setIsWhiteboardOpen(false)}
-      />
-
-      <TeacherToolsDrawer
-        isOpen={isTeacherToolsOpen}
-        onClose={() => setIsTeacherToolsOpen(false)}
-        currentSlideIndex={currentSlideIndex}
-        currentSlideTitle={currentSlide.title}
-        totalSlides={slides.length}
-        slideType={currentSlide.type}
-        engineerModelAnswer={lesson.engineerChallenge?.modelAnswer}
-        solvedExampleModelAnswer={
-          currentExampleItem
-            ? `${typeof currentExampleItem.correctAnswer === "string" ? `الإجابة الصحيحة: (${currentExampleItem.correctAnswer.toUpperCase()})\n` : ""}${currentExampleItem.explanation}`
-            : undefined
-        }
-      />
+      {/* 5. MODAL: ZOOMED HIGH-RES IMAGE VIEWER */}
+      {zoomedImage && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn" onClick={() => setZoomedImage(null)}>
+          <div className="absolute top-4 right-4 flex items-center gap-2">
+            <button type="button" onClick={() => setZoomedImage(null)} className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer" title="إغلاق">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          <div className="max-w-5xl max-h-[85vh] flex flex-col items-center justify-center space-y-4" onClick={(e) => e.stopPropagation()}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={getAssetPath(zoomedImage.src)} alt={zoomedImage.caption} className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain border border-white/10" />
+            <p className="text-white text-xs sm:text-sm font-bold text-center px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700">{zoomedImage.caption}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
