@@ -65,7 +65,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award, Compass } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -321,6 +321,32 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 <span>{lesson.learningPath.current}</span>
               </div>
             )}
+          </div>
+
+          {/* Storyline Prompt Banner */}
+          <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-right shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/30">
+                <Compass className="w-5 h-5 text-purple-400" />
+              </div>
+              <div>
+                <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>تسلسل الأفكار: الرواية الهندسية الواقعية لنشأة الدرس</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">جديد 🧭</span>
+                </h3>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  استكشف كيف قادت كل مشكلة واقعية واجهت المهندسين إلى ابتكار حل بالمنهج، وصولاً إلى سيمفونية التسوق الإلكتروني.
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href={`/chapters/${lesson.chapterId || "chapter-2"}/${lesson.slug}/storyline`}
+              className="shrink-0 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md shadow-purple-950/50 flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>بدء رحلة الأفكار</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
           {/* Detailed Sections with In-Section Notes Button */}

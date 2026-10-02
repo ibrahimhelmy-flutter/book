@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Lesson } from "@/types";
-import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen, Compass } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
 
 interface Props {
@@ -83,6 +84,16 @@ export function LessonHeader({
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+          {/* Thought Sequence / Storyline Link */}
+          <Link
+            href={`/chapters/${lesson.chapterId || "chapter-2"}/${lesson.slug}/storyline`}
+            className="px-3 py-1.5 rounded-lg border border-purple-500/40 bg-purple-950/40 hover:bg-purple-900/60 text-purple-200 hover:text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-purple-950/40"
+            title="تسلسل أفكار الدرس: الرواية الهندسية الواقعية خطوة بخطوة"
+          >
+            <Compass className="w-3.5 h-3.5 text-purple-400" />
+            <span>تسلسل الأفكار 🧭</span>
+          </Link>
+
           {/* Exercises & Practice Toggle Button */}
           {onToggleTab && (
             <button
