@@ -7,10 +7,12 @@ import { LessonHeader } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
+import { SectionImageViewer } from "./SectionImageViewer";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
 import { getDeepQuestionsForLesson } from "@/data/deep-questions";
 import { getOfficialAssessmentsForLesson } from "@/data/official-assessments";
 import { SIMULATORS_DATA } from "@/data/simulators";
+import { countQuestionsPerSection } from "@/lib/comprehension-matcher";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -65,7 +67,7 @@ const LessonPresentationView = dynamic(
     ),
   }
 );
-import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award, BookmarkCheck, CheckCircle } from "lucide-react";
+import { HelpCircle, Sparkles, Lightbulb, CheckSquare, BookOpen, AlertCircle, FileCheck, ArrowLeft, ArrowRight, PenTool, Brain, ChevronRight, ChevronDown, ChevronUp, Award, BookmarkCheck, CheckCircle, Type } from "lucide-react";
 import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
@@ -168,6 +170,20 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [isClosureRecapOpen, setIsClosureRecapOpen] = useState<boolean>(false);
   const [fontSize, setFontSize] = useState<"normal" | "large" | "xlarge">("normal");
 
+  // Floating Toast for Font Size Feedback
+  const [fontToast, setFontToast] = useState<{ message: string; subtext: string } | null>(null);
+  const fontToastTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const showFontToast = React.useCallback((message: string, subtext: string) => {
+    if (fontToastTimeoutRef.current) {
+      clearTimeout(fontToastTimeoutRef.current);
+    }
+    setFontToast({ message, subtext });
+    fontToastTimeoutRef.current = setTimeout(() => {
+      setFontToast(null);
+    }, 1500);
+  }, []);
+
   // Load font size preference from localStorage on mount
   React.useEffect(() => {
     try {
@@ -178,12 +194,134 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     } catch {}
   }, []);
 
-  const handleFontSizeChange = (size: "normal" | "large" | "xlarge") => {
+  const handleFontSizeChange = React.useCallback((size: "normal" | "large" | "xlarge") => {
     setFontSize(size);
     try {
       localStorage.setItem("lesson_font_size", size);
     } catch {}
-  };
+    if (size === "xlarge") {
+      showFontToast("حجم الخط: كبير جداً (+50%)", "اختصار: [+] تكبير | [-] تصغير");
+    } else if (size === "large") {
+      showFontToast("حجم الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+    } else {
+      showFontToast("حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+    }
+  }, [showFontToast]);
+
+  const increaseFontSize = React.useCallback(() => {
+    setFontSize((prev) => {
+      let next: "normal" | "large" | "xlarge" = prev;
+      if (prev === "normal") {
+        next = "large";
+        showFontToast("تم تكبير الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+      } else if (prev === "large") {
+        next = "xlarge";
+        showFontToast("تم تكبير الخط: كبير جداً (+50%)", "الحد الأقصى لحجم الخط");
+      } else {
+        showFontToast("الحد الأقصى لحجم الخط (كبير جداً)", "استخدم [-] للتصغير");
+      }
+      try {
+        localStorage.setItem("lesson_font_size", next);
+      } catch {}
+      return next;
+    });
+  }, [showFontToast]);
+
+  const decreaseFontSize = React.useCallback(() => {
+    setFontSize((prev) => {
+      let next: "normal" | "large" | "xlarge" = prev;
+      if (prev === "xlarge") {
+        next = "large";
+        showFontToast("تم تصغير الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+      } else if (prev === "large") {
+        next = "normal";
+        showFontToast("تم استعادة حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+      } else {
+        showFontToast("الحجم الافتراضي للخط (عادي)", "استخدم [+] للتكبير");
+      }
+      try {
+        localStorage.setItem("lesson_font_size", next);
+      } catch {}
+      return next;
+    });
+  }, [showFontToast]);
+
+  const resetFontSize = React.useCallback(() => {
+    setFontSize("normal");
+    showFontToast("تم استعادة حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+    try {
+      localStorage.setItem("lesson_font_size", "normal");
+    } catch {}
+  }, [showFontToast]);
+
+  // Global Keyboard Shortcuts for Font Size Adjustment (+, -, 0, Ctrl++, Ctrl+-, Ctrl+0)
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      const isTyping =
+        activeEl &&
+        (activeEl.tagName === "INPUT" ||
+          activeEl.tagName === "TEXTAREA" ||
+          activeEl.tagName === "SELECT" ||
+          (activeEl as HTMLElement).isContentEditable);
+
+      const isZoomInKey =
+        e.key === "+" ||
+        e.key === "=" ||
+        e.code === "NumpadAdd" ||
+        e.code === "Equal";
+
+      const isZoomOutKey =
+        e.key === "-" ||
+        e.key === "_" ||
+        e.code === "NumpadSubtract" ||
+        e.code === "Minus";
+
+      const isResetKey =
+        e.key === "0" ||
+        e.code === "Digit0" ||
+        e.code === "Numpad0";
+
+      // If Ctrl / Meta / Alt is held
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        if (isZoomInKey) {
+          e.preventDefault();
+          increaseFontSize();
+          return;
+        }
+        if (isZoomOutKey) {
+          e.preventDefault();
+          decreaseFontSize();
+          return;
+        }
+        if (isResetKey) {
+          e.preventDefault();
+          resetFontSize();
+          return;
+        }
+      }
+
+      // Single key when NOT typing in an input field
+      if (!isTyping && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (e.key === "+" || e.key === "=") {
+          e.preventDefault();
+          increaseFontSize();
+        } else if (e.key === "-" || e.key === "_") {
+          e.preventDefault();
+          decreaseFontSize();
+        } else if (e.key === "0") {
+          e.preventDefault();
+          resetFontSize();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      if (fontToastTimeoutRef.current) clearTimeout(fontToastTimeoutRef.current);
+    };
+  }, [increaseFontSize, decreaseFontSize, resetFontSize]);
 
   // Reset optional accordions on lesson switch so they remain closed by default
   React.useEffect(() => {
@@ -232,6 +370,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const comprehensionQuestions = React.useMemo(() => {
     return getDeepQuestionsForLesson(lesson);
   }, [lesson]);
+
+  const [selectedComprehensionSectionId, setSelectedComprehensionSectionId] = useState<string | null>(null);
+
+  const sectionQuestionsCount = React.useMemo(() => {
+    return countQuestionsPerSection(comprehensionQuestions, lesson);
+  }, [comprehensionQuestions, lesson]);
+
+  const handleJumpToSectionQuestions = (sectionId: string) => {
+    setSelectedComprehensionSectionId(sectionId);
+    setActiveTab("quiz");
+    setQuizSubTab("comprehension");
+  };
 
   const totalQuestionsCount =
     officialQuestions.length +
@@ -404,14 +554,30 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                       )}
                     </div>
 
-                    {/* Simple Note / Hint / Outside-the-curriculum Icon Button */}
-                    {sectionNotes.length > 0 && (
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {sectionNotes.map((note) => (
+                    {/* Header Actions: Simple Comprehension Icon + Section Notes */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Simple Minimalist Icon Button for Section Comprehension Questions */}
+                      {(sectionQuestionsCount[sec.id] || 0) > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleJumpToSectionQuestions(sec.id)}
+                          className="p-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/25 text-purple-300 hover:text-white border border-purple-500/30 hover:border-purple-400/50 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold shadow-sm hover:scale-105 active:scale-95"
+                          title={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
+                          aria-label={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
+                        >
+                          <Brain className="w-4 h-4 text-purple-400" />
+                          <span className="text-[11px] font-mono font-bold hidden sm:inline">
+                            {sectionQuestionsCount[sec.id]}
+                          </span>
+                        </button>
+                      )}
+
+                      {sectionNotes.length > 0 && (
+                        sectionNotes.map((note) => (
                           <SectionNoteButton key={note.id} note={note} />
-                        ))}
-                      </div>
-                    )}
+                        ))
+                      )}
+                    </div>
                   </div>
 
                   <div
@@ -426,51 +592,9 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                     <EyeComfortText content={sec.content} theme="dark" fontSize={fontSize} />
                   </div>
 
-                  {/* Section Diagram / Image from PDF if present */}
+                  {/* Section Diagram / Image with Compact Size & Lightbox */}
                   {sec.image && (
-                    <div className="my-5 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/80 p-2">
-                      <div className="relative rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center max-h-96">
-                        <img
-                          src={getAssetPath(sec.image.src)}
-                          alt={sec.image.alt || sec.image.caption}
-                          className="max-h-96 w-auto object-contain rounded-lg"
-                          loading="lazy"
-                          decoding="async"
-                          onError={(e) => {
-                            const target = e.currentTarget;
-                            const attempts = parseInt(target.dataset.attempts || "0", 10);
-                            const rawSrc = sec.image?.src ? (sec.image.src.startsWith("/") ? sec.image.src : `/${sec.image.src}`) : "";
-                            if (attempts === 0 && rawSrc) {
-                              target.dataset.attempts = "1";
-                              if (target.src.includes("/book/") && !rawSrc.startsWith("/book/")) {
-                                target.src = rawSrc;
-                              } else if (!target.src.includes("/book/")) {
-                                target.src = `/book${rawSrc}`;
-                              }
-                            } else if (attempts === 1 && rawSrc) {
-                              target.dataset.attempts = "2";
-                              const filename = rawSrc.split("/").pop();
-                              if (filename) {
-                                target.src = `../../images/extracted/${filename}`;
-                              }
-                            }
-                          }}
-                        />
-                      </div>
-                      {sec.image.caption && (
-                        <p
-                          className={`text-center mt-2 font-medium transition-all duration-200 ${
-                            fontSize === "large"
-                              ? "text-sm text-slate-300"
-                              : fontSize === "xlarge"
-                              ? "text-base text-slate-200"
-                              : "text-xs text-slate-400"
-                          }`}
-                        >
-                          📷 {sec.image.caption}
-                        </p>
-                      )}
-                    </div>
+                    <SectionImageViewer image={sec.image} fontSize={fontSize} />
                   )}
 
                   {/* Section Table if present */}
@@ -1132,7 +1256,11 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           {/* Tab 3 Content: أسئلة الفهم */}
           {quizSubTab === "comprehension" && (
             <ComponentErrorBoundary fallbackTitle="تعذر تشغيل أسئلة الفهم المعمقة">
-              <DeepComprehensionViewer lesson={lesson} />
+              <DeepComprehensionViewer
+                lesson={lesson}
+                targetSectionId={selectedComprehensionSectionId}
+                onClearTargetSection={() => setSelectedComprehensionSectionId(null)}
+              />
             </ComponentErrorBoundary>
           )}
         </div>
@@ -1170,6 +1298,23 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           <div className="hidden sm:block flex-1" />
         )}
       </footer>
+
+      {/* Floating Toast for Font Size Feedback */}
+      {fontToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-slate-900/95 border border-indigo-500/50 shadow-2xl backdrop-blur-md flex items-center gap-3 animate-fadeIn text-white text-xs sm:text-sm font-bold pointer-events-none transition-all duration-200"
+        >
+          <div className="w-7 h-7 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0">
+            <Type className="w-4 h-4" />
+          </div>
+          <div className="flex flex-col text-right">
+            <span className="text-slate-100 font-extrabold">{fontToast.message}</span>
+            <span className="text-[11px] text-slate-400 font-normal">{fontToast.subtext}</span>
+          </div>
+        </div>
+      )}
     </article>
   );
 }

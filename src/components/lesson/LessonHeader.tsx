@@ -213,6 +213,10 @@ export function LessonHeader({
                     <div className="flex items-center gap-1.5 text-indigo-400">
                       <Type className="w-4 h-4 shrink-0" />
                       <span className="text-slate-200 font-bold">حجم خط الدرس</span>
+                      <span className="text-[10px] text-slate-500 font-mono hidden sm:inline-flex items-center gap-1">
+                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px] shadow-2xs" title="اختصار تكبير الخط">+</kbd>
+                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px] shadow-2xs" title="اختصار تصغير الخط">-</kbd>
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
@@ -223,8 +227,8 @@ export function LessonHeader({
                         }}
                         disabled={fontSize === "normal"}
                         className="w-6 h-6 rounded-md bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
-                        title="تصغير الخط"
-                        aria-label="تصغير الخط"
+                        title="تصغير الخط (اختصار: - أو Ctrl + -)"
+                        aria-label="تصغير الخط (اختصار: - أو Ctrl + -)"
                       >
                         <Minus className="w-3 h-3" />
                       </button>
@@ -236,8 +240,8 @@ export function LessonHeader({
                         }}
                         disabled={fontSize === "xlarge"}
                         className="w-6 h-6 rounded-md bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
-                        title="تكبير الخط"
-                        aria-label="تكبير الخط"
+                        title="تكبير الخط (اختصار: + أو Ctrl + +)"
+                        aria-label="تكبير الخط (اختصار: + أو Ctrl + +)"
                       >
                         <Plus className="w-3 h-3" />
                       </button>
