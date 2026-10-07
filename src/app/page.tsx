@@ -4,6 +4,8 @@ import { CURRENT_BOOK, getBookStats } from "@/data/books";
 import { BookSelector } from "@/components/common/BookSelector";
 import { BookOpen, Sparkles, ShieldCheck, Globe, Palette, ArrowLeft, Award, Cpu } from "lucide-react";
 
+import { HomePWACallout } from "@/components/home/HomePWACallout";
+
 export default function HomePage() {
   const stats = getBookStats(CURRENT_BOOK);
   const chapters = CURRENT_BOOK.chapters || [];
@@ -101,6 +103,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* PWA & Offline CTA Banner */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+        <HomePWACallout />
       </section>
 
       {/* Chapters Grid Section */}

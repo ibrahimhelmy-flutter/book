@@ -13,6 +13,8 @@ import {
   Trash2,
   AlertTriangle,
   ShieldCheck,
+  Smartphone,
+  Download,
 } from "lucide-react";
 import {
   offlineDB,
@@ -20,10 +22,12 @@ import {
   EXPECTED_QUESTIONS_COUNT,
   EXPECTED_IMAGES_COUNT,
   CURRENT_CONTENT_VERSION,
+  OFFLINE_PACK_CACHE_NAME,
 } from "@/lib/offline-db";
 import { CURRICULUM_DATA } from "@/data/curriculum";
 import { getAllCommitteeQuestions } from "@/lib/exam-generator/committeeBank";
 import { getAssetPath } from "@/lib/utils";
+import { usePWA } from "@/context/PWAContext";
 
 // List of all 48 canonical extracted diagrams from textbook
 const CANONICAL_DIAGRAMS = [
@@ -49,6 +53,7 @@ interface Props {
 }
 
 export function OfflinePackModal({ isOpen, onClose }: Props) {
+  const { isInstalled, promptInstall, refreshOfflinePackStatus } = usePWA();
   const [status, setStatus] = useState<PackStatus>("idle");
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState<string>("");
@@ -67,6 +72,7 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
 
   const checkStatus = async () => {
     const ready = await offlineDB.isOfflinePackReady();
+    refreshOfflinePackStatus();
     if (ready) {
       const meta = await offlineDB.getMetadata();
       const lessons = await offlineDB.getLessonsCount();
@@ -104,7 +110,36 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
     if (typeof window !== "undefined" && "caches" in window) {
       try {
         for (const url of requiredUrls) {
-          const match = await caches.match(url, { ignoreSearch: true });
+          // Check multiple URL key variations: direct, full URL, trailing slash variants
+          let match = await caches.match(url, { ignoreSearch: true });
+
+          if (!match) {
+            try {
+              const fullUrl = new URL(url, window.location.href).href;
+              match = await caches.match(fullUrl, { ignoreSearch: true });
+            } catch {}
+          }
+
+          if (!match && url.endsWith("/")) {
+            const noSlash = url.slice(0, -1);
+            match = await caches.match(noSlash, { ignoreSearch: true });
+            if (!match) {
+              try {
+                const fullNoSlash = new URL(noSlash, window.location.href).href;
+                match = await caches.match(fullNoSlash, { ignoreSearch: true });
+              } catch {}
+            }
+          } else if (!match && !url.endsWith("/") && !url.includes(".")) {
+            const withSlash = `${url}/`;
+            match = await caches.match(withSlash, { ignoreSearch: true });
+            if (!match) {
+              try {
+                const fullWithSlash = new URL(withSlash, window.location.href).href;
+                match = await caches.match(fullWithSlash, { ignoreSearch: true });
+              } catch {}
+            }
+          }
+
           if (match && match.status === 200) {
             if (url.includes("/images/")) {
               cachedImages++;
@@ -120,7 +155,7 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
 
     const ok =
       lessons === EXPECTED_LESSONS_COUNT &&
-      questions === EXPECTED_QUESTIONS_COUNT &&
+      questions >= EXPECTED_QUESTIONS_COUNT &&
       missingUrls.length === 0;
     return { ok, missingUrls, lessons, questions, imagesCount: cachedImages || EXPECTED_IMAGES_COUNT };
   };
@@ -198,14 +233,26 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
           urls: targetUrls,
         });
 
-        // Listen for progress and completion from SW
+        // Listen for progress and completion from SW with dynamic watchdog timer
+        let watchdogTimer: any = null;
+
+        const resetWatchdog = () => {
+          if (watchdogTimer) clearTimeout(watchdogTimer);
+          watchdogTimer = setTimeout(async () => {
+            navigator.serviceWorker.removeEventListener("message", messageHandler);
+            await runFinalVerification(fullList);
+          }, 35000);
+        };
+
         const messageHandler = async (event: MessageEvent) => {
           if (event.data?.type === "OFFLINE_PACK_PROGRESS") {
+            resetWatchdog();
             const currentTotal = completedTasks + (event.data.completed || 0);
             const pct = Math.min(99, Math.round((currentTotal / totalTasks) * 100));
             setProgress(pct);
             setCurrentStep(`تنزيل الرسوم والصفحات: ${event.data.completed} من ${targetUrls.length} مورد (${event.data.successful || 0} مكتمل)...`);
           } else if (event.data?.type === "OFFLINE_PACK_COMPLETE") {
+            if (watchdogTimer) clearTimeout(watchdogTimer);
             navigator.serviceWorker.removeEventListener("message", messageHandler);
             setProgress(100);
             await runFinalVerification(fullList, event.data.failedUrls || []);
@@ -213,16 +260,11 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
         };
 
         navigator.serviceWorker.addEventListener("message", messageHandler);
-
-        // Safety fallback timer if SW doesn't respond
-        setTimeout(async () => {
-          navigator.serviceWorker.removeEventListener("message", messageHandler);
-          await runFinalVerification(fullList);
-        }, 20000);
+        resetWatchdog();
       } else if (typeof window !== "undefined" && "caches" in window) {
         // Direct CacheStorage API access fallback
         try {
-          const cache = await caches.open("ai-curriculum-offline-pack-v1.0.1");
+          const cache = await caches.open(OFFLINE_PACK_CACHE_NAME);
           let completed = 0;
           const directFailed: string[] = [];
 
@@ -230,7 +272,18 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
             try {
               const resp = await fetch(url);
               if (resp && resp.status === 200) {
-                await cache.put(url, resp);
+                const respClone = resp.clone();
+                await cache.put(url, respClone);
+                const fullUrl = new URL(url, window.location.href).href;
+                if (fullUrl !== url) {
+                  await cache.put(fullUrl, resp.clone());
+                }
+                if (url.endsWith("/")) {
+                  const noSlash = url.slice(0, -1);
+                  if (noSlash) await cache.put(noSlash, resp.clone());
+                } else if (!url.includes(".")) {
+                  await cache.put(`${url}/`, resp.clone());
+                }
               } else {
                 directFailed.push(url);
               }
@@ -301,7 +354,15 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
       const missing = Array.from(new Set([...reportedFailed, ...audit.missingUrls]));
       setFailedUrls(missing);
       setStatus("partial_error");
-      setErrorMessage(`لم يكتمل التحميل: فشل تنزيل ${missing.length} مورد من أصل ${allRequiredUrls.length}.`);
+      if (audit.lessons < EXPECTED_LESSONS_COUNT) {
+        setErrorMessage(`لم يكتمل التحميل: تم حفظ ${audit.lessons} درساً فقط من أصل ${EXPECTED_LESSONS_COUNT}.`);
+      } else if (audit.questions < EXPECTED_QUESTIONS_COUNT) {
+        setErrorMessage(`لم يكتمل التحميل: تم حفظ ${audit.questions} سؤالاً فقط من أصل ${EXPECTED_QUESTIONS_COUNT}.`);
+      } else if (missing.length > 0) {
+        setErrorMessage(`لم يكتمل التحميل: فشل تنزيل ${missing.length} مورد من أصل ${allRequiredUrls.length}.`);
+      } else {
+        setErrorMessage("لم يكتمل التحميل: تعذر التحقق من اكتمال بعض البيانات محلياً.");
+      }
     }
   };
 
@@ -309,7 +370,17 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
     if (confirm("هل تريد حذف الحزمة المحلية وإخلاء مساحة التخزين؟")) {
       await offlineDB.clearAll();
       if (typeof window !== "undefined" && "caches" in window) {
+        await caches.delete(OFFLINE_PACK_CACHE_NAME);
         await caches.delete("ai-curriculum-offline-pack-v1.0.1");
+        await caches.delete("ai-curriculum-offline-pack-v1.0.3");
+        try {
+          const keys = await caches.keys();
+          for (const key of keys) {
+            if (key.includes("offline-pack")) {
+              await caches.delete(key);
+            }
+          }
+        } catch {}
       }
       setStatus("idle");
       setDownloadedDate(null);
@@ -344,6 +415,53 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
           >
             <X className="w-5 h-5" />
           </button>
+        </div>
+
+        {/* PWA App Install Action Card */}
+        <div className="p-4 bg-slate-950/90 border border-slate-800 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0">
+              <Smartphone className="w-5 h-5" />
+            </div>
+            <div className="text-right">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-white">الخطوة ١: تثبيت المنصة كتطبيق (PWA)</span>
+                <span className="px-1.5 py-0.2 rounded-md bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold">
+                  تطبيق مستقل
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                {isInstalled
+                  ? "المنصة مثبتة وتعمل كنافذة تطبيق مستقلة بدون شريط متصفح."
+                  : "شغّل المنصة كبرنامج مستقل وسريع على سطح المكتب أو هاتفك."}
+              </p>
+            </div>
+          </div>
+
+          <div className="w-full sm:w-auto shrink-0">
+            {isInstalled ? (
+              <div className="px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>مثبت بالفعل ✓</span>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={async () => {
+                  await promptInstall();
+                }}
+                className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/30 flex items-center justify-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>تثبيت التطبيق الآن</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Content Breakdown Header */}
+        <div className="text-right">
+          <span className="text-xs font-bold text-slate-300">الخطوة ٢: محتويات حزمة المنهج بدون إنترنت:</span>
         </div>
 
         {/* Content Breakdown */}

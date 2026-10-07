@@ -4,11 +4,27 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CURRICULUM_TOC, TOTAL_CURRICULUM_LESSONS } from "@/data/curriculum-toc";
-import { ChevronDown, ChevronUp, CheckCircle, Circle, BookOpen } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  CheckCircle,
+  Circle,
+  BookOpen,
+  Smartphone,
+  Download,
+  DownloadCloud,
+} from "lucide-react";
 import { getStoredProgress } from "@/lib/storage";
+import { usePWA } from "@/context/PWAContext";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const {
+    isInstalled,
+    promptInstall,
+    isOfflinePackReady,
+    setIsOfflinePackModalOpen,
+  } = usePWA();
   const [completedList, setCompletedList] = useState<string[]>([]);
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
@@ -100,6 +116,46 @@ export function Sidebar() {
             </div>
           );
         })}
+      </div>
+
+      {/* PWA & Offline Quick Launcher in Sidebar */}
+      <div className="mt-5 pt-4 border-t border-slate-800/80 space-y-2">
+        <div className="p-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-white flex items-center gap-1.5">
+              <Smartphone className="w-3.5 h-3.5 text-indigo-400" />
+              تطبيق المنصة (PWA)
+            </span>
+            <span className="text-[10px] text-emerald-400 font-bold font-mono">
+              {isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت ⚡"}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            {!isInstalled ? (
+              <button
+                type="button"
+                onClick={() => promptInstall()}
+                className="py-1.5 px-2 bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <Download className="w-3 h-3" />
+                <span>تثبيت التطبيق</span>
+              </button>
+            ) : (
+              <div className="py-1.5 px-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold rounded-xl flex items-center justify-center gap-1">
+                <CheckCircle className="w-3 h-3" />
+                <span>تطبيق مثبت</span>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsOfflinePackModalOpen(true)}
+              className="py-1.5 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[11px] font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <DownloadCloud className="w-3 h-3 text-emerald-400" />
+              <span>حزمة المنهج</span>
+            </button>
+          </div>
+        </div>
       </div>
     </aside>
   );

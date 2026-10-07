@@ -62,10 +62,9 @@ self.addEventListener('fetch', (event) => {
   // Ignore browser extensions or non-http protocols
   if (!url.protocol.startsWith('http')) return;
 
-  // On localhost in development, bypass caching so code changes are visible immediately
-  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return;
+  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
 
-  // Strategy 1: Static assets (Images, Fonts, CSS, JS, Chunks) -> Cache First
+  // Strategy 1: Static assets (Images, Fonts, CSS, JS, Chunks)
   const isStaticAsset =
     request.destination === 'style' ||
     request.destination === 'script' ||
@@ -79,6 +78,33 @@ self.addEventListener('fetch', (event) => {
     url.pathname.endsWith('.woff2');
 
   if (isStaticAsset) {
+    // On localhost, prioritize network so code changes are visible immediately, but fallback to cache if offline
+    if (isLocalhost) {
+      event.respondWith(
+        fetch(request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const responseToCache = networkResponse.clone();
+              caches.open(APP_SHELL_CACHE).then((cache) => {
+                cache.put(request, responseToCache);
+              });
+            }
+            return networkResponse;
+          })
+          .catch(async () => {
+            const cachedResponse = await caches.match(request, { ignoreSearch: true });
+            if (cachedResponse) return cachedResponse;
+            if (request.destination === 'image' || url.pathname.match(/\.(png|jpg|jpeg|svg|webp)$/i)) {
+              const iconFallback = (await caches.match('./icon.svg')) || (await caches.match('/icon.svg'));
+              if (iconFallback) return iconFallback;
+            }
+            return new Response('', { status: 408, statusText: 'Offline Asset Unavailable' });
+          })
+      );
+      return;
+    }
+
+    // Production: Cache First for instant performance
     event.respondWith(
       caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
         if (cachedResponse) {
@@ -170,6 +196,7 @@ self.addEventListener('message', (event) => {
       let successful = 0;
       const failedUrls = [];
       const total = urlsToCache.length;
+      const cachedChunks = new Set();
 
       for (const url of urlsToCache) {
         try {
@@ -182,6 +209,14 @@ self.addEventListener('message', (event) => {
             if (pathname !== fullUrl) {
               await cache.put(pathname, response.clone());
             }
+            if (pathname.endsWith('/')) {
+              const noSlash = pathname.slice(0, -1);
+              if (noSlash) {
+                await cache.put(noSlash, response.clone());
+              }
+            } else if (!pathname.includes('.')) {
+              await cache.put(`${pathname}/`, response.clone());
+            }
             successful++;
 
             // If HTML route, discover and cache its static JS chunks and CSS stylesheets for seamless offline navigation
@@ -190,15 +225,25 @@ self.addEventListener('message', (event) => {
                 const htmlText = await response.text();
                 const re = /(?:src|href)="([^"]*\/_next\/static\/[^"]+)"/g;
                 let match;
+                const chunkPromises = [];
                 while ((match = re.exec(htmlText)) !== null) {
                   const chunkPath = match[1];
                   const chunkFullUrl = new URL(chunkPath, self.location.href).href;
-                  try {
-                    const chunkResp = await fetch(chunkFullUrl);
-                    if (chunkResp && chunkResp.status === 200) {
-                      await cache.put(chunkFullUrl, chunkResp);
-                    }
-                  } catch {}
+                  if (!cachedChunks.has(chunkFullUrl)) {
+                    cachedChunks.add(chunkFullUrl);
+                    chunkPromises.push(
+                      fetch(chunkFullUrl)
+                        .then((chunkResp) => {
+                          if (chunkResp && chunkResp.status === 200) {
+                            return cache.put(chunkFullUrl, chunkResp);
+                          }
+                        })
+                        .catch(() => {})
+                    );
+                  }
+                }
+                if (chunkPromises.length > 0) {
+                  await Promise.all(chunkPromises);
                 }
               } catch (parseErr) {
                 console.warn('Chunk discovery warning:', parseErr);

@@ -4,9 +4,22 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { BookOpen, Sparkles, BookA, Award, LayoutDashboard, Search, Menu, X, DownloadCloud } from "lucide-react";
+import {
+  BookOpen,
+  Sparkles,
+  BookA,
+  Award,
+  LayoutDashboard,
+  Search,
+  Menu,
+  X,
+  DownloadCloud,
+  Smartphone,
+  CheckCircle,
+} from "lucide-react";
 import { CURRENT_BOOK } from "@/data/books";
 import { BookSelector } from "../common/BookSelector";
+import { usePWA } from "@/context/PWAContext";
 
 const NAV_LINKS = [
   { href: "/", label: "الرئيسية", icon: BookOpen },
@@ -36,7 +49,14 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isIndexOpen, setIsIndexOpen] = useState(false);
-  const [isOfflinePackOpen, setIsOfflinePackOpen] = useState(false);
+
+  const {
+    isInstalled,
+    promptInstall,
+    isOfflinePackReady,
+    isOfflinePackModalOpen,
+    setIsOfflinePackModalOpen,
+  } = usePWA();
 
   // Automatically scroll to the very top on every screen navigation
   React.useEffect(() => {
@@ -120,23 +140,68 @@ export function Navbar() {
                 <span className="hidden sm:inline">فهرس الدروس</span>
               </button>
 
+              {/* PWA Install Button (Desktop/Tablet) */}
+              {!isInstalled ? (
+                <button
+                  type="button"
+                  onClick={() => promptInstall()}
+                  className="hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 hover:text-white text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                  title="تثبيت المنصة كتطبيق على جهازك للعمل دون متصفح"
+                  aria-label="تثبيت التطبيق"
+                >
+                  <Smartphone className="w-3.5 h-3.5 text-indigo-400" />
+                  <span className="hidden lg:inline">تثبيت التطبيق</span>
+                </button>
+              ) : (
+                <div
+                  className="hidden sm:flex px-2 sm:px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold items-center gap-1"
+                  title="التطبيق يعمل في وضع التثبيت المستقل"
+                >
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="hidden xl:inline text-[11px]">مُثبَّت</span>
+                </div>
+              )}
+
               {/* Offline Pack Download Launcher (Desktop) */}
               <button
                 type="button"
-                onClick={() => setIsOfflinePackOpen(true)}
-                className="hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:text-emerald-300 text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                onClick={() => setIsOfflinePackModalOpen(true)}
+                className={`hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95 ${
+                  isOfflinePackReady
+                    ? "bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/40 text-emerald-300"
+                    : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400 hover:text-emerald-300"
+                }`}
                 title="تحميل المنهج كاملاً للعمل بدون إنترنت (~7.2 MB)"
                 aria-label="تحميل المنهج بدون إنترنت"
               >
                 <DownloadCloud className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="hidden lg:inline">بدون إنترنت</span>
+                <span className="hidden lg:inline">
+                  {isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت"}
+                </span>
               </button>
+
+              {/* Mobile Install Button (compact) */}
+              {!isInstalled && (
+                <button
+                  type="button"
+                  onClick={() => promptInstall()}
+                  className="sm:hidden p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 transition-colors cursor-pointer"
+                  title="تثبيت التطبيق"
+                  aria-label="تثبيت التطبيق"
+                >
+                  <Smartphone className="w-4 h-4" />
+                </button>
+              )}
 
               {/* Offline Pack Download Launcher (Mobile compact) */}
               <button
                 type="button"
-                onClick={() => setIsOfflinePackOpen(true)}
-                className="sm:hidden p-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-colors cursor-pointer"
+                onClick={() => setIsOfflinePackModalOpen(true)}
+                className={`sm:hidden p-2 rounded-lg border transition-colors cursor-pointer ${
+                  isOfflinePackReady
+                    ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
+                    : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                }`}
                 title="تحميل المنهج بدون إنترنت"
                 aria-label="تحميل المنهج بدون إنترنت"
               >
@@ -157,6 +222,38 @@ export function Navbar() {
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-slate-800 bg-slate-950 p-3 space-y-1">
+            {/* PWA Install Button in Mobile Menu */}
+            {!isInstalled && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  promptInstall();
+                }}
+                className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-indigo-300 bg-indigo-950/50 hover:bg-indigo-900/60 border border-indigo-500/40 text-right cursor-pointer"
+              >
+                <Smartphone className="w-4 h-4 text-indigo-400" />
+                <span>تثبيت التطبيق على جهازك (PWA) 📲</span>
+              </button>
+            )}
+
+            {/* Offline Pack Action in Mobile Menu */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsOfflinePackModalOpen(true);
+              }}
+              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-right cursor-pointer"
+            >
+              <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              <span>
+                {isOfflinePackReady
+                  ? "المنهج محفوظ محلياً بدون إنترنت ✓"
+                  : "تحميل المنهج بدون إنترنت (Offline Pack) ⚡"}
+              </span>
+            </button>
+
             {/* Direct Quick Index in Mobile Menu */}
             <button
               type="button"
@@ -164,23 +261,10 @@ export function Navbar() {
                 setIsMobileMenuOpen(false);
                 setIsIndexOpen(true);
               }}
-              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-indigo-300 bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-500/30 text-right cursor-pointer"
+              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-right cursor-pointer"
             >
               <BookOpen className="w-4 h-4 text-indigo-400" />
               <span>فهرس المنهج والدروس 📚</span>
-            </button>
-
-            {/* Offline Pack Action in Mobile Menu */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsOfflinePackOpen(true);
-              }}
-              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-right cursor-pointer"
-            >
-              <DownloadCloud className="w-4 h-4 text-emerald-400" />
-              <span>تحميل المنهج بدون إنترنت (Offline Pack) ⚡</span>
             </button>
 
             {NAV_LINKS.map((link) => {
@@ -214,7 +298,10 @@ export function Navbar() {
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Offline Pack Modal */}
-      <OfflinePackModal isOpen={isOfflinePackOpen} onClose={() => setIsOfflinePackOpen(false)} />
+      <OfflinePackModal
+        isOpen={isOfflinePackModalOpen}
+        onClose={() => setIsOfflinePackModalOpen(false)}
+      />
     </>
   );
 }

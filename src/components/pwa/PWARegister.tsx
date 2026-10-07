@@ -3,84 +3,76 @@
 import React, { useEffect, useState } from "react";
 import { getAssetPath } from "@/lib/utils";
 import { WifiOff, Sparkles, RefreshCw } from "lucide-react";
+import { usePWA } from "@/context/PWAContext";
+import { PWAInstallModal } from "./PWAInstallModal";
+import { PWAInstallBanner } from "./PWAInstallBanner";
 
 export function PWARegister() {
-  const [isOffline, setIsOffline] = useState(false);
+  const { isOffline, isInstallModalOpen, setIsInstallModalOpen } = usePWA();
   const [updateWaitingWorker, setUpdateWaitingWorker] = useState<ServiceWorker | null>(null);
 
   useEffect(() => {
-    // 1. Initial online status check
-    if (typeof window !== "undefined") {
-      // In development or on localhost, proactively unregister any active service worker and clear caches.
-      // This prevents stale webpack chunks from being served and causing React hydration mismatches.
-      const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-      if (isLocalhost) {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.getRegistrations().then((registrations) => {
-            if (registrations.length > 0) {
-              for (const reg of registrations) {
-                reg.unregister();
-              }
-              if ("caches" in window) {
-                caches.keys().then((keys) => {
-                  for (const key of keys) {
+    if (typeof window === "undefined") return;
+
+    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const isDev = process.env.NODE_ENV === "development";
+    const forceEnablePWA = window.location.search.includes("pwa=1") || window.location.search.includes("enable_pwa=1");
+
+    // In development mode on localhost (and without explicit ?pwa=1 flag), unregister service workers
+    // to avoid webpack HMR chunk hydration conflicts during active code editing.
+    // In production builds (even when tested on localhost), register the Service Worker normally.
+    if (isDev && isLocalhost && !forceEnablePWA) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          if (registrations.length > 0) {
+            for (const reg of registrations) {
+              reg.unregister();
+            }
+            if ("caches" in window) {
+              caches.keys().then((keys) => {
+                for (const key of keys) {
+                  // Only delete app shell cache in dev, keep user's offline DB safe
+                  if (key.includes("shell")) {
                     caches.delete(key);
                   }
-                });
-              }
-              if (navigator.serviceWorker.controller && !sessionStorage.getItem("sw_cleared_dev")) {
-                sessionStorage.setItem("sw_cleared_dev", "1");
-                window.location.reload();
-              }
+                }
+              });
             }
-          });
-        }
-        return;
+          }
+        });
       }
+      return;
+    }
 
-      setIsOffline(!navigator.onLine);
+    // Register Service Worker
+    if ("serviceWorker" in navigator) {
+      const swPath = getAssetPath("/sw.js");
+      const scope = getAssetPath("/");
 
-      const handleOnline = () => setIsOffline(false);
-      const handleOffline = () => setIsOffline(true);
+      navigator.serviceWorker
+        .register(swPath, { scope })
+        .then((registration) => {
+          // Check if there's already a waiting worker
+          if (registration.waiting) {
+            setUpdateWaitingWorker(registration.waiting);
+          }
 
-      window.addEventListener("online", handleOnline);
-      window.addEventListener("offline", handleOffline);
-
-      // 2. Register Service Worker
-      if ("serviceWorker" in navigator) {
-        const swPath = getAssetPath("/sw.js");
-        const scope = getAssetPath("/");
-
-        navigator.serviceWorker
-          .register(swPath, { scope })
-          .then((registration) => {
-            // Check if there's already a waiting worker
-            if (registration.waiting) {
-              setUpdateWaitingWorker(registration.waiting);
+          // Check for future updates
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+            if (installingWorker) {
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === "installed" && navigator.serviceWorker.controller) {
+                  // Polite notification: set waiting worker
+                  setUpdateWaitingWorker(registration.waiting || installingWorker);
+                }
+              };
             }
-
-            // Check for future updates
-            registration.onupdatefound = () => {
-              const installingWorker = registration.installing;
-              if (installingWorker) {
-                installingWorker.onstatechange = () => {
-                  if (installingWorker.state === "installed" && navigator.serviceWorker.controller) {
-                    // Polite notification: set waiting worker
-                    setUpdateWaitingWorker(registration.waiting || installingWorker);
-                  }
-                };
-              }
-            };
-          })
-          .catch((error) => {
-            console.warn("PWA Service Worker registration error:", error);
-          });
-      }
-
-      return () => {
-        window.removeEventListener("online", handleOnline);
-        window.removeEventListener("offline", handleOffline);
-      };
+          };
+        })
+        .catch((error) => {
+          console.warn("PWA Service Worker registration error:", error);
+        });
     }
   }, []);
 
@@ -136,6 +128,15 @@ export function PWARegister() {
           </div>
         </div>
       )}
+
+      {/* Floating PWA Install Banner */}
+      <PWAInstallBanner />
+
+      {/* PWA Install Instructions Modal */}
+      <PWAInstallModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+      />
     </>
   );
 }

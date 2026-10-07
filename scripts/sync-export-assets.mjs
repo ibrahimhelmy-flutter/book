@@ -55,6 +55,16 @@ if (!fs.existsSync(noJekyllPath)) {
   console.log('  📄 Added .nojekyll to out/');
 }
 
+// 4.1 Sync PWA assets (sw.js, manifest.webmanifest, icons) to out/
+const pwaFiles = ['sw.js', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
+for (const pwaFile of pwaFiles) {
+  const src = path.resolve('public', pwaFile);
+  const dest = path.join(outDir, pwaFile);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, dest);
+  }
+}
+
 // 5. Audit all curriculum images in out/
 const curriculumPath = path.resolve('src', 'data', 'curriculum.ts');
 const curriculumText = fs.readFileSync(curriculumPath, 'utf-8');
