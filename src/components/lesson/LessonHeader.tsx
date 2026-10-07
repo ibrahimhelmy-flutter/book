@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen, Compass, MoreVertical, Type, Plus, Minus } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
 
-export type LessonFontSize = "normal" | "large" | "xlarge";
+export type LessonFontSize = "normal" | "large" | "xlarge" | "2xlarge" | "3xlarge" | "4xlarge" | "5xlarge";
 
 interface Props {
   lesson: Lesson;
@@ -207,22 +207,36 @@ export function LessonHeader({
                   <span className="text-[10px] text-slate-500">إجراءات سريعة</span>
                 </div>
 
-                {/* Font Size Zoom Controller with 3 Shortcuts */}
+                {/* Font Size Zoom Controller with 7 Shortcuts */}
                 <div className="p-2.5 bg-slate-900/90 border border-slate-800/90 rounded-xl space-y-2">
                   <div className="flex items-center justify-between text-xs font-semibold text-slate-300 px-0.5">
                     <div className="flex items-center gap-1.5 text-indigo-400">
                       <Type className="w-4 h-4 shrink-0" />
                       <span className="text-slate-200 font-bold">حجم خط الدرس</span>
                       <span className="text-[10px] text-slate-500 font-mono hidden sm:inline-flex items-center gap-1">
-                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px] shadow-2xs" title="اختصار تكبير الخط">+</kbd>
-                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px] shadow-2xs" title="اختصار تصغير الخط">-</kbd>
+                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px]" title="اختصار تكبير الخط">+</kbd>
+                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px]" title="اختصار تصغير الخط">-</kbd>
+                        <kbd className="px-1 py-0.2 rounded bg-slate-800 border border-slate-700 text-slate-400 font-mono text-[10px]" title="اختصار الحجم الافتراضي">0</kbd>
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono font-black border border-indigo-500/30">
+                        {fontSize === "normal" && "100%"}
+                        {fontSize === "large" && "130%"}
+                        {fontSize === "xlarge" && "165%"}
+                        {fontSize === "2xlarge" && "200%"}
+                        {fontSize === "3xlarge" && "240%"}
+                        {fontSize === "4xlarge" && "280%"}
+                        {fontSize === "5xlarge" && "320%"}
+                      </span>
                       <button
                         type="button"
                         onClick={() => {
-                          if (fontSize === "xlarge") onFontSizeChange?.("large");
+                          if (fontSize === "5xlarge") onFontSizeChange?.("4xlarge");
+                          else if (fontSize === "4xlarge") onFontSizeChange?.("3xlarge");
+                          else if (fontSize === "3xlarge") onFontSizeChange?.("2xlarge");
+                          else if (fontSize === "2xlarge") onFontSizeChange?.("xlarge");
+                          else if (fontSize === "xlarge") onFontSizeChange?.("large");
                           else if (fontSize === "large") onFontSizeChange?.("normal");
                         }}
                         disabled={fontSize === "normal"}
@@ -237,8 +251,12 @@ export function LessonHeader({
                         onClick={() => {
                           if (fontSize === "normal") onFontSizeChange?.("large");
                           else if (fontSize === "large") onFontSizeChange?.("xlarge");
+                          else if (fontSize === "xlarge") onFontSizeChange?.("2xlarge");
+                          else if (fontSize === "2xlarge") onFontSizeChange?.("3xlarge");
+                          else if (fontSize === "3xlarge") onFontSizeChange?.("4xlarge");
+                          else if (fontSize === "4xlarge") onFontSizeChange?.("5xlarge");
                         }}
-                        disabled={fontSize === "xlarge"}
+                        disabled={fontSize === "5xlarge"}
                         className="w-6 h-6 rounded-md bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-200 flex items-center justify-center font-bold text-xs transition-colors cursor-pointer"
                         title="تكبير الخط (اختصار: + أو Ctrl + +)"
                         aria-label="تكبير الخط (اختصار: + أو Ctrl + +)"
@@ -248,49 +266,109 @@ export function LessonHeader({
                     </div>
                   </div>
 
-                  {/* 3 Presets / Shortcuts: عادي - كبير - كبير جداً */}
-                  <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-950 rounded-lg border border-slate-800/80">
-                    <button
-                      type="button"
-                      onClick={() => onFontSizeChange?.("normal")}
-                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
-                        fontSize === "normal"
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-                      }`}
-                      title="حجم الخط الافتراضي (عادي)"
-                    >
-                      <span className="text-xs font-bold">A</span>
-                      <span className="text-[10px]">عادي</span>
-                    </button>
+                  {/* 7 Presets: Row 1 (Standard to Double) & Row 2 (Huge to Maximum) */}
+                  <div className="space-y-1 p-1 bg-slate-950 rounded-lg border border-slate-800/80">
+                    <div className="grid grid-cols-4 gap-1">
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("normal")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "normal"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم الخط الافتراضي (عادي 100%)"
+                      >
+                        <span className="text-[11px] font-bold">A</span>
+                        <span className="text-[9px] truncate">عادي</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => onFontSizeChange?.("large")}
-                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
-                        fontSize === "large"
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-                      }`}
-                      title="حجم خط كبير (+25%)"
-                    >
-                      <span className="text-sm font-bold">A</span>
-                      <span className="text-[10px]">كبير</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("large")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "large"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم خط كبير (130%)"
+                      >
+                        <span className="text-xs font-bold">A</span>
+                        <span className="text-[9px] truncate">كبير</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => onFontSizeChange?.("xlarge")}
-                      className={`py-1.5 px-2 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
-                        fontSize === "xlarge"
-                          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                          : "text-slate-400 hover:text-white hover:bg-slate-800/60"
-                      }`}
-                      title="حجم خط كبير جداً (+50%)"
-                    >
-                      <span className="text-base font-bold">A</span>
-                      <span className="text-[10px]">كبير جداً</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("xlarge")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "xlarge"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم خط كبير جداً (165%)"
+                      >
+                        <span className="text-sm font-bold">A</span>
+                        <span className="text-[9px] truncate">كبير جداً</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("2xlarge")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "2xlarge"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم خط ضخم (200% - ضعف الحجم)"
+                      >
+                        <span className="text-base font-black">A</span>
+                        <span className="text-[9px] truncate">ضخم (2x)</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-1 pt-0.5 border-t border-slate-850">
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("3xlarge")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "3xlarge"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم خط عملاق (240%)"
+                      >
+                        <span className="text-lg font-black">A</span>
+                        <span className="text-[9px] truncate">عملاق</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("4xlarge")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "4xlarge"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="حجم خط فائق الضخامة (280%)"
+                      >
+                        <span className="text-xl font-black">A</span>
+                        <span className="text-[9px] truncate">فائق</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onFontSizeChange?.("5xlarge")}
+                        className={`py-1.5 px-0.5 rounded-md text-xs font-bold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
+                          fontSize === "5xlarge"
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                        }`}
+                        title="أقصى تكبير ممكن (320%) 🔍"
+                      >
+                        <span className="text-2xl font-black leading-none">A</span>
+                        <span className="text-[9px] truncate">أقصى تكبير</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 

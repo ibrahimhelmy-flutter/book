@@ -4,13 +4,15 @@ import React, { useState, useEffect } from "react";
 import { ZoomIn, Maximize2, Minimize2, X, Image as ImageIcon, Eye, EyeOff } from "lucide-react";
 import { getAssetPath } from "@/lib/utils";
 
+import { LessonFontSize } from "./LessonHeader";
+
 interface SectionImageViewerProps {
   image: {
     src: string;
     caption: string;
     alt?: string;
   };
-  fontSize?: "normal" | "large" | "xlarge";
+  fontSize?: LessonFontSize;
 }
 
 export function SectionImageViewer({ image, fontSize = "normal" }: SectionImageViewerProps) {
@@ -169,10 +171,18 @@ export function SectionImageViewer({ image, fontSize = "normal" }: SectionImageV
         {image.caption && (
           <p
             className={`text-center mt-2 font-medium transition-all duration-200 ${
-              fontSize === "large"
-                ? "text-sm text-slate-300"
+              fontSize === "5xlarge"
+                ? "text-2xl sm:text-3xl text-slate-100 font-bold"
+                : fontSize === "4xlarge"
+                ? "text-xl sm:text-2xl text-slate-100 font-semibold"
+                : fontSize === "3xlarge"
+                ? "text-lg sm:text-xl text-slate-100 font-semibold"
+                : fontSize === "2xlarge"
+                ? "text-base sm:text-lg text-slate-200 font-medium"
                 : fontSize === "xlarge"
                 ? "text-base text-slate-200"
+                : fontSize === "large"
+                ? "text-sm text-slate-300"
                 : "text-xs text-slate-400"
             }`}
           >
