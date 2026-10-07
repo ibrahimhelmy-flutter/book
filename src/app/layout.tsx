@@ -21,6 +21,14 @@ export const viewport: Viewport = {
   themeColor: "#020617",
 };
 
+const isProd = process.env.NODE_ENV === "production";
+const isVercel = process.env.VERCEL === "1";
+const isNetlify = process.env.NETLIFY === "true";
+const isGitHubPages = !isVercel && !isNetlify && (process.env.GITHUB_ACTIONS === "true" || isProd);
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
+  ? process.env.NEXT_PUBLIC_BASE_PATH
+  : (isGitHubPages ? "/book" : "");
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-curriculum.edu.eg";
 
 export const metadata: Metadata = {
@@ -34,15 +42,20 @@ export const metadata: Metadata = {
   authors: [{ name: "وزارة التربية والتعليم والتعليم الفني - جمهورية مصر العربية" }],
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
+      { url: `${basePath}/icon-192.png`, sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/icon-512.png`, sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/icon-192.png`, sizes: "192x192", type: "image/png" },
     ],
   },
-  manifest: "/manifest.webmanifest",
+  manifest: `${basePath}/manifest.webmanifest`,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: CURRENT_BOOK.title,
+  },
   openGraph: {
     type: "website",
     locale: "ar_EG",
