@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { SolvedExample } from "@/types";
 import { BookOpenCheck, ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { LessonFontSize } from "./LessonHeader";
 
 interface Props {
   example: SolvedExample;
-  fontSize?: "normal" | "large" | "xlarge";
+  fontSize?: LessonFontSize;
 }
 
 export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) {
@@ -28,7 +29,19 @@ export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) 
           <span className="text-xs font-bold text-emerald-400 font-mono block">التدريب والحل النموذجي</span>
           <h3
             className={`font-bold transition-all duration-200 ${
-              fontSize === "large" ? "text-2xl" : fontSize === "xlarge" ? "text-3xl" : "text-xl"
+              fontSize === "5xlarge"
+                ? "text-4xl sm:text-5xl"
+                : fontSize === "4xlarge"
+                ? "text-3xl sm:text-4xl"
+                : fontSize === "3xlarge"
+                ? "text-3xl sm:text-4xl"
+                : fontSize === "2xlarge"
+                ? "text-2xl sm:text-3xl"
+                : fontSize === "xlarge"
+                ? "text-2xl sm:text-3xl"
+                : fontSize === "large"
+                ? "text-xl sm:text-2xl"
+                : "text-xl"
             }`}
           >
             {example.title}
@@ -51,10 +64,18 @@ export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) 
                   </span>
                   <span
                     className={`font-bold transition-all duration-200 ${
-                      fontSize === "large"
-                        ? "text-base sm:text-lg text-white"
+                      fontSize === "5xlarge"
+                        ? "text-3xl sm:text-4xl text-white font-black"
+                        : fontSize === "4xlarge"
+                        ? "text-2xl sm:text-3xl text-white font-black"
+                        : fontSize === "3xlarge"
+                        ? "text-xl sm:text-2xl text-white font-black"
+                        : fontSize === "2xlarge"
+                        ? "text-lg sm:text-xl text-white font-extrabold"
                         : fontSize === "xlarge"
                         ? "text-lg sm:text-xl text-white font-extrabold"
+                        : fontSize === "large"
+                        ? "text-base sm:text-lg text-white"
                         : "text-sm text-slate-200"
                     }`}
                   >
@@ -73,10 +94,14 @@ export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) 
                         <div
                           key={opt.id}
                           className={`p-2.5 rounded-lg border flex items-center gap-2 transition-all duration-200 ${
-                            fontSize === "large"
-                              ? "text-sm sm:text-base"
-                              : fontSize === "xlarge"
+                            fontSize === "5xlarge"
+                              ? "text-2xl sm:text-3xl"
+                              : fontSize === "4xlarge"
+                              ? "text-xl sm:text-2xl"
+                              : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                               ? "text-base sm:text-lg"
+                              : fontSize === "large"
+                              ? "text-sm sm:text-base"
                               : "text-xs"
                           } ${
                             opt.id === item.correctAnswer
@@ -100,10 +125,14 @@ export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) 
                         <div
                           key={idx}
                           className={`p-2.5 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center transition-all duration-200 ${
-                            fontSize === "large"
-                              ? "text-sm sm:text-base text-slate-200"
-                              : fontSize === "xlarge"
+                            fontSize === "5xlarge"
+                              ? "text-2xl sm:text-3xl text-slate-100"
+                              : fontSize === "4xlarge"
+                              ? "text-xl sm:text-2xl text-slate-100"
+                              : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                               ? "text-base sm:text-lg text-slate-100"
+                              : fontSize === "large"
+                              ? "text-sm sm:text-base text-slate-200"
                               : "text-xs text-slate-300"
                           }`}
                         >
@@ -122,10 +151,14 @@ export function SolvedExampleAccordion({ example, fontSize = "normal" }: Props) 
                     </div>
                     <p
                       className={`text-slate-300 leading-relaxed transition-all duration-200 ${
-                        fontSize === "large"
-                          ? "text-sm sm:text-base"
-                          : fontSize === "xlarge"
+                        fontSize === "5xlarge"
+                          ? "text-2xl sm:text-3xl"
+                          : fontSize === "4xlarge"
+                          ? "text-xl sm:text-2xl"
+                          : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                           ? "text-base sm:text-lg"
+                          : fontSize === "large"
+                          ? "text-sm sm:text-base"
                           : "text-xs"
                       }`}
                     >

@@ -3,12 +3,13 @@
 import React from "react";
 import { getAcronym } from "@/data/acronyms";
 import { AcronymTooltip } from "./AcronymTooltip";
+import type { LessonFontSize } from "../lesson/LessonHeader";
 
 interface EyeComfortTextProps {
   content: string;
   theme?: "dark" | "light";
   className?: string;
-  fontSize?: "normal" | "large" | "xlarge";
+  fontSize?: LessonFontSize;
 }
 
 /**
@@ -152,10 +153,18 @@ export function EyeComfortText({
   if (!content) return null;
 
   const fontClass =
-    fontSize === "large"
-      ? "text-base sm:text-lg md:text-xl leading-loose"
+    fontSize === "5xlarge"
+      ? "text-4xl sm:text-5xl md:text-6xl leading-loose font-extrabold"
+      : fontSize === "4xlarge"
+      ? "text-3xl sm:text-4xl md:text-5xl leading-loose font-bold"
+      : fontSize === "3xlarge"
+      ? "text-2xl sm:text-3xl md:text-4xl leading-loose font-semibold"
+      : fontSize === "2xlarge"
+      ? "text-xl sm:text-2xl md:text-3xl leading-loose font-medium"
       : fontSize === "xlarge"
       ? "text-lg sm:text-xl md:text-2xl leading-loose font-medium"
+      : fontSize === "large"
+      ? "text-base sm:text-lg md:text-xl leading-loose"
       : "text-sm sm:text-base leading-relaxed";
 
   // Split by code blocks
@@ -188,7 +197,7 @@ export function EyeComfortText({
   }
 
   return (
-    <div className={`space-y-3 ${fontClass} ${className}`}>
+    <div className={`space-y-4 ${fontClass} ${className}`}>
       {sections.map((section, secIdx) => {
         if (section.type === "code") {
           return (
@@ -203,9 +212,11 @@ export function EyeComfortText({
               )}
               <pre
                 className={`p-3.5 font-mono text-emerald-300 overflow-x-auto leading-relaxed transition-all duration-200 ${
-                  fontSize === "xlarge"
+                  fontSize === "5xlarge" || fontSize === "4xlarge"
+                    ? "text-base sm:text-lg"
+                    : fontSize === "3xlarge" || fontSize === "2xlarge"
                     ? "text-sm sm:text-base"
-                    : fontSize === "large"
+                    : fontSize === "xlarge"
                     ? "text-xs sm:text-sm"
                     : "text-xs"
                 }`}
@@ -220,7 +231,7 @@ export function EyeComfortText({
         const lines = section.value.split("\n");
 
         return (
-          <div key={secIdx} className="space-y-2.5">
+          <div key={secIdx} className="space-y-3">
             {lines.map((line, lineIdx) => {
               const trimmed = line.trim();
               if (!trimmed) return null;
@@ -232,7 +243,15 @@ export function EyeComfortText({
                   <div
                     key={lineIdx}
                     className={`my-3 p-3 bg-slate-950/90 border border-indigo-500/30 rounded-xl text-center font-mono text-indigo-300 shadow-inner dir-ltr ${
-                      fontSize === "xlarge" ? "text-base" : fontSize === "large" ? "text-sm" : "text-xs sm:text-sm"
+                      fontSize === "5xlarge" || fontSize === "4xlarge"
+                        ? "text-2xl sm:text-3xl"
+                        : fontSize === "3xlarge" || fontSize === "2xlarge"
+                        ? "text-xl sm:text-2xl"
+                        : fontSize === "xlarge"
+                        ? "text-base sm:text-lg"
+                        : fontSize === "large"
+                        ? "text-sm sm:text-base"
+                        : "text-xs sm:text-sm"
                     }`}
                   >
                     {formula}
@@ -246,10 +265,16 @@ export function EyeComfortText({
                 const num = numberedMatch[1];
                 const rest = numberedMatch[2];
                 return (
-                  <div key={lineIdx} className="flex items-start gap-2.5 pr-1 leading-relaxed">
+                  <div key={lineIdx} className="flex items-start gap-3 pr-1 leading-relaxed">
                     <span
                       className={`rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold font-mono shrink-0 border border-indigo-500/30 mt-0.5 ${
-                        fontSize === "xlarge" ? "w-6 h-6 text-xs" : "w-5 h-5 text-[11px]"
+                        fontSize === "5xlarge" || fontSize === "4xlarge"
+                          ? "w-9 h-9 text-base"
+                          : fontSize === "3xlarge" || fontSize === "2xlarge"
+                          ? "w-7 h-7 text-sm"
+                          : fontSize === "xlarge"
+                          ? "w-6 h-6 text-xs"
+                          : "w-5 h-5 text-[11px]"
                       }`}
                     >
                       {num}
@@ -273,7 +298,15 @@ export function EyeComfortText({
                       isSubBullet ? "pr-6" : "pr-2"
                     }`}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-2.5 shadow-sm shadow-indigo-500/50" />
+                    <span
+                      className={`rounded-full bg-indigo-400 shrink-0 shadow-sm shadow-indigo-500/50 ${
+                        fontSize === "5xlarge" || fontSize === "4xlarge"
+                          ? "w-3.5 h-3.5 mt-4"
+                          : fontSize === "3xlarge" || fontSize === "2xlarge"
+                          ? "w-2.5 h-2.5 mt-3.5"
+                          : "w-1.5 h-1.5 mt-2.5"
+                      }`}
+                    />
                     <div className={`flex-1 text-slate-200 transition-all duration-200 ${fontClass}`}>
                       {renderInlineTokens(rest, theme)}
                     </div>

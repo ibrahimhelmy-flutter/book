@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Lesson, CalloutBox } from "@/types";
 import dynamic from "next/dynamic";
-import { LessonHeader } from "./LessonHeader";
+import { LessonHeader, type LessonFontSize } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
 import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
@@ -168,7 +168,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
   const [isEngineerOpen, setIsEngineerOpen] = useState<boolean>(false);
   const [isClosureRecapOpen, setIsClosureRecapOpen] = useState<boolean>(false);
-  const [fontSize, setFontSize] = useState<"normal" | "large" | "xlarge">("normal");
+  const [fontSize, setFontSize] = useState<LessonFontSize>("normal");
 
   // Floating Toast for Font Size Feedback
   const [fontToast, setFontToast] = useState<{ message: string; subtext: string } | null>(null);
@@ -187,38 +187,58 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   // Load font size preference from localStorage on mount
   React.useEffect(() => {
     try {
-      const saved = localStorage.getItem("lesson_font_size") as "normal" | "large" | "xlarge";
-      if (saved && ["normal", "large", "xlarge"].includes(saved)) {
+      const saved = localStorage.getItem("lesson_font_size") as LessonFontSize;
+      if (saved && ["normal", "large", "xlarge", "2xlarge", "3xlarge", "4xlarge", "5xlarge"].includes(saved)) {
         setFontSize(saved);
       }
     } catch {}
   }, []);
 
-  const handleFontSizeChange = React.useCallback((size: "normal" | "large" | "xlarge") => {
+  const handleFontSizeChange = React.useCallback((size: LessonFontSize) => {
     setFontSize(size);
     try {
       localStorage.setItem("lesson_font_size", size);
     } catch {}
-    if (size === "xlarge") {
-      showFontToast("حجم الخط: كبير جداً (+50%)", "اختصار: [+] تكبير | [-] تصغير");
+    if (size === "5xlarge") {
+      showFontToast("أقصى تكبير للخط: 320% 🔍", "الحد الأقصى المطلق للتكبير (خط فائق الضخامة)");
+    } else if (size === "4xlarge") {
+      showFontToast("حجم الخط: فائق الضخامة (280%)", "اختصار: [-] تصغير | [0] عادي");
+    } else if (size === "3xlarge") {
+      showFontToast("حجم الخط: عملاق (240%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+    } else if (size === "2xlarge") {
+      showFontToast("حجم الخط: ضخم (200% - ضعف الحجم)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+    } else if (size === "xlarge") {
+      showFontToast("حجم الخط: كبير جداً (165%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
     } else if (size === "large") {
-      showFontToast("حجم الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+      showFontToast("حجم الخط: كبير (130%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
     } else {
-      showFontToast("حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+      showFontToast("حجم الخط: عادي (100% الافتراضي)", "الحجم القياسي • اختصار: [+] تكبير");
     }
   }, [showFontToast]);
 
   const increaseFontSize = React.useCallback(() => {
     setFontSize((prev) => {
-      let next: "normal" | "large" | "xlarge" = prev;
+      let next: LessonFontSize = prev;
       if (prev === "normal") {
         next = "large";
-        showFontToast("تم تكبير الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+        showFontToast("تم تكبير الخط: كبير (130%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
       } else if (prev === "large") {
         next = "xlarge";
-        showFontToast("تم تكبير الخط: كبير جداً (+50%)", "الحد الأقصى لحجم الخط");
+        showFontToast("تم تكبير الخط: كبير جداً (165%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "xlarge") {
+        next = "2xlarge";
+        showFontToast("تم تكبير الخط: ضخم (200% - ضعف الحجم)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "2xlarge") {
+        next = "3xlarge";
+        showFontToast("تم تكبير الخط: عملاق (240%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "3xlarge") {
+        next = "4xlarge";
+        showFontToast("تم تكبير الخط: فائق الضخامة (280%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "4xlarge") {
+        next = "5xlarge";
+        showFontToast("أقصى تكبير للخط: 320% 🔍", "الحد الأقصى المطلق للتكبير (خط فائق الضخامة)");
       } else {
-        showFontToast("الحد الأقصى لحجم الخط (كبير جداً)", "استخدم [-] للتصغير");
+        showFontToast("الحد الأقصى لحجم الخط (320% أقصى تكبير)", "استخدم [-] للتصغير أو [0] للاستعادة");
       }
       try {
         localStorage.setItem("lesson_font_size", next);
@@ -229,15 +249,27 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
   const decreaseFontSize = React.useCallback(() => {
     setFontSize((prev) => {
-      let next: "normal" | "large" | "xlarge" = prev;
-      if (prev === "xlarge") {
+      let next: LessonFontSize = prev;
+      if (prev === "5xlarge") {
+        next = "4xlarge";
+        showFontToast("تم تصغير الخط: فائق الضخامة (280%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "4xlarge") {
+        next = "3xlarge";
+        showFontToast("تم تصغير الخط: عملاق (240%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "3xlarge") {
+        next = "2xlarge";
+        showFontToast("تم تصغير الخط: ضخم (200%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "2xlarge") {
+        next = "xlarge";
+        showFontToast("تم تصغير الخط: كبير جداً (165%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
+      } else if (prev === "xlarge") {
         next = "large";
-        showFontToast("تم تصغير الخط: كبير (+25%)", "اختصار: [+] تكبير | [-] تصغير");
+        showFontToast("تم تصغير الخط: كبير (130%)", "اختصار: [+] تكبير | [-] تصغير | [0] عادي");
       } else if (prev === "large") {
         next = "normal";
-        showFontToast("تم استعادة حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+        showFontToast("تم استعادة حجم الخط: عادي (100% الافتراضي)", "الحجم القياسي • اختصار: [+] تكبير");
       } else {
-        showFontToast("الحجم الافتراضي للخط (عادي)", "استخدم [+] للتكبير");
+        showFontToast("الحجم الافتراضي للخط (100% عادي)", "استخدم [+] للتكبير");
       }
       try {
         localStorage.setItem("lesson_font_size", next);
@@ -246,9 +278,10 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     });
   }, [showFontToast]);
 
+
   const resetFontSize = React.useCallback(() => {
     setFontSize("normal");
-    showFontToast("تم استعادة حجم الخط: عادي (الافتراضي)", "الحجم القياسي");
+    showFontToast("تم استعادة حجم الخط: عادي (الافتراضي 100%)", "الحجم القياسي • اختصار: [+] تكبير");
     try {
       localStorage.setItem("lesson_font_size", "normal");
     } catch {}
@@ -532,10 +565,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                       </span>
                       <h3
                         className={`font-bold text-white leading-snug transition-all duration-200 ${
-                          fontSize === "large"
-                            ? "text-xl sm:text-2xl"
+                          fontSize === "5xlarge"
+                            ? "text-4xl sm:text-5xl md:text-6xl"
+                            : fontSize === "4xlarge"
+                            ? "text-3xl sm:text-4xl md:text-5xl"
+                            : fontSize === "3xlarge"
+                            ? "text-3xl sm:text-4xl"
+                            : fontSize === "2xlarge"
+                            ? "text-2xl sm:text-3xl"
                             : fontSize === "xlarge"
                             ? "text-2xl sm:text-3xl"
+                            : fontSize === "large"
+                            ? "text-xl sm:text-2xl"
                             : "text-lg sm:text-xl"
                         }`}
                       >
@@ -582,10 +623,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
                   <div
                     className={`transition-all duration-200 ${
-                      fontSize === "large"
-                        ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
-                        : fontSize === "xlarge"
+                      fontSize === "5xlarge"
+                        ? "text-3xl sm:text-4xl md:text-5xl text-white leading-loose font-bold"
+                        : fontSize === "4xlarge"
+                        ? "text-2xl sm:text-3xl md:text-4xl text-slate-100 leading-loose font-semibold"
+                        : fontSize === "3xlarge"
+                        ? "text-xl sm:text-2xl md:text-3xl text-slate-100 leading-loose font-medium"
+                        : fontSize === "2xlarge"
                         ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
+                        : fontSize === "xlarge"
+                        ? "text-base sm:text-lg md:text-xl text-slate-100 leading-loose font-medium"
+                        : fontSize === "large"
+                        ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
                         : "text-sm sm:text-base text-slate-300 leading-relaxed"
                     }`}
                   >
@@ -602,10 +651,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                     <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950 custom-scrollbar">
                       <table
                         className={`w-full min-w-[420px] text-right transition-all duration-200 ${
-                          fontSize === "large"
-                            ? "text-sm sm:text-base"
-                            : fontSize === "xlarge"
+                          fontSize === "5xlarge"
+                            ? "text-2xl sm:text-3xl"
+                            : fontSize === "4xlarge"
+                            ? "text-xl sm:text-2xl"
+                            : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                             ? "text-base sm:text-lg"
+                            : fontSize === "large"
+                            ? "text-sm sm:text-base"
                             : "text-xs"
                         }`}
                       >
@@ -615,10 +668,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                               <th
                                 key={i}
                                 className={`font-semibold text-slate-200 ${
-                                  fontSize === "large"
-                                    ? "p-3.5"
-                                    : fontSize === "xlarge"
+                                  fontSize === "5xlarge"
+                                    ? "p-6"
+                                    : fontSize === "4xlarge"
+                                    ? "p-5"
+                                    : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                     ? "p-4"
+                                    : fontSize === "large"
+                                    ? "p-3.5"
                                     : "p-3"
                                 }`}
                               >
@@ -634,10 +691,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                                 <td
                                   key={cIdx}
                                   className={`leading-relaxed ${
-                                    fontSize === "large"
-                                      ? "p-3.5"
-                                      : fontSize === "xlarge"
+                                    fontSize === "5xlarge"
+                                      ? "p-6"
+                                      : fontSize === "4xlarge"
+                                      ? "p-5"
+                                      : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                       ? "p-4"
+                                      : fontSize === "large"
+                                      ? "p-3.5"
                                       : "p-3"
                                   }`}
                                 >
@@ -648,6 +709,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                           ))}
                         </tbody>
                       </table>
+
                     </div>
                   )}
                 </section>
@@ -871,10 +933,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         {lesson.appliedTask.scenario && (
                           <div
                             className={`p-3.5 bg-slate-950/60 rounded-xl border border-slate-800/80 leading-relaxed transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-sm sm:text-base text-slate-200"
-                                : fontSize === "xlarge"
+                              fontSize === "5xlarge"
+                                ? "text-2xl sm:text-3xl text-slate-100 font-semibold"
+                                : fontSize === "4xlarge"
+                                ? "text-xl sm:text-2xl text-slate-100 font-medium"
+                                : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                 ? "text-base sm:text-lg text-slate-100 font-medium"
+                                : fontSize === "large"
+                                ? "text-sm sm:text-base text-slate-200"
                                 : "text-xs text-slate-300"
                             }`}
                           >
@@ -886,17 +952,33 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         <div className="space-y-1.5">
                           <span
                             className={`font-bold text-slate-300 block transition-all duration-200 ${
-                              fontSize === "large" ? "text-sm" : fontSize === "xlarge" ? "text-base" : "text-xs"
+                              fontSize === "5xlarge"
+                                ? "text-2xl"
+                                : fontSize === "4xlarge"
+                                ? "text-xl"
+                                : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
+                                ? "text-base"
+                                : fontSize === "large"
+                                ? "text-sm"
+                                : "text-xs"
                             }`}
                           >
                             التدريب المطلوب:
                           </span>
                           <p
                             className={`font-semibold text-slate-200 leading-relaxed transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-base sm:text-lg"
+                              fontSize === "5xlarge"
+                                ? "text-3xl sm:text-4xl font-black"
+                                : fontSize === "4xlarge"
+                                ? "text-2xl sm:text-3xl font-black"
+                                : fontSize === "3xlarge"
+                                ? "text-xl sm:text-2xl font-black"
+                                : fontSize === "2xlarge"
+                                ? "text-lg sm:text-xl font-bold"
                                 : fontSize === "xlarge"
                                 ? "text-lg sm:text-xl font-bold"
+                                : fontSize === "large"
+                                ? "text-base sm:text-lg"
                                 : "text-xs sm:text-sm"
                             }`}
                           >
@@ -907,10 +989,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         {lesson.appliedTask.sampleAnswer && (
                           <div
                             className={`p-4 bg-emerald-950/25 rounded-xl border border-emerald-500/30 leading-relaxed text-slate-300 shadow-inner transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-sm sm:text-base text-slate-200"
-                                : fontSize === "xlarge"
+                              fontSize === "5xlarge"
+                                ? "text-2xl sm:text-3xl text-slate-100"
+                                : fontSize === "4xlarge"
+                                ? "text-xl sm:text-2xl text-slate-100"
+                                : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                 ? "text-base sm:text-lg text-slate-100"
+                                : fontSize === "large"
+                                ? "text-sm sm:text-base text-slate-200"
                                 : "text-xs text-slate-300"
                             }`}
                           >
@@ -941,10 +1027,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         {lesson.keyQuestion && (
                           <div
                             className={`p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl leading-relaxed transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-sm sm:text-base text-amber-100"
-                                : fontSize === "xlarge"
+                              fontSize === "5xlarge"
+                                ? "text-2xl sm:text-3xl text-amber-50 font-semibold"
+                                : fontSize === "4xlarge"
+                                ? "text-xl sm:text-2xl text-amber-50 font-medium"
+                                : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                 ? "text-base sm:text-lg text-amber-50 font-medium"
+                                : fontSize === "large"
+                                ? "text-sm sm:text-base text-amber-100"
                                 : "text-xs text-amber-200"
                             }`}
                           >
@@ -954,10 +1044,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         )}
                         <p
                           className={`leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800 transition-all duration-200 ${
-                            fontSize === "large"
-                              ? "text-base sm:text-lg text-slate-200 leading-loose"
+                            fontSize === "5xlarge"
+                              ? "text-3xl sm:text-4xl md:text-5xl text-white leading-loose font-bold"
+                              : fontSize === "4xlarge"
+                              ? "text-2xl sm:text-3xl md:text-4xl text-slate-100 leading-loose font-semibold"
+                              : fontSize === "3xlarge"
+                              ? "text-xl sm:text-2xl md:text-3xl text-slate-100 leading-loose font-semibold"
+                              : fontSize === "2xlarge"
+                              ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
                               : fontSize === "xlarge"
                               ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
+                              : fontSize === "large"
+                              ? "text-base sm:text-lg text-slate-200 leading-loose"
                               : "text-xs sm:text-sm text-slate-300"
                           }`}
                         >
@@ -976,10 +1074,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         {Array.isArray(lesson.summary) ? (
                           <ul
                             className={`space-y-2.5 transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-base sm:text-lg text-slate-200 leading-loose"
+                              fontSize === "5xlarge"
+                                ? "text-3xl sm:text-4xl text-slate-100 leading-loose font-bold"
+                                : fontSize === "4xlarge"
+                                ? "text-2xl sm:text-3xl text-slate-100 leading-loose font-semibold"
+                                : fontSize === "3xlarge"
+                                ? "text-xl sm:text-2xl text-slate-100 leading-loose font-semibold"
+                                : fontSize === "2xlarge"
+                                ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
                                 : fontSize === "xlarge"
                                 ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
+                                : fontSize === "large"
+                                ? "text-base sm:text-lg text-slate-200 leading-loose"
                                 : "text-xs sm:text-sm text-slate-300"
                             }`}
                           >
@@ -993,10 +1099,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         ) : (
                           <p
                             className={`leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800 transition-all duration-200 ${
-                              fontSize === "large"
-                                ? "text-base sm:text-lg text-slate-200 leading-loose"
+                              fontSize === "5xlarge"
+                                ? "text-3xl sm:text-4xl text-slate-100 leading-loose font-bold"
+                                : fontSize === "4xlarge"
+                                ? "text-2xl sm:text-3xl text-slate-100 leading-loose font-semibold"
+                                : fontSize === "3xlarge"
+                                ? "text-xl sm:text-2xl text-slate-100 leading-loose font-semibold"
+                                : fontSize === "2xlarge"
+                                ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
                                 : fontSize === "xlarge"
                                 ? "text-lg sm:text-xl text-slate-100 leading-loose font-medium"
+                                : fontSize === "large"
+                                ? "text-base sm:text-lg text-slate-200 leading-loose"
                                 : "text-xs sm:text-sm text-slate-300"
                             }`}
                           >
@@ -1017,10 +1131,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                             </div>
                             <p
                               className={`leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 transition-all duration-200 ${
-                                fontSize === "large"
-                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
-                                  : fontSize === "xlarge"
+                                fontSize === "5xlarge"
+                                  ? "text-2xl sm:text-3xl text-slate-100 leading-loose font-semibold"
+                                  : fontSize === "4xlarge"
+                                  ? "text-xl sm:text-2xl text-slate-100 leading-loose font-medium"
+                                  : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                   ? "text-base sm:text-lg text-slate-100 leading-loose font-medium"
+                                  : fontSize === "large"
+                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
                                   : "text-xs sm:text-sm text-slate-300"
                               }`}
                             >
@@ -1036,10 +1154,14 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                             </div>
                             <p
                               className={`leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 transition-all duration-200 ${
-                                fontSize === "large"
-                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
-                                  : fontSize === "xlarge"
+                                fontSize === "5xlarge"
+                                  ? "text-2xl sm:text-3xl text-slate-100 leading-loose font-semibold"
+                                  : fontSize === "4xlarge"
+                                  ? "text-xl sm:text-2xl text-slate-100 leading-loose font-medium"
+                                  : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
                                   ? "text-base sm:text-lg text-slate-100 leading-loose font-medium"
+                                  : fontSize === "large"
+                                  ? "text-sm sm:text-base text-slate-200 leading-loose"
                                   : "text-xs sm:text-sm text-slate-300"
                               }`}
                             >

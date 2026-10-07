@@ -98,23 +98,63 @@
 
 /* Dynamic Lesson Body Font Scaling */
 .lesson-font-large {
-  --lesson-body-size: 1.125rem;
+  --lesson-body-size: 1.25rem;
 }
 .lesson-font-large p,
 .lesson-font-large .font-body,
 .lesson-font-large table {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   line-height: 2;
 }
 
 .lesson-font-xlarge {
-  --lesson-body-size: 1.25rem;
+  --lesson-body-size: 1.5rem;
 }
 .lesson-font-xlarge p,
 .lesson-font-xlarge .font-body,
 .lesson-font-xlarge table {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  line-height: 2.1;
+}
+
+.lesson-font-2xlarge {
+  --lesson-body-size: 1.85rem;
+}
+.lesson-font-2xlarge p,
+.lesson-font-2xlarge .font-body,
+.lesson-font-2xlarge table {
+  font-size: 1.85rem;
   line-height: 2.2;
+}
+
+.lesson-font-3xlarge {
+  --lesson-body-size: 2.25rem;
+}
+.lesson-font-3xlarge p,
+.lesson-font-3xlarge .font-body,
+.lesson-font-3xlarge table {
+  font-size: 2.25rem;
+  line-height: 2.3;
+}
+
+.lesson-font-4xlarge {
+  --lesson-body-size: 2.75rem;
+}
+.lesson-font-4xlarge p,
+.lesson-font-4xlarge .font-body,
+.lesson-font-4xlarge table {
+  font-size: 2.75rem;
+  line-height: 2.4;
+}
+
+.lesson-font-5xlarge {
+  --lesson-body-size: 3.35rem;
+}
+.lesson-font-5xlarge p,
+.lesson-font-5xlarge .font-body,
+.lesson-font-5xlarge table {
+  font-size: 3.35rem;
+  line-height: 2.5;
 }
 
 /* Print Styles for Official Exam Booklets and Answer Sheets */
