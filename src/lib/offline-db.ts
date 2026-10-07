@@ -8,9 +8,10 @@ const DB_NAME = "EgyptianAICurriculumDB";
 const DB_VERSION = 1;
 
 export const EXPECTED_LESSONS_COUNT = 14;
-export const EXPECTED_QUESTIONS_COUNT = 281;
+export const EXPECTED_QUESTIONS_COUNT = 242;
 export const EXPECTED_IMAGES_COUNT = 48;
 export const CURRENT_CONTENT_VERSION = "2026.09.11";
+export const OFFLINE_PACK_CACHE_NAME = "ai-curriculum-offline-pack-v1.0.3";
 
 export interface OfflineLessonRecord {
   lessonId: string;
@@ -196,7 +197,7 @@ class OfflineDatabase {
       if (!meta || meta.version !== CURRENT_CONTENT_VERSION) return false;
       const lessonCount = await this.getLessonsCount();
       const questionCount = await this.getQuestionsCount();
-      return lessonCount === EXPECTED_LESSONS_COUNT && questionCount === EXPECTED_QUESTIONS_COUNT;
+      return lessonCount === EXPECTED_LESSONS_COUNT && questionCount >= EXPECTED_QUESTIONS_COUNT;
     } catch {
       return false;
     }

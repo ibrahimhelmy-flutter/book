@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { CURRENT_BOOK } from "@/data/books";
 import { PWARegister } from "@/components/pwa/PWARegister";
+import { PWAProvider } from "@/context/PWAContext";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -68,17 +69,19 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${cairo.className} min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col selection:bg-indigo-600 selection:text-white`}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:shadow-xl focus:outline-none"
-        >
-          تخطي إلى المحتوى الرئيسي
-        </a>
-        <Navbar />
-        <main id="main-content" className="flex-1 flex flex-col w-full min-w-0">
-          {children}
-        </main>
-        <PWARegister />
+        <PWAProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:shadow-xl focus:outline-none"
+          >
+            تخطي إلى المحتوى الرئيسي
+          </a>
+          <Navbar />
+          <main id="main-content" className="flex-1 flex flex-col w-full min-w-0">
+            {children}
+          </main>
+          <PWARegister />
+        </PWAProvider>
       </body>
     </html>
   );
