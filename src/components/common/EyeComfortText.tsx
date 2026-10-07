@@ -389,8 +389,6 @@ export function EyeComfortText({
   fontSize = "normal",
   keyConcepts = [],
 }: EyeComfortTextProps) {
-  if (!content) return null;
-
   // Extract clean terms from keyConcepts for smart subtle highlighting
   const allTerms = React.useMemo(() => {
     const set = new Set<string>();
@@ -407,6 +405,8 @@ export function EyeComfortText({
 
     return Array.from(set);
   }, [keyConcepts]);
+
+  if (!content) return null;
 
   const fontClass =
     fontSize === "5xlarge"
