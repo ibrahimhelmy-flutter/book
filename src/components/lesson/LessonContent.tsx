@@ -638,7 +638,12 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                         : "text-sm sm:text-base text-slate-300 leading-relaxed"
                     }`}
                   >
-                    <EyeComfortText content={sec.content} theme="dark" fontSize={fontSize} />
+                    <EyeComfortText
+                      content={sec.content}
+                      theme="dark"
+                      fontSize={fontSize}
+                      keyConcepts={lesson.keyConcepts}
+                    />
                   </div>
 
                   {/* Section Diagram / Image with Compact Size & Lightbox */}
