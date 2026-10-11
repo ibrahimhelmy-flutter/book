@@ -179,7 +179,23 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
       getAssetPath("/dashboard/"),
     ];
 
-    const fullList = [...coreRoutes, ...chapterRoutes, ...lessonRoutes, ...imageUrls];
+    const pageRoutes = [...coreRoutes, ...chapterRoutes, ...lessonRoutes];
+    // Static export: client-side navigation loads each route's RSC payload from `<route>/index.txt`
+    const rscPayloads = pageRoutes.map((route) => `${route}index.txt`);
+
+    // All JS/CSS/font assets from the build, including lazily loaded chunks that page HTML never references
+    let staticAssets: string[] = [];
+    try {
+      const res = await fetch(getAssetPath("/offline-assets.json"), { cache: "no-store" });
+      if (res.ok) {
+        const manifest: { assets?: string[] } = await res.json();
+        staticAssets = (manifest.assets || []).map((asset) => getAssetPath(asset));
+      }
+    } catch {
+      // Not available in `next dev`; page HTML chunk discovery in sw.js still applies
+    }
+
+    const fullList = [...pageRoutes, ...rscPayloads, ...staticAssets, ...imageUrls];
     const targetUrls = urlsToRetry && urlsToRetry.length > 0 ? urlsToRetry : fullList;
     const totalTasks = EXPECTED_LESSONS_COUNT + EXPECTED_QUESTIONS_COUNT + targetUrls.length;
     let completedTasks = 0;

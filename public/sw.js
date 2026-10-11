@@ -132,7 +132,31 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 2: Navigation & HTML Pages -> Stale-While-Revalidate with Offline Fallback
+  // Strategy 2: Next.js RSC payloads. With `output: "export"`, client-side <Link> navigation fetches
+  // `<route>/index.txt?_rsc=...` instead of the HTML page. Network first, keyed without the query string.
+  if (url.pathname.endsWith('.txt') && request.mode !== 'navigate') {
+    const cacheKey = `${url.origin}${url.pathname}`;
+    event.respondWith(
+      fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(APP_SHELL_CACHE).then((cache) => {
+            cache.put(cacheKey, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(async () => {
+        const cachedPayload = await caches.match(cacheKey, { ignoreSearch: true });
+        if (cachedPayload) return cachedPayload;
+        // A non-OK response (not a network error) makes Next.js fall back to a full navigation
+        // to the page URL with `/index.txt` stripped, which Strategy 3 can serve from cache.
+        return new Response('', { status: 504, statusText: 'Offline RSC Payload Unavailable' });
+      })
+    );
+    return;
+  }
+
+  // Strategy 3: Navigation & HTML Pages -> Stale-While-Revalidate with Offline Fallback
   if (request.mode === 'navigate' || request.destination === 'document') {
     event.respondWith(
       fetch(request).then((networkResponse) => {
@@ -158,7 +182,16 @@ self.addEventListener('fetch', (event) => {
           (await caches.match(`${url.origin}${cleanPath}index.html`, { ignoreSearch: true }));
         if (altCached) return altCached;
 
-        // 3. Fallback to cached home page
+        // 3. Next.js can fall back to navigating to the RSC payload URL itself (`.../index.txt`).
+        // Redirect to the page's HTML route instead of dropping the user on the home page.
+        if (cleanPath.endsWith('.txt')) {
+          const htmlPath = cleanPath.endsWith('/index.txt')
+            ? cleanPath.slice(0, -'index.txt'.length)
+            : `${cleanPath.slice(0, -'.txt'.length)}/`;
+          return Response.redirect(`${url.origin}${htmlPath}`, 302);
+        }
+
+        // 4. Fallback to cached home page
         const homeFallback =
           (await caches.match('./')) ||
           (await caches.match('./index.html')) ||

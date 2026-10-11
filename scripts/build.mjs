@@ -1,4 +1,5 @@
 import { spawnSync } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 import process from 'process';
 
@@ -25,3 +26,16 @@ if (result.status !== 0) {
 }
 
 console.log('\n✓ Next.js build finished successfully.');
+
+// Write the list of all hashed static assets (JS chunks, CSS, fonts) for the offline pack.
+// Lazily loaded chunks (next/dynamic) are not referenced in page HTML, so without this list
+// they are never cached and pages crash with ChunkLoadError when opened offline.
+const staticDir = path.resolve('out', '_next', 'static');
+if (fs.existsSync(staticDir)) {
+  const assets = fs.readdirSync(staticDir, { recursive: true })
+    .filter((rel) => fs.statSync(path.join(staticDir, rel)).isFile())
+    .map((rel) => `/_next/static/${rel.split(path.sep).join('/')}`)
+    .sort();
+  fs.writeFileSync(path.resolve('out', 'offline-assets.json'), JSON.stringify({ assets }, null, 2));
+  console.log(`✓ Wrote out/offline-assets.json (${assets.length} static assets for the offline pack)`);
+}
