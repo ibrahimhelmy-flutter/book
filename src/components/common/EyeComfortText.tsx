@@ -316,8 +316,8 @@ function renderInlineTokens(
                   <strong
                     key={spIdx}
                     className={`font-bold px-1.5 py-0.5 rounded-md mx-0.5 inline-block ${isDefinition
-                        ? "text-teal-950 bg-teal-50/40 border border-teal-100/70"
-                        : "text-teal-950 bg-teal-50/70 border border-teal-200/80"
+                        ? "text-teal-950 bg-teal-500/[0.025] border border-teal-500/[0.06]"
+                        : "text-teal-950 bg-teal-500/[0.035] border border-teal-500/[0.08]"
                       }`}
                   >
                     {renderTextWithAcronyms(sp, theme)}
@@ -329,8 +329,8 @@ function renderInlineTokens(
                 <strong
                   key={spIdx}
                   className={`font-bold px-1 py-0.5 rounded-md mx-0.5 inline ${isDefinition
-                      ? "text-teal-100/90 bg-teal-400/[0.035] border-b border-teal-400/15"
-                      : "text-teal-100 bg-teal-400/[0.06] border border-teal-400/[0.12]"
+                      ? "text-teal-100/90 bg-teal-400/[0.015] border-b border-teal-400/[0.06]"
+                      : "text-teal-100 bg-teal-400/[0.02] border border-teal-400/[0.06]"
                     }`}
                 >
                   {renderTextWithAcronyms(sp, theme)}
