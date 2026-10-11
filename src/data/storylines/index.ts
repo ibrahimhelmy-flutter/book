@@ -1,10 +1,14 @@
 import { LessonStoryline } from "@/types/storyline";
+import { CHAPTER_1_STORYLINES } from "./chapter-1";
 import { CHAPTER_2_STORYLINES } from "./chapter-2";
-import { GLOSSARY_DATA } from "@/data/glossary";
-import { GlossaryTerm } from "@/types";
+import { CHAPTER_3_STORYLINES } from "./chapter-3";
+import { CHAPTER_4_STORYLINES } from "./chapter-4";
 
 const ALL_STORYLINES: Record<string, Record<string, LessonStoryline>> = {
+  "chapter-1": CHAPTER_1_STORYLINES,
   "chapter-2": CHAPTER_2_STORYLINES,
+  "chapter-3": CHAPTER_3_STORYLINES,
+  "chapter-4": CHAPTER_4_STORYLINES,
 };
 
 export function getStorylineForLesson(
@@ -22,29 +26,4 @@ export function getStorylineForLesson(
   }
 
   return null;
-}
-
-export function getAllStorylinesList() {
-  const list: { chapterId: string; lessonSlug: string; title: string; lessonNumber: string }[] = [];
-  for (const [chId, chapterStories] of Object.entries(ALL_STORYLINES)) {
-    for (const story of Object.values(chapterStories)) {
-      list.push({
-        chapterId: chId,
-        lessonSlug: story.lessonSlug,
-        title: story.title,
-        lessonNumber: story.lessonNumber,
-      });
-    }
-  }
-  return list;
-}
-
-export function getLessonGlossaryTerms(lessonNumber: string): GlossaryTerm[] {
-  return GLOSSARY_DATA.filter((term) => term.lessonNumber === lessonNumber);
-}
-
-export function getGlossaryTermsByIds(ids: string[]): GlossaryTerm[] {
-  if (!ids || ids.length === 0) return [];
-  const set = new Set(ids);
-  return GLOSSARY_DATA.filter((term) => set.has(term.id));
 }

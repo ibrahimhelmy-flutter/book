@@ -113,7 +113,7 @@ export function LessonHeader({
           <Link
             href={`/chapters/${lesson.chapterId || "chapter-2"}/${lesson.slug}/storyline`}
             className="px-3 py-1.5 rounded-lg border border-purple-500/40 bg-purple-950/40 hover:bg-purple-900/60 text-purple-200 hover:text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-purple-950/40"
-            title="تسلسل أفكار الدرس: الرواية الهندسية الواقعية خطوة بخطوة"
+            title="تسلسل أفكار الدرس: شرح مبسط ومتدرج خطوة بخطوة"
           >
             <Compass className="w-3.5 h-3.5 text-purple-400" />
             <span>تسلسل الأفكار 🧭</span>

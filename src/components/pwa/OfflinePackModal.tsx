@@ -169,7 +169,10 @@ export function OfflinePackModal({ isOpen, onClose }: Props) {
     const imageUrls = CANONICAL_DIAGRAMS.map((img) => getAssetPath(`/images/extracted/${img}`));
     const chapterRoutes = CURRICULUM_DATA.map((ch) => getAssetPath(`/chapters/${ch.id}/`));
     const lessonRoutes = CURRICULUM_DATA.flatMap((ch) =>
-      ch.lessons.map((l) => getAssetPath(`/chapters/${ch.id}/${l.slug}/`))
+      ch.lessons.flatMap((l) => [
+        getAssetPath(`/chapters/${ch.id}/${l.slug}/`),
+        getAssetPath(`/chapters/${ch.id}/${l.slug}/storyline/`),
+      ])
     );
     const coreRoutes = [
       getAssetPath("/"),
