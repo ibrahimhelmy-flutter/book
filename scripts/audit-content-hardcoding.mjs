@@ -8,7 +8,7 @@ const FORBIDDEN_RULES = [
     name: 'Hardcoded Chapter Dropdown Option',
     fileRegex: /\.(tsx|jsx)$/,
     pattern: /<option[^>]*value=["']chapter-\d+["'][^>]*>.*[\u0600-\u06FF]+/i,
-    description: 'Found hardcoded chapter <option> in JSX. Must dynamically map from CURRICULUM_DATA.'
+    description: 'Found hardcoded chapter <option> in JSX. Must map from the part manifest (usePart().chapters).'
   },
   {
     name: 'Hardcoded Curriculum Chapter Definition in Components',
@@ -18,17 +18,23 @@ const FORBIDDEN_RULES = [
     description: 'Found hardcoded chapter array in components.'
   },
   {
-    name: 'Hardcoded Committee Questions Pool in Lib',
-    fileRegex: /committeeBank\.(ts|js)$/,
-    pattern: /const\s+SPECIALIZED_COMMITTEE_QUESTIONS\s*:\s*CommitteeQuestion\[\]\s*=\s*\[\s*\{/i,
-    description: 'SPECIALIZED_COMMITTEE_QUESTIONS must be imported from @/data/committee-questions, not hardcoded.'
-  },
-  {
     name: 'Hardcoded Deep Questions Array in Lib or Components',
     dir: 'src/components',
     fileRegex: /\.(ts|tsx)$/,
     pattern: /const\s+CHAPTER_\d+_DEEP_QUESTIONS\s*=/i,
-    description: 'Deep questions must be loaded from @/data/deep-questions, not hardcoded in components.'
+    description: 'Deep questions are generated per lesson into public/data/<part>/deep/ and fetched on demand, never hardcoded.'
+  },
+  {
+    name: 'Server-only content API imported from a client component',
+    fileRegex: /\.(ts|tsx)$/,
+    pattern: /^\s*["']use client["'][\s\S]*from\s+["']@\/content(\/reader|\/route)?["']/,
+    description: 'Client components receive content as props or fetch public/data JSON; only @/content/paths is client-safe.'
+  },
+  {
+    name: 'Removed legacy data module import',
+    fileRegex: /\.(ts|tsx)$/,
+    pattern: /from\s+["']@\/data(\/|["'])/,
+    description: 'src/data was replaced by the per-part content API (src/content) and public/data JSON.'
   }
 ];
 
@@ -71,7 +77,7 @@ console.log(`Educational content violations: ${violations}`);
 console.log('======================================================');
 
 if (violations === 0) {
-  console.log('🏆 100% CLEAN: All components and libraries consume dynamic curriculum data!');
+  console.log('🏆 100% CLEAN: All components and libraries consume catalog-driven content data!');
   process.exit(0);
 } else {
   console.error(`❌ FAILED: Found ${violations} content hardcoding violations.`);

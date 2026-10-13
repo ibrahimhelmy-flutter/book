@@ -12,17 +12,17 @@
 ```mermaid
 flowchart TD
     subgraph Canonical_Layer ["1. طبقة المصدر الأصلي (Source of Truth) ✍️ عدّل هنا فقط"]
-        A["book-sources/term-1/05-canonical-data/authored/deep-questions/.../*.json"]
+        A["book-sources/secondary-2/programming-ai/term-1/05-canonical-data/authored/deep-questions/.../*.json"]
     end
 
     subgraph Build_Pipeline ["2. خط التوليد البرمجي الآلي ⚙️"]
-        B["npm run build:data<br/>(scripts/build-all-data.mjs)"]
+        B["npm run build:data<br/>(scripts/data/build-data.ts)"]
     end
 
     subgraph App_Layer ["3. طبقة التطبيق والواجهة (Generated Artifacts) ⚠️ لا تعدل هنا"]
-        C["src/data/deep-questions/.../*.ts"]
-        D["src/data/curriculum.ts"]
-        E["src/data/glossary.ts"]
+        C["public/data/<grade>/<book>/<part>/deep/*.json"]
+        D["public/data/<grade>/<book>/<part>/lessons/*.json"]
+        E["public/data/<grade>/<book>/<part>/glossary.json"]
     end
 
     subgraph Validation_Layer ["4. طبقة التدقيق والفحص 🛡️"]
@@ -41,7 +41,7 @@ flowchart TD
 ```
 
 ### المقارنة بين المجلدين:
-| الخاصية | مجلد المصادر `book-sources/` | مجلد التطبيق `src/data/` |
+| الخاصية | مجلد المصادر `book-sources/` | مجلد التطبيق `public/data/` |
 | :--- | :--- | :--- |
 | **طبيعة الملفات** | ملفات `JSON` خام معيارية | ملفات `TypeScript` مُولّدة برمجياً |
 | **القابلية للتعديل** | ✅ **يتم التعديل هنا فقط** | ❌ **ممنوع التعديل اليدوي** (تُستبدل تلقائياً) |
@@ -56,10 +56,10 @@ flowchart TD
 ### الخطوة 1: افتح ملف الـ JSON المصدري المخصص للدرس
 المسار:
 ```text
-book-sources/term-1/05-canonical-data/authored/deep-questions/chapter-[X]/lesson-[X]-[Y].json
+book-sources/secondary-2/programming-ai/term-1/05-canonical-data/authored/deep-questions/chapter-[X]/lesson-[X]-[Y].json
 ```
 *مثال:* للدرس الثاني من الفصل الأول:
-`book-sources/term-1/05-canonical-data/authored/deep-questions/chapter-1/lesson-1-2.json`
+`book-sources/secondary-2/programming-ai/term-1/05-canonical-data/authored/deep-questions/chapter-1/lesson-1-2.json`
 
 ---
 
@@ -126,7 +126,7 @@ book-sources/term-1/05-canonical-data/authored/deep-questions/chapter-[X]/lesson
 npm run build:data
 ```
 > **ماذا يفعل هذا الأمر؟**
-> يقرأ تلقائياً كافة ملفات الـ JSON في `book-sources/` ويقوم بتوليد وتحديث كافة ملفات `src/data/` المقابلة، وتحديث ملفات الفهارس والتصدير دون أي تدخل يدوي منك.
+> يقرأ تلقائياً كافة ملفات الـ JSON في `book-sources/` ويقوم بتوليد وتحديث كافة ملفات `public/data/` المقابلة، وتحديث ملفات الفهارس والتصدير دون أي تدخل يدوي منك.
 
 ---
 
@@ -185,7 +185,7 @@ npx tsc --noEmit
 
 | الأمر | الغرض منه | متى يُستخدم؟ |
 | :--- | :--- | :--- |
-| `npm run build:data` | توليد ملفات `src/data/` من ملفات `JSON` | **دائماً بعد أي تعديل أو إضافة في ملفات JSON** |
+| `npm run build:data` | توليد ملفات `public/data/` من ملفات `JSON` | **دائماً بعد أي تعديل أو إضافة في ملفات JSON** |
 | `npm run validate:schemas` | التحقق من صحة هياكل البيانات وسلامة المراجع | للتحقق من عدم وجود حقول ناقصة أو مراجع خاطئة |
 | `npx tsc --noEmit` | فحص أخطاء أنواع TypeScript في المشروع | للتأكد من عدم وجود أي خطأ برمجي في الكود |
 | `npm test` | تشغيل كافة اختبارات المحرك والمعالجة العربية | قبل عمل Commit أو تسليم نسخة جديدة |
@@ -198,10 +198,10 @@ npx tsc --noEmit
 
 ## ❓ 5. الأسئلة الشائعة وحلول المشكلات (Troubleshooting)
 
-### س 1: قمت بالتعديل في ملف `src/data/.../lesson-1-2.ts` ولكن اختفت التعديلات بعد البناء!
-- **السبب:** الملف في `src/data` هو نتاج آلي يتم مسحه وإعادة توليده من `book-sources/` عند كل بناء.
+### س 1: قمت بالتعديل في ملف داخل `public/data/` ولكن اختفت التعديلات بعد البناء!
+- **السبب:** الملفات في `public/data` (غير مرفوعة على git) نتاج آلي يتم مسحه وإعادة توليده من `book-sources/` عند كل بناء.
 - **الحل:** قم دائماً بإجراء التعديل في ملف الـ JSON المصدري داخل:
-  `book-sources/term-1/05-canonical-data/authored/deep-questions/...`
+  `book-sources/secondary-2/programming-ai/term-1/05-canonical-data/authored/deep-questions/...`
   ثم نفذ: `npm run build:data`.
 
 ### س 2: يظهر خطأ: `Type '"..."' is not assignable to type 'CognitiveLevel'`

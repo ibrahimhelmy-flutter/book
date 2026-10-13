@@ -1,21 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { sources } from './sources-config.mjs';
-import { chapter1 } from '../book-sources/term-1/06-build-modules/chapter1.mjs';
-import { chapter2 } from '../book-sources/term-1/06-build-modules/chapter2.mjs';
-import { chapter3 } from '../book-sources/term-1/06-build-modules/chapter3.mjs';
-import { chapter4 } from '../book-sources/term-1/06-build-modules/chapter4.mjs';
+import { partsFromArgs, loadBuildModules } from './sources-config.mjs';
 
-const allChapters = [chapter1, chapter2, chapter3, chapter4];
-const allLessons = allChapters.flatMap(c => c.lessons);
-
-const specPath = sources.canonicalBaselineSpec;
-if (!fs.existsSync(specPath)) {
-  console.error(`Error: Baseline spec not found at ${specPath}. Run extract-textbook-baseline.mjs first.`);
-  process.exit(1);
-}
-
-const baselineSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+// Per-part state, assigned before each part is audited (see MAIN EXECUTION).
+let allLessons = [];
+let baselineSpec = null;
 
 // Strict stage ordering invariant:
 // INTRO (0) <= CONTENT_EXPLORATION (1) <= THINK_AND_DISCUSS (2) <= CONCEPT_MAP (3) <= APPLIED_TASK (4) <= THINK_LIKE_AN_ENGINEER (5) <= EXAM_PRACTICE (6) <= SUMMARY (7)
@@ -274,17 +263,44 @@ function auditLessonCompliance(lessonId) {
   };
 }
 
-// MAIN EXECUTION (Phase 0 Audit on Lesson 1-2)
+// MAIN EXECUTION
+// Gold-standard lessons: those listed in the baseline spec's `complianceGateLessons`, or every
+// lesson of the spec with `--all`. Term-1 historically gates on lesson 1-2.
+const auditAll = process.argv.includes('--all');
+let allPassed = true;
+
+for (const sources of partsFromArgs()) {
+  const specPath = sources.canonicalBaselineSpec;
+  if (!fs.existsSync(specPath)) {
+    console.error(`❌ ${sources.key}: baseline spec not found at ${specPath}. Run extract-textbook-baseline.mjs --part ${sources.key} first.`);
+    allPassed = false;
+    continue;
+  }
+  baselineSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+  allLessons = (await loadBuildModules(sources)).flatMap((c) => c.lessons);
+
+  const gateLessons = auditAll
+    ? baselineSpec.lessons.map((l) => l.id)
+    : (baselineSpec.complianceGateLessons || (sources.legacy ? ['lesson-1-2'] : baselineSpec.lessons.map((l) => l.id)));
+
+  for (const lessonId of gateLessons) {
+    if (!runGate(sources.key, lessonId)) allPassed = false;
+  }
+}
+
+process.exit(allPassed ? 0 : 1);
+
+function runGate(partKey, lessonId) {
 console.log('======================================================================');
-console.log('🏁 EXECUTING PHASE 0: CURRICULUM COMPLIANCE GATE FOR LESSON 1-2');
-console.log('======================================================================\n');
+console.log(`🏁 CURRICULUM COMPLIANCE GATE — ${partKey} — ${lessonId}`);
+console.log('======================================================================');
 
 try {
-  const result = auditLessonCompliance('lesson-1-2');
+  const result = auditLessonCompliance(lessonId);
 
   console.log(`Lesson: ${result.lessonNumber} - ${result.lessonTitle}`);
   console.log(`Generated Presentation Slides: ${result.totalSlides}`);
-  console.log(`Curriculum Baseline Atomic Items: ${result.totalBaselineItems}\n`);
+  console.log(`Curriculum Baseline Atomic Items: ${result.totalBaselineItems}`);
 
   if (result.missingItemsCount > 0) {
     console.log('Missing items:');
@@ -292,30 +308,17 @@ try {
     console.log();
   }
 
-  console.log('╔══════════════════════════════════════════════════════════════════════╗');
-  console.log('║                    CURRICULUM COMPLIANCE GATE                        ║');
-  console.log('╠══════════════════════════════════════════════════════════════════════╣');
-  console.log(`║ 1. Forward Coverage (Book ➔ Slides)      = ${result.forwardCoveragePct.toFixed(1)}%                    ║`);
-  console.log(`║ 2. Missing Curriculum Items              = ${result.missingItemsCount}                         ║`);
-  console.log(`║ 3. Backward Compliance (Slides ➔ Book)   = 100.0%                    ║`);
-  console.log(`║ 4. Unsupported Slide Items               = ${result.unsupportedCount}                         ║`);
-  console.log(`║ 5. Untraceable Slide Items               = ${result.untraceableCount}                         ║`);
-  console.log(`║ 6. Stage Pipeline Invariant Violations   = ${result.stageViolationsCount}                         ║`);
-  console.log(`║ 7. Terminology & Acronym Violations      = ${result.termViolationsCount}                         ║`);
-  console.log(`║ 8. TypeScript & Test Engine Suite        = 0 Errors / 23 Tests PASS  ║`);
-  console.log(`║ 9. Curriculum Relationships Validity     = VALID (Broken = ${result.brokenRelCount})        ║`);
-  console.log('╠══════════════════════════════════════════════════════════════════════╣');
-  console.log(`║                         FINAL VERDICT: ${result.passed ? 'PASS 🏆' : 'FAIL ❌'}                 ║`);
-  console.log('╚══════════════════════════════════════════════════════════════════════╝\n');
-
-  if (result.passed) {
-    console.log('🎉 PHASE 0 BENCHMARK COMPLETED SUCCESSFULLY: Lesson 1-2 achieves 100% compliant gold standard!');
-    process.exit(0);
-  } else {
-    console.error('❌ PHASE 0 FAILED: Lesson 1-2 did not pass all compliance criteria.');
-    process.exit(1);
-  }
+  console.log(`  1. Forward Coverage (Book ➔ Slides)    = ${result.forwardCoveragePct.toFixed(1)}%`);
+  console.log(`  2. Missing Curriculum Items            = ${result.missingItemsCount}`);
+  console.log(`  3. Unsupported Slide Items             = ${result.unsupportedCount}`);
+  console.log(`  4. Untraceable Slide Items             = ${result.untraceableCount}`);
+  console.log(`  5. Stage Pipeline Invariant Violations = ${result.stageViolationsCount}`);
+  console.log(`  6. Terminology & Acronym Violations    = ${result.termViolationsCount}`);
+  console.log(`  7. Broken Curriculum Relationships     = ${result.brokenRelCount}`);
+  console.log(`  FINAL VERDICT: ${result.passed ? 'PASS 🏆' : 'FAIL ❌'}`);
+  return result.passed;
 } catch (err) {
   console.error('Execution Error during compliance audit:', err);
-  process.exit(1);
+  return false;
+}
 }

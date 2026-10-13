@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, ArrowLeft, ShieldCheck, User, School, BookOpen } from "lucide-react";
 import { getStoredProfile, saveProfile } from "@/lib/storage";
-import { CURRENT_BOOK } from "@/data/books";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,7 +26,7 @@ export default function LoginPage() {
       name: name.trim() || (role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة"),
       email: role === "student" ? "student@moe.edu.eg" : "teacher@moe.edu.eg",
       role: role,
-      grade: CURRENT_BOOK.grade,
+      grade: getStoredProfile().grade,
       school: school.trim() || "المدرسة الثانوية",
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
@@ -44,7 +43,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-2xl font-black">إعداد الملف الدراسي الشخصي</h1>
           <p className="text-xs text-slate-400">
-            منصة {CURRENT_BOOK.title} ({CURRENT_BOOK.grade})
+            منصة المنهج التفاعلي
           </p>
         </div>
 

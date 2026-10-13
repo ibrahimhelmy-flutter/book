@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { offlineDB } from "@/lib/offline-db";
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
+import { getPackStatus, type OfflinePackState } from "@/lib/offline-db";
+import { useActivePart } from "@/components/layout/PartProvider";
 
 export type DevicePlatform = "ios" | "android" | "windows" | "mac" | "other";
 
@@ -16,7 +17,10 @@ interface PWAContextType {
   setIsInstallModalOpen: (open: boolean) => void;
   isOfflinePackModalOpen: boolean;
   setIsOfflinePackModalOpen: (open: boolean) => void;
+  /** The active part (useActivePart()) has a downloaded pack whose contentHash matches its manifest. */
   isOfflinePackReady: boolean;
+  /** "none" | "ready" | "stale" (downloaded, but the part changed since) for the active part. */
+  offlinePackState: OfflinePackState;
   refreshOfflinePackStatus: () => Promise<void>;
 }
 
@@ -45,16 +49,30 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
   const [platform, setPlatform] = useState<DevicePlatform>("other");
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isOfflinePackModalOpen, setIsOfflinePackModalOpen] = useState(false);
-  const [isOfflinePackReady, setIsOfflinePackReady] = useState(false);
+  const [offlinePackState, setOfflinePackState] = useState<OfflinePackState>("none");
+  const activePart = useActivePart();
+  const activePartKey = activePart?.key ?? null;
+  const activePartHash = activePart?.contentHash ?? null;
+
+  const latestPartKey = useRef(activePartKey);
+  latestPartKey.current = activePartKey;
 
   const refreshOfflinePackStatus = useCallback(async () => {
-    try {
-      const ready = await offlineDB.isOfflinePackReady();
-      setIsOfflinePackReady(ready);
-    } catch {
-      setIsOfflinePackReady(false);
+    if (!activePartKey || !activePartHash) {
+      setOfflinePackState("none");
+      return;
     }
-  }, []);
+    const { state } = await getPackStatus({ key: activePartKey, contentHash: activePartHash });
+    // Ignore a late answer for a part the user already navigated away from
+    if (latestPartKey.current === activePartKey) setOfflinePackState(state);
+  }, [activePartKey, activePartHash]);
+
+  // Re-check whenever the active part (or its content) changes
+  useEffect(() => {
+    refreshOfflinePackStatus();
+  }, [refreshOfflinePackStatus]);
+
+  const isOfflinePackReady = offlinePackState === "ready";
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -96,16 +114,13 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     window.addEventListener("appinstalled", handleAppInstalled);
 
-    // Check initial offline pack status
-    refreshOfflinePackStatus();
-
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, [refreshOfflinePackStatus]);
+  }, []);
 
   const canPromptDirectly = !!deferredPrompt;
   const isInstallable = !isInstalled && (canPromptDirectly || platform === "ios" || platform === "android" || platform === "windows" || platform === "mac");
@@ -143,6 +158,7 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
         isOfflinePackModalOpen,
         setIsOfflinePackModalOpen,
         isOfflinePackReady,
+        offlinePackState,
         refreshOfflinePackStatus,
       }}
     >

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, ArrowLeft, ShieldCheck, User, School, BookOpen } from "lucide-react";
 import { getStoredProfile, saveProfile } from "@/lib/storage";
-import { CURRENT_BOOK } from "@/data/books";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -27,7 +26,7 @@ export default function RegisterPage() {
       name: name.trim() || (role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة"),
       email: role === "student" ? "student@moe.edu.eg" : "teacher@moe.edu.eg",
       role: role,
-      grade: CURRENT_BOOK.grade,
+      grade: getStoredProfile().grade,
       school: school.trim() || "مدرسة المتفوقين للعلوم والتكنولوجيا",
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
@@ -44,7 +43,7 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-black">بدء تجربة التعلم الرقمي</h1>
           <p className="text-xs text-slate-400">
-            انضم لمنصة {CURRENT_BOOK.title} التفاعلية ({CURRENT_BOOK.grade})
+            انضم لمنصة المنهج التفاعلي
           </p>
         </div>
 

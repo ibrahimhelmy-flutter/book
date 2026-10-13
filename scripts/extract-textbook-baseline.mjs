@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { getSources } from './sources-config.mjs';
+import { getSources, partArg, assertPartSources, loadBuildModules } from './sources-config.mjs';
 
-const sources = getSources('term-1');
+const sources = getSources(partArg());
+assertPartSources(sources, ['rawFullTextFile']);
 
 function computeHash(str) {
   return crypto.createHash('sha256').update(str.trim()).digest('hex').slice(0, 12);
@@ -13,7 +14,7 @@ const rawTextPath = fs.existsSync(sources.rawFullTextFile) ? sources.rawFullText
 const fullText = JSON.parse(fs.readFileSync(rawTextPath, 'utf8'));
 
 // Lesson page range definitions from the official TOC
-const LESSON_DEFS = [
+const LEGACY_LESSON_DEFS = [
   { id: 'lesson-1-1', number: '1-1', chapterNumber: 1, title: 'تطور تكنولوجيا المعلومات والتحول الاجتماعي', startPage: 4, endPage: 11 },
   { id: 'lesson-1-2', number: '1-2', chapterNumber: 1, title: 'كيف يعمل الذكاء الاصطناعي', startPage: 12, endPage: 17 },
   { id: 'lesson-1-3', number: '1-3', chapterNumber: 1, title: 'الذكاء الاصطناعي في الحياة اليومية والصناعة', startPage: 18, endPage: 23 },
@@ -29,6 +30,16 @@ const LESSON_DEFS = [
   { id: 'lesson-4-3', number: '4-3', chapterNumber: 4, title: 'طرق تقييم المواقع الإلكترونية', startPage: 81, endPage: 86 },
   { id: 'lesson-4-4', number: '4-4', chapterNumber: 4, title: 'عملية التحسين التكراري للمواقع الإلكترونية', startPage: 87, endPage: 93 },
 ];
+
+// Lesson page ranges: hard-coded TOC for the legacy term-1 part, otherwise taken from the build modules.
+const LESSON_DEFS = sources.legacy
+  ? LEGACY_LESSON_DEFS
+  : (await loadBuildModules(sources)).flatMap((ch) =>
+      ch.lessons.map((l) => {
+        const [startPage, endPage] = l.pageRange.split('-').map((x) => parseInt(x.trim(), 10));
+        return { id: l.id, number: l.number, chapterNumber: ch.number, title: l.title, startPage, endPage };
+      })
+    );
 
 console.log('Extracting Canonical Textbook Baseline Specification (Phase 0)...');
 
@@ -287,8 +298,8 @@ for (const def of LESSON_DEFS) {
 const baselineSpec = {
   meta: {
     title: 'Textbook Canonical Baseline Specification',
-    sourceFile: 'Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json',
-    totalPages: 95,
+    sourceFile: path.basename(sources.rawFullTextFile),
+    totalPages: JSON.parse(fs.readFileSync(sources.canonicalBookFile, 'utf8')).meta?.totalPages || 95,
     totalLessons: baselineLessons.length,
     generatedAt: new Date().toISOString(),
     hashAlgorithm: 'sha256-12'

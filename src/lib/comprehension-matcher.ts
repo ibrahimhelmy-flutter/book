@@ -1,5 +1,5 @@
 import { Lesson, LessonSection } from "@/types";
-import { DeepChallengingQuestion } from "@/data/deep-questions";
+import type { DeepChallengingQuestion } from "@/types/deep-questions";
 
 export interface QuestionWithSection extends DeepChallengingQuestion {
   assignedSectionId: string;

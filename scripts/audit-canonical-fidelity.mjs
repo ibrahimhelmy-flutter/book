@@ -1,26 +1,29 @@
 import fs from 'fs';
 import path from 'path';
 import { normalizeText, compareCanonicalText } from './text-normalization.mjs';
-import { getSources } from './sources-config.mjs';
+import { partsFromArgs } from './sources-config.mjs';
 
-const sources = getSources('term-1');
-const canonicalDir = fs.existsSync(sources.officialLessonsDir) ? sources.officialLessonsDir : path.resolve('curriculum/official');
-const bookJsonPath = fs.existsSync(sources.canonicalBookFile) ? sources.canonicalBookFile : path.resolve('book.json');
+/** Audits one part. Returns true when every official block matches the generated lesson. */
+function auditPart(sources) {
+const canonicalDir = sources.officialLessonsDir;
+const bookJsonPath = sources.canonicalBookFile;
 
 if (!fs.existsSync(canonicalDir)) {
   console.error('❌ Error: Canonical directory not found at', canonicalDir);
-  process.exit(1);
+  return false;
 }
 
 if (!fs.existsSync(bookJsonPath)) {
   console.error('❌ Error: book.json not found at', bookJsonPath);
-  process.exit(1);
+  return false;
 }
 
 const book = JSON.parse(fs.readFileSync(bookJsonPath, 'utf8'));
+const totalPages = book.meta?.totalPages || 95;
+const expectedLessons = book.chapters.reduce((n, ch) => n + ch.lessons.length, 0);
 
 console.log('='.repeat(72));
-console.log('🏛️  CANONICAL CURRICULUM FIDELITY & 4-TIER COMPLIANCE AUDIT GATE');
+console.log(`🏛️  CANONICAL CURRICULUM FIDELITY & 4-TIER COMPLIANCE AUDIT GATE — ${sources.key}`);
 console.log('='.repeat(72));
 
 let totalOfficialBlocks = 0;
@@ -68,10 +71,10 @@ book.chapters.forEach(ch => {
 
     canonicalBlocks.forEach(canonicalBlock => {
       // 1. Source Mapping Check (Tier 4)
-      if (!canonicalBlock.page || canonicalBlock.page < 1 || canonicalBlock.page > 95 || !canonicalBlock.source) {
+      if (!canonicalBlock.page || canonicalBlock.page < 1 || canonicalBlock.page > totalPages || !canonicalBlock.source) {
         brokenMappings++;
         lessonResult.passed = false;
-        lessonResult.issues.push(`[Tier 4 - Broken Mapping] Block ${canonicalBlock.id} lacks valid page (1-95) or source provenance.`);
+        lessonResult.issues.push(`[Tier 4 - Broken Mapping] Block ${canonicalBlock.id} lacks valid page (1-${totalPages}) or source provenance.`);
       }
 
       // Tier 1 & 2 Checks (Missing & Modified Content)
@@ -88,17 +91,26 @@ book.chapters.forEach(ch => {
       } else if (canonicalBlock.type === 'key_question') {
         actualText = lesson.keyQuestion;
       } else if (canonicalBlock.type === 'concept') {
-        const concept = (lesson.keyConcepts || []).find(c => c.termAr.trim() === (canonicalBlock.termAr || '').trim());
+        // Match by id first: a term can be defined twice in one lesson with different wording (the
+        // book revisits it), so falling back to termAr alone would always pick the first definition.
+        const concept = (lesson.keyConcepts || []).find(c => c.id === canonicalBlock.conceptId)
+          || (lesson.keyConcepts || []).find(c => c.termAr.trim() === (canonicalBlock.termAr || '').trim());
         if (concept) {
           actualText = concept.definition;
         }
       } else if (canonicalBlock.type === 'section') {
-        const sec = (lesson.sections || []).find(s => s.id === canonicalBlock.sectionId || s.title.trim() === canonicalBlock.title.trim());
+        // Match by id first: several schema sections can share one printed heading (a heading with
+        // more than one figure/table), so falling back to title alone would pick the wrong one.
+        const sec = (lesson.sections || []).find(s => s.id === canonicalBlock.sectionId)
+          || (lesson.sections || []).find(s => s.title.trim() === canonicalBlock.title.trim());
         if (sec) {
           actualText = sec.content;
         }
       } else if (canonicalBlock.type === 'callout') {
-        const callout = (lesson.callouts || []).find(c => c.title.trim() === canonicalBlock.title.trim());
+        // Match by id first: every "توقّف وفكّر" box shares the same printed title, so falling back
+        // to title alone would always pick the lesson's first one.
+        const callout = (lesson.callouts || []).find(c => c.id === canonicalBlock.calloutId)
+          || (lesson.callouts || []).find(c => c.title.trim() === canonicalBlock.title.trim());
         if (callout) {
           actualText = callout.content;
         }
@@ -171,22 +183,25 @@ const passedLessonsCount = chapterResults.reduce((acc, c) => acc + c.lessons.fil
 console.log('='.repeat(72));
 console.log('Curriculum Canonical Compliance Matrix');
 console.log('─'.repeat(45));
-console.log(`Official lessons audited : ${passedLessonsCount}/14 Lessons (${passedLessonsCount === 14 ? '100%' : 'INCOMPLETE'})`);
+console.log(`Official lessons audited : ${passedLessonsCount}/${expectedLessons} Lessons (${passedLessonsCount === expectedLessons ? '100%' : 'INCOMPLETE'})`);
 console.log(`Official text blocks     : ${totalOfficialBlocks} blocks`);
 console.log(`Exact text matches       : ${totalExactMatches}/${totalOfficialBlocks} (${matchPct}%)`);
-console.log(`Source references        : 100% (Page-verified 1 to 95)`);
+console.log(`Source references        : 100% (Page-verified 1 to ${totalPages})`);
 console.log(`Missing text blocks      : ${missingBlocks}`);
 console.log(`Modified text blocks     : ${modifiedBlocks}`);
 console.log(`Unauthorized additions   : ${unauthorizedAdditions}`);
 console.log(`Broken mappings          : ${brokenMappings}`);
 console.log('─'.repeat(45));
 
-if (overallPass && passedLessonsCount === 14) {
+if (overallPass && passedLessonsCount === expectedLessons) {
   console.log('🏆 FINAL VERDICT: GOLD STANDARD PASS (100% CANONICAL COMPLIANCE)');
   console.log('='.repeat(72));
-  process.exit(0);
-} else {
-  console.log('❌ FINAL VERDICT: AUDIT FAILED (Canonical Discrepancies Detected)');
-  console.log('='.repeat(72));
-  process.exit(1);
+  return true;
 }
+console.log('❌ FINAL VERDICT: AUDIT FAILED (Canonical Discrepancies Detected)');
+console.log('='.repeat(72));
+return false;
+}
+
+const results = partsFromArgs().map(auditPart);
+process.exit(results.every(Boolean) ? 0 : 1);

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CURRICULUM_TOC, TOTAL_CURRICULUM_LESSONS } from "@/data/curriculum-toc";
 import {
   ChevronDown,
   ChevronUp,
@@ -20,9 +19,13 @@ import {
 } from "lucide-react";
 import { getStoredProgress } from "@/lib/storage";
 import { usePWA } from "@/context/PWAContext";
+import { lessonHref } from "@/content/paths";
+import { usePart } from "./PartProvider";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const part = usePart();
+  const CURRICULUM_TOC = part.chapters;
   const {
     isInstalled,
     promptInstall,
@@ -39,7 +42,7 @@ export function Sidebar() {
     return initial;
   });
 
-  const totalLessons = TOTAL_CURRICULUM_LESSONS;
+  const totalLessons = part.stats.totalLessons;
 
   // Find active lesson from current pathname
   const currentLesson = React.useMemo(() => {
@@ -51,7 +54,7 @@ export function Sidebar() {
       }
     }
     return null;
-  }, [pathname]);
+  }, [pathname, CURRICULUM_TOC]);
 
   // Restore sidebar preference from localStorage (default open)
   useEffect(() => {
@@ -96,9 +99,9 @@ export function Sidebar() {
   }, []);
 
   useEffect(() => {
-    const p = getStoredProgress();
+    const p = getStoredProgress(part.key);
     setCompletedList(p.completedLessons);
-  }, [pathname]);
+  }, [pathname, part.key]);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => {
@@ -252,7 +255,7 @@ export function Sidebar() {
                         return (
                           <Link
                             key={lesson.id}
-                            href={`/chapters/${chapter.id}/${lesson.slug}`}
+                            href={lessonHref(part.key, chapter.id, lesson.slug)}
                             className={`p-2.5 rounded-xl text-xs flex items-center justify-between gap-2 transition-all block ${
                               isLessonActive
                                 ? "bg-indigo-600 text-white font-bold shadow-md shadow-indigo-600/30"

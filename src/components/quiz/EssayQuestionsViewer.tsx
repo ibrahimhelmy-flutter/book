@@ -15,6 +15,8 @@ import {
   PenTool
 } from "lucide-react";
 import { MobileQuizNavigation } from "./MobileQuizNavigation";
+import { usePart } from "@/components/layout/PartProvider";
+import { ensureMigrated, essayAnswerKey, essayScoreKey } from "@/lib/storage";
 
 interface Props {
   lessonId: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 export function EssayQuestionsViewer({ lessonId, questions }: Props) {
+  const { key: partKey } = usePart();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [studentAnswers, setStudentAnswers] = useState<Record<string, string>>({});
   const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
@@ -36,13 +39,14 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
   // Load saved answers and scores from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
+    ensureMigrated();
     try {
       const savedAnswers: Record<string, string> = {};
       const savedScores: Record<string, number> = {};
       essayQuestions.forEach((q) => {
-        const ans = localStorage.getItem(`essay_ans_${lessonId}_${q.id}`);
+        const ans = localStorage.getItem(essayAnswerKey(partKey, lessonId, q.id));
         if (ans) savedAnswers[q.id] = ans;
-        const score = localStorage.getItem(`essay_score_${lessonId}_${q.id}`);
+        const score = localStorage.getItem(essayScoreKey(partKey, lessonId, q.id));
         if (score) savedScores[q.id] = parseInt(score, 10);
       });
       setStudentAnswers(savedAnswers);
@@ -50,12 +54,12 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
     } catch {
       // Ignore storage errors
     }
-  }, [lessonId, essayQuestions]);
+  }, [partKey, lessonId, essayQuestions]);
 
   const handleAnswerChange = (qId: string, value: string) => {
     setStudentAnswers((prev) => ({ ...prev, [qId]: value }));
     try {
-      localStorage.setItem(`essay_ans_${lessonId}_${qId}`, value);
+      localStorage.setItem(essayAnswerKey(partKey, lessonId, qId), value);
     } catch {}
   };
 
@@ -66,7 +70,7 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
   const handleSelfScore = (qId: string, score: number) => {
     setSelfScores((prev) => ({ ...prev, [qId]: score }));
     try {
-      localStorage.setItem(`essay_score_${lessonId}_${qId}`, score.toString());
+      localStorage.setItem(essayScoreKey(partKey, lessonId, qId), score.toString());
     } catch {}
   };
 
@@ -87,8 +91,8 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
       return next;
     });
     try {
-      localStorage.removeItem(`essay_ans_${lessonId}_${qId}`);
-      localStorage.removeItem(`essay_score_${lessonId}_${qId}`);
+      localStorage.removeItem(essayAnswerKey(partKey, lessonId, qId));
+      localStorage.removeItem(essayScoreKey(partKey, lessonId, qId));
     } catch {}
   };
 
@@ -366,16 +370,26 @@ export function EssayQuestionsViewer({ lessonId, questions }: Props) {
               </div>
             )}
 
-            {/* 2. Official Model Answer */}
-            <div className="p-5 sm:p-6 bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 border border-emerald-500/40 rounded-2xl space-y-3 shadow-lg">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs sm:text-sm">
-                <Sparkles className="w-4 h-4" />
-                <span>نموذج الإجابة المعتمد الكامل:</span>
+            {/* 2. Official Model Answer (the textbook does not print one for every question) */}
+            {String(currentQ.correctAnswer ?? "").trim() ? (
+              <div className="p-5 sm:p-6 bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 border border-emerald-500/40 rounded-2xl space-y-3 shadow-lg">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs sm:text-sm">
+                  <Sparkles className="w-4 h-4" />
+                  <span>نموذج الإجابة المعتمد الكامل:</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line font-normal">
+                  {String(currentQ.correctAnswer)}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line font-normal">
-                {String(currentQ.correctAnswer)}
-              </p>
-            </div>
+            ) : (
+              <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <p>لا يتضمن الكتاب المدرسي إجابة نموذجية لهذا السؤال؛ راجع شرح الدرس لتقييم إجابتك.</p>
+                {currentQ.explanation && <p className="text-slate-400 whitespace-pre-line">{currentQ.explanation}</p>}
+                {currentQ.source?.pages?.length ? (
+                  <p className="text-[11px] font-mono text-slate-500">ص {currentQ.source.pages.join("، ")}</p>
+                ) : null}
+              </div>
+            )}
 
             {/* 3. Self-Assessment Grading Widget */}
             <div className="p-5 bg-slate-950 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">

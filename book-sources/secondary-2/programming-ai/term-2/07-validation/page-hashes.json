@@ -1,0 +1,392 @@
+{
+  "term": 1,
+  "totalPagesScanned": 77,
+  "expectedPages": 77,
+  "hashes": {
+    "page_01.png": {
+      "pageNumber": 1,
+      "sha256": "976688ee87484cb63f6bc9216902146a6fb2eb4a1c1166bc2aff3496fd2548c7",
+      "sizeBytes": 1146325
+    },
+    "page_02.png": {
+      "pageNumber": 2,
+      "sha256": "45049ff826cb2cae7b6d1f5fa05814f7d89df77eb0a88f07621ac4674cd0de00",
+      "sizeBytes": 148472
+    },
+    "page_03.png": {
+      "pageNumber": 3,
+      "sha256": "9482f1696aabf529cd70d715de3e17fc6233b2d6732f3e860607e246c2ae7006",
+      "sizeBytes": 209742
+    },
+    "page_04.png": {
+      "pageNumber": 4,
+      "sha256": "65864bf0a58d6c3a999644198b5011c177ca5c2096201ac0b602ba3a36ebe3f1",
+      "sizeBytes": 72767
+    },
+    "page_05.png": {
+      "pageNumber": 5,
+      "sha256": "b0aaa0ceb45b496acf248c1bd27be5a50b0c3d2562dc2ccf93f6e9c336d9c6ff",
+      "sizeBytes": 456087
+    },
+    "page_06.png": {
+      "pageNumber": 6,
+      "sha256": "3be94e7a81d570521d4280e654675bd484ae91285d014ad0dea83b2415a6a09d",
+      "sizeBytes": 495756
+    },
+    "page_07.png": {
+      "pageNumber": 7,
+      "sha256": "97a2e8dd1eef070aa6a05c39237a5f3247626978f023a0aea74b8e58bf73707b",
+      "sizeBytes": 380776
+    },
+    "page_08.png": {
+      "pageNumber": 8,
+      "sha256": "6095c14b00010109b43876d8a5974b102eaf670b7c5f7dfcaabb7ac3f801d183",
+      "sizeBytes": 255194
+    },
+    "page_09.png": {
+      "pageNumber": 9,
+      "sha256": "97e7cd103b71671c883fc16ef8437503cf802b37b21e109db06f31119d272e43",
+      "sizeBytes": 178379
+    },
+    "page_10.png": {
+      "pageNumber": 10,
+      "sha256": "840f3fbe0aaf61d26d7ff6ae77e9cd24603c5dfa5551712380feabf84d071917",
+      "sizeBytes": 241555
+    },
+    "page_11.png": {
+      "pageNumber": 11,
+      "sha256": "364395610b03ccc61d3b5a2cb58b7d3fa7611838cb081b21570ac8c00013b08c",
+      "sizeBytes": 230329
+    },
+    "page_12.png": {
+      "pageNumber": 12,
+      "sha256": "cf1b815a8a0264521c1c8106242edab0fe07627f5e626626c975c29f07ce248e",
+      "sizeBytes": 513667
+    },
+    "page_13.png": {
+      "pageNumber": 13,
+      "sha256": "d95d5356f8d1ef8cfe523abf25a72b4933d954fc35160e0a23aaa903c24201c4",
+      "sizeBytes": 368171
+    },
+    "page_14.png": {
+      "pageNumber": 14,
+      "sha256": "900c4eb7d152a6d8ce2749c09d0660796b0af1cf8b78b59e784bbd2cf0c3fc79",
+      "sizeBytes": 336779
+    },
+    "page_15.png": {
+      "pageNumber": 15,
+      "sha256": "e8b03ada7cb684fcb06eeca4df31bd7d899991ab651ad8755f12b6dc20ea4c44",
+      "sizeBytes": 303781
+    },
+    "page_16.png": {
+      "pageNumber": 16,
+      "sha256": "30bf35ec54a85843ec4871cc8f6710452c18f97115b85aa518efeafed2dc9758",
+      "sizeBytes": 189361
+    },
+    "page_17.png": {
+      "pageNumber": 17,
+      "sha256": "7c22ae6d31450a0657ea36cc6ec039d5fd267d77a484f6496bee60782e492c49",
+      "sizeBytes": 250344
+    },
+    "page_18.png": {
+      "pageNumber": 18,
+      "sha256": "dcc7117328dfa441b0d69199fab0cd6602166d7c87f4cef248f32f681576af87",
+      "sizeBytes": 235924
+    },
+    "page_19.png": {
+      "pageNumber": 19,
+      "sha256": "18e2029d5e66349f1f25a9c77f73be47016717bfc8a5597d16e16ce998bb0f43",
+      "sizeBytes": 211030
+    },
+    "page_20.png": {
+      "pageNumber": 20,
+      "sha256": "4979b6df5d2d15cc66072e9c16e533e5618d35a8b0f5e35f8590252d4e8a7cd2",
+      "sizeBytes": 491468
+    },
+    "page_21.png": {
+      "pageNumber": 21,
+      "sha256": "a1c3da8f84208453746c4b786be312c5e4415703c826ef04bfdbc63bfd49391c",
+      "sizeBytes": 357976
+    },
+    "page_22.png": {
+      "pageNumber": 22,
+      "sha256": "4af0f8a2bf2a2df85e8f129725707a54595b68c74da8d9e8c4fc52c1c2e3c02a",
+      "sizeBytes": 357309
+    },
+    "page_23.png": {
+      "pageNumber": 23,
+      "sha256": "65b62e29ec6dda3017e76642cff3778b293ff2aa0b055910030a021cee29dc54",
+      "sizeBytes": 381182
+    },
+    "page_24.png": {
+      "pageNumber": 24,
+      "sha256": "9651f0de1a2a54228d52075b1329a296780c3c06a78daf9acc5ad33ad7c29fbf",
+      "sizeBytes": 250722
+    },
+    "page_25.png": {
+      "pageNumber": 25,
+      "sha256": "9e7dbbf604be06f22f245e05942fb9c8c02f501a32e0311919df44df6bc00d79",
+      "sizeBytes": 237370
+    },
+    "page_26.png": {
+      "pageNumber": 26,
+      "sha256": "35c24785be4ad9e3db2b94f156c750cb50256256cfc5651494df1330007c5282",
+      "sizeBytes": 236853
+    },
+    "page_27.png": {
+      "pageNumber": 27,
+      "sha256": "05913d7bcd3867ea1e3a1964e279443586c65d5df8b975a1573e57f8ce931795",
+      "sizeBytes": 444607
+    },
+    "page_28.png": {
+      "pageNumber": 28,
+      "sha256": "f4f8acf32f64f464ef1f36521d1291e67384e89fbc3239f89d1be174bfa25df0",
+      "sizeBytes": 373163
+    },
+    "page_29.png": {
+      "pageNumber": 29,
+      "sha256": "e805dbd5a72e76e4be86b10020147b523a8b4328bf2977c1b7ae1532e6d104a0",
+      "sizeBytes": 359515
+    },
+    "page_30.png": {
+      "pageNumber": 30,
+      "sha256": "9ca34a2f307139b9f1b8515ef8734d8d8dbc45835480d0598069ae45c698710e",
+      "sizeBytes": 216727
+    },
+    "page_31.png": {
+      "pageNumber": 31,
+      "sha256": "232b2176c06610657d5965d71ea5add61b1aba3d90878c70b86931887d85aa33",
+      "sizeBytes": 364240
+    },
+    "page_32.png": {
+      "pageNumber": 32,
+      "sha256": "b2f1685ed3549c5ffd8fe8928670d06cccaf9f397ddde2d7c1709e1b42403834",
+      "sizeBytes": 211730
+    },
+    "page_33.png": {
+      "pageNumber": 33,
+      "sha256": "51be49b145e07ec611c3368977a65bcbb50d28622661914da6db9d4a7b80e404",
+      "sizeBytes": 247169
+    },
+    "page_34.png": {
+      "pageNumber": 34,
+      "sha256": "d9ebfa51c8eb37b0e2125c10d6d8193b93269600170fad980fa4a8a57240bb8c",
+      "sizeBytes": 232824
+    },
+    "page_35.png": {
+      "pageNumber": 35,
+      "sha256": "9732262a328269fb90427f332e07c9a478fb0a9d00cfc1d9aa31dd154f36f085",
+      "sizeBytes": 487288
+    },
+    "page_36.png": {
+      "pageNumber": 36,
+      "sha256": "0d9f495dda92226a548723ad172e5313195cb77716d5800da7173bf3b5e44038",
+      "sizeBytes": 309754
+    },
+    "page_37.png": {
+      "pageNumber": 37,
+      "sha256": "33d4fe4d14bd36c54f3f3f4a05c42a6648fa767bcc99ac51e1833d0816a4c6c7",
+      "sizeBytes": 304884
+    },
+    "page_38.png": {
+      "pageNumber": 38,
+      "sha256": "9a3708e726fff3cac1d1bd4396843bc3e51e0487082f03b05a8dfb5f5199f0d9",
+      "sizeBytes": 345856
+    },
+    "page_39.png": {
+      "pageNumber": 39,
+      "sha256": "d60a953489dff8619f112850d1473efc5ebf14c51e9a0b9a1e2168cfea8a669a",
+      "sizeBytes": 224585
+    },
+    "page_40.png": {
+      "pageNumber": 40,
+      "sha256": "db37cd02a760fb02fdb2ab76d0599c091e3233be7671e5c7a01a8b63d5205488",
+      "sizeBytes": 261756
+    },
+    "page_41.png": {
+      "pageNumber": 41,
+      "sha256": "0a798d67b09e6bfdbeaca1a6dcea9d83dfd862971d40292906880648455c7d25",
+      "sizeBytes": 204179
+    },
+    "page_42.png": {
+      "pageNumber": 42,
+      "sha256": "d359cb5939986458cdc2bca23e096f0344fc2cf3b8dbea5bd09302e9054b0def",
+      "sizeBytes": 189968
+    },
+    "page_43.png": {
+      "pageNumber": 43,
+      "sha256": "bc0de38a79ed239c8e90cd83e75c39298209a1d9c547ffdce329dabc5825b7bf",
+      "sizeBytes": 429248
+    },
+    "page_44.png": {
+      "pageNumber": 44,
+      "sha256": "b5a5a2243d44b8d01cac7802fb7deb0758d5672035edda9636d43d35a7c776b7",
+      "sizeBytes": 394059
+    },
+    "page_45.png": {
+      "pageNumber": 45,
+      "sha256": "93347df9b61e5e449f2af11f78c4f195177831b430b8fd5fd5172fba5c24daaa",
+      "sizeBytes": 328901
+    },
+    "page_46.png": {
+      "pageNumber": 46,
+      "sha256": "305e6e99ddeda84cf1c821fadb2069cf6f7816b841eadb3cf3fa4e404f19d853",
+      "sizeBytes": 290745
+    },
+    "page_47.png": {
+      "pageNumber": 47,
+      "sha256": "890a8cdf588ba88f68e01d9d80740898c6ec4d66ba57f756295455a6d6920b83",
+      "sizeBytes": 214636
+    },
+    "page_48.png": {
+      "pageNumber": 48,
+      "sha256": "0a39f9bd7d0e2f9430c87f9bf2d0ce3e2d8c8412868dee29f0da7556bdfc32d4",
+      "sizeBytes": 187540
+    },
+    "page_49.png": {
+      "pageNumber": 49,
+      "sha256": "f4f20b4b55270541548211d26f5d92271c4173d1d0cfa017beee5601a7da3610",
+      "sizeBytes": 245562
+    },
+    "page_50.png": {
+      "pageNumber": 50,
+      "sha256": "11ff774b9658eb2451a6addd75f578ceecf19c2eb5ce76d4ce86dcc441f925ad",
+      "sizeBytes": 245657
+    },
+    "page_51.png": {
+      "pageNumber": 51,
+      "sha256": "9bbd837504b9ea93ef23aa5d1a5ec25c1c5feadb34a6342e9cecfcdac4d529bc",
+      "sizeBytes": 479414
+    },
+    "page_52.png": {
+      "pageNumber": 52,
+      "sha256": "bfc07a154ecece8479feff5a206747f0bc037d2955a37012eb372af7fe528ba1",
+      "sizeBytes": 458642
+    },
+    "page_53.png": {
+      "pageNumber": 53,
+      "sha256": "4e0d9e2996edcf4d466400b038c7c94754835b68f6df2824179a27b169ea9e62",
+      "sizeBytes": 297608
+    },
+    "page_54.png": {
+      "pageNumber": 54,
+      "sha256": "ebc1f0f769155931c1232b82d7655780b3ee2ee186206071cc0a25c6d26ce3fe",
+      "sizeBytes": 182428
+    },
+    "page_55.png": {
+      "pageNumber": 55,
+      "sha256": "a8108a1412103ad1f674496ab29bf69a3568668a5d62ae5591f06ead40517b3c",
+      "sizeBytes": 254000
+    },
+    "page_56.png": {
+      "pageNumber": 56,
+      "sha256": "e283b92da63cab19bc69835ed71c1de9f65d251e7bb65b3a8a1c9e185e805bc3",
+      "sizeBytes": 255994
+    },
+    "page_57.png": {
+      "pageNumber": 57,
+      "sha256": "a23ebd7a11ed1a8c50fd77969e18980ee968fcb79f015316ae7764951448d782",
+      "sizeBytes": 248268
+    },
+    "page_58.png": {
+      "pageNumber": 58,
+      "sha256": "305ef841efd544502ce22cd4173bf3111908c66132d675331b7e4fac81ed1aa1",
+      "sizeBytes": 253302
+    },
+    "page_59.png": {
+      "pageNumber": 59,
+      "sha256": "aec1f8f145a7020f82cdaa00a8ebec42ba5f42943b45967da715121828899fe7",
+      "sizeBytes": 260385
+    },
+    "page_60.png": {
+      "pageNumber": 60,
+      "sha256": "f36210865fa3e33ccefdc6c14dcb2f5af0cf4664847371d8e03f6b87592b3692",
+      "sizeBytes": 420987
+    },
+    "page_61.png": {
+      "pageNumber": 61,
+      "sha256": "6d9db6398f2c854a397c34c58bdeca2af17d3302fcbe759a59618340a16f7e53",
+      "sizeBytes": 379346
+    },
+    "page_62.png": {
+      "pageNumber": 62,
+      "sha256": "5f2b2c2362698918297aab02625754859666d8fac5900d258493ca8a7f76d3eb",
+      "sizeBytes": 307248
+    },
+    "page_63.png": {
+      "pageNumber": 63,
+      "sha256": "654d8266b21ba6ba9b6873bc6bf520fd7ea5cdc3960d07339644524359a41707",
+      "sizeBytes": 362232
+    },
+    "page_64.png": {
+      "pageNumber": 64,
+      "sha256": "aa2c616d3efae9b8bf3179ce20a2912c2909ebe11a269650ca128ff8117d2e8d",
+      "sizeBytes": 275889
+    },
+    "page_65.png": {
+      "pageNumber": 65,
+      "sha256": "576b9f7813fa6df5e9bb044b355f9441563ce2e019690fd94bfa37569088a0af",
+      "sizeBytes": 267560
+    },
+    "page_66.png": {
+      "pageNumber": 66,
+      "sha256": "391bcf3415a75fcc972dad42d977189f991d086d5afdecd0873ab14392aff80a",
+      "sizeBytes": 240672
+    },
+    "page_67.png": {
+      "pageNumber": 67,
+      "sha256": "6c010cd6011bacce0117b120ebe7eca548284da217e2728aacaec6b5d7a6da3e",
+      "sizeBytes": 244835
+    },
+    "page_68.png": {
+      "pageNumber": 68,
+      "sha256": "41ec57080be201edfa4a9c62053d31ad87b443d48dc5c56991d3c23dd69b7864",
+      "sizeBytes": 412529
+    },
+    "page_69.png": {
+      "pageNumber": 69,
+      "sha256": "d55bc46fb97b49f33fd6a5094b1acab7beef2d8ca43b1fcf90cd535830c2a517",
+      "sizeBytes": 370707
+    },
+    "page_70.png": {
+      "pageNumber": 70,
+      "sha256": "ced3876831642af836e5dbf3a1151475aa898ba80df3e0ad159126f296c584ca",
+      "sizeBytes": 267832
+    },
+    "page_71.png": {
+      "pageNumber": 71,
+      "sha256": "9cc3bd063c598c349c44d25210801734e44c4e0af26ef2386611a701ca24c46e",
+      "sizeBytes": 449872
+    },
+    "page_72.png": {
+      "pageNumber": 72,
+      "sha256": "0820f12e96d026610afce933d864fe931d7e6553cfa3a4fad42db6f48bfcc409",
+      "sizeBytes": 264561
+    },
+    "page_73.png": {
+      "pageNumber": 73,
+      "sha256": "96178e4a277a0b3cb3ad8323b45f725581ef9205869aa977713ea2bb1d5bac62",
+      "sizeBytes": 225463
+    },
+    "page_74.png": {
+      "pageNumber": 74,
+      "sha256": "09b8a69f5999f0ac378df39eabf51ba4fcb11f8e6334fe78d3b41333bb69e3ab",
+      "sizeBytes": 272879
+    },
+    "page_75.png": {
+      "pageNumber": 75,
+      "sha256": "7e00f8aa788a7c2ffc10bb8f0c53fb79c9b2e13aafb9b4b26317b52c0aaeb88c",
+      "sizeBytes": 248827
+    },
+    "page_76.png": {
+      "pageNumber": 76,
+      "sha256": "fdd61cbe3339045870808540850f2d239de38724548b6f7117a69e75ad282d47",
+      "sizeBytes": 99826
+    },
+    "page_77.png": {
+      "pageNumber": 77,
+      "sha256": "6bdd12466f46c5d363dc4a66e52cc3cb1419c8731725245afe2216ad25be09a5",
+      "sizeBytes": 40446
+    }
+  }
+}

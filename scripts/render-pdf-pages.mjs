@@ -1,9 +1,10 @@
 import { pdf } from 'pdf-to-img';
 import path from 'path';
 import fs from 'fs';
-import { getSources } from './sources-config.mjs';
+import { getSources, partArg, assertPartSources } from './sources-config.mjs';
 
-const sources = getSources('term-1');
+const sources = getSources(partArg());
+assertPartSources(sources, ['pdfFile']);
 const pdfPath = sources.pdfFile;
 const outputDir = sources.pages;
 

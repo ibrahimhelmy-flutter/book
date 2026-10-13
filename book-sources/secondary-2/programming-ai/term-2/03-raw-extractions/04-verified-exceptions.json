@@ -1,0 +1,92 @@
+[
+  {
+    "lesson": "5-2",
+    "label": "question q-5-2-14 option 2",
+    "page": 18,
+    "reason": "Date wraps across two lines on the page scan (\"01\" / \"Apr 2026\"); the extracted text layer joins it in reversed order \"Apr 2026 01\". Transcription follows the printed reading order, confirmed against page_19.png and the matching date on page_14.png/page_17.png."
+  },
+  {
+    "lesson": "5-3",
+    "label": "summary 1",
+    "page": 25,
+    "reason": "Mixed Arabic/Latin list \"(World Bank Open Data، وUN Data، وKaggle)\" is emitted with the ARABIC CONJUNCTION attached to the wrong Latin run in the text layer. Transcription matches the printed order, confirmed against page_26.png and the same list order on page_21.png and in the \"الفكرة الرئيسة\" box."
+  },
+  {
+    "lesson": "6-2",
+    "label": "callout callout-6-2-2",
+    "page": 35,
+    "reason": "Side-column think-box text is split and partly glued onto an adjacent main-column line in the text layer (missing windows are only at the join). Transcription confirmed against page_36.png."
+  },
+  {
+    "lesson": "6-2",
+    "label": "mainQuestionAnswer",
+    "page": 40,
+    "reason": "Regression formulas \"y = ax + b\" and \"y = a₁x₁ + a₂x₂ + b\" are emitted by the text layer with reversed term order. Transcription follows the printed left-to-right formula order, confirmed against page_41.png."
+  },
+  {
+    "lesson": "6-3",
+    "label": "section sec-6-3-3 title",
+    "page": 44,
+    "reason": "The heading \"مثال على الخريطة الحرارية\" is printed inside the heatmap figure itself (a caption baked into the graphic), so it has no counterpart in the page's extractable text layer. Confirmed against page_45.png."
+  },
+  {
+    "lesson": "6-3",
+    "label": "engineerChallenge",
+    "page": 48,
+    "reason": "Two printed checklist lines (\"☐ ...\") sit in two side-by-side columns and are interleaved mid-sentence by the text layer. Transcription follows the printed reading order, confirmed against page_49.png."
+  },
+  {
+    "lesson": "7-1",
+    "label": "concept المكافأة",
+    "page": 54,
+    "reason": "Side-column key-term definition is glued onto the end of the preceding main-column line with no space (\"...بشكلالمكافأة\"). Transcription confirmed against page_55.png."
+  },
+  {
+    "lesson": "7-1",
+    "label": "callout callout-7-1-1",
+    "page": 54,
+    "reason": "Side-column think-box question is glued onto main-column text across two lines (\"...ومقياسوسوم\", \"...وجودأي كلمة واحدة\"). Transcription confirmed against page_55.png."
+  },
+  {
+    "lesson": "7-1",
+    "label": "callout callout-7-1-1 question",
+    "page": 54,
+    "reason": "Same glued side-column text as callout-7-1-1 (content and question are identical, as printed). Confirmed against page_55.png."
+  },
+  {
+    "lesson": "7-1",
+    "label": "reflect",
+    "page": 58,
+    "reason": "Side-column \"تأمل\" box text is glued onto main-column lines (\"...أوتأمّل\", \"...وإعداداتالآلي اليوم\"). Transcription confirmed against page_59.png."
+  },
+  {
+    "lesson": "7-2",
+    "label": "callout callout-7-2-2",
+    "page": 63,
+    "reason": "Side-column think-box question is glued onto a main-column line (\"...يفشليتوفرا\"). Transcription confirmed against page_64.png."
+  },
+  {
+    "lesson": "7-2",
+    "label": "callout callout-7-2-2 question",
+    "page": 63,
+    "reason": "Same glued side-column text as callout-7-2-2 (content and question are identical, as printed). Confirmed against page_64.png."
+  },
+  {
+    "lesson": "7-3",
+    "label": "concept المعامل",
+    "page": 70,
+    "reason": "Side-column key-term definition is glued onto the end of a main-column line (\"...النموذجالمعامل\"). Transcription confirmed against page_71.png."
+  },
+  {
+    "lesson": "7-3",
+    "label": "section sec-7-3-3",
+    "page": 69,
+    "reason": "Paragraph (4) names \"ChatGPT, Claude, Gemini\"; the text layer emits this mixed Arabic/Latin run in reversed order (\"Claudeg ChatGPT ... Geminiو\"). Transcription follows the printed reading order, confirmed against page_70.png."
+  },
+  {
+    "lesson": "7-3",
+    "label": "section sec-7-3-4",
+    "page": 70,
+    "reason": "Paragraph (2) names \"RLHF - Reinforcement Learning from Human Feedback\"; the text layer reorders the Latin run relative to the Arabic label. Transcription follows the printed order, confirmed against page_71.png."
+  }
+]

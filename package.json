@@ -6,16 +6,16 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); fs.rmSync('.next-dev', { recursive: true, force: true }); } catch(e) {}\"",
-    "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); fs.rmSync('.next-dev', { recursive: true, force: true }); } catch(e) {}\" && next dev",
+    "dev:clean": "node -e \"const fs = require('fs'); try { fs.rmSync('.next', { recursive: true, force: true }); fs.rmSync('.next-dev', { recursive: true, force: true }); } catch(e) {}\" && npm run dev",
     "lint": "next lint --dir src",
     "tsc": "tsc",
-    "prebuild": "node scripts/prepare-assets.mjs && node scripts/audit-canonical-fidelity.mjs && node scripts/validate-curriculum-compliance.mjs",
-    "postbuild": "node scripts/sync-export-assets.mjs",
+    "prebuild": "npm run build:data && node scripts/audit-canonical-fidelity.mjs && node scripts/audit-source-text.mjs && node scripts/validate-curriculum-compliance.mjs",
+    "postbuild": "node scripts/sync-export-assets.mjs && node scripts/check-bundle-budget.mjs",
     "build": "node scripts/build.mjs",
     "start": "next start",
-    "test": "npx tsx src/core/tests/practice-filtering.test.ts && npx tsx src/core/tests/storylines.test.ts && npx tsx src/core/tests/unified-questions-exams.test.ts && npx tsx src/core/tests/official-assessments.test.ts && npx tsx src/core/tests/engine.test.ts && npx tsx src/core/tests/arabic.test.ts && npx tsx src/core/tests/offline-architecture.test.ts && node scripts/verify-pwa-and-offline.mjs",
+    "test": "node scripts/run-unit-tests.mjs && node scripts/verify-pwa-and-offline.mjs",
     "verify:pwa": "node scripts/verify-pwa-and-offline.mjs",
-    "build:data": "node scripts/build-all-data.mjs",
+    "build:data": "node scripts/prepare-assets.mjs && tsx scripts/data/build-data.ts",
     "sources:validate": "node scripts/generate-source-manifest.mjs",
     "verify:content": "node scripts/verify-content-gate.mjs",
     "validate:schemas": "node scripts/validate-content-schemas.mjs",
@@ -27,7 +27,18 @@
     "audit:canonical": "node scripts/audit-canonical-fidelity.mjs",
     "audit:questions": "node scripts/audit-question-bank.mjs",
     "audit:text": "node scripts/audit-textual-fidelity.mjs",
-    "validate:compliance": "node scripts/validate-curriculum-compliance.mjs"
+    "validate:compliance": "node scripts/validate-curriculum-compliance.mjs",
+    "test:unit": "node scripts/run-unit-tests.mjs",
+    "e2e": "playwright test",
+    "budget": "node scripts/check-bundle-budget.mjs",
+    "predev": "npm run build:data",
+    "pretest": "npm run build:data",
+    "ingest:text": "node scripts/extract-pdf-text.mjs",
+    "ingest:pages": "node scripts/render-pdf-pages.mjs",
+    "ingest:figures": "node scripts/crop-figures.mjs",
+    "ingest:book": "node scripts/generate-book-json.mjs",
+    "ingest:official": "node scripts/generate-official-curriculum.mjs",
+    "audit:source-text": "node scripts/audit-source-text.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -39,6 +50,7 @@
     "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4.0.7",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.13.4",
@@ -48,8 +60,11 @@
     "eslint-config-next": "^15.5.25",
     "pdf-export-images": "^1.2.0",
     "pdf-to-img": "^6.2.0",
+    "pdfjs-dist": "4.10.38",
     "postcss": "^8.5.2",
+    "server-only": "^0.0.1",
     "tailwindcss": "^4.0.7",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.3"
   }
 }

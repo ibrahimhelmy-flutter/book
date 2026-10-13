@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "grades": [
+    {
+      "id": "secondary-2",
+      "title": "الصف الثاني الثانوي",
+      "stage": "المرحلة الثانوية",
+      "order": 11,
+      "books": [
+        {
+          "slug": "programming-ai",
+          "title": "البرمجة والذكاء الاصطناعي",
+          "englishTitle": "Programming & Artificial Intelligence",
+          "icon": "Cpu",
+          "colorTheme": "from-indigo-600 via-purple-600 to-pink-600",
+          "description": "المنصة التفاعلية الرسمية المتكاملة لمحتوى الكتاب المدرسي لشهادة الثانوية المصرية. تجمع بين المحاكيات الهندسية الحية، والتمارين المصححة آلياً، ونماذج امتحانات الثانوية العامة مع سلالم التصحيح النموذجية.",
+          "accreditation": [
+            "جمهورية مصر العربية - وزارة التربية والتعليم والتعليم الفني",
+            "Advised by International Baccalaureate (IB) 🌐",
+            "رؤية مصر 2030 🚀"
+          ],
+          "parts": [
+            {
+              "id": "term-1",
+              "title": "الفصل الدراسي الأول",
+              "shortTitle": "الترم الأول",
+              "order": 1,
+              "status": "available",
+              "legacy": true,
+              "edition": {
+                "academicYear": "2026 - 2027",
+                "pdfFile": "Programming-ArtificialIntelligence-Ar-EB-part1.pdf",
+                "rawFullTextFile": "Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json"
+              },
+              "assetsBase": "/images/extracted",
+              "companions": [
+                {
+                  "slug": "assessments",
+                  "kind": "assessments",
+                  "title": "كتيب التقييمات",
+                  "status": "available",
+                  "pdfFile": "Programming-ArtificialIntelligence-Ar-EB-Assessments-1.pdf",
+                  "dataDir": "05-canonical-data/official/official-assessments"
+                }
+              ]
+            },
+            {
+              "id": "term-2",
+              "title": "الفصل الدراسي الثاني",
+              "shortTitle": "الترم الثاني",
+              "order": 2,
+              "status": "available",
+              "edition": {
+                "academicYear": "2026 - 2027",
+                "pdfFile": "Programming-ArtificialIntelligence-Ar-EB-part2.pdf",
+                "rawFullTextFile": "Programming-ArtificialIntelligence-Ar-EB-part2_full_text.json",
+                "pageOffset": 1,
+                "totalPages": 77
+              },
+              "assetsBase": "/images/p/secondary-2/programming-ai/term-2",
+              "companions": [
+                {
+                  "slug": "assessments",
+                  "kind": "assessments",
+                  "title": "كتيب التقييمات",
+                  "status": "coming-soon",
+                  "pdfFile": null,
+                  "dataDir": "05-canonical-data/official/official-assessments"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

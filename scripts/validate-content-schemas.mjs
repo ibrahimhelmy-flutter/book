@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { sources } from './sources-config.mjs';
+import { getSources, partArg } from './sources-config.mjs';
+
+const sources = getSources(partArg());
 
 console.log('📋 Running Content Schemas & Referential Integrity Validation Gate...');
 
@@ -77,7 +79,8 @@ if (fs.existsSync(sources.canonicalGlossaryFile)) {
 if (fs.existsSync(sources.canonicalAcronymsFile)) {
   const acronyms = JSON.parse(fs.readFileSync(sources.canonicalAcronymsFile, 'utf8'));
   acronyms.forEach((a, idx) => {
-    if (!a.short || !a.fullAr || !a.fullEn) {
+    // fullEn is required only when the book prints an English expansion; it must never be invented.
+    if (!a.short || !a.fullAr || typeof a.fullEn !== 'string') {
       logError(`Invalid acronym at index ${idx}`);
     }
     if (a.contentOrigin !== 'official') {
@@ -157,6 +160,10 @@ if (chapterDirs.length > 0) {
     }
   }
   console.log(`  ✅ Authored Deep Questions Schema: verified ${totalDeepQuestions} questions across ${totalLessonFiles} modular lesson files in ${chapterDirs.length} chapters.`);
+} else if (!fs.existsSync(sources.deepQuestionsDir)) {
+  // No authored deep-comprehension questions for this part yet — a lesson without any shows an
+  // empty state in the UI rather than invented placeholder questions.
+  console.log(`  ⏭️  Authored Deep Questions Schema: no deep-questions/ for ${sources.key} yet (0 questions).`);
 } else {
   const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
   for (const file of deepFiles) {

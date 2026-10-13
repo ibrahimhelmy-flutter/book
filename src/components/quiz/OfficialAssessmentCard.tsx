@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { OfficialAssessmentQuestion } from "@/data/official-assessments";
+import type { OfficialAssessmentQuestion } from "@/types/assessments";
 import {
   Check,
   X,
@@ -13,7 +13,6 @@ import {
   ChevronUp,
   FileText,
   Sparkles,
-  ExternalLink,
 } from "lucide-react";
 
 interface Props {

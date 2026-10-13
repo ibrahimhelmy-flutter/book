@@ -1,13 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { chapter1 } from '../book-sources/term-1/06-build-modules/chapter1.mjs';
-import { chapter2 } from '../book-sources/term-1/06-build-modules/chapter2.mjs';
-import { chapter3 } from '../book-sources/term-1/06-build-modules/chapter3.mjs';
-import { chapter4 } from '../book-sources/term-1/06-build-modules/chapter4.mjs';
-import { getSources } from './sources-config.mjs';
+import { getSources, partArg, loadBuildModules, assertNotLegacy } from './sources-config.mjs';
 
-const sources = getSources('term-1');
-const allChapters = [chapter1, chapter2, chapter3, chapter4];
+const sources = getSources(partArg());
+assertNotLegacy(sources);
+const allChapters = await loadBuildModules(sources);
 const baseDir = sources.officialLessonsDir;
 
 console.log('Building Official Canonical Curriculum Source in:', baseDir);
@@ -68,6 +65,9 @@ allChapters.forEach(chapter => {
         type: 'concept',
         source: 'كتاب الوزارة الرسمي — هوامش وخريطة الدرس',
         page: startPage + 1,
+        // concept.id doesn't exist on the raw build module (generate-book-json.mjs assigns it later);
+        // compute the same deterministic id so this block matches the right book.json concept.
+        conceptId: concept.id || `concept-${lesson.number}-${String(idx + 1).padStart(2, '0')}`,
         termAr: concept.termAr.trim(),
         termEn: (concept.termEn || '').trim(),
         title: `المفهوم الأساسي: ${concept.termAr}`,
@@ -97,6 +97,7 @@ allChapters.forEach(chapter => {
         type: 'callout',
         source: 'كتاب الوزارة الرسمي — صناديق التفكير والهوامش',
         page: startPage + 1 + idx,
+        calloutId: c.id,
         calloutType: c.type,
         title: c.title.trim(),
         text: c.content.trim(),
@@ -167,9 +168,9 @@ allChapters.forEach(chapter => {
     const canonicalLessonData = {
       meta: {
         curriculum: "جمهورية مصر العربية - وزارة التربية والتعليم والتعليم الفني",
-        subject: "البرمجة والذكاء الاصطناعي — الصف الثاني الثانوي",
-        term: "الفصل الدراسي الأول",
-        officialSource: "الكتاب المدرسي المعتمد 2026 - 2027",
+        subject: `${sources.catalogEntry.book.title} — ${sources.catalogEntry.grade.title}`,
+        term: sources.catalogEntry.part.title,
+        officialSource: `الكتاب المدرسي المعتمد ${sources.catalogEntry.part.edition?.academicYear ?? ''}`.trim(),
         chapterId: chapter.id,
         chapterNumber: chapter.number,
         lessonId: lesson.id,
@@ -190,4 +191,4 @@ allChapters.forEach(chapter => {
   });
 });
 
-console.log('\nCanonical Official Source generated successfully for all 14 lessons.');
+console.log(`\nCanonical Official Source generated successfully for all ${allChapters.reduce((n, c) => n + c.lessons.length, 0)} lessons.`);

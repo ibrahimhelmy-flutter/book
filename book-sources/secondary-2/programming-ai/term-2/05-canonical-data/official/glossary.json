@@ -1,0 +1,1784 @@
+[
+  {
+    "id": "g-5-1-01",
+    "termAr": "جمع البيانات",
+    "termEn": "",
+    "definitionAr": "المرحلة الأولى: التخطيط لما سيُجمع وكيف.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        5
+      ],
+      "primaryPage": 5,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_06.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-02",
+    "termAr": "البيانات الأولية",
+    "termEn": "",
+    "definitionAr": "تُجمع حديثًا لغرض محدد.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        5
+      ],
+      "primaryPage": 5,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_06.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-03",
+    "termAr": "البيانات الثانوية",
+    "termEn": "",
+    "definitionAr": "سبق أن جمعها آخرون.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        5
+      ],
+      "primaryPage": 5,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_06.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-04",
+    "termAr": "المجتمع الإحصائي",
+    "termEn": "",
+    "definitionAr": "المجموعة الكاملة التي يشملها التحليل.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        7
+      ],
+      "primaryPage": 7,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_08.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-05",
+    "termAr": "العينة",
+    "termEn": "",
+    "definitionAr": "الجزء الذي يُمسح فعليًا.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        7
+      ],
+      "primaryPage": 7,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_08.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-06",
+    "termAr": "تحيز أخذ العينات",
+    "termEn": "",
+    "definitionAr": "عينة غير عادلة لا تمثل الكل تمثيلًا صحيحًا.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        7
+      ],
+      "primaryPage": 7,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_08.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-07",
+    "termAr": "المعاينة العشوائية البسيطة",
+    "termEn": "",
+    "definitionAr": "يُختار بمحض الصدفة.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        9
+      ],
+      "primaryPage": 9,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_10.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-1-08",
+    "termAr": "المعاينة الطبقية",
+    "termEn": "",
+    "definitionAr": "يُقسم إلى طبقات، ثم يُختار من كل منها.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        9
+      ],
+      "primaryPage": 9,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_10.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-01",
+    "termAr": "تنظيف البيانات",
+    "termEn": "",
+    "definitionAr": "إصلاح القيم المفقودة والقيم الشاذة والتكرارات.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        12
+      ],
+      "primaryPage": 12,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_13.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-02",
+    "termAr": "تحويل البيانات",
+    "termEn": "",
+    "definitionAr": "إعادة تشكيل/ضبط مقياس البيانات لتناسب الغرض.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        12
+      ],
+      "primaryPage": 12,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_13.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-03",
+    "termAr": "القيمة المفقودة",
+    "termEn": "",
+    "definitionAr": "قيمة غائبة.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        13
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_14.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-04",
+    "termAr": "القيمة الشاذة",
+    "termEn": "",
+    "definitionAr": "قيمة بعيدة عن باقي القيم.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        13
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_14.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-05",
+    "termAr": "القيمة غير الطبيعية",
+    "termEn": "",
+    "definitionAr": "قيمة شاذة ناتجة عن خطأ.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        13
+      ],
+      "primaryPage": 13,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_14.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-06",
+    "termAr": "المحور",
+    "termEn": "",
+    "definitionAr": "صفوف طويلة ← جدول صفوف × أعمدة.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_18.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-07",
+    "termAr": "الربط",
+    "termEn": "",
+    "definitionAr": "ربط مجموعات البيانات عبر عنصر مشترك.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_18.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-2-08",
+    "termAr": "التجميع",
+    "termEn": "",
+    "definitionAr": "التلخيص حسب المجموعة.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        17
+      ],
+      "primaryPage": 17,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_18.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-01",
+    "termAr": "البيانات المفتوحة",
+    "termEn": "",
+    "definitionAr": "بيانات متاحة للعموم ليستخدمها أي شخص.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        20
+      ],
+      "primaryPage": 20,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_21.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-02",
+    "termAr": "World Bank Open Data",
+    "termEn": "",
+    "definitionAr": "إحصاءات الدول عن الاقتصاد والسكان وغيرها.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        20
+      ],
+      "primaryPage": 20,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_21.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-03",
+    "termAr": "واجهة برمجة التطبيقات",
+    "termEn": "API",
+    "definitionAr": "قواعد تتفاعل بها البرمجيات، تُستخدم لجلب البيانات.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        20
+      ],
+      "primaryPage": 20,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_21.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-04",
+    "termAr": "نقطة النهاية",
+    "termEn": "endpoint",
+    "definitionAr": "عنوان URL الذي يُرسَل إليه الطلب.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        20
+      ],
+      "primaryPage": 20,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_21.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-05",
+    "termAr": "JSON",
+    "termEn": "",
+    "definitionAr": "صيغة شائعة لبيانات الاسم/القيمة.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        20
+      ],
+      "primaryPage": 20,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_21.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-06",
+    "termAr": "شروط الاستخدام",
+    "termEn": "",
+    "definitionAr": "القواعد المحددة لكل مجموعة بيانات.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        24
+      ],
+      "primaryPage": 24,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_25.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-5-3-07",
+    "termAr": "الإشارة إلى المصدر",
+    "termEn": "",
+    "definitionAr": "المزوّد، الاسم، التاريخ، عنوان URL.",
+    "definitionEn": "",
+    "chapterId": "chapter-5",
+    "lessonNumber": "5-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        24
+      ],
+      "primaryPage": 24,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_25.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-01",
+    "termAr": "الاستدلال الإحصائي",
+    "termEn": "",
+    "definitionAr": "الاستنتاج من العينة إلى المجتمع.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        27
+      ],
+      "primaryPage": 27,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_28.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-02",
+    "termAr": "التقدير",
+    "termEn": "",
+    "definitionAr": "استنتاج خصائص المجتمع بالأرقام.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        27
+      ],
+      "primaryPage": 27,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_28.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-03",
+    "termAr": "اختبار الفرضيات",
+    "termEn": "",
+    "definitionAr": "الحكم على ادعاء بخصوص المجتمع.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        27
+      ],
+      "primaryPage": 27,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_28.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-04",
+    "termAr": "فرضية العدم",
+    "termEn": "H0",
+    "definitionAr": "نقطة البداية القائلة بـ\"لا فرق\".",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        28
+      ],
+      "primaryPage": 28,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_29.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-05",
+    "termAr": "الفرضية البديلة",
+    "termEn": "H1",
+    "definitionAr": "تُتبنى إذا رُفضت H0.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        28
+      ],
+      "primaryPage": 28,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_29.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-06",
+    "termAr": "القيمة الاحتمالية",
+    "termEn": "",
+    "definitionAr": "احتمال الحصول على بيانات بهذا التطرف أو أشد إذا كانت H0 صحيحة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        28
+      ],
+      "primaryPage": 28,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_29.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-07",
+    "termAr": "خطأ من النوع الأول",
+    "termEn": "",
+    "definitionAr": "رفض فرضية عدم صحيحة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        29
+      ],
+      "primaryPage": 29,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_30.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-08",
+    "termAr": "خطأ من النوع الثاني",
+    "termEn": "",
+    "definitionAr": "الإبقاء على فرضية عدم خاطئة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        29
+      ],
+      "primaryPage": 29,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_30.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-09",
+    "termAr": "المفاضلة",
+    "termEn": "",
+    "definitionAr": "خفض أحد الخطأين يرفع الآخر.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        29
+      ],
+      "primaryPage": 29,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_30.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-10",
+    "termAr": "مستوى الدلالة",
+    "termEn": "",
+    "definitionAr": "القيمة الحدية لرفض H0.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        32
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_33.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-11",
+    "termAr": "ذو دلالة إحصائية",
+    "termEn": "",
+    "definitionAr": "القيمة الاحتمالية أقل من القيمة الحدية.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        32
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_33.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-1-12",
+    "termAr": "مهم عمليًا",
+    "termEn": "",
+    "definitionAr": "كبير بما يكفي ليكون له أثر في الواقع.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-1",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        32
+      ],
+      "primaryPage": 32,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_33.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-01",
+    "termAr": "تحليل الانحدار",
+    "termEn": "",
+    "definitionAr": "التعبير عن علاقة كمعادلة للتنبؤ.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        35
+      ],
+      "primaryPage": 35,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_36.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-02",
+    "termAr": "متغير الاستجابة",
+    "termEn": "",
+    "definitionAr": "النتيجة (التابع).",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        35
+      ],
+      "primaryPage": 35,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_36.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-03",
+    "termAr": "المتغير التفسيري",
+    "termEn": "",
+    "definitionAr": "المتغير المستخدم للتفسير أو التنبؤ، وليس سببًا بالضرورة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        35
+      ],
+      "primaryPage": 35,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_36.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-04",
+    "termAr": "R²",
+    "termEn": "",
+    "definitionAr": "مدى قدرة النموذج على تفسير التباين في البيانات (1–0).",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        36
+      ],
+      "primaryPage": 36,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_37.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-05",
+    "termAr": "RMSE",
+    "termEn": "",
+    "definitionAr": "حجم الخطأ، يعطي وزنًا أكبر للأخطاء الكبيرة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        36
+      ],
+      "primaryPage": 36,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_37.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-06",
+    "termAr": "MAE",
+    "termEn": "",
+    "definitionAr": "متوسط الخطأ، أقل تأثرًا بالقيم المتطرفة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        36
+      ],
+      "primaryPage": 36,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_37.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-07",
+    "termAr": "المعامل",
+    "termEn": "",
+    "definitionAr": "الوزن الممنوح لمتغير تفسيري.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        39
+      ],
+      "primaryPage": 39,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_40.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-08",
+    "termAr": "نقطة التقاطع",
+    "termEn": "",
+    "definitionAr": "الثابت b في المعادلة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        39
+      ],
+      "primaryPage": 39,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_40.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-2-09",
+    "termAr": "العامل المربك",
+    "termEn": "",
+    "definitionAr": "سبب ثالث خفي وراء ارتباط ما.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-2",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        39
+      ],
+      "primaryPage": 39,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_40.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-01",
+    "termAr": "تصور البيانات",
+    "termEn": "",
+    "definitionAr": "عرض البيانات كرسوم بيانية/أشكال لإدراك سماتها بصريًا.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        43
+      ],
+      "primaryPage": 43,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_44.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-02",
+    "termAr": "الخريطة الحرارية",
+    "termEn": "",
+    "definitionAr": "شبكة ملونة على محورين لقيمة ثالثة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        44
+      ],
+      "primaryPage": 44,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_45.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-03",
+    "termAr": "التراكب الزائد للنقاط",
+    "termEn": "",
+    "definitionAr": "تداخل النقاط بحيث تختفي الكثافة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        44
+      ],
+      "primaryPage": 44,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_45.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-04",
+    "termAr": "مخطط المستطيلات (الفسيفساء)",
+    "termEn": "",
+    "definitionAr": "مساحات مستطيلة لمتغيرين فئويين.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        45
+      ],
+      "primaryPage": 45,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_46.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-05",
+    "termAr": "سرد قصص البيانات",
+    "termEn": "",
+    "definitionAr": "هيكلة رسالة البيانات كقصة.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        45
+      ],
+      "primaryPage": 45,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_46.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-06",
+    "termAr": "الجدولة المتقاطعة",
+    "termEn": "",
+    "definitionAr": "جدول لعدد الحالات لتوليفات الفئات.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        48
+      ],
+      "primaryPage": 48,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_49.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-6-3-07",
+    "termAr": "الرسم البياني المُضلِّل",
+    "termEn": "",
+    "definitionAr": "رسم بياني يشوّه تصميمه النمط الحقيقي.",
+    "definitionEn": "",
+    "chapterId": "chapter-6",
+    "lessonNumber": "6-3",
+    "category": "Data",
+    "source": {
+      "term": 2,
+      "pages": [
+        48
+      ],
+      "primaryPage": 48,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_49.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-01",
+    "termAr": "التعلّم الآلي",
+    "termEn": "",
+    "definitionAr": "تعلّم القواعد من البيانات للحكم على بيانات جديدة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        51
+      ],
+      "primaryPage": 51,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_52.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-02",
+    "termAr": "التحيز",
+    "termEn": "",
+    "definitionAr": "بيانات منحرفة تؤدي إلى أحكام منحرفة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        51
+      ],
+      "primaryPage": 51,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_52.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-03",
+    "termAr": "مشكلة الصندوق الأسود",
+    "termEn": "",
+    "definitionAr": "يصعب رؤية أساس الحكم.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        51
+      ],
+      "primaryPage": 51,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_52.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-04",
+    "termAr": "التعلّم غير الخاضع للإشراف",
+    "termEn": "",
+    "definitionAr": "يجد مجموعات بدون وسوم.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-05",
+    "termAr": "التعلّم المعزز",
+    "termEn": "",
+    "definitionAr": "يتعلّم الإجراءات من المكافآت.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-06",
+    "termAr": "الوسم",
+    "termEn": "",
+    "definitionAr": "الإجابة الصحيحة المعروفة في بيانات التدريب.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-07",
+    "termAr": "التعلّم الخاضع للإشراف",
+    "termEn": "",
+    "definitionAr": "يتعلّم من أمثلة موسومة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-08",
+    "termAr": "التصنيف",
+    "termEn": "",
+    "definitionAr": "التنبؤ بالفئة التي ينتمي إليها الإدخال.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-09",
+    "termAr": "السمة",
+    "termEn": "",
+    "definitionAr": "دليل في البيانات مفيد للتنبؤ.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        52
+      ],
+      "primaryPage": 52,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_53.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-10",
+    "termAr": "التجميع",
+    "termEn": "",
+    "definitionAr": "تجميع العناصر المتشابهة بدون وسوم.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        54
+      ],
+      "primaryPage": 54,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_55.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-11",
+    "termAr": "التعلّم المعزز",
+    "termEn": "",
+    "definitionAr": "تعلّم الإجراءات من المكافآت.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        54
+      ],
+      "primaryPage": 54,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_55.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-12",
+    "termAr": "المكافأة",
+    "termEn": "",
+    "definitionAr": "قيمة تقيس مدى جودة إجراء ما.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        54
+      ],
+      "primaryPage": 54,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_55.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-13",
+    "termAr": "الوسم",
+    "termEn": "",
+    "definitionAr": "الإجابة الصحيحة المعروفة المرفقة بالبيانات.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        57
+      ],
+      "primaryPage": 57,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_58.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-1-14",
+    "termAr": "الإنسان في الحلقة",
+    "termEn": "",
+    "definitionAr": "شخص يراجع أو يوافق على ناتج النموذج.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-1",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        57
+      ],
+      "primaryPage": 57,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_58.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-01",
+    "termAr": "عقدة (خلية عصبية)",
+    "termEn": "",
+    "definitionAr": "وحدة معالجة واحدة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        60
+      ],
+      "primaryPage": 60,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_61.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-02",
+    "termAr": "طبقة",
+    "termEn": "",
+    "definitionAr": "مجموعة من الخلايا العصبية في مرحلة واحدة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        60
+      ],
+      "primaryPage": 60,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_61.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-03",
+    "termAr": "طبقة الإدخال / الطبقة المخفية / طبقة الإخراج",
+    "termEn": "",
+    "definitionAr": "تستقبل، تعالج، تجيب.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        60
+      ],
+      "primaryPage": 60,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_61.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-04",
+    "termAr": "الوزن",
+    "termEn": "",
+    "definitionAr": "مقدار التركيز على أحد المدخلات.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        61
+      ],
+      "primaryPage": 61,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_62.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-05",
+    "termAr": "التدريب",
+    "termEn": "",
+    "definitionAr": "ضبط الأوزان بناءً على البيانات.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        61
+      ],
+      "primaryPage": 61,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_62.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-06",
+    "termAr": "بيانات التدريب",
+    "termEn": "",
+    "definitionAr": "الأمثلة الموسومة التي تتعلم منها الشبكة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        65
+      ],
+      "primaryPage": 65,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_66.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-2-07",
+    "termAr": "التعميم",
+    "termEn": "",
+    "definitionAr": "العمل بشكل صحيح على بيانات جديدة لم تُشاهد من قبل.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-2",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        65
+      ],
+      "primaryPage": 65,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_66.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-01",
+    "termAr": "نموذج اللغة",
+    "termEn": "",
+    "definitionAr": "يتعلم احتمالات تسلسل الرموز، ويمكن للتوليدي توقع الرمز التالي.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        68
+      ],
+      "primaryPage": 68,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_69.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-02",
+    "termAr": "الهلوسة",
+    "termEn": "",
+    "definitionAr": "معلومة غير صحيحة أو مختلقة أو غير مدعومة قد تبدو مقنعة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        68
+      ],
+      "primaryPage": 68,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_69.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-03",
+    "termAr": "نموذج اللغة الكبير (LLM)",
+    "termEn": "",
+    "definitionAr": "شبكة ضخمة مدرّبة على نصوص هائلة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        69
+      ],
+      "primaryPage": 69,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_70.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-04",
+    "termAr": "المعامل",
+    "termEn": "",
+    "definitionAr": "قيمة وزن؛ تحتوي نماذج اللغة الكبيرة على مليارات منها.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        69
+      ],
+      "primaryPage": 69,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_70.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-05",
+    "termAr": "RLHF",
+    "termEn": "",
+    "definitionAr": "التعلم المعزز من خلال التغذية الراجعة البشرية: الضبط بجعل التقييم البشري مكافأة.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        69
+      ],
+      "primaryPage": 69,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_70.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-06",
+    "termAr": "تعدد الوسائط",
+    "termEn": "",
+    "definitionAr": "نموذج واحد يتعامل مع أنواع متعددة من البيانات.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        70
+      ],
+      "primaryPage": 70,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_71.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-07",
+    "termAr": "الوسيط",
+    "termEn": "",
+    "definitionAr": "نوع واحد من البيانات (نص، صورة، صوت...).",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        70
+      ],
+      "primaryPage": 70,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_71.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-08",
+    "termAr": "الذكاء الاصطناعي التوليدي",
+    "termEn": "",
+    "definitionAr": "ذكاء اصطناعي يُنشئ نصًا أو صورًا أو صوتًا جديدًا.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        73
+      ],
+      "primaryPage": 73,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_74.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "id": "g-7-3-09",
+    "termAr": "التحقق من الحقائق",
+    "termEn": "",
+    "definitionAr": "التحقق من صحة ادعاء ما بمقارنته بمصدر موثوق.",
+    "definitionEn": "",
+    "chapterId": "chapter-7",
+    "lessonNumber": "7-3",
+    "category": "AI",
+    "source": {
+      "term": 2,
+      "pages": [
+        73
+      ],
+      "primaryPage": 73,
+      "sourceType": "official-margin-definition",
+      "pageFiles": [
+        "page_74.png"
+      ]
+    },
+    "contentOrigin": "official"
+  }
+]

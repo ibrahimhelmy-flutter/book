@@ -13,8 +13,17 @@ out/
 build
 dist
 
-# Temporary Page Renders (Single Source of Truth in book-sources/term-1/02-page-scans)
+# Generated from book-sources/ (single source of truth) by scripts/prepare-assets.mjs and npm run build:data
 public/images/pages/
+public/images/extracted/
+public/images/p/
+public/data/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 # Environment Variables
 .env

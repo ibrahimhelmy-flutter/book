@@ -17,6 +17,7 @@ import {
   LayoutGrid
 } from "lucide-react";
 import { saveQuizScore } from "@/lib/storage";
+import { usePart } from "@/components/layout/PartProvider";
 import { fireConfetti } from "@/lib/confetti";
 import { MobileQuizNavigation } from "./MobileQuizNavigation";
 
@@ -49,6 +50,7 @@ function normalizeArabicText(text: string): string {
 }
 
 export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
+  const { key: partKey } = usePart();
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
@@ -130,7 +132,7 @@ export function QuizEngine({ lessonId, questions, title, subtitle }: Props) {
 
     setScore(correctCount);
     setSubmitted(true);
-    saveQuizScore(lessonId, correctCount, totalQuestions);
+    saveQuizScore(partKey, lessonId, correctCount, totalQuestions);
 
     if (correctCount === totalQuestions || correctCount >= totalQuestions * 0.7) {
       fireConfetti({

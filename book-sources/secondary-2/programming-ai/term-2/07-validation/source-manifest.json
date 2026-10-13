@@ -1,0 +1,16 @@
+{
+  "term": 1,
+  "bookTitle": "البرمجة والذكاء الاصطناعي — الصف الثاني الثانوي (بكالوريا مصرية) — الترم الثاني",
+  "academicYear": "2026 - 2027",
+  "ministry": "جمهورية مصر العربية - وزارة التربية والتعليم والتعليم الفني",
+  "expectedPages": 77,
+  "pdf": {
+    "canonicalFilename": "Programming-ArtificialIntelligence-Ar-EB-part2.pdf",
+    "originalFilename": "Programming-ArtificialIntelligence-Ar-EB-part2.pdf",
+    "sizeBytes": 20480803,
+    "sizeMB": "19.53 MB",
+    "sha256": "527e86ea1f392df90a9079993668e5fa9a02e2dd07570f7200b3b69a9183617b",
+    "lastModified": "2026-10-12T13:56:19.276Z",
+    "status": "IMMUTABLE_OFFICIAL_SOURCE"
+  }
+}

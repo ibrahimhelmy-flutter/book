@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { getAcronym } from "@/data/acronyms";
+import { getAcronym } from "@/lib/acronyms";
 import { AcronymTooltip } from "./AcronymTooltip";
 import type { LessonFontSize } from "../lesson/LessonHeader";
 

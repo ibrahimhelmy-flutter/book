@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Lesson, CalloutBox } from "@/types";
+import type { Lesson, CalloutBox, GlossaryTerm, SimulatorMeta } from "@/types";
+import type { NavLesson } from "@/types/catalog";
+import { lessonHref } from "@/content/paths";
+import { usePart } from "@/components/layout/PartProvider";
+import type { CompanionLink } from "../quiz/LessonQuestionBanks";
 import dynamic from "next/dynamic";
 import { LessonHeader, type LessonFontSize } from "./LessonHeader";
 import { ThinkLikeEngineer } from "./ThinkLikeEngineer";
@@ -9,10 +13,6 @@ import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
 import { SectionImageViewer } from "./SectionImageViewer";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
-import { getDeepQuestionsForLesson } from "@/data/deep-questions";
-import { getOfficialAssessmentsForLesson } from "@/data/official-assessments";
-import { SIMULATORS_DATA } from "@/data/simulators";
-import { countQuestionsPerSection } from "@/lib/comprehension-matcher";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -33,16 +33,16 @@ const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500):
   });
 };
 
-const LessonOfficialAssessments = dynamic(
-  () => retryDynamicImport(() => import("../quiz/LessonOfficialAssessments").then((mod) => mod.LessonOfficialAssessments)),
+const OfficialQuestionsTab = dynamic(
+  () => retryDynamicImport(() => import("../quiz/LessonQuestionBanks").then((mod) => mod.OfficialQuestionsTab)),
   { ssr: false }
 );
 const QuizEngine = dynamic(
   () => retryDynamicImport(() => import("../quiz/QuizEngine").then((mod) => mod.QuizEngine)),
   { ssr: false }
 );
-const DeepComprehensionViewer = dynamic(
-  () => retryDynamicImport(() => import("../quiz/DeepComprehensionViewer").then((mod) => mod.DeepComprehensionViewer)),
+const DeepQuestionsTab = dynamic(
+  () => retryDynamicImport(() => import("../quiz/LessonQuestionBanks").then((mod) => mod.DeepQuestionsTab)),
   { ssr: false }
 );
 const EssayQuestionsViewer = dynamic(
@@ -72,10 +72,29 @@ import Link from "next/link";
 import { EyeComfortText, formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
 
+/** Question-bank summary computed on the server; the banks themselves are fetched on demand. */
+export interface LessonQuizSummary {
+  officialCount: number;
+  deepCount: number;
+  deepCountsBySection: Record<string, number>;
+  companion: CompanionLink | null;
+}
+
 interface Props {
   lesson: Lesson;
-  nextLesson?: { id: string; title: string; number: string; chapterId: string; slug: string };
-  prevLesson?: { id: string; title: string; number: string; chapterId: string; slug: string };
+  nextLesson?: NavLesson;
+  prevLesson?: NavLesson;
+  simulators: SimulatorMeta[];
+  glossary: GlossaryTerm[];
+  quiz: LessonQuizSummary;
+}
+
+function EmptyBank({ text }: { text: string }) {
+  return (
+    <div className="p-8 text-center text-slate-400 bg-slate-900 border border-slate-800 rounded-3xl">
+      <p className="text-sm">{text}</p>
+    </div>
+  );
 }
 
 function SectionNoteButton({ note }: { note: CalloutBox }) {
@@ -160,7 +179,8 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
   );
 }
 
-export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
+export function LessonContent({ lesson, nextLesson, prevLesson, simulators: lessonSimulators, glossary, quiz }: Props) {
+  const { key: partKey } = usePart();
   const [activeTab, setActiveTab] = useState<"lesson" | "quiz">("lesson");
   const [quizSubTab, setQuizSubTab] = useState<"official" | "textbook" | "essay" | "comprehension">("official");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
@@ -363,17 +383,6 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     setIsClosureRecapOpen(false);
   }, [lesson.id]);
 
-  // Discover all simulators belonging to this lesson from SIMULATORS_DATA
-  const lessonSimulators = React.useMemo(() => {
-    const byNumber = SIMULATORS_DATA.filter((s) => s.lessonNumber === lesson.number);
-    if (byNumber.length > 0) return byNumber;
-    if (lesson.simulatorId) {
-      const byId = SIMULATORS_DATA.filter((s) => s.id === lesson.simulatorId);
-      if (byId.length > 0) return byId;
-    }
-    return [];
-  }, [lesson.number, lesson.simulatorId]);
-
   const [selectedSimId, setSelectedSimId] = useState<string>("");
 
   React.useEffect(() => {
@@ -382,14 +391,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     }
   }, [lessonSimulators]);
 
-  // Official Ministry assessments for this lesson
-  const officialAssessments = React.useMemo(() => {
-    return getOfficialAssessmentsForLesson(lesson.number || lesson.id);
-  }, [lesson.number, lesson.id]);
-
-  const officialQuestions = React.useMemo(() => {
-    return officialAssessments ? officialAssessments.questions : [];
-  }, [officialAssessments]);
+  // Official booklet + deep question counts come from the server; banks load when their tab opens
+  const sectionQuestionsCount = quiz.deepCountsBySection;
 
   // Split lesson questions into objective textbook exercises and essay writing questions
   const textbookQuestions = React.useMemo(() => {
@@ -400,15 +403,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
     return (lesson.questions || []).filter((q) => q.type === "essay");
   }, [lesson.questions]);
 
-  const comprehensionQuestions = React.useMemo(() => {
-    return getDeepQuestionsForLesson(lesson);
-  }, [lesson]);
-
   const [selectedComprehensionSectionId, setSelectedComprehensionSectionId] = useState<string | null>(null);
-
-  const sectionQuestionsCount = React.useMemo(() => {
-    return countQuestionsPerSection(comprehensionQuestions, lesson);
-  }, [comprehensionQuestions, lesson]);
 
   const handleJumpToSectionQuestions = (sectionId: string) => {
     setSelectedComprehensionSectionId(sectionId);
@@ -417,10 +412,10 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
   };
 
   const totalQuestionsCount =
-    officialQuestions.length +
+    quiz.officialCount +
     textbookQuestions.length +
     essayQuestions.length +
-    comprehensionQuestions.length;
+    quiz.deepCount;
 
   const hasClosureContent = Boolean(
     lesson.appliedTask ||
@@ -724,7 +719,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
           {/* Interactive Lesson Schematic & Concept Map */}
           {lesson.keyConcepts && lesson.keyConcepts.length > 0 && (
-            <LessonConceptMap lesson={lesson} />
+            <LessonConceptMap lesson={lesson} glossary={glossary} />
           )}
 
 
@@ -1201,7 +1196,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
-              {officialQuestions.length > 0 && (
+              {quiz.officialCount > 0 && (
                 <button
                   type="button"
                   onClick={() => {
@@ -1211,7 +1206,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                   className="p-3.5 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
                 >
                   <Award className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>التقييمات الرسمية ({officialQuestions.length}) 🏛️</span>
+                  <span>التقييمات الرسمية ({quiz.officialCount}) 🏛️</span>
                 </button>
               )}
 
@@ -1248,7 +1243,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
                 className="p-3.5 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-200 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.02]"
               >
                 <Brain className="w-4 h-4 text-purple-400 shrink-0" />
-                <span>أسئلة الفهم ({comprehensionQuestions.length}) 🧠</span>
+                <span>أسئلة الفهم ({quiz.deepCount}) 🧠</span>
               </button>
             </div>
           </div>
@@ -1293,7 +1288,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               }`}
             >
               <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
-              <span className="truncate">التقييمات الرسمية ({officialQuestions.length})</span>
+              <span className="truncate">التقييمات الرسمية ({quiz.officialCount})</span>
             </button>
 
             {/* 2. أسئلة من الكتاب */}
@@ -1344,17 +1339,18 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
               }`}
             >
               <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300 shrink-0" />
-              <span className="truncate">فهم ({comprehensionQuestions.length})</span>
+              <span className="truncate">فهم ({quiz.deepCount})</span>
             </button>
           </div>
 
           {/* Tab 0 Content: التقييمات الرسمية للوزارة */}
           {quizSubTab === "official" && (
             <ComponentErrorBoundary fallbackTitle="تعذر تشغيل تقييمات الوزارة الرسمية">
-              <LessonOfficialAssessments
-                lesson={lesson}
-                assessments={officialAssessments}
-              />
+              {quiz.companion && quiz.officialCount > 0 ? (
+                <OfficialQuestionsTab partKey={partKey} lesson={lesson} companion={quiz.companion} />
+              ) : (
+                <EmptyBank text="لا توجد تقييمات رسمية لهذا الدرس." />
+              )}
             </ComponentErrorBoundary>
           )}
 
@@ -1383,11 +1379,16 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
           {/* Tab 3 Content: أسئلة الفهم */}
           {quizSubTab === "comprehension" && (
             <ComponentErrorBoundary fallbackTitle="تعذر تشغيل أسئلة الفهم المعمقة">
-              <DeepComprehensionViewer
-                lesson={lesson}
-                targetSectionId={selectedComprehensionSectionId}
-                onClearTargetSection={() => setSelectedComprehensionSectionId(null)}
-              />
+              {quiz.deepCount > 0 ? (
+                <DeepQuestionsTab
+                  partKey={partKey}
+                  lesson={lesson}
+                  targetSectionId={selectedComprehensionSectionId}
+                  onClearTargetSection={() => setSelectedComprehensionSectionId(null)}
+                />
+              ) : (
+                <EmptyBank text="لا توجد أسئلة فهم مُعدّة لهذا الدرس بعد." />
+              )}
             </ComponentErrorBoundary>
           )}
         </div>
@@ -1397,7 +1398,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
       <footer className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-12 pt-6 border-t border-slate-800">
         {prevLesson ? (
           <Link
-            href={`/chapters/${prevLesson.chapterId}/${prevLesson.slug}`}
+            href={lessonHref(partKey, prevLesson.chapterId, prevLesson.slug)}
             className="flex-1 p-3.5 sm:p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-right transition-all flex items-center gap-3 group"
           >
             <ArrowRight className="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform shrink-0" />
@@ -1412,7 +1413,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson }: Props) {
 
         {nextLesson ? (
           <Link
-            href={`/chapters/${nextLesson.chapterId}/${nextLesson.slug}`}
+            href={lessonHref(partKey, nextLesson.chapterId, nextLesson.slug)}
             className="flex-1 p-3.5 sm:p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-2xl text-left transition-all flex items-center justify-end gap-3 group"
           >
             <div className="min-w-0 text-right sm:text-left">

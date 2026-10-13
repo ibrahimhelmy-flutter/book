@@ -1,21 +1,30 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CURRICULUM_DATA } from "@/data/curriculum";
-import { GLOSSARY_DATA } from "@/data/glossary";
-import { ACRONYMS_DATA } from "@/data/acronyms";
 import { Search, X, ArrowLeft, Zap } from "lucide-react";
 import Link from "next/link";
-
+import type { AcronymTerm, GlossaryTerm } from "@/types";
+import type { PartManifest, SearchLesson } from "@/types/catalog";
+import { dataUrl, lessonHref } from "@/content/paths";
+import { useJson } from "@/lib/fetch-json";
 import { matchesSearch } from "@/lib/arabic";
 
 interface Props {
+  part: PartManifest;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function SearchModal({ isOpen, onClose }: Props) {
+export function SearchModal(props: Props) {
+  // The search data is only fetched once the modal is opened for the first time.
+  return props.isOpen ? <SearchModalOpen {...props} /> : null;
+}
+
+function SearchModalOpen({ part, onClose }: Props) {
   const [query, setQuery] = useState("");
+  const lessons = useJson<SearchLesson[]>(dataUrl(part.key, "search-lessons.json"));
+  const glossary = useJson<GlossaryTerm[]>(dataUrl(part.key, "glossary.json"));
+  const acronyms = useJson<AcronymTerm[]>(dataUrl(part.key, "acronyms.json"));
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -29,30 +38,22 @@ export function SearchModal({ isOpen, onClose }: Props) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  if (!isOpen) return null;
-
-  const filteredLessons = CURRICULUM_DATA.flatMap((ch) =>
-    ch.lessons
-      .filter(
-        (l) =>
-          matchesSearch(l.title, query) ||
-          matchesSearch(l.englishTitle, query) ||
-          matchesSearch(l.coreIdea, query) ||
-          l.keyConcepts.some(
-            (k) => matchesSearch(k.termAr, query) || matchesSearch(k.termEn, query)
-          )
-      )
-      .map((l) => ({ ...l, chapterTitle: ch.title }))
+  const filteredLessons = (lessons.data ?? []).filter(
+    (l) =>
+      matchesSearch(l.title, query) ||
+      matchesSearch(l.englishTitle, query) ||
+      matchesSearch(l.coreIdea, query) ||
+      l.concepts.some((c) => matchesSearch(c, query))
   );
 
-  const filteredGlossary = GLOSSARY_DATA.filter(
+  const filteredGlossary = (glossary.data ?? []).filter(
     (g) =>
       matchesSearch(g.termAr, query) ||
       matchesSearch(g.termEn, query) ||
       matchesSearch(g.definitionAr, query)
   );
 
-  const filteredAcronyms = ACRONYMS_DATA.filter(
+  const filteredAcronyms = (acronyms.data ?? []).filter(
     (a) =>
       matchesSearch(a.short, query) ||
       matchesSearch(a.fullEn, query) ||
@@ -71,7 +72,7 @@ export function SearchModal({ isOpen, onClose }: Props) {
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="ابحث في الدروس والمفاهيم والمصطلحات (عربي أو إنجليزي)..."
+            placeholder={`ابحث في ${part.bookTitle} — ${part.partShortTitle} (عربي أو إنجليزي)...`}
             className="flex-1 bg-transparent text-sm sm:text-base text-white focus:outline-none placeholder:text-slate-500"
           />
           <button
@@ -100,7 +101,7 @@ export function SearchModal({ isOpen, onClose }: Props) {
                     {filteredLessons.map((l) => (
                       <Link
                         key={l.id}
-                        href={`/chapters/${l.chapterId}/${l.slug}`}
+                        href={lessonHref(part.key, l.chapterId, l.slug)}
                         onClick={onClose}
                         className="p-3 bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800/80 rounded-xl flex items-center justify-between group transition-all block"
                       >

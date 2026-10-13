@@ -2,8 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { Lesson, KeyConcept } from "@/types";
-import { GLOSSARY_DATA } from "@/data/glossary";
+import type { GlossaryTerm, Lesson, KeyConcept } from "@/types";
 import {
   Lightbulb,
   ArrowRight,
@@ -17,9 +16,11 @@ import {
 
 interface Props {
   lesson: Lesson;
+  /** Glossary terms of this lesson (selected on the server). */
+  glossary: GlossaryTerm[];
 }
 
-export function LessonConceptMap({ lesson }: Props) {
+export function LessonConceptMap({ lesson, glossary }: Props) {
   const [viewMode, setViewMode] = useState<"tree" | "flow" | "list">("tree");
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
 
@@ -49,11 +50,7 @@ export function LessonConceptMap({ lesson }: Props) {
       }
     });
 
-    const glossaryForLesson = GLOSSARY_DATA.filter(
-      (g) => g.lessonNumber === lesson.number || (g.chapterId === lesson.chapterId && g.lessonNumber === lesson.number)
-    );
-
-    glossaryForLesson.forEach((g) => {
+    glossary.forEach((g) => {
       const norm = g.termAr.trim().toLowerCase();
       if (!seen.has(norm)) {
         seen.add(norm);
@@ -68,7 +65,7 @@ export function LessonConceptMap({ lesson }: Props) {
     });
 
     return list;
-  }, [lesson]);
+  }, [lesson, glossary]);
 
   // Map concepts to their matching sections based on section title & content
   const { sectionMap, unassignedConcepts } = useMemo(() => {

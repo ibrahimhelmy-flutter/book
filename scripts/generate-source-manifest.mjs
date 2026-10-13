@@ -2,11 +2,20 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
-import { getSources } from './sources-config.mjs';
+import { getSources, partArg, assertPartSources } from './sources-config.mjs';
 
-const sources = getSources('term-1');
+const sources = getSources(partArg());
+assertPartSources(sources, ['pdfFile']);
+const bookMeta = fs.existsSync(sources.canonicalBookFile)
+  ? (JSON.parse(fs.readFileSync(sources.canonicalBookFile, 'utf8')).meta || {})
+  : {};
+const previousManifest = fs.existsSync(sources.sourceManifestFile)
+  ? JSON.parse(fs.readFileSync(sources.sourceManifestFile, 'utf8'))
+  : {};
+const TERM_NUMBER = Number(sources.partId.replace(/D/g, '')) || 1;
+const EXPECTED_PAGES = bookMeta.totalPages || previousManifest.expectedPages || 95;
 
-console.log('🛡️ Running Content Provenance & Manifest Validation for Term 1...');
+console.log(`🛡️ Running Content Provenance & Manifest Validation for ${sources.key}...`);
 
 let overallPass = true;
 const validationSummary = [];
@@ -28,14 +37,14 @@ if (!fs.existsSync(sources.pdfFile)) {
   const pdfSizeMB = (pdfStats.size / (1024 * 1024)).toFixed(2);
   
   const manifestData = {
-    term: 1,
-    bookTitle: "البرمجة والذكاء الاصطناعي — الصف الثاني الثانوي (بكالوريا مصرية) — الترم الأول",
-    academicYear: "2026 - 2027",
-    ministry: "جمهورية مصر العربية - وزارة التربية والتعليم والتعليم الفني",
-    expectedPages: 95,
+    term: TERM_NUMBER,
+    bookTitle: bookMeta.title || previousManifest.bookTitle,
+    academicYear: bookMeta.academicYear || previousManifest.academicYear,
+    ministry: bookMeta.ministry || previousManifest.ministry,
+    expectedPages: EXPECTED_PAGES,
     pdf: {
       canonicalFilename: path.basename(sources.pdfFile),
-      originalFilename: "Programming-ArtificialIntelligence-Ar-EB-part1 (1).pdf",
+      originalFilename: previousManifest.pdf?.originalFilename || path.basename(sources.pdfFile),
       sizeBytes: pdfStats.size,
       sizeMB: `${pdfSizeMB} MB`,
       sha256: pdfHash,
@@ -49,18 +58,18 @@ if (!fs.existsSync(sources.pdfFile)) {
   validationSummary.push({ check: 'PDF integrity', status: 'PASS', sha256: pdfHash, sizeMB: pdfSizeMB });
 }
 
-// 2. High-Res Page Scans Integrity (95 pages)
-console.log('\n2️⃣ Validating Authoritative Page Scans (1..95)...');
+// 2. High-Res Page Scans Integrity (EXPECTED_PAGES pages)
+console.log(`\n2️⃣ Validating Authoritative Page Scans (1..${EXPECTED_PAGES})...`);
 if (!fs.existsSync(sources.pages)) {
   console.error(`  ❌ FAIL: Pages directory not found at: ${sources.pages}`);
-  validationSummary.push({ check: '95 page scans', status: 'FAIL', details: 'Directory missing' });
+  validationSummary.push({ check: 'Page scans', status: 'FAIL', details: 'Directory missing' });
   overallPass = false;
 } else {
   const pageFiles = fs.readdirSync(sources.pages).filter(f => f.endsWith('.png')).sort();
   const pageHashes = {};
   let missingPages = [];
 
-  for (let p = 1; p <= 95; p++) {
+  for (let p = 1; p <= EXPECTED_PAGES; p++) {
     const filename = `page_${String(p).padStart(2, '0')}.png`;
     const fullPath = path.join(sources.pages, filename);
     if (!fs.existsSync(fullPath)) {
@@ -75,19 +84,19 @@ if (!fs.existsSync(sources.pages)) {
   }
 
   fs.writeFileSync(sources.pageHashesFile, JSON.stringify({
-    term: 1,
+    term: TERM_NUMBER,
     totalPagesScanned: Object.keys(pageHashes).length,
-    expectedPages: 95,
+    expectedPages: EXPECTED_PAGES,
     hashes: pageHashes
   }, null, 2), 'utf8');
 
   if (missingPages.length > 0) {
     console.error(`  ❌ FAIL: Missing ${missingPages.length} page scans:`, missingPages.join(', '));
-    validationSummary.push({ check: '95 page scans', status: 'FAIL', missing: missingPages });
+    validationSummary.push({ check: 'Page scans', status: 'FAIL', missing: missingPages });
     overallPass = false;
   } else {
-    console.log(`  ✅ PASS: All 95 official page scans verified with SHA-256 hashes.`);
-    validationSummary.push({ check: '95 page scans', status: 'PASS', count: 95 });
+    console.log(`  ✅ PASS: All ${EXPECTED_PAGES} official page scans verified with SHA-256 hashes.`);
+    validationSummary.push({ check: 'Page scans', status: 'PASS', count: EXPECTED_PAGES });
   }
 }
 
@@ -119,7 +128,7 @@ if (!fs.existsSync(sources.canonical)) {
 
   scanDirRecursive(sources.canonical);
   fs.writeFileSync(sources.canonicalHashesFile, JSON.stringify({
-    term: 1,
+    term: TERM_NUMBER,
     description: "Exclusive cryptographic hashes of 05-canonical-data. Excludes 07-validation and runtime generated files.",
     totalCanonicalJsonFiles: Object.keys(canonicalHashes).length,
     files: canonicalHashes
@@ -143,7 +152,7 @@ if (fs.existsSync(sources.canonicalBookFile)) {
       if (!lesson.source || !Array.isArray(lesson.source.pages) || lesson.source.pages.length === 0) {
         provenanceErrors.push(`Lesson ${lesson.id} missing valid source.pages`);
       } else {
-        const invalidPages = lesson.source.pages.filter(p => p < 1 || p > 95);
+        const invalidPages = lesson.source.pages.filter(p => p < 1 || p > EXPECTED_PAGES);
         if (invalidPages.length > 0) {
           provenanceErrors.push(`Lesson ${lesson.id} contains out-of-range pages: ${invalidPages.join(',')}`);
         }
@@ -162,7 +171,7 @@ if (fs.existsSync(sources.canonicalBookFile)) {
 }
 
 const provenanceReport = {
-  term: 1,
+  term: TERM_NUMBER,
   timestamp: new Date().toISOString(),
   lessonsChecked: totalLessonsChecked,
   conceptsChecked: totalConceptsChecked,
@@ -205,10 +214,10 @@ function getCanonicalTreeFingerprint() {
 const fingerprintBefore = getCanonicalTreeFingerprint();
 let buildExecuted = false;
 try {
-  execSync(`node "${path.resolve('scripts', 'build-all-data.mjs')}"`, { stdio: 'pipe' });
+  execSync(`node "${path.resolve('node_modules', 'tsx', 'dist', 'cli.mjs')}" scripts/data/build-data.ts`, { stdio: 'pipe' });
   buildExecuted = true;
 } catch (buildErr) {
-  console.error('  ❌ FAIL: build-all-data.mjs threw an error during execution:', buildErr.message);
+  console.error('  ❌ FAIL: build-data.ts threw an error during execution:', buildErr.message);
   validationSummary.push({ check: 'Canonical immutability', status: 'FAIL', error: buildErr.message });
   overallPass = false;
 }

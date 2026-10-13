@@ -2,9 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
-import { CURRENT_BOOK } from "@/data/books";
+import { ActivePartProvider } from "@/components/layout/PartProvider";
 import { PWARegister } from "@/components/pwa/PWARegister";
 import { PWAProvider } from "@/context/PWAContext";
+import { getNavCatalog } from "@/content";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -30,15 +31,18 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
   : (isGitHubPages ? "/book" : "");
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-curriculum.edu.eg";
+const SITE_NAME = "المنهج التفاعلي";
+const SITE_DESCRIPTION =
+  "منصة تفاعلية لكتب وزارة التربية والتعليم المصرية: شرح الدروس كما في الكتاب، وكتيبات التقييم الرسمية، وبنوك الأسئلة، والمحاكيات — مرتبة حسب الصف والكتاب والترم، وتعمل بدون إنترنت.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${CURRENT_BOOK.title} | ${CURRENT_BOOK.grade} (${CURRENT_BOOK.term})`,
-    template: `%s | ${CURRENT_BOOK.title}`,
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: CURRENT_BOOK.description,
-  keywords: ["الذكاء الاصطناعي", "الأمن السيبراني", "تطبيقات الويب", "تصميم الويب", "الثانوية العامة", "مصر", CURRENT_BOOK.title, CURRENT_BOOK.grade],
+  description: SITE_DESCRIPTION,
+  keywords: ["المناهج المصرية", "كتب الوزارة", "الثانوية العامة", "مصر", "شرح الدروس", "بنك الأسئلة"],
   authors: [{ name: "وزارة التربية والتعليم والتعليم الفني - جمهورية مصر العربية" }],
   icons: {
     icon: [
@@ -54,20 +58,20 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: CURRENT_BOOK.title,
+    title: SITE_NAME,
   },
   openGraph: {
     type: "website",
     locale: "ar_EG",
     url: siteUrl,
-    title: `${CURRENT_BOOK.title} | ${CURRENT_BOOK.grade}`,
-    description: CURRENT_BOOK.description,
-    siteName: CURRENT_BOOK.title,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${CURRENT_BOOK.title} | ${CURRENT_BOOK.grade}`,
-    description: CURRENT_BOOK.description,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
 };
 
@@ -82,6 +86,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${cairo.className} min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col selection:bg-indigo-600 selection:text-white`}
       >
+        <ActivePartProvider>
         <PWAProvider>
           <a
             href="#main-content"
@@ -89,12 +94,13 @@ export default function RootLayout({
           >
             تخطي إلى المحتوى الرئيسي
           </a>
-          <Navbar />
+          <Navbar catalog={getNavCatalog()} />
           <main id="main-content" className="flex-1 flex flex-col w-full min-w-0">
             {children}
           </main>
           <PWARegister />
         </PWAProvider>
+        </ActivePartProvider>
       </body>
     </html>
   );

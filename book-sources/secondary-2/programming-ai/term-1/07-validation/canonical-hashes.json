@@ -1,0 +1,277 @@
+{
+  "term": 1,
+  "description": "Exclusive cryptographic hashes of 05-canonical-data. Excludes 07-validation and runtime generated files.",
+  "totalCanonicalJsonFiles": 54,
+  "files": {
+    "authored/chapter1.json": {
+      "sha256": "282fc2ca4119d6888ed4131e376e60a99bafd9562cda7aa0f458772dc578fb89",
+      "sizeBytes": 137783,
+      "lastModified": "2026-09-20T05:55:07.857Z"
+    },
+    "authored/committee-questions.json": {
+      "sha256": "8048dc688f096e48c752c97914556d2aa018976ccf20319d4847bfcb1a56a60c",
+      "sizeBytes": 71196,
+      "lastModified": "2026-09-29T20:45:24.917Z"
+    },
+    "authored/deep-questions/chapter-1/lesson-1-1.json": {
+      "sha256": "a9ada977d28da7054c58e873a3256b16d4581e18426725eac148f292e3523955",
+      "sizeBytes": 168708,
+      "lastModified": "2026-09-21T13:07:11.941Z"
+    },
+    "authored/deep-questions/chapter-1/lesson-1-2.json": {
+      "sha256": "f63224edd2249a224e7824f350b942b004045fec4d9c7cb7304c5289b33649d1",
+      "sizeBytes": 128575,
+      "lastModified": "2026-09-21T13:07:12.015Z"
+    },
+    "authored/deep-questions/chapter-1/lesson-1-3.json": {
+      "sha256": "0c0175dcdf969463f4d70cfdf2ec4f8410d93c27f6e76ff947299b1501790fc5",
+      "sizeBytes": 191114,
+      "lastModified": "2026-09-21T13:07:12.081Z"
+    },
+    "authored/deep-questions/chapter-1/lesson-1-4.json": {
+      "sha256": "5703e3f00ea738964084e136fbd23f8e8a0b5c2071e0d96ca890cddb3c35fc7f",
+      "sizeBytes": 193092,
+      "lastModified": "2026-09-21T13:07:12.155Z"
+    },
+    "authored/deep-questions/chapter-1/unit-1-review.json": {
+      "sha256": "a66896d9aee9ec2f8679ee7cca2a9fbec5b7ea725dd902127af3109e34309624",
+      "sizeBytes": 298257,
+      "lastModified": "2026-09-19T08:30:17.012Z"
+    },
+    "authored/deep-questions/chapter-2/lesson-2-1.json": {
+      "sha256": "fd89639ba34a3ad9da414f912ec5f522104ae15613fbc9d816323455a1137da9",
+      "sizeBytes": 114443,
+      "lastModified": "2026-10-02T15:31:10.971Z"
+    },
+    "authored/deep-questions/chapter-2/lesson-2-2.json": {
+      "sha256": "99e6d67ed8108f005c04ac4be652aa8339c954ba6297f6a01af6e65bb3b91080",
+      "sizeBytes": 197832,
+      "lastModified": "2026-10-11T16:08:52.035Z"
+    },
+    "authored/deep-questions/chapter-2/lesson-2-3.json": {
+      "sha256": "f41731fdb9ef2800fea4d25112925be659fef8a03139b3ddec84aac160debf85",
+      "sizeBytes": 190902,
+      "lastModified": "2026-10-11T18:23:51.429Z"
+    },
+    "authored/deep-questions/chapter-3/lesson-3-1.json": {
+      "sha256": "3d0b8b748d7ed0945a2091b80302aea293d337761c8e5ebc125689d344ff6e11",
+      "sizeBytes": 201608,
+      "lastModified": "2026-10-11T18:22:40.461Z"
+    },
+    "authored/deep-questions/chapter-3/lesson-3-2.json": {
+      "sha256": "4f40c935bb0c94d1288d81f22bbfc3e67135900de3bf964b477f35d381b2ef23",
+      "sizeBytes": 187233,
+      "lastModified": "2026-10-11T18:26:13.034Z"
+    },
+    "authored/deep-questions/chapter-3/lesson-3-3.json": {
+      "sha256": "e6acae6439c4c4e22972eb84633ab8dc2ac5e4232fa8949a1ff567a8fa04b655",
+      "sizeBytes": 188653,
+      "lastModified": "2026-10-11T18:22:13.627Z"
+    },
+    "authored/deep-questions/chapter-4/lesson-4-1.json": {
+      "sha256": "4e393ac84c5b2fd43b05ede37d0b8de9521dafdb8110004994a4c7fcd2809e4e",
+      "sizeBytes": 195162,
+      "lastModified": "2026-10-11T18:22:13.404Z"
+    },
+    "authored/deep-questions/chapter-4/lesson-4-2.json": {
+      "sha256": "16930a60882d6f9c475d71f8128848a7ad4ed97fcc4a1adb52452f567827350e",
+      "sizeBytes": 201901,
+      "lastModified": "2026-10-11T18:25:10.824Z"
+    },
+    "authored/deep-questions/chapter-4/lesson-4-3.json": {
+      "sha256": "11ad2cbc96e5edfa4a29364528aad83c0a77b7ab52a13f7053be020a269a9335",
+      "sizeBytes": 186057,
+      "lastModified": "2026-10-11T18:25:41.655Z"
+    },
+    "authored/deep-questions/chapter-4/lesson-4-4.json": {
+      "sha256": "ec07640a750d70a6038ba730a64367c75900b100df273eace579ab4704bfb5bd",
+      "sizeBytes": 187285,
+      "lastModified": "2026-10-11T18:21:41.531Z"
+    },
+    "authored/simulators.json": {
+      "sha256": "b774f99e50ba97a2ab00305c5bc8336769924d5a604b2fe32f37b5b222054fe0",
+      "sizeBytes": 9659,
+      "lastModified": "2026-09-29T21:19:07.233Z"
+    },
+    "authored/storylines/chapter-1.json": {
+      "sha256": "e436e33b919d4e8ad322d6fe2b3d588b2c64c52521a20e06a0d877b99e8d88f8",
+      "sizeBytes": 53854,
+      "lastModified": "2026-10-12T13:11:40.330Z"
+    },
+    "authored/storylines/chapter-2.json": {
+      "sha256": "1b1c185079e141a799df2063267dcee3da9e4d0ec50acd3dce8b11da7472cc2d",
+      "sizeBytes": 40495,
+      "lastModified": "2026-10-12T13:11:40.353Z"
+    },
+    "authored/storylines/chapter-3.json": {
+      "sha256": "09b792ce579ffb3f3f68c0c3d4ef89de9477729aa3bb31b03f88ec206f21f71f",
+      "sizeBytes": 34214,
+      "lastModified": "2026-10-12T13:11:40.365Z"
+    },
+    "authored/storylines/chapter-4.json": {
+      "sha256": "e9a3defb877d1d1294d25aaadfa755f69cb722b9fe8647e57c06197086ebf4e4",
+      "sizeBytes": 47466,
+      "lastModified": "2026-10-12T13:11:40.379Z"
+    },
+    "official/acronyms.json": {
+      "sha256": "7986d625abbc619c1ae7a0a66f74034ce9b5796b7285420a23ba9a427bf62e86",
+      "sizeBytes": 10940,
+      "lastModified": "2026-09-29T20:45:24.913Z"
+    },
+    "official/book.json": {
+      "sha256": "68d09dc91681102de6ee642269782e06f9767ec2059aad16efc2bafa3b75616f",
+      "sizeBytes": 580219,
+      "lastModified": "2026-10-02T15:31:10.967Z"
+    },
+    "official/curriculum-baseline-spec.json": {
+      "sha256": "5fff04addfe9308a8681068504d140f552b13176723ce15dcc4a1969ec1ae7ca",
+      "sizeBytes": 553042,
+      "lastModified": "2026-09-07T21:53:56.481Z"
+    },
+    "official/glossary.json": {
+      "sha256": "09ac0533d91b8ea851c9f458e3ce7e9caad307e5a9c6957e9d391fd154bc7147",
+      "sizeBytes": 64457,
+      "lastModified": "2026-10-02T15:31:10.969Z"
+    },
+    "official/official-assessments/lesson-1-1.json": {
+      "sha256": "91fb0f165dcf11246c0afe8aa9fa3b101a294517333fffec2c94a9d565710db4",
+      "sizeBytes": 86957,
+      "lastModified": "2026-09-21T11:39:27.691Z"
+    },
+    "official/official-assessments/lesson-1-2.json": {
+      "sha256": "d2cfe3c3226653360942472f1d73e42d46653754a798b2d16c354b13669712f6",
+      "sizeBytes": 89281,
+      "lastModified": "2026-09-21T11:39:27.816Z"
+    },
+    "official/official-assessments/lesson-1-3.json": {
+      "sha256": "163e6c4211135ed0dff9fa32bf7495c53813252bec94c470ab81226f6225a0d1",
+      "sizeBytes": 83186,
+      "lastModified": "2026-09-21T11:39:27.962Z"
+    },
+    "official/official-assessments/lesson-1-4.json": {
+      "sha256": "26bc6704153c2d1dc68fba6910da83943291ac2627a0439b7a93043cb078bf8a",
+      "sizeBytes": 78174,
+      "lastModified": "2026-09-21T11:39:28.131Z"
+    },
+    "official/official-assessments/lesson-2-1.json": {
+      "sha256": "378b3bcd2bb471a3396da5aa9f5be020fbd399fe086fcbf37304a9aae4bdf8e3",
+      "sizeBytes": 83283,
+      "lastModified": "2026-09-21T11:39:28.264Z"
+    },
+    "official/official-assessments/lesson-2-2.json": {
+      "sha256": "5250fde3df030d19c7cbe0de1fd7752affc862af85062e4c845667d9572ec51f",
+      "sizeBytes": 81514,
+      "lastModified": "2026-09-21T11:39:28.404Z"
+    },
+    "official/official-assessments/lesson-2-3.json": {
+      "sha256": "30a8f844581d7fc9fa95d77ec4ebde62af426f10e0b89efcc97b4987e4732bce",
+      "sizeBytes": 78784,
+      "lastModified": "2026-09-21T11:39:28.611Z"
+    },
+    "official/official-assessments/lesson-3-1.json": {
+      "sha256": "137652a40f3865323c82f81c4d5f6b6ea77fbdacdcf8c90552d94fb1f65120c3",
+      "sizeBytes": 75435,
+      "lastModified": "2026-09-21T11:39:28.782Z"
+    },
+    "official/official-assessments/lesson-3-2.json": {
+      "sha256": "09425a9a7dd2d1cc839d675c6fbcea779dab9054ff787ddff3f697d11619a78a",
+      "sizeBytes": 68989,
+      "lastModified": "2026-09-21T11:39:28.941Z"
+    },
+    "official/official-assessments/lesson-3-3.json": {
+      "sha256": "2561a82cd5c80a42a193960e1efeec676958c582fe3b391a0063393772be9853",
+      "sizeBytes": 68993,
+      "lastModified": "2026-09-21T11:39:29.174Z"
+    },
+    "official/official-assessments/lesson-4-1.json": {
+      "sha256": "444a55b0a3223211efd73702564aca91983c96d13071cae852793d4461786121",
+      "sizeBytes": 80485,
+      "lastModified": "2026-09-21T11:39:29.297Z"
+    },
+    "official/official-assessments/lesson-4-2.json": {
+      "sha256": "9c751938b1d43fd1b858465b2bc9a2234930f22c0207b651f66a51ca92584093",
+      "sizeBytes": 86878,
+      "lastModified": "2026-09-21T11:39:29.426Z"
+    },
+    "official/official-assessments/lesson-4-3.json": {
+      "sha256": "7037d010ee0c9fc3a42adc3e9a87e91bd596b3080b3260be19de5d80370f35c8",
+      "sizeBytes": 80164,
+      "lastModified": "2026-09-21T11:39:29.610Z"
+    },
+    "official/official-assessments/lesson-4-4.json": {
+      "sha256": "34f9549da7e0e63e4326e12d4da546cc5b056382dbf7fc824d230d8643fa497e",
+      "sizeBytes": 81194,
+      "lastModified": "2026-09-21T11:39:29.777Z"
+    },
+    "official/official-lessons/chapter-1/lesson-1-1.json": {
+      "sha256": "0e54e839b37f49d4caa87f53a73707b27a3972f9ab9944db7e2ee3b0eafd611d",
+      "sizeBytes": 17301,
+      "lastModified": "2026-09-29T20:45:24.890Z"
+    },
+    "official/official-lessons/chapter-1/lesson-1-2.json": {
+      "sha256": "86611fd020bf9f4076f6c93166a91277cc8fcf264d46857ba56e24baee99b344",
+      "sizeBytes": 16914,
+      "lastModified": "2026-09-29T20:45:24.891Z"
+    },
+    "official/official-lessons/chapter-1/lesson-1-3.json": {
+      "sha256": "1d55f36a7e154b6ded305d3e1e1c3f862d452249ff5b3cb53f9c338ae0a8c82e",
+      "sizeBytes": 12643,
+      "lastModified": "2026-09-29T20:45:24.891Z"
+    },
+    "official/official-lessons/chapter-1/lesson-1-4.json": {
+      "sha256": "092e703a02c574520dd4ca4eab3d7fb89edc73062e0eb1b05abeceaa9c8cefb8",
+      "sizeBytes": 14869,
+      "lastModified": "2026-09-29T20:45:24.891Z"
+    },
+    "official/official-lessons/chapter-2/lesson-2-1.json": {
+      "sha256": "a9788f6b3f35f47fe10f8d3272ee596bd8aa16920125e11da4bddf3c4d285698",
+      "sizeBytes": 13896,
+      "lastModified": "2026-09-29T20:45:24.894Z"
+    },
+    "official/official-lessons/chapter-2/lesson-2-2.json": {
+      "sha256": "7ef6453fa706a4e308ed1134fd4011c1973ff154920cb744e1d321f7cb2268a3",
+      "sizeBytes": 12992,
+      "lastModified": "2026-09-29T20:45:24.896Z"
+    },
+    "official/official-lessons/chapter-2/lesson-2-3.json": {
+      "sha256": "9e5bde9a4f1a88678fcdeb6047028ce3bc89c1ccd8d813e973771d2735e0bf12",
+      "sizeBytes": 10868,
+      "lastModified": "2026-09-29T20:45:24.896Z"
+    },
+    "official/official-lessons/chapter-3/lesson-3-1.json": {
+      "sha256": "48960ff955bafcf97f9c9d1e747f1c240b1aa36b3cbfd55631ce95b7f5e1e2f4",
+      "sizeBytes": 11267,
+      "lastModified": "2026-09-29T20:45:24.898Z"
+    },
+    "official/official-lessons/chapter-3/lesson-3-2.json": {
+      "sha256": "535eee87f9859038959dd286ad34d1be933097f23bb457409ef1d06c51a9a0f0",
+      "sizeBytes": 12053,
+      "lastModified": "2026-09-29T20:45:24.900Z"
+    },
+    "official/official-lessons/chapter-3/lesson-3-3.json": {
+      "sha256": "92d720e602443b4c139fe49444632674d7c2ee6020ff3948339b58980821c831",
+      "sizeBytes": 12634,
+      "lastModified": "2026-09-29T20:45:24.902Z"
+    },
+    "official/official-lessons/chapter-4/lesson-4-1.json": {
+      "sha256": "213d46b0c21eb3caa2aa7b871177a890bdc33da505b726466ea065ce70bd28b7",
+      "sizeBytes": 10284,
+      "lastModified": "2026-09-29T20:45:24.902Z"
+    },
+    "official/official-lessons/chapter-4/lesson-4-2.json": {
+      "sha256": "46c1d6a478b1bada733ae61d07b0ea7cc6097260dcd2018a9677f6bd5257954d",
+      "sizeBytes": 13041,
+      "lastModified": "2026-09-29T20:45:24.902Z"
+    },
+    "official/official-lessons/chapter-4/lesson-4-3.json": {
+      "sha256": "71689a8c3c1c6f3501cf20a1bddeed5ef97832d7f738f445dfca26f61a0819e7",
+      "sizeBytes": 12109,
+      "lastModified": "2026-09-29T20:45:24.902Z"
+    },
+    "official/official-lessons/chapter-4/lesson-4-4.json": {
+      "sha256": "1f1a4ddfbe424da9f34907302cdcd209f11cd7f4b15f1c8d1bd1136ce417d9ce",
+      "sizeBytes": 11494,
+      "lastModified": "2026-09-29T20:45:24.907Z"
+    }
+  }
+}

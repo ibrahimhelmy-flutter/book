@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import {
   BookOpen,
@@ -16,18 +16,31 @@ import {
   DownloadCloud,
   Smartphone,
   CheckCircle,
+  Library,
 } from "lucide-react";
-import { CURRENT_BOOK } from "@/data/books";
-import { BookSelector } from "../common/BookSelector";
+import type { NavCatalog } from "@/types/catalog";
+import { partHref } from "@/content/paths";
 import { usePWA } from "@/context/PWAContext";
+import { useActivePart } from "./PartProvider";
+import { PartSwitcher } from "./PartSwitcher";
 
-const NAV_LINKS = [
-  { href: "/", label: "الرئيسية", icon: BookOpen },
-  { href: "/exams", label: "الأسئلة والامتحانات", icon: Award },
-  { href: "/simulators", label: "المحاكيات التفاعلية", icon: Sparkles },
-  { href: "/glossary", label: "المصطلحات", icon: BookA },
-  { href: "/dashboard", label: "لوحة الإنجاز", icon: LayoutDashboard },
-] as const;
+function navLinksFor(partKey: string | null) {
+  if (!partKey) {
+    return [
+      { href: "/", label: "الكتب الدراسية", icon: Library },
+      { href: "/dashboard/", label: "لوحة الإنجاز", icon: LayoutDashboard },
+    ];
+  }
+  return [
+    { href: partHref(partKey), label: "الرئيسية", icon: BookOpen },
+    { href: partHref(partKey, "exams"), label: "الأسئلة والامتحانات", icon: Award },
+    { href: partHref(partKey, "simulators"), label: "المحاكيات التفاعلية", icon: Sparkles },
+    { href: partHref(partKey, "glossary"), label: "المصطلحات", icon: BookA },
+    { href: "/dashboard/", label: "لوحة الإنجاز", icon: LayoutDashboard },
+  ];
+}
+
+const normalizePath = (p: string) => (p.endsWith("/") ? p : `${p}/`);
 
 const SearchModal = dynamic(
   () => import("../common/SearchModal").then((mod) => mod.SearchModal),
@@ -44,8 +57,20 @@ const OfflinePackModal = dynamic(
   { ssr: false }
 );
 
-export function Navbar() {
+export function Navbar({ catalog }: { catalog: NavCatalog }) {
   const pathname = usePathname();
+  const params = useParams<{ gradeId?: string; bookSlug?: string; partId?: string }>();
+  const routePartKey =
+    params?.gradeId && params?.bookSlug && params?.partId ? `${params.gradeId}/${params.bookSlug}/${params.partId}` : null;
+  const activePart = useActivePart();
+  // Part-scoped links follow the part in the URL; on catalog pages they follow the last visited part.
+  const linkPartKey = routePartKey ?? activePart?.key ?? null;
+  const NAV_LINKS = navLinksFor(linkPartKey);
+  const isActiveLink = (href: string) => {
+    const current = normalizePath(pathname || "/");
+    if (href === "/" || (linkPartKey && href === partHref(linkPartKey))) return current === href;
+    return current.startsWith(href);
+  };
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isIndexOpen, setIsIndexOpen] = useState(false);
@@ -74,30 +99,26 @@ export function Navbar() {
       {/* Simple, Non-fixed Clean Header */}
       <header className="w-full bg-slate-950 border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between gap-2 h-16">
             {/* Clean Brand Title */}
-            <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-3 group">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+              <Link href="/" className="flex items-center gap-3 group shrink-0">
                 <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md group-hover:bg-indigo-500 transition-colors">
                   <Sparkles className="w-5 h-5" />
                 </div>
-                <div className="text-right hidden sm:block">
-                  <div className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-                    <span>{CURRENT_BOOK.title}</span>
-                  </div>
+                <div className="text-right hidden lg:block">
+                  <div className="text-sm font-bold text-white tracking-tight">المنهج التفاعلي</div>
                 </div>
               </Link>
-              
-              <BookSelector variant="compact" />
+
+              <PartSwitcher catalog={catalog} activeKey={linkPartKey} />
             </div>
 
             {/* Clear, Minimal Navigation Links */}
             <nav className="hidden md:flex items-center gap-1.5" suppressHydrationWarning>
               {NAV_LINKS.map((link) => {
                 const Icon = link.icon;
-                const isActive =
-                  pathname === link.href ||
-                  (link.href === "/exams" && pathname === "/practice");
+                const isActive = isActiveLink(link.href);
                 return (
                   <Link
                     key={link.href}
@@ -117,7 +138,8 @@ export function Navbar() {
             </nav>
 
             {/* Quick Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {activePart && (<>
               {/* Search button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -132,7 +154,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsIndexOpen(true)}
-                className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-600/15 hover:bg-indigo-600/25 border border-indigo-500/30 text-indigo-300 hover:text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
+                className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-600/15 hover:bg-indigo-600/25 border border-indigo-500/30 text-indigo-300 hover:text-white text-xs font-bold transition-all cursor-pointer hidden sm:flex items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95"
                 title="فتح فهرس الدروس والمنهج"
                 aria-label="فهرس الدروس"
               >
@@ -140,6 +162,7 @@ export function Navbar() {
                 <span className="hidden sm:inline">فهرس الدروس</span>
               </button>
 
+              </>)}
               {/* PWA Install Button (Desktop/Tablet) */}
               {!isInstalled ? (
                 <button
@@ -162,6 +185,7 @@ export function Navbar() {
                 </div>
               )}
 
+              {activePart && (<>
               {/* Offline Pack Download Launcher (Desktop) */}
               <button
                 type="button"
@@ -180,12 +204,13 @@ export function Navbar() {
                 </span>
               </button>
 
+              </>)}
               {/* Mobile Install Button (compact) */}
               {!isInstalled && (
                 <button
                   type="button"
                   onClick={() => promptInstall()}
-                  className="sm:hidden p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 transition-colors cursor-pointer"
+                  className="hidden p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 transition-colors cursor-pointer"
                   title="تثبيت التطبيق"
                   aria-label="تثبيت التطبيق"
                 >
@@ -193,6 +218,7 @@ export function Navbar() {
                 </button>
               )}
 
+              {activePart && (<>
               {/* Offline Pack Download Launcher (Mobile compact) */}
               <button
                 type="button"
@@ -208,6 +234,7 @@ export function Navbar() {
                 <DownloadCloud className="w-4 h-4" />
               </button>
 
+              </>)}
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -237,6 +264,7 @@ export function Navbar() {
               </button>
             )}
 
+            {activePart && (<>
             {/* Offline Pack Action in Mobile Menu */}
             <button
               type="button"
@@ -266,12 +294,11 @@ export function Navbar() {
               <BookOpen className="w-4 h-4 text-indigo-400" />
               <span>فهرس المنهج والدروس 📚</span>
             </button>
+            </>)}
 
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
-              const isActive =
-                pathname === link.href ||
-                (link.href === "/exams" && pathname === "/practice");
+              const isActive = isActiveLink(link.href);
               return (
                 <Link
                   key={link.href}
@@ -291,17 +318,17 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Lessons Index Drawer */}
-      <LessonsIndexDrawer isOpen={isIndexOpen} onClose={() => setIsIndexOpen(false)} />
-
-      {/* Search Modal */}
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-
-      {/* Offline Pack Modal */}
-      <OfflinePackModal
-        isOpen={isOfflinePackModalOpen}
-        onClose={() => setIsOfflinePackModalOpen(false)}
-      />
+      {activePart && (
+        <>
+          <LessonsIndexDrawer part={activePart} isOpen={isIndexOpen} onClose={() => setIsIndexOpen(false)} />
+          <SearchModal part={activePart} isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+          <OfflinePackModal
+            part={activePart}
+            isOpen={isOfflinePackModalOpen}
+            onClose={() => setIsOfflinePackModalOpen(false)}
+          />
+        </>
+      )}
     </>
   );
 }

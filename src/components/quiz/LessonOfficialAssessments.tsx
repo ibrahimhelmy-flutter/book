@@ -2,11 +2,11 @@
 
 import React, { useState, useMemo } from "react";
 import { Lesson } from "@/types";
-import {
+import type {
   OfficialLessonAssessments,
   OfficialAssessmentQuestion,
   OfficialAssessmentSectionType,
-} from "@/data/official-assessments";
+} from "@/types/assessments";
 import { OfficialAssessmentCard } from "./OfficialAssessmentCard";
 import { matchesSearch } from "@/lib/arabic";
 import {
@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 interface Props {
-  lesson: Lesson;
+  lesson: Pick<Lesson, "number" | "title">;
   assessments?: OfficialLessonAssessments;
 }
 

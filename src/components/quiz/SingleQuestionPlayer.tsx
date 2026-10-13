@@ -5,7 +5,7 @@ import {
   SimpleDifficulty,
   DIFFICULTY_LABELS_AR,
   EnrichedSimpleQuestion,
-} from "@/lib/practice-data";
+} from "@/lib/practice";
 import {
   ChevronLeft,
   ChevronRight,

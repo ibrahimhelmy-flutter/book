@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { sources } from './sources-config.mjs';
+import { getSources, partArg } from './sources-config.mjs';
+
+const sources = getSources(partArg());
 
 console.log('📊 Generating Question Coverage Matrix across Curriculum Concepts...');
 
@@ -54,7 +56,7 @@ if (chapterDirs.length > 0) {
       lessonEntries.push([lessonNum, questions]);
     }
   }
-} else {
+} else if (fs.existsSync(sources.deepQuestionsDir)) {
   const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
   for (const file of deepFiles) {
     const filePath = path.join(sources.deepQuestionsDir, file);

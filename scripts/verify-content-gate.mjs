@@ -13,7 +13,7 @@ const STEPS = [
   { id: '08', name: 'Canonical Curriculum Fidelity (305 blocks)', cmd: 'node scripts/audit-canonical-fidelity.mjs' },
   { id: '09', name: 'Curriculum Compliance Benchmark (Gold Standard)', cmd: 'node scripts/validate-curriculum-compliance.mjs' },
   { id: '10', name: 'TypeScript Static Compilation Check', cmd: 'npx tsc --noEmit' },
-  { id: '11', name: 'Scalable Exam Engine Tests (23/23)', cmd: 'npx tsx src/core/tests/engine.test.ts' }
+  { id: '11', name: 'Unit Tests', cmd: 'node scripts/run-unit-tests.mjs' }
 ];
 
 const results = [];

@@ -1,0 +1,8 @@
+{
+  "firstLoadGzip": 184320,
+  "chunkRaw": 307200,
+  "dataFileRaw": 409600,
+  "routes": {
+    "/page": 153600
+  }
+}

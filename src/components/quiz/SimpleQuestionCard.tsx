@@ -5,7 +5,7 @@ import {
   SimpleQuestion,
   SimpleDifficulty,
   DIFFICULTY_LABELS_AR,
-} from "@/lib/practice-data";
+} from "@/lib/practice";
 import { Check, X, RotateCcw, Sparkles } from "lucide-react";
 
 interface Props {

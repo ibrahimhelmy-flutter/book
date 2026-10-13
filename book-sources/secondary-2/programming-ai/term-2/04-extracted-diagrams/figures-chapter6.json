@@ -1,0 +1,134 @@
+[
+  {
+    "file": "6-1-point-vs-interval.webp",
+    "pdfPage": 28,
+    "box": {
+      "left": 360,
+      "top": 681,
+      "width": 402,
+      "height": 269
+    },
+    "caption": "التقدير النقطي قيمة واحدة؛ أما الفترة فهي مدى."
+  },
+  {
+    "file": "6-1-hypothesis-scale.webp",
+    "pdfPage": 29,
+    "box": {
+      "left": 360,
+      "top": 177,
+      "width": 402,
+      "height": 270
+    },
+    "caption": "يبدأ اختبار الفرضيات بفرضية العدم، ثم يقيس مدى توافق البيانات معها."
+  },
+  {
+    "file": "6-1-hypothesis-test-example.webp",
+    "pdfPage": 30,
+    "box": {
+      "left": 279,
+      "top": 178,
+      "width": 557,
+      "height": 360
+    },
+    "caption": "شكل 6.1.1 — إجراء اختبار الفرضيات موضحًا من خلال مثال"
+  },
+  {
+    "file": "6-1-type1-type2-errors.webp",
+    "pdfPage": 31,
+    "box": {
+      "left": 74,
+      "top": 70,
+      "width": 192,
+      "height": 192
+    },
+    "caption": "خطأ النوع الأول هو إنذار كاذب؛ وخطأ النوع الثاني هو تفويت للاكتشاف."
+  },
+  {
+    "file": "6-2-regression-model-fit.webp",
+    "pdfPage": 36,
+    "box": {
+      "left": 360,
+      "top": 365,
+      "width": 402,
+      "height": 269
+    },
+    "caption": "ابنِ نموذجًا يلائم البيانات، ثم قيّمه قبل استخدامه للتنبؤ داخل نطاق مناسب."
+  },
+  {
+    "file": "6-2-multiple-regression-inputs.webp",
+    "pdfPage": 37,
+    "box": {
+      "left": 355,
+      "top": 105,
+      "width": 402,
+      "height": 269
+    },
+    "caption": "الانحدار المتعدد يجمع بين عدة مدخلات."
+  },
+  {
+    "file": "6-2-overfitting.webp",
+    "pdfPage": 38,
+    "box": {
+      "left": 74,
+      "top": 506,
+      "width": 192,
+      "height": 192
+    },
+    "caption": "النموذج المفرط في الملاءمة يطارد التشويش، لا الاتجاه العام."
+  },
+  {
+    "file": "6-3-visualization-role.webp",
+    "pdfPage": 44,
+    "box": {
+      "left": 360,
+      "top": 449,
+      "width": 402,
+      "height": 269
+    },
+    "caption": "الرسم الجيد يحتاج إلى تصميم واضح وتسميات وسياق مناسب؛ والازدحام قد يخفي النمط."
+  },
+  {
+    "file": "6-3-multivariable-display.webp",
+    "pdfPage": 45,
+    "box": {
+      "left": 360,
+      "top": 105,
+      "width": 402,
+      "height": 269
+    },
+    "caption": "يمكن لعرض واحد أن يجسّد عدة متغيرات في آنٍ واحد."
+  },
+  {
+    "file": "6-3-heatmap-example.webp",
+    "pdfPage": 45,
+    "box": {
+      "left": 358,
+      "top": 549,
+      "width": 402,
+      "height": 264
+    },
+    "caption": "شكل 6.3.1 — يمثل اللون قيمة الخلية وفق المقياس الموضح في المفتاح"
+  },
+  {
+    "file": "6-3-mosaic-plot-example.webp",
+    "pdfPage": 46,
+    "box": {
+      "left": 279,
+      "top": 70,
+      "width": 557,
+      "height": 360
+    },
+    "caption": "شكل 6.3.2 — مخطط مستطيلات: تُظهر مساحة كل مستطيل نسبة المادة داخل كل مجموعة"
+  },
+  {
+    "file": "6-3-data-storytelling.webp",
+    "pdfPage": 46,
+    "box": {
+      "left": 74,
+      "top": 635,
+      "width": 192,
+      "height": 194
+    },
+    "caption": "السرد البصري يوجّه العين نحو رؤية واحدة محددة."
+  }
+]

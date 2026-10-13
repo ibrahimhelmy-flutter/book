@@ -1,13 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { chapter1 } from '../book-sources/term-1/06-build-modules/chapter1.mjs';
-import { chapter2 } from '../book-sources/term-1/06-build-modules/chapter2.mjs';
-import { chapter3 } from '../book-sources/term-1/06-build-modules/chapter3.mjs';
-import { chapter4 } from '../book-sources/term-1/06-build-modules/chapter4.mjs';
-import { getSources } from './sources-config.mjs';
+import { getSources, partArg, loadBuildModules } from './sources-config.mjs';
 
-const sources = getSources('term-1');
-const allChapters = [chapter1, chapter2, chapter3, chapter4];
+const sources = getSources(partArg());
+const allChapters = await loadBuildModules(sources);
 let bookJson = null;
 const bookJsonPath = fs.existsSync(sources.canonicalBookFile) ? sources.canonicalBookFile : 'book.json';
 if (fs.existsSync(bookJsonPath)) {

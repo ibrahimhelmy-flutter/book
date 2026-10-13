@@ -1,74 +1,60 @@
 "use client";
 
 import React from "react";
-import { MooreLawSimulator } from "./MooreLawSimulator";
-import { AIHierarchySimulator } from "./AIHierarchySimulator";
-import { TLSHandshakeSimulator } from "./TLSHandshakeSimulator";
-import { CryptoLabSimulator } from "./CryptoLabSimulator";
-import { MFAMatrixSimulator } from "./MFAMatrixSimulator";
-import { NetworkDefenseSimulator } from "./NetworkDefenseSimulator";
-import { DMZArchitectureSimulator } from "./DMZArchitectureSimulator";
-import { FirewallFilterSimulator } from "./FirewallFilterSimulator";
-import { ZeroTrustSimulator } from "./ZeroTrustSimulator";
-import { IncidentResponseSimulator } from "./IncidentResponseSimulator";
-import { IncidentResponseSOCSimulator } from "./IncidentResponseSOCSimulator";
-import { RiskMatrixLabSimulator } from "./RiskMatrixLabSimulator";
-import { WebRequestFlowSimulator } from "./WebRequestFlowSimulator";
-import { CRAPDesignStudio } from "./CRAPDesignStudio";
-import { PDCAAndABTestingLab } from "./PDCAAndABTestingLab";
+import dynamic from "next/dynamic";
 
-interface Props {
-  simulatorId: string;
-}
+/**
+ * Each simulator is its own lazily loaded chunk, so a lesson (or the simulators page) only
+ * downloads the lab that is actually opened. Ids come from authored/simulators.json.
+ */
+const loading = () => (
+  <div className="min-h-[240px] rounded-3xl border border-slate-800 bg-slate-900/60 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
-export function SimulatorRenderer({ simulatorId }: Props) {
-  switch (simulatorId) {
-    // Chapter 1
-    case "moores-law-sim":
-      return <MooreLawSimulator />;
-    case "ai-hierarchy-sim":
-      return <AIHierarchySimulator />;
+const MooreLaw = dynamic(() => import("./MooreLawSimulator").then((m) => m.MooreLawSimulator), { ssr: false, loading });
+const AIHierarchy = dynamic(() => import("./AIHierarchySimulator").then((m) => m.AIHierarchySimulator), { ssr: false, loading });
+const CryptoLab = dynamic(() => import("./CryptoLabSimulator").then((m) => m.CryptoLabSimulator), { ssr: false, loading });
+const TLSHandshake = dynamic(() => import("./TLSHandshakeSimulator").then((m) => m.TLSHandshakeSimulator), { ssr: false, loading });
+const MFAMatrix = dynamic(() => import("./MFAMatrixSimulator").then((m) => m.MFAMatrixSimulator), { ssr: false, loading });
+const DMZArchitecture = dynamic(() => import("./DMZArchitectureSimulator").then((m) => m.DMZArchitectureSimulator), { ssr: false, loading });
+const FirewallFilter = dynamic(() => import("./FirewallFilterSimulator").then((m) => m.FirewallFilterSimulator), { ssr: false, loading });
+const ZeroTrust = dynamic(() => import("./ZeroTrustSimulator").then((m) => m.ZeroTrustSimulator), { ssr: false, loading });
+const IncidentResponseSOC = dynamic(() => import("./IncidentResponseSOCSimulator").then((m) => m.IncidentResponseSOCSimulator), { ssr: false, loading });
+const RiskMatrixLab = dynamic(() => import("./RiskMatrixLabSimulator").then((m) => m.RiskMatrixLabSimulator), { ssr: false, loading });
+const WebRequestFlow = dynamic(() => import("./WebRequestFlowSimulator").then((m) => m.WebRequestFlowSimulator), { ssr: false, loading });
+const CRAPDesign = dynamic(() => import("./CRAPDesignStudio").then((m) => m.CRAPDesignStudio), { ssr: false, loading });
+const PDCAAndABTesting = dynamic(() => import("./PDCAAndABTestingLab").then((m) => m.PDCAAndABTestingLab), { ssr: false, loading });
 
-    // Chapter 2: Lesson 2-1
-    case "crypto-lab-sim":
-    case "crypto-auth-sim":
-      return <CryptoLabSimulator />;
-    case "tls-handshake-sim":
-      return <TLSHandshakeSimulator />;
-    case "mfa-matrix-lab-sim":
-      return <MFAMatrixSimulator />;
+const SIMULATORS: Record<string, React.ComponentType> = {
+  // Chapter 1
+  "moores-law-sim": MooreLaw,
+  "ai-hierarchy-sim": AIHierarchy,
+  // Chapter 2: Lesson 2-1
+  "crypto-lab-sim": CryptoLab,
+  "crypto-auth-sim": CryptoLab,
+  "tls-handshake-sim": TLSHandshake,
+  "mfa-matrix-lab-sim": MFAMatrix,
+  // Chapter 2: Lesson 2-2
+  "dmz-architecture-sim": DMZArchitecture,
+  "network-defense-sim": DMZArchitecture,
+  "firewall-packet-filter-sim": FirewallFilter,
+  "zero-trust-battleground-sim": ZeroTrust,
+  // Chapter 2: Lesson 2-3
+  "incident-response-soc-sim": IncidentResponseSOC,
+  "incident-response-sim": IncidentResponseSOC,
+  "risk-matrix-lab-sim": RiskMatrixLab,
+  // Chapter 3
+  "web-request-flow-sim": WebRequestFlow,
+  "http-api-inspector-sim": WebRequestFlow,
+  // Chapter 4
+  "crap-design-studio-sim": CRAPDesign,
+  "metrics-calculator-sim": PDCAAndABTesting,
+  "ab-test-lab-sim": PDCAAndABTesting,
+};
 
-    // Chapter 2: Lesson 2-2
-    case "dmz-architecture-sim":
-      return <DMZArchitectureSimulator />;
-    case "firewall-packet-filter-sim":
-      return <FirewallFilterSimulator />;
-    case "zero-trust-battleground-sim":
-      return <ZeroTrustSimulator />;
-    case "network-defense-sim":
-      return <DMZArchitectureSimulator />;
-
-    // Chapter 2: Lesson 2-3
-    case "incident-response-soc-sim":
-      return <IncidentResponseSOCSimulator />;
-    case "risk-matrix-lab-sim":
-      return <RiskMatrixLabSimulator />;
-    case "incident-response-sim":
-      return <IncidentResponseSOCSimulator />;
-
-    // Chapter 3
-    case "web-request-flow-sim":
-    case "http-api-inspector-sim":
-      return <WebRequestFlowSimulator />;
-
-    // Chapter 4
-    case "crap-design-studio-sim":
-      return <CRAPDesignStudio />;
-    case "metrics-calculator-sim":
-    case "ab-test-lab-sim":
-      return <PDCAAndABTestingLab />;
-
-    default:
-      return null;
-  }
+export function SimulatorRenderer({ simulatorId }: { simulatorId: string }) {
+  const Simulator = SIMULATORS[simulatorId];
+  return Simulator ? <Simulator /> : null;
 }

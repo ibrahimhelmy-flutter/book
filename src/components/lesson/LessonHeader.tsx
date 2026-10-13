@@ -5,6 +5,8 @@ import { Lesson } from "@/types";
 import Link from "next/link";
 import { Bookmark, CheckCircle, Volume2, VolumeX, Users, Presentation, CheckSquare, BookOpen, Compass, MoreVertical, Type, Plus, Minus } from "lucide-react";
 import { toggleBookmark, toggleLessonComplete, getStoredProgress } from "@/lib/storage";
+import { storylineHref } from "@/content/paths";
+import { usePart } from "@/components/layout/PartProvider";
 
 export type LessonFontSize = "normal" | "large" | "xlarge" | "2xlarge" | "3xlarge" | "4xlarge" | "5xlarge";
 
@@ -27,6 +29,8 @@ export function LessonHeader({
   fontSize = "normal",
   onFontSizeChange,
 }: Props) {
+  const part = usePart();
+  const hasStoryline = part.storylineLessonIds.includes(lesson.id);
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
@@ -52,18 +56,18 @@ export function LessonHeader({
   }, [lesson.id]);
 
   useEffect(() => {
-    const p = getStoredProgress();
+    const p = getStoredProgress(part.key);
     setIsBookmarked(p.bookmarks.includes(lesson.id));
     setIsCompleted(p.completedLessons.includes(lesson.id));
-  }, [lesson.id]);
+  }, [part.key, lesson.id]);
 
   const handleBookmarkToggle = () => {
-    const updated = toggleBookmark(lesson.id);
+    const updated = toggleBookmark(part.key, lesson.id);
     setIsBookmarked(updated.bookmarks.includes(lesson.id));
   };
 
   const handleCompleteToggle = () => {
-    const updated = toggleLessonComplete(lesson.id);
+    const updated = toggleLessonComplete(part.key, lesson.id);
     setIsCompleted(updated.completedLessons.includes(lesson.id));
   };
 
@@ -110,14 +114,16 @@ export function LessonHeader({
 
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
           {/* Thought Sequence / Storyline Link */}
+          {hasStoryline && (
           <Link
-            href={`/chapters/${lesson.chapterId || "chapter-2"}/${lesson.slug}/storyline`}
+            href={storylineHref(part.key, lesson.chapterId, lesson.slug)}
             className="px-3 py-1.5 rounded-lg border border-purple-500/40 bg-purple-950/40 hover:bg-purple-900/60 text-purple-200 hover:text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-purple-950/40"
             title="تسلسل أفكار الدرس: شرح مبسط ومتدرج خطوة بخطوة"
           >
             <Compass className="w-3.5 h-3.5 text-purple-400" />
             <span>تسلسل الأفكار 🧭</span>
           </Link>
+          )}
 
           {/* Exercises & Practice Toggle Button */}
           {onToggleTab && (

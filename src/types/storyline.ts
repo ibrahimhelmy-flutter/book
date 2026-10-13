@@ -2,7 +2,7 @@
  * تسلسل الأفكار: شرح مبسط ومتدرج لكل درس، مربوط بنص الكتاب.
  *
  * - النصوص في `fromBook` و`bookTable` و`keyQuestion` و`bookSummary` منقولة حرفيًا
- *   من الكتاب، ويتحقق منها `src/core/tests/storylines.test.ts`.
+ *   من الكتاب، ويتحقق منها `tests/unit/storylines.test.ts`.
  * - باقي الحقول (`startingPoint`، `explanation`، `example`، `bridge`، `chain`)
  *   شرح إضافي مؤلف، وتعرضه الواجهة بعلامة "توضيح إضافي" أو "مثال من الواقع".
  */

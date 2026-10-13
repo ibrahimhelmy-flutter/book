@@ -1,0 +1,20 @@
+[
+  {
+    "short": "LLM",
+    "fullEn": "",
+    "fullAr": "نموذج اللغة الكبير",
+    "descriptionAr": "نموذج اللغة الكبير (LLM) نموذج لغوي ذو عدد كبير من المعلمات ومدرب على بيانات واسعة قد تشمل نصوصًا وبرمجيات ومصادر متنوعة بحسب النموذج.",
+    "category": "AI",
+    "lessonRef": "7-3",
+    "page": 69
+  },
+  {
+    "short": "RLHF",
+    "fullEn": "Reinforcement Learning from Human Feedback",
+    "fullAr": "التعلم المعزز من خلال التغذية الراجعة البشرية",
+    "descriptionAr": "التعلم المعزز من خلال التغذية الراجعة البشرية (RLHF - Reinforcement Learning from Human Feedback) إحدى طرق الضبط، وليست الوحيدة.",
+    "category": "AI",
+    "lessonRef": "7-3",
+    "page": 70
+  }
+]

@@ -7,6 +7,8 @@ import { ArrowDown, ArrowRight, BookOpen, Compass, Flag, HelpCircle } from "luci
 
 interface Props {
   storyline: LessonStoryline;
+  /** Route of the lesson this storyline belongs to. */
+  lessonUrl: string;
 }
 
 function Paragraphs({ text, className }: { text: string; className?: string }) {
@@ -157,9 +159,9 @@ function Bridge({ text }: { text: string }) {
   );
 }
 
-export function StorylinePageContent({ storyline }: Props) {
+export function StorylinePageContent({ storyline, lessonUrl }: Props) {
   const [readingProgress, setReadingProgress] = useState(0);
-  const lessonHref = `/chapters/${storyline.chapterId}/${storyline.lessonSlug}`;
+  const lessonHref = lessonUrl;
   const total = storyline.steps.length;
 
   useEffect(() => {

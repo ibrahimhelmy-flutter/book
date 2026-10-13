@@ -1,0 +1,102 @@
+[
+  {
+    "short": "API",
+    "fullEn": "",
+    "fullAr": "واجهة برمجة التطبيقات",
+    "descriptionAr": "واجهة برمجة التطبيقات (API): مجموعة قواعد تتيح لبرنامج أن يطلب بيانات أو وظائف من برنامج أو خدمة أخرى.",
+    "category": "WebDev",
+    "lessonRef": "5-3",
+    "source": {
+      "term": 2,
+      "pages": [
+        21
+      ],
+      "primaryPage": 21,
+      "sourceType": "official-textbook-acronym",
+      "pageFiles": [
+        "page_22.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "short": "RMSE",
+    "fullEn": "",
+    "fullAr": "الجذر التربيعي لمتوسط مربع الخطأ",
+    "descriptionAr": "الجذر التربيعي لمتوسط مربعات الفروق بين القيم المتوقعة والفعلية",
+    "category": "Data",
+    "lessonRef": "6-2",
+    "source": {
+      "term": 2,
+      "pages": [
+        37
+      ],
+      "primaryPage": 37,
+      "sourceType": "official-textbook-acronym",
+      "pageFiles": [
+        "page_38.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "short": "MAE",
+    "fullEn": "",
+    "fullAr": "متوسط الخطأ المطلق",
+    "descriptionAr": "متوسط القيم المطلقة للفروق بين القيم المتوقعة والفعلية",
+    "category": "Data",
+    "lessonRef": "6-2",
+    "source": {
+      "term": 2,
+      "pages": [
+        37
+      ],
+      "primaryPage": 37,
+      "sourceType": "official-textbook-acronym",
+      "pageFiles": [
+        "page_38.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "short": "LLM",
+    "fullEn": "",
+    "fullAr": "نموذج اللغة الكبير",
+    "descriptionAr": "نموذج اللغة الكبير (LLM) نموذج لغوي ذو عدد كبير من المعلمات ومدرب على بيانات واسعة قد تشمل نصوصًا وبرمجيات ومصادر متنوعة بحسب النموذج.",
+    "category": "AI",
+    "lessonRef": "7-3",
+    "source": {
+      "term": 2,
+      "pages": [
+        69
+      ],
+      "primaryPage": 69,
+      "sourceType": "official-textbook-acronym",
+      "pageFiles": [
+        "page_70.png"
+      ]
+    },
+    "contentOrigin": "official"
+  },
+  {
+    "short": "RLHF",
+    "fullEn": "Reinforcement Learning from Human Feedback",
+    "fullAr": "التعلم المعزز من خلال التغذية الراجعة البشرية",
+    "descriptionAr": "التعلم المعزز من خلال التغذية الراجعة البشرية (RLHF - Reinforcement Learning from Human Feedback) إحدى طرق الضبط، وليست الوحيدة.",
+    "category": "AI",
+    "lessonRef": "7-3",
+    "source": {
+      "term": 2,
+      "pages": [
+        70
+      ],
+      "primaryPage": 70,
+      "sourceType": "official-textbook-acronym",
+      "pageFiles": [
+        "page_71.png"
+      ]
+    },
+    "contentOrigin": "official"
+  }
+]

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CURRICULUM_TOC, TOTAL_CURRICULUM_LESSONS } from "@/data/curriculum-toc";
 import {
   X,
   BookOpen,
@@ -16,14 +15,19 @@ import {
   GraduationCap
 } from "lucide-react";
 import { getStoredProgress } from "@/lib/storage";
+import type { PartManifest } from "@/types/catalog";
+import { lessonHref, partHref } from "@/content/paths";
 
 interface Props {
+  part: PartManifest;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
+export function LessonsIndexDrawer({ part, isOpen, onClose }: Props) {
   const pathname = usePathname();
+  const CURRICULUM_TOC = part.chapters;
+  const TOTAL_CURRICULUM_LESSONS = part.stats.totalLessons;
   const [searchTerm, setSearchTerm] = useState("");
   const [completedList, setCompletedList] = useState<string[]>([]);
   const [expandedChapters, setExpandedChapters] = useState<Record<string, boolean>>(() => {
@@ -37,10 +41,10 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
   // Load user progress
   useEffect(() => {
     if (isOpen) {
-      const p = getStoredProgress();
+      const p = getStoredProgress(part.key);
       setCompletedList(p.completedLessons);
     }
-  }, [isOpen, pathname]);
+  }, [isOpen, pathname, part.key]);
 
   // Handle ESC key and scroll lock
   useEffect(() => {
@@ -188,7 +192,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
                       return (
                         <Link
                           key={lesson.id}
-                          href={`/chapters/${chapter.id}/${lesson.slug}`}
+                          href={lessonHref(part.key, chapter.id, lesson.slug)}
                           onClick={onClose}
                           className={`p-2.5 rounded-xl text-xs flex items-center justify-between gap-2 transition-all block ${
                             isLessonActive
@@ -221,7 +225,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
         {/* Footer Quick Links */}
         <div className="p-3 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between text-xs text-slate-400">
           <Link
-            href="/dashboard"
+            href="/dashboard/"
             onClick={onClose}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
           >
@@ -230,7 +234,7 @@ export function LessonsIndexDrawer({ isOpen, onClose }: Props) {
           </Link>
 
           <Link
-            href="/exams"
+            href={partHref(part.key, "exams")}
             onClick={onClose}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
           >

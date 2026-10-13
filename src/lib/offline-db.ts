@@ -1,220 +1,155 @@
 /**
- * Lightweight native IndexedDB Client for Offline Educational Platform
- * Stores offline local copy of Curriculum (14 lessons) and Question Bank (729 questions).
- * Does NOT store student management / user tracking data.
+ * Offline packs, one per catalog part (grade/book/term).
+ *
+ * The files of a pack live in CacheStorage (cache `packCacheName(partKey)`, filled by public/sw.js
+ * from the build-time list `/offline/<grade>__<book>__<part>.json`). IndexedDB only keeps one small
+ * record per downloaded pack, so the UI knows what is on the device and whether it is up to date.
+ * No student / user tracking data is stored here.
  */
+import type { PartKey, PartManifest } from "@/types/catalog";
 
 const DB_NAME = "EgyptianAICurriculumDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
+const PACKS_STORE = "packs";
+/** v1 stores (whole-curriculum copy); dropped on upgrade. */
+const LEGACY_STORES = ["curriculum", "questions", "contentMetadata"];
 
-export const EXPECTED_LESSONS_COUNT = 14;
-export const EXPECTED_QUESTIONS_COUNT = 242;
-export const EXPECTED_IMAGES_COUNT = 48;
-export const CURRENT_CONTENT_VERSION = "2026.09.11";
-export const OFFLINE_PACK_CACHE_NAME = "ai-curriculum-offline-pack-v1.0.3";
+/** Must equal APP_VERSION in public/sw.js (cache names derive from it). */
+export const APP_VERSION = "2.0.0";
+/** Must equal CONTENT_VERSION in public/sw.js. Bump both together, or neither. */
+export const CURRENT_CONTENT_VERSION = "2026.10.12";
+/** Prefix of every per-part pack cache; sw.js keeps caches with this prefix on activate. */
+export const PACK_CACHE_PREFIX = `ai-curriculum-pack-v${APP_VERSION}::`;
 
-export interface OfflineLessonRecord {
-  lessonId: string;
-  chapterId: string;
-  title: string;
-  number: string;
-  slug: string;
-  data: any;
+export function packCacheName(partKey: PartKey): string {
+  return `${PACK_CACHE_PREFIX}${partKey}`;
 }
 
-export interface OfflineQuestionRecord {
-  id: string;
-  lessonId: string;
-  chapterId: string;
-  type: string;
-  questionData: any;
+/** Root-relative (no basePath) path of a part's build-time offline list. */
+export function offlineListPath(partKey: PartKey): string {
+  return `/offline/${partKey.split("/").join("__")}.json`;
 }
 
-export interface OfflineMetadataRecord {
-  key: string;
-  version: string;
+export interface OfflinePackCounts {
+  pages: number;
+  data: number;
+  images: number;
+  assets: number;
+}
+
+/** Shape of out/offline/<grade>__<book>__<part>.json (written by scripts/build.mjs). */
+export interface OfflinePackList {
+  partKey: PartKey;
+  contentHash: string;
+  /** Root-relative URLs without basePath; pages use the trailing-slash form plus their index.txt. */
+  urls: string[];
+  counts: OfflinePackCounts;
+  /** Total size on disk of all listed files. */
+  bytes?: number;
+}
+
+export interface OfflinePackRecord {
+  partKey: PartKey;
+  contentHash: string;
   downloadedAt: string;
-  totalLessons: number;
-  totalQuestions: number;
-  totalImages: number;
+  fileCount: number;
+  counts: OfflinePackCounts;
   sizeBytes?: number;
+  /** APP_VERSION at download time; a different value means sw.js dropped the cache on activate. */
+  appVersion?: string;
 }
 
-class OfflineDatabase {
-  private dbPromise: Promise<IDBDatabase> | null = null;
+export type OfflinePackState = "none" | "ready" | "stale";
 
-  private openDB(): Promise<IDBDatabase> {
-    if (typeof window === "undefined") {
-      return Promise.reject(new Error("IndexedDB is not available in SSR"));
-    }
+let dbPromise: Promise<IDBDatabase> | null = null;
 
-    if (this.dbPromise) return this.dbPromise;
+function openDB(): Promise<IDBDatabase> {
+  if (typeof window === "undefined" || typeof indexedDB === "undefined") {
+    return Promise.reject(new Error("IndexedDB is not available"));
+  }
+  if (dbPromise) return dbPromise;
 
-    this.dbPromise = new Promise((resolve, reject) => {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
+  dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-      request.onupgradeneeded = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      for (const name of LEGACY_STORES) {
+        if (db.objectStoreNames.contains(name)) db.deleteObjectStore(name);
+      }
+      if (!db.objectStoreNames.contains(PACKS_STORE)) {
+        db.createObjectStore(PACKS_STORE, { keyPath: "partKey" });
+      }
+    };
 
-        // Store 1: Curriculum Lessons
-        if (!db.objectStoreNames.contains("curriculum")) {
-          const curriculumStore = db.createObjectStore("curriculum", { keyPath: "lessonId" });
-          curriculumStore.createIndex("chapterId", "chapterId", { unique: false });
-        }
-
-        // Store 2: Questions Bank
-        if (!db.objectStoreNames.contains("questions")) {
-          const questionStore = db.createObjectStore("questions", { keyPath: "id" });
-          questionStore.createIndex("lessonId", "lessonId", { unique: false });
-          questionStore.createIndex("chapterId", "chapterId", { unique: false });
-        }
-
-        // Store 3: Content Metadata
-        if (!db.objectStoreNames.contains("contentMetadata")) {
-          db.createObjectStore("contentMetadata", { keyPath: "key" });
-        }
+    request.onsuccess = () => {
+      const db = request.result;
+      // Let a newer tab upgrade the schema instead of being blocked by this connection.
+      db.onversionchange = () => {
+        db.close();
+        dbPromise = null;
       };
+      resolve(db);
+    };
+    request.onerror = () => {
+      dbPromise = null;
+      reject(request.error);
+    };
+  });
 
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
-
-    return this.dbPromise;
-  }
-
-  // Save all curriculum lessons
-  public async saveLessons(lessons: OfflineLessonRecord[]): Promise<void> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("curriculum", "readwrite");
-      const store = tx.objectStore("curriculum");
-      lessons.forEach((l) => store.put(l));
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  }
-
-  // Get a single lesson by ID
-  public async getLesson(lessonId: string): Promise<OfflineLessonRecord | null> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("curriculum", "readonly");
-      const store = tx.objectStore("curriculum");
-      const req = store.get(lessonId);
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  // Get all cached lessons
-  public async getAllLessons(): Promise<OfflineLessonRecord[]> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("curriculum", "readonly");
-      const store = tx.objectStore("curriculum");
-      const req = store.getAll();
-      req.onsuccess = () => resolve(req.result || []);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  // Save question bank
-  public async saveQuestions(questions: OfflineQuestionRecord[]): Promise<void> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("questions", "readwrite");
-      const store = tx.objectStore("questions");
-      questions.forEach((q) => store.put(q));
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  }
-
-  // Get questions for a lesson
-  public async getQuestionsByLesson(lessonId: string): Promise<OfflineQuestionRecord[]> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("questions", "readonly");
-      const store = tx.objectStore("questions");
-      const idx = store.index("lessonId");
-      const req = idx.getAll(lessonId);
-      req.onsuccess = () => resolve(req.result || []);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  // Save metadata (version, downloaded timestamp, counts)
-  public async saveMetadata(metadata: OfflineMetadataRecord): Promise<void> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("contentMetadata", "readwrite");
-      const store = tx.objectStore("contentMetadata");
-      store.put(metadata);
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  }
-
-  // Get metadata
-  public async getMetadata(): Promise<OfflineMetadataRecord | null> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("contentMetadata", "readonly");
-      const store = tx.objectStore("contentMetadata");
-      const req = store.get("current_version");
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  // Get actual physical counts from IndexedDB
-  public async getLessonsCount(): Promise<number> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("curriculum", "readonly");
-      const store = tx.objectStore("curriculum");
-      const req = store.count();
-      req.onsuccess = () => resolve(req.result || 0);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  public async getQuestionsCount(): Promise<number> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction("questions", "readonly");
-      const store = tx.objectStore("questions");
-      const req = store.count();
-      req.onsuccess = () => resolve(req.result || 0);
-      req.onerror = () => reject(req.error);
-    });
-  }
-
-  // Check if offline pack is fully downloaded and physically verified
-  public async isOfflinePackReady(): Promise<boolean> {
-    try {
-      const meta = await this.getMetadata();
-      if (!meta || meta.version !== CURRENT_CONTENT_VERSION) return false;
-      const lessonCount = await this.getLessonsCount();
-      const questionCount = await this.getQuestionsCount();
-      return lessonCount === EXPECTED_LESSONS_COUNT && questionCount >= EXPECTED_QUESTIONS_COUNT;
-    } catch {
-      return false;
-    }
-  }
-
-  // Clear offline cache if needed
-  public async clearAll(): Promise<void> {
-    const db = await this.openDB();
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(["curriculum", "questions", "contentMetadata"], "readwrite");
-      tx.objectStore("curriculum").clear();
-      tx.objectStore("questions").clear();
-      tx.objectStore("contentMetadata").clear();
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  }
+  return dbPromise;
 }
 
-export const offlineDB = new OfflineDatabase();
+async function run<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+  const db = await openDB();
+  return new Promise<T>((resolve, reject) => {
+    const tx = db.transaction(PACKS_STORE, mode);
+    const req = fn(tx.objectStore(PACKS_STORE));
+    tx.oncomplete = () => resolve(req.result);
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
+  });
+}
+
+export async function getPack(partKey: PartKey): Promise<OfflinePackRecord | null> {
+  return (await run<OfflinePackRecord | undefined>("readonly", (s) => s.get(partKey))) ?? null;
+}
+
+export async function savePack(rec: OfflinePackRecord): Promise<void> {
+  await run("readwrite", (s) => s.put({ appVersion: APP_VERSION, ...rec }));
+}
+
+export async function deletePack(partKey: PartKey): Promise<void> {
+  await run("readwrite", (s) => s.delete(partKey));
+}
+
+export async function listPacks(): Promise<OfflinePackRecord[]> {
+  return (await run<OfflinePackRecord[]>("readonly", (s) => s.getAll())) ?? [];
+}
+
+/** "ready" when the record matches the manifest's contentHash, "stale" when the hash differs. */
+export function packStateOf(record: OfflinePackRecord | null, contentHash: string): OfflinePackState {
+  if (!record) return "none";
+  if (record.appVersion && record.appVersion !== APP_VERSION) return "stale";
+  return record.contentHash === contentHash ? "ready" : "stale";
+}
+
+/**
+ * Pack state of a part on this device. Besides the IndexedDB record it checks that the pack cache
+ * still exists (the browser may evict it, and an APP_VERSION bump makes sw.js delete it).
+ */
+export async function getPackStatus(
+  part: Pick<PartManifest, "key" | "contentHash">
+): Promise<{ state: OfflinePackState; record: OfflinePackRecord | null }> {
+  try {
+    const record = await getPack(part.key);
+    let state = packStateOf(record, part.contentHash);
+    if (state !== "none" && typeof caches !== "undefined") {
+      const hasCache = await caches.has(packCacheName(part.key)).catch(() => true);
+      if (!hasCache) state = "stale";
+    }
+    return { state, record };
+  } catch {
+    return { state: "none", record: null };
+  }
+}

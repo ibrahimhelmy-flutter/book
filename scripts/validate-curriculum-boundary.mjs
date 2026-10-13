@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { sources } from './sources-config.mjs';
+import { getSources, partArg } from './sources-config.mjs';
+
+const sources = getSources(partArg());
 
 console.log('🛡️ Running Curriculum Boundary & Scope Validator...');
 
@@ -59,7 +61,7 @@ if (chapterDirs.length > 0) {
       allDeepQuestionsByLesson.push({ lessonNum, questions });
     }
   }
-} else {
+} else if (fs.existsSync(sources.deepQuestionsDir)) {
   const deepFiles = fs.readdirSync(sources.deepQuestionsDir).filter(f => /^chapter-\d+\.json$/.test(f));
   for (const file of deepFiles) {
     const data = JSON.parse(fs.readFileSync(path.join(sources.deepQuestionsDir, file), 'utf8'));
@@ -105,7 +107,7 @@ for (const { lessonNum, questions } of allDeepQuestionsByLesson) {
 
       // Check 4: Page scan provenance must be within bounds (1 to 95)
       const pages = q.source?.pages || [];
-      const invalidPages = pages.filter(p => p < 1 || p > 95);
+      const invalidPages = pages.filter(p => p < 1 || p > (book.meta?.totalPages || 95));
       if (invalidPages.length > 0) {
         console.error(`  ❌ OUT-OF-BOUNDS: Question ${q.id} references invalid textbook pages: ${invalidPages.join(', ')}`);
         outOfBoundsCount++;

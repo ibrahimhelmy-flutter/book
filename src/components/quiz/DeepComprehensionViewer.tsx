@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useRef } from "react";
-import { Lesson } from "@/types";
-import {
-  getDeepQuestionsForLesson,
-  DeepChallengingQuestion,
-} from "@/data/deep-questions";
+import type { Lesson } from "@/types";
+import type { DeepChallengingQuestion } from "@/types/deep-questions";
 import {
   Check,
   X,
@@ -26,6 +23,8 @@ import { mapAllQuestionsToSections, QuestionWithSection } from "@/lib/comprehens
 
 interface Props {
   lesson: Lesson;
+  /** Authored deep questions for this lesson (fetched on demand by the quiz panel). */
+  questions: DeepChallengingQuestion[];
   targetSectionId?: string | null;
   onClearTargetSection?: () => void;
 }
@@ -117,11 +116,7 @@ function formatExplanationContent(text: string) {
   return <div className="space-y-2 leading-relaxed">{formatParagraphs(text)}</div>;
 }
 
-export function DeepComprehensionViewer({ lesson, targetSectionId, onClearTargetSection }: Props) {
-  // Load deep questions for this lesson
-  const allQuestions = useMemo<DeepChallengingQuestion[]>(() => {
-    return getDeepQuestionsForLesson(lesson);
-  }, [lesson]);
+export function DeepComprehensionViewer({ lesson, questions: allQuestions, targetSectionId, onClearTargetSection }: Props) {
 
   // Map each question to its corresponding section in the lesson
   const mappedQuestions = useMemo<QuestionWithSection[]>(() => {

@@ -141,7 +141,7 @@ export interface Lesson {
   learningObjectives: string[];
   coreIdea: string;
   keyQuestion: string;
-  learningPath: {
+  learningPath?: {
     previous?: string;
     current: string;
     next?: string;
@@ -185,7 +185,7 @@ export interface GlossaryTerm {
   definitionEn?: string;
   chapterId: string;
   lessonNumber: string;
-  category: "AI" | "Cybersecurity" | "WebDev" | "Design" | "General";
+  category: "AI" | "Cybersecurity" | "WebDev" | "Design" | "Data" | "General";
   contentOrigin?: "official" | "authored";
   source?: ProvenanceSource;
 }
@@ -195,7 +195,7 @@ export interface AcronymTerm {
   fullEn: string;
   fullAr: string;
   descriptionAr: string;
-  category: "Hardware" | "AI" | "Cybersecurity" | "Networking" | "WebDev" | "Design" | "General";
+  category: "Hardware" | "AI" | "Cybersecurity" | "Networking" | "WebDev" | "Design" | "Data" | "General";
   lessonRef?: string;
   contentOrigin?: "official" | "authored";
 }
@@ -264,3 +264,6 @@ export interface Book {
 
 export * from "./storyline";
 
+export * from "./catalog";
+export * from "./assessments";
+export * from "./deep-questions";

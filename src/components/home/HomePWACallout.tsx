@@ -3,9 +3,12 @@
 import React from "react";
 import { Download, DownloadCloud, Smartphone, CheckCircle, WifiOff, Laptop, Sparkles, ShieldCheck } from "lucide-react";
 import { usePWA } from "@/context/PWAContext";
+import { useActivePart } from "@/components/layout/PartProvider";
 
 export function HomePWACallout() {
-  const { isInstalled, promptInstall, setIsOfflinePackModalOpen, isOfflinePackReady } = usePWA();
+  const { isInstalled, promptInstall, setIsOfflinePackModalOpen, isOfflinePackReady, offlinePackState } = usePWA();
+  // Offline packs are per part; the button acts on the part being viewed or last visited.
+  const activePart = useActivePart();
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-r from-indigo-950/60 via-slate-900/90 to-purple-950/60 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
@@ -22,7 +25,7 @@ export function HomePWACallout() {
               <span>يعمل 100% بدون إنترنت</span>
             </span>
             <span className="px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-bold font-mono">
-              ~7.2 MB فقط
+              حزمة مستقلة لكل جزء
             </span>
           </div>
 
@@ -68,22 +71,26 @@ export function HomePWACallout() {
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={() => setIsOfflinePackModalOpen(true)}
-            className={`py-3 px-6 rounded-2xl border text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-105 active:scale-95 ${
-              isOfflinePackReady
-                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
-                : "bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200"
-            }`}
-          >
-            <DownloadCloud className="w-4 h-4 text-emerald-400" />
-            <span>
-              {isOfflinePackReady
-                ? "المنهج محفوظ محلياً بالكامل ✓"
-                : "تنزيل حزمة عدم الاتصال (Offline Pack) ⚡"}
-            </span>
-          </button>
+          {activePart && (
+            <button
+              type="button"
+              onClick={() => setIsOfflinePackModalOpen(true)}
+              className={`py-3 px-6 rounded-2xl border text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-105 active:scale-95 ${
+                isOfflinePackReady
+                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
+                  : "bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200"
+              }`}
+            >
+              <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              <span>
+                {isOfflinePackReady
+                  ? `${activePart.partShortTitle} محفوظ محلياً بالكامل ✓`
+                  : offlinePackState === "stale"
+                    ? `تحديث متاح لحزمة ${activePart.partShortTitle} 🔄`
+                    : `تنزيل حزمة ${activePart.partShortTitle} بدون إنترنت (Offline Pack) ⚡`}
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </div>
