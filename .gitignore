@@ -19,6 +19,10 @@ public/images/extracted/
 public/images/p/
 public/data/
 
+# Ministry PDFs and page scans: local-only ground truth (kept in OneDrive), read only by ingest:* and sources:validate
+book-sources/**/01-pdf-document/
+book-sources/**/02-page-scans/
+
 # Playwright
 /test-results/
 /playwright-report/

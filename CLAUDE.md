@@ -39,7 +39,7 @@ Content flows in one direction. `public/data/` is generated and gitignored — n
 book-sources/
   catalog.json                                   ← grades → books → parts → companions (hand-edited; status "available" | "coming-soon")
   <gradeId>/<bookSlug>/<partId>/                 e.g. secondary-2/programming-ai/term-1/
-    01-pdf-document/, 02-page-scans/page_NN.png  ← ground truth (Ministry PDF and page images)
+    01-pdf-document/, 02-page-scans/page_NN.png  ← ground truth (Ministry PDF and page images; gitignored, local/OneDrive only)
     03-raw-extractions/, 04-extracted-diagrams/
     05-canonical-data/                           ← EDIT CONTENT HERE
       official/  book.json, glossary.json, acronyms.json, curriculum-baseline-spec.json,
@@ -58,6 +58,7 @@ public/data/<grade>/<book>/<part>/
   glossary.json, acronyms.json, simulators.json, search-lessons.json, storylines/<lessonId>.json
 ```
 
+- `01-pdf-document/` and `02-page-scans/` are not in git (purged from history to keep the repo small). No build, test or CI step reads them; only `ingest:text`, `ingest:pages`, `ingest:figures` and `sources:validate` do, so a fresh clone needs them copied in by hand before running those.
 - Script paths are centralized in `scripts/sources-config.mjs`: `getSources(partKey | partId)`, `listParts()`, `partsFromArgs()` (the `--part <key>` flag; default = all available parts), `loadBuildModules()`. The alias `'term-1'` resolves to the legacy term-1 part. One-off historical scripts live in `scripts/archive/term-1/`.
 - Adding a part/book/grade is a content change: add it to `catalog.json`, create its source folder with the same layout, produce canonical data, then flip `status` to `"available"` once the audits pass.
 - Diagrams are copied by `scripts/prepare-assets.mjs` from each part's `04-extracted-diagrams/` to `public/<assetsBase>` (term-1: `/images/extracted`, gitignored). `public/images/pages/` is gitignored too.

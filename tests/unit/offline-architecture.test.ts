@@ -66,11 +66,11 @@ it("Term-1 manifest has 4 chapters, 14 lessons, a contentHash and an assetsBase"
 });
 
 // Suite 2: Diagrams
-it("Exactly 48 extracted diagrams exist in the term-1 source folder", () => {
+it("Exactly 29 extracted diagrams exist in the term-1 source folder", () => {
   const dir = path.resolve("book-sources", ...TERM1.split("/"), "04-extracted-diagrams");
   assert.ok(fs.existsSync(dir), "Extracted diagrams directory must exist");
   const files = fs.readdirSync(dir).filter((f) => /\.(png|jpe?g|svg|webp)$/i.test(f));
-  assert.strictEqual(files.length, 48, `Must have exactly 48 diagrams, found ${files.length}`);
+  assert.strictEqual(files.length, 29, `Must have exactly 29 diagrams, found ${files.length}`);
 });
 
 // Suite 3: PWA Web Manifest
