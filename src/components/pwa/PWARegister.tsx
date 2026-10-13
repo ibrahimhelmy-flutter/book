@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getAssetPath } from "@/lib/utils";
-import { WifiOff, Sparkles, RefreshCw } from "lucide-react";
+import { WifiOff, Sparkles, RefreshCw, X } from "lucide-react";
 import { usePWA } from "@/context/PWAContext";
 import { PWAInstallModal } from "./PWAInstallModal";
 import { PWAInstallBanner } from "./PWAInstallBanner";
@@ -10,6 +10,12 @@ import { PWAInstallBanner } from "./PWAInstallBanner";
 export function PWARegister() {
   const { isOffline, isInstallModalOpen, setIsInstallModalOpen } = usePWA();
   const [updateWaitingWorker, setUpdateWaitingWorker] = useState<ServiceWorker | null>(null);
+  const [offlineBannerDismissed, setOfflineBannerDismissed] = useState(false);
+
+  // Show the offline banner again the next time the connection drops
+  useEffect(() => {
+    if (!isOffline) setOfflineBannerDismissed(false);
+  }, [isOffline]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -111,7 +117,7 @@ export function PWARegister() {
       )}
 
       {/* Offline Mode Banner */}
-      {isOffline && (
+      {isOffline && !offlineBannerDismissed && (
         <div
           role="status"
           aria-live="polite"
@@ -126,6 +132,15 @@ export function PWARegister() {
               يمكنك قراءة الدروس وحل التمارين المحفوظة محلياً.
             </div>
           </div>
+          <button
+            type="button"
+            onClick={() => setOfflineBannerDismissed(true)}
+            className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer shrink-0"
+            title="إغلاق"
+            aria-label="إغلاق التنبيه"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
