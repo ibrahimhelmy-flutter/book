@@ -50,10 +50,9 @@ const emptyProgress = (): ProgressV2 => ({ version: 2, parts: {}, global: defaul
 const defaultProfile: UserProfile = {
   id: "user_student_1",
   name: "طالب المرحلة الثانوية",
-  email: "student@moe.edu.eg",
   role: "student",
   grade: "",
-  school: "مدرسة المتفوقين للعلوم والتكنولوجيا (STEM)",
+  school: "",
   avatar: "🎓",
 };
 
@@ -213,15 +212,21 @@ export function saveLessonNote(partKey: PartKey, lessonId: string, note: string)
 
 // ── Profile ──────────────────────────────────────────────────────────────
 
+// Placeholder schools older versions pre-filled (and saved) for every user; a real school was never chosen.
+const LEGACY_DEFAULT_SCHOOLS = new Set([
+  "مدرسة المتفوقين للعلوم والتكنولوجيا (STEM)",
+  "مدرسة المتفوقين للعلوم والتكنولوجيا",
+  "المدرسة الثانوية",
+]);
+
 function sanitizeProfile(raw: unknown): UserProfile {
   if (!isRecord(raw)) return defaultProfile;
   return {
     id: typeof raw.id === "string" ? raw.id : defaultProfile.id,
     name: typeof raw.name === "string" && raw.name.trim() ? raw.name : defaultProfile.name,
-    email: typeof raw.email === "string" ? raw.email : defaultProfile.email,
     role: raw.role === "teacher" ? "teacher" : "student",
     grade: typeof raw.grade === "string" ? raw.grade : defaultProfile.grade,
-    school: typeof raw.school === "string" ? raw.school : defaultProfile.school,
+    school: typeof raw.school === "string" && !LEGACY_DEFAULT_SCHOOLS.has(raw.school) ? raw.school : defaultProfile.school,
     avatar: typeof raw.avatar === "string" ? raw.avatar : defaultProfile.avatar,
   };
 }

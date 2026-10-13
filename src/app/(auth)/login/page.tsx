@@ -9,13 +9,13 @@ import { getStoredProfile, saveProfile } from "@/lib/storage";
 export default function LoginPage() {
   const router = useRouter();
   const [name, setName] = useState("طالب المرحلة الثانوية");
-  const [school, setSchool] = useState("مدرسة المتفوقين للعلوم والتكنولوجيا");
+  const [school, setSchool] = useState("");
   const [role, setRole] = useState<"student" | "teacher">("student");
 
   useEffect(() => {
     const existing = getStoredProfile();
     setName(existing.name || "طالب المرحلة الثانوية");
-    setSchool(existing.school || "مدرسة المتفوقين للعلوم والتكنولوجيا");
+    setSchool(existing.school || "");
     setRole(existing.role || "student");
   }, []);
 
@@ -24,10 +24,9 @@ export default function LoginPage() {
     saveProfile({
       id: `user_${Date.now()}`,
       name: name.trim() || (role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة"),
-      email: role === "student" ? "student@moe.edu.eg" : "teacher@moe.edu.eg",
       role: role,
       grade: getStoredProfile().grade,
-      school: school.trim() || "المدرسة الثانوية",
+      school: school.trim(),
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
     router.push("/dashboard");

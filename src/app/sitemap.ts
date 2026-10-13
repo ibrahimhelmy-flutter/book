@@ -4,7 +4,7 @@ import { bookHref, chapterHref, companionHref, getCatalog, getPartManifest, grad
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-curriculum.edu.eg";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ibrahimhelmy-flutter.github.io/book";
   const entry = (path: string, priority: number, changeFrequency: "weekly" | "monthly" = "monthly") => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),

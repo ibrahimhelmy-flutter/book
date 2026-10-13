@@ -29,7 +29,8 @@ export default async function BookPage({ params }: Props) {
     <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6">
       <Breadcrumbs items={[{ label: "الكتب الدراسية", href: "/" }, { label: grade.title, href: gradeHref(grade.id) }, { label: book.title }]} />
       {book.accreditation && book.accreditation.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] text-slate-400 font-bold">عن الكتاب المدرسي:</span>
           {book.accreditation.map((badge) => (
             <span key={badge} className="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-[11px] font-bold">
               {badge}

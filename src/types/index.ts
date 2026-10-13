@@ -214,7 +214,6 @@ export interface UserProgress {
 export interface UserProfile {
   id: string;
   name: string;
-  email: string;
   role: "student" | "teacher";
   grade: string;
   school?: string;

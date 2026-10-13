@@ -30,7 +30,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
   ? process.env.NEXT_PUBLIC_BASE_PATH
   : (isGitHubPages ? "/book" : "");
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-curriculum.edu.eg";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ibrahimhelmy-flutter.github.io/book";
 const SITE_NAME = "المنهج التفاعلي";
 const SITE_DESCRIPTION =
   "منصة تفاعلية لكتب وزارة التربية والتعليم المصرية: شرح الدروس كما في الكتاب، وكتيبات التقييم الرسمية، وبنوك الأسئلة، والمحاكيات — مرتبة حسب الصف والكتاب والترم، وتعمل بدون إنترنت.";
@@ -43,7 +43,6 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   keywords: ["المناهج المصرية", "كتب الوزارة", "الثانوية العامة", "مصر", "شرح الدروس", "بنك الأسئلة"],
-  authors: [{ name: "وزارة التربية والتعليم والتعليم الفني - جمهورية مصر العربية" }],
   icons: {
     icon: [
       { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
@@ -98,6 +97,9 @@ export default function RootLayout({
           <main id="main-content" className="flex-1 flex flex-col w-full min-w-0">
             {children}
           </main>
+          <footer className="border-t border-slate-800/60 px-4 py-4 text-center text-[11px] text-slate-500 leading-relaxed">
+            منصة مذاكرة مستقلة وغير تابعة لوزارة التربية والتعليم والتعليم الفني. حقوق محتوى الكتب المدرسية محفوظة للوزارة.
+          </footer>
           <PWARegister />
         </PWAProvider>
         </ActivePartProvider>

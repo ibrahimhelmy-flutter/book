@@ -24,10 +24,9 @@ export default function RegisterPage() {
     saveProfile({
       id: `user_${Date.now()}`,
       name: name.trim() || (role === "student" ? "طالب المرحلة الثانوية" : "أستاذ المادة"),
-      email: role === "student" ? "student@moe.edu.eg" : "teacher@moe.edu.eg",
       role: role,
       grade: getStoredProfile().grade,
-      school: school.trim() || "مدرسة المتفوقين للعلوم والتكنولوجيا",
+      school: school.trim(),
       avatar: role === "student" ? "🎓" : "👨‍🏫",
     });
     router.push("/dashboard");

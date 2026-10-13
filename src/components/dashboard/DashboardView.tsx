@@ -123,12 +123,12 @@ export function DashboardView({ parts }: { parts: DashboardPart[] }) {
                   {profile.role === "teacher" ? "👨‍🏫 وضع المعلم" : "👨‍🎓 وضع الطالب"}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-1 flex items-center gap-2">
-                <School className="w-3.5 h-3.5" />
-                <span>{profile.school || "المدرسة الثانوية"}</span>
-                <span>•</span>
-                <span>{profile.grade}</span>
-              </p>
+              {(profile.school || profile.grade) && (
+                <p className="text-xs text-slate-400 mt-1 flex items-center gap-2">
+                  <School className="w-3.5 h-3.5" />
+                  <span>{[profile.school, profile.grade].filter(Boolean).join(" • ")}</span>
+                </p>
+              )}
             </div>
           </div>
 

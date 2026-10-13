@@ -59,6 +59,7 @@ export default async function PartHomePage({ params }: Props) {
           <div className="text-center space-y-4">
             {book.accreditation && book.accreditation.length > 0 && (
               <div className="flex flex-wrap items-center justify-center gap-2">
+                <span className="text-xs text-slate-400 font-bold">عن الكتاب المدرسي:</span>
                 {book.accreditation.map((badge) => (
                   <span key={badge} className="px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold">
                     {badge}
