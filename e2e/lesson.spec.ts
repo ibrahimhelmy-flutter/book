@@ -19,7 +19,10 @@ test.describe("lesson page", () => {
     await page.goto(LESSON);
     await page.getByRole("button", { name: /التقييمات الرسمية \(\d+\)/ }).first().click();
     await expect(page.getByRole("link", { name: /افتح في كتيب التقييمات/ })).toBeVisible();
+    // networkidle doesn't wait again once the page has loaded, so wait for the deep bank request itself.
+    const deepRequest = page.waitForRequest((r) => /\/deep\/1-2\.json$/.test(r.url()));
     await page.getByRole("tab", { name: /فهم/ }).click();
+    await deepRequest;
     await page.waitForLoadState("networkidle");
     const banks = requests.filter(isBankRequest).map((u) => decodeURIComponent(new URL(u).pathname).split("/data/")[1]);
     expect([...new Set(banks)].sort()).toEqual([`${TERM1}/assessments/lesson-1-2.json`, `${TERM1}/deep/1-2.json`]);

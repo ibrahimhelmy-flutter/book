@@ -178,7 +178,8 @@
     "difficulty": "medium",
     "type": "mcq",
     "conceptIds": [
-      "concept-3-1-04"
+      "concept-3-1-04",
+      "concept-3-1-05"
     ],
     "contentOrigin": "authored",
     "question": "أي وصف يطابق تعريف الكتاب لـ«تطبيق الويب» في المصطلحات الأساسية ومتن الدرس؟",
@@ -971,7 +972,8 @@
     "type": "mcq",
     "conceptIds": [
       "concept-3-1-04",
-      "concept-3-1-01"
+      "concept-3-1-01",
+      "concept-3-1-05"
     ],
     "contentOrigin": "authored",
     "question": "قال طالب: «تطبيق الويب يمكن أن يعمل بالواجهة الأمامية وحدها، لأنها الجزء الوحيد الذي أراه». ما الخطأ في استنتاجه؟",
@@ -2174,7 +2176,8 @@
     "type": "mcq",
     "conceptIds": [
       "concept-3-1-01",
-      "concept-3-1-04"
+      "concept-3-1-04",
+      "concept-3-1-05"
     ],
     "contentOrigin": "authored",
     "question": "ما العلاقة الصحيحة بين مفهوم «تطبيق الويب» ومفهوم «الواجهة الأمامية» في نموذج الدرس؟",

@@ -498,6 +498,13 @@ export function LessonHeader({
         </p>
       </div>
 
+      {/* Book's opening paragraph */}
+      {lesson.introduction && (
+        <p className="text-slate-200 text-xs sm:text-sm leading-relaxed whitespace-pre-line mb-3">
+          {lesson.introduction}
+        </p>
+      )}
+
       {/* Core Idea & Key Question */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
         <div className="bg-slate-950/60 border-r-4 border-r-indigo-500 border border-slate-800/80 rounded-xl p-3.5 sm:p-4 text-slate-200 text-xs sm:text-sm leading-relaxed">

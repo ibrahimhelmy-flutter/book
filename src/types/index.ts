@@ -147,6 +147,8 @@ export interface Lesson {
     next?: string;
   };
   exploreInPairs?: string;
+  introduction?: string; // the book's opening paragraph(s), printed above the key question
+
   keyConcepts: KeyConcept[];
   sections: LessonSection[];
   callouts: CalloutBox[];

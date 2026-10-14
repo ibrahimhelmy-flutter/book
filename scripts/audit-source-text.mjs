@@ -90,6 +90,7 @@ function lessonTexts(lesson) {
   add('coreIdea', lesson.coreIdea);
   add('keyQuestion', lesson.keyQuestion);
   add('exploreInPairs', lesson.exploreInPairs);
+  add('introduction', lesson.introduction);
   lesson.keyConcepts?.forEach((c) => add(`concept ${c.termAr}`, c.definition));
   lesson.sections?.forEach((s) => {
     add(`section ${s.id} title`, s.title.replace(/^\d+\.\s*/, ''));
