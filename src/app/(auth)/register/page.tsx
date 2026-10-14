@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, ArrowLeft, ShieldCheck, User, School, BookOpen } from "lucide-react";
 import { getStoredProfile, saveProfile } from "@/lib/storage";
+import { SITE_NAME } from "@/lib/site";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-black">بدء تجربة التعلم الرقمي</h1>
           <p className="text-xs text-slate-400">
-            انضم لمنصة المنهج التفاعلي
+            انضم لمنصة {SITE_NAME}
           </p>
         </div>
 

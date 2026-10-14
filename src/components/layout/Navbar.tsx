@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import type { NavCatalog } from "@/types/catalog";
 import { partHref } from "@/content/paths";
+import { SITE_NAME } from "@/lib/site";
 import { usePWA } from "@/context/PWAContext";
 import { useActivePart } from "./PartProvider";
 import { PartSwitcher } from "./PartSwitcher";
@@ -107,7 +108,7 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div className="text-right hidden lg:block">
-                  <div className="text-sm font-bold text-white tracking-tight">المنهج التفاعلي</div>
+                  <div className="text-sm font-bold text-white tracking-tight">{SITE_NAME}</div>
                 </div>
               </Link>
 

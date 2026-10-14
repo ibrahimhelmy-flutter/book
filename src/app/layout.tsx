@@ -6,6 +6,8 @@ import { ActivePartProvider } from "@/components/layout/PartProvider";
 import { PWARegister } from "@/components/pwa/PWARegister";
 import { PWAProvider } from "@/context/PWAContext";
 import { getNavCatalog } from "@/content";
+import { pageMetadata } from "@/lib/seo";
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -30,18 +32,21 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
   ? process.env.NEXT_PUBLIC_BASE_PATH
   : (isGitHubPages ? "/book" : "");
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ibrahimhelmy-flutter.github.io/book";
-const SITE_NAME = "المنهج التفاعلي";
-const SITE_DESCRIPTION =
-  "منصة تفاعلية لكتب وزارة التربية والتعليم المصرية: شرح الدروس كما في الكتاب، وكتيبات التقييم الرسمية، وبنوك الأسئلة، والمحاكيات — مرتبة حسب الصف والكتاب والترم، وتعمل بدون إنترنت.";
+// Pages set their own canonical URL; the layout only supplies the shared Open Graph/Twitter defaults.
+const sharedMetadata = pageMetadata({ path: "/" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
+  openGraph: sharedMetadata.openGraph,
+  twitter: sharedMetadata.twitter,
   title: {
-    default: SITE_NAME,
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_AUTHOR.name }],
+  creator: SITE_AUTHOR.name,
   keywords: ["المناهج المصرية", "كتب الوزارة", "الثانوية العامة", "مصر", "شرح الدروس", "بنك الأسئلة"],
   icons: {
     icon: [
@@ -58,19 +63,6 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: SITE_NAME,
-  },
-  openGraph: {
-    type: "website",
-    locale: "ar_EG",
-    url: siteUrl,
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
-    siteName: SITE_NAME,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
   },
 };
 

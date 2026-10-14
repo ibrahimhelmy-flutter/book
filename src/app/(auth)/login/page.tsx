@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Sparkles, ArrowLeft, ShieldCheck, User, School, BookOpen } from "lucide-react";
 import { getStoredProfile, saveProfile } from "@/lib/storage";
+import { SITE_NAME } from "@/lib/site";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-2xl font-black">إعداد الملف الدراسي الشخصي</h1>
           <p className="text-xs text-slate-400">
-            منصة المنهج التفاعلي
+            منصة {SITE_NAME}
           </p>
         </div>
 

@@ -1,7 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { findLessonRef, getStoryline, lessonHref, requirePart, staticParams, type PartRouteParams } from "@/content";
+import { chapterHref, findLessonRef, getStoryline, lessonHref, requirePart, staticParams, storylineHref, type PartRouteParams } from "@/content";
+import { breadcrumbJsonLd, pageMetadata, partTrail } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { StorylinePageContent } from "@/components/storyline/StorylinePageContent";
 
 interface Props {
@@ -20,15 +22,31 @@ function load(params: Awaited<Props["params"]>) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { storyline } = load(await params);
+  const { part, storyline } = load(await params);
   if (!storyline) return { title: "تسلسل الأفكار غير موجود" };
-  const title = `تسلسل الأفكار: ${storyline.title} (${storyline.lessonNumber})`;
-  const description = storyline.keyQuestion.text;
-  return { title, description, openGraph: { title, description } };
+  return pageMetadata({
+    title: `تسلسل الأفكار: ${storyline.title} (${storyline.lessonNumber})`,
+    description: storyline.keyQuestion.text,
+    path: storylineHref(part.key, storyline.chapterId, storyline.lessonSlug),
+    type: "article",
+  });
 }
 
 export default async function StorylinePage({ params }: Props) {
   const { part, storyline } = load(await params);
   if (!storyline) notFound();
-  return <StorylinePageContent storyline={storyline} lessonUrl={lessonHref(part.key, storyline.chapterId, storyline.lessonSlug)} />;
+  const lessonUrl = lessonHref(part.key, storyline.chapterId, storyline.lessonSlug);
+  const chapter = part.chapters.find((c) => c.id === storyline.chapterId);
+  const trail = [
+    ...partTrail(part),
+    ...(chapter ? [{ name: `الفصل ${chapter.number}: ${chapter.title}`, path: chapterHref(part.key, chapter.id) }] : []),
+    { name: `${storyline.title} (${storyline.lessonNumber})`, path: lessonUrl },
+    { name: "تسلسل الأفكار", path: storylineHref(part.key, storyline.chapterId, storyline.lessonSlug) },
+  ];
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd(trail)} />
+      <StorylinePageContent storyline={storyline} lessonUrl={lessonUrl} />
+    </>
+  );
 }

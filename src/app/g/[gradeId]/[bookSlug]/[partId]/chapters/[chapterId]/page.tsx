@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Layers } from "lucide-react";
-import { getLesson, lessonHref, partHref, requirePart, staticParams, type PartRouteParams } from "@/content";
+import { chapterHref, getLesson, lessonHref, partHref, requirePart, staticParams, type PartRouteParams } from "@/content";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, pageMetadata, partTrail } from "@/lib/seo";
 
 interface Props {
   params: Promise<PartRouteParams & { chapterId: string }>;
@@ -16,13 +18,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { chapterId, ...ref } = await params;
-  const chapter = requirePart(ref).chapters.find((c) => c.id === chapterId);
+  const part = requirePart(ref);
+  const chapter = part.chapters.find((c) => c.id === chapterId);
   if (!chapter) return { title: "الفصل غير موجود" };
-  return {
-    title: `${chapter.title} - الفصل ${chapter.number}`,
+  return pageMetadata({
+    title: `${chapter.title} - الفصل ${chapter.number} | ${part.bookTitle} — ${part.partShortTitle}`,
     description: chapter.description,
-    openGraph: { title: `${chapter.title} | ${chapter.englishTitle}`, description: chapter.description },
-  };
+    path: chapterHref(part.key, chapter.id),
+  });
 }
 
 export default async function ChapterOverviewPage({ params }: Props) {
@@ -34,6 +37,7 @@ export default async function ChapterOverviewPage({ params }: Props) {
 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 py-8">
+      <JsonLd data={breadcrumbJsonLd([...partTrail(part), { name: `الفصل ${chapter.number}: ${chapter.title}`, path: chapterHref(part.key, chapter.id) }])} />
       <div className="mb-4">
         <Breadcrumbs items={[{ label: `${part.bookTitle} — ${part.partShortTitle}`, href: partHref(part.key) }, { label: `الفصل ${chapter.number}` }]} />
       </div>

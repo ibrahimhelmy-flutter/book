@@ -16,6 +16,8 @@ import {
 } from "@/content";
 import { ContentIcon } from "@/components/common/ContentIcon";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, pageMetadata, partTrail } from "@/lib/seo";
 
 interface Props {
   params: Promise<PartRouteParams>;
@@ -28,10 +30,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ref = await params;
   const part = requirePart(ref);
-  return {
+  return pageMetadata({
     title: `${part.bookTitle} — ${part.gradeTitle} (${part.partTitle})`,
     description: findPart(ref)?.book.description,
-  };
+    path: partHref(part.key),
+  });
 }
 
 export default async function PartHomePage({ params }: Props) {
@@ -45,6 +48,7 @@ export default async function PartHomePage({ params }: Props) {
 
   return (
     <div className="flex-1 text-white">
+      <JsonLd data={breadcrumbJsonLd(partTrail(part))} />
       <section className="relative overflow-hidden pt-8 pb-14 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-950 to-slate-950 pointer-events-none" />
         <div className="max-w-5xl mx-auto relative z-10 space-y-6">

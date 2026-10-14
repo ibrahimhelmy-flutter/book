@@ -2,9 +2,11 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { GraduationCap } from "lucide-react";
-import { findGrade, staticParams } from "@/content";
+import { findGrade, gradeHref, staticParams } from "@/content";
 import { BookCard } from "@/components/catalog/BookCard";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ gradeId: string }>;
@@ -16,7 +18,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const grade = findGrade((await params).gradeId);
-  return grade ? { title: `كتب ${grade.title}`, description: grade.books.map((b) => b.title).join("، ") } : {};
+  if (!grade) return {};
+  return pageMetadata({ title: `كتب ${grade.title}`, description: grade.books.map((b) => b.title).join("، "), path: gradeHref(grade.id) });
 }
 
 export default async function GradePage({ params }: Props) {
@@ -25,6 +28,7 @@ export default async function GradePage({ params }: Props) {
 
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <JsonLd data={breadcrumbJsonLd([{ name: "الكتب الدراسية", path: "/" }, { name: grade.title, path: gradeHref(grade.id) }])} />
       <Breadcrumbs items={[{ label: "الكتب الدراسية", href: "/" }, { label: grade.title }]} />
       <header className="flex items-center gap-3">
         <div className="p-3 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-300">

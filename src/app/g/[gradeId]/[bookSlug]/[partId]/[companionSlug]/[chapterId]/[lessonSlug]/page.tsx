@@ -12,8 +12,10 @@ import {
   staticParams,
   type PartRouteParams,
 } from "@/content";
+import { breadcrumbJsonLd, pageMetadata, partTrail } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
 import { LessonOfficialAssessments } from "@/components/quiz/LessonOfficialAssessments";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 interface Props {
   params: Promise<PartRouteParams & { companionSlug: string; chapterId: string; lessonSlug: string }>;
@@ -35,19 +37,30 @@ function load(params: Awaited<Props["params"]>) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { part, companion, ref } = load(await params);
   if (!ref) return { title: "الدرس غير موجود" };
-  return {
+  return pageMetadata({
     title: `${companion.title}: ${ref.title} (${ref.lessonNumber}) | ${part.bookTitle} — ${part.partShortTitle}`,
     description: `${ref.totalQuestions} سؤالًا رسميًا من ${companion.title} (ص ${ref.bookletPages}) على درس ${ref.title}.`,
-  };
+    path: companionHref(part.key, companion.slug, ref.chapterId, ref.slug),
+    type: "article",
+  });
 }
 
 /** A companion-book lesson: same reading layout as the textbook lesson, with the official questions as its body. */
 export default async function CompanionLessonPage({ params }: Props) {
   const { part, companion, ref, data, prev, next } = load(await params);
   if (!ref || !data) notFound();
+  const chapter = part.chapters.find((c) => c.id === ref.chapterId);
 
   return (
     <article className="max-w-5xl mx-auto w-full px-3 sm:px-4 py-6 sm:py-8 space-y-6">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          ...partTrail(part),
+          { name: companion.title, path: companionHref(part.key, companion.slug) },
+          ...(chapter ? [{ name: `الفصل ${chapter.number}: ${chapter.title}`, path: companionHref(part.key, companion.slug, chapter.id) }] : []),
+          { name: `${ref.title} (${ref.lessonNumber})`, path: companionHref(part.key, companion.slug, ref.chapterId, ref.slug) },
+        ])}
+      />
       <Breadcrumbs
         items={[
           { label: `${part.bookTitle} — ${part.partShortTitle}`, href: partHref(part.key) },

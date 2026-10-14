@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { getPartManifest, listParts } from "@/content";
 import { DashboardView, type DashboardPart } from "@/components/dashboard/DashboardView";
 
-export const metadata: Metadata = { title: "لوحة الإنجاز" };
+// Progress lives in the visitor's browser, so there is nothing here for search engines to index.
+export const metadata: Metadata = { title: "لوحة الإنجاز", robots: { index: false, follow: true } };
 
 /** Progress across every available part; only the parts' light TOCs are passed to the client. */
 export default function DashboardPage() {

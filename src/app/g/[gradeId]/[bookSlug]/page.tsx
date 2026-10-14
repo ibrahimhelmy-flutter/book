@@ -1,9 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { findBook, gradeHref, staticParams } from "@/content";
+import { bookHref, findBook, gradeHref, staticParams } from "@/content";
 import { BookCard } from "@/components/catalog/BookCard";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ gradeId: string; bookSlug: string }>;
@@ -16,7 +18,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { gradeId, bookSlug } = await params;
   const found = findBook(gradeId, bookSlug);
-  return found ? { title: `${found.book.title} — ${found.grade.title}`, description: found.book.description } : {};
+  if (!found) return {};
+  return pageMetadata({ title: `${found.book.title} — ${found.grade.title}`, description: found.book.description, path: bookHref(gradeId, bookSlug) });
 }
 
 export default async function BookPage({ params }: Props) {
@@ -27,6 +30,13 @@ export default async function BookPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "الكتب الدراسية", path: "/" },
+          { name: grade.title, path: gradeHref(grade.id) },
+          { name: book.title, path: bookHref(grade.id, book.slug) },
+        ])}
+      />
       <Breadcrumbs items={[{ label: "الكتب الدراسية", href: "/" }, { label: grade.title, href: gradeHref(grade.id) }, { label: book.title }]} />
       {book.accreditation && book.accreditation.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">

@@ -1,9 +1,14 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap, Library } from "lucide-react";
 import { getCatalog, gradeHref } from "@/content";
 import { BookCard } from "@/components/catalog/BookCard";
 import { HomePWACallout } from "@/components/home/HomePWACallout";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { pageMetadata, websiteJsonLd } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({ path: "/" });
 
 export default function CatalogHomePage() {
   const { grades } = getCatalog();
@@ -11,6 +16,7 @@ export default function CatalogHomePage() {
 
   return (
     <div className="flex-1 bg-slate-950 text-white">
+      <JsonLd data={websiteJsonLd()} />
       <section className="relative overflow-hidden pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-950 to-slate-950 pointer-events-none" />
         <div className="max-w-5xl mx-auto relative z-10 text-center space-y-5">
