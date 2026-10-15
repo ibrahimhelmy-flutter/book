@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ZoomIn, X } from "lucide-react";
+import { ZoomIn, X, Eye, EyeOff, Image as ImageIcon } from "lucide-react";
 import { getAssetPath } from "@/lib/utils";
 import { classifyImage, imageToneClass, type ImageTone } from "@/lib/image-tone";
 
@@ -35,6 +35,7 @@ function retryImageSrc(target: HTMLImageElement, src: string) {
 export function SectionImageViewer({ image }: SectionImageViewerProps) {
   const [tone, setTone] = useState<ImageTone | null>(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const imgRef = React.useRef<HTMLImageElement>(null);
 
   // A cached image can finish loading before React attaches onLoad
@@ -52,14 +53,46 @@ export function SectionImageViewer({ image }: SectionImageViewerProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen]);
 
+  if (isCollapsed) {
+    return (
+      <div className="font-ui my-3 flex items-center justify-between gap-3 p-2.5 px-3.5 rounded-xl border border-slate-800 bg-slate-950/70">
+        <div className="flex items-center gap-2 min-w-0 text-slate-400">
+          <ImageIcon className="w-4 h-4 text-indigo-400 shrink-0" aria-hidden="true" />
+          <span className="truncate text-[calc(var(--lesson-body-size,1rem)*0.8)]">
+            {image.caption || image.alt || "صورة توضيحية"}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsCollapsed(false)}
+          className="px-2.5 py-1 rounded-lg bg-indigo-950/50 hover:bg-indigo-900/70 text-indigo-300 hover:text-white border border-indigo-800/50 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors shrink-0"
+          title="إظهار الصورة في الصفحة"
+        >
+          <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+          <span>إظهار الصورة</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* An inverted diagram's page turns #1a1a1a, so the frame matches it to hide the image edge */}
       <figure
-        className={`my-4 sm:my-5 rounded-2xl overflow-hidden border border-slate-800 ${
+        className={`relative my-4 sm:my-5 rounded-2xl overflow-hidden border border-slate-800 ${
           tone === "diagram" ? "bg-[#1a1a1a]" : "bg-slate-950"
         }`}
       >
+        <button
+          type="button"
+          onClick={() => setIsCollapsed(true)}
+          className="font-ui absolute top-2 left-2 z-10 px-2 py-1 rounded-lg bg-slate-900/85 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700/70 text-xs font-medium flex items-center gap-1 cursor-pointer transition-colors backdrop-blur-sm"
+          title="طي الصورة إلى شريط مدمج"
+          aria-label="طي الصورة"
+        >
+          <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
+          <span>طي</span>
+        </button>
         <button
           type="button"
           onClick={() => setIsLightboxOpen(true)}

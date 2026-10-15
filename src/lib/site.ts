@@ -16,6 +16,12 @@ export const SITE_AUTHOR = {
   jobTitle: "مهندس برمجيات",
 };
 
+/**
+ * Google Search Console "HTML tag" verification code (only the content="…" value), set at build time
+ * from the GOOGLE_SITE_VERIFICATION repository variable. Empty → no tag is emitted.
+ */
+export const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() ?? "";
+
 /** Absolute site root without a trailing slash; includes the basePath when the site lives under one. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://ibrahimhelmy-flutter.github.io/book").replace(/\/+$/, "");
 

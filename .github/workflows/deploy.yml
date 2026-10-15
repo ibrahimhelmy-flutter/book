@@ -52,6 +52,7 @@ jobs:
         run: pnpm run build
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
 
       - name: Verify PWA & Offline Export
         run: pnpm run verify:pwa

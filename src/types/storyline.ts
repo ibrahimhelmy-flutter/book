@@ -44,6 +44,32 @@ export interface IdeaStep {
   bookTerms?: BookTerm[];
   /** الجملة التي تنقلنا إلى الخطوة التالية */
   bridge?: string;
+  /**
+   * أسئلة التأكد من الفهم (معرّفات من بنك أسئلة الفهم العميق للدرس)، بالترتيب:
+   * سؤال مباشر، ثم سؤال من زاوية أخرى، ثم أسئلة احتياطية لإعادة المحاولة.
+   */
+  checks?: string[];
+}
+
+/** سؤال تأكد من الفهم بعد خطوة، مأخوذ من بنك الفهم العميق (محتوى مؤلف). */
+export interface StepCheckQuestion {
+  id: string;
+  /** زاوية السؤال، مثل "فهم مباشر عميق" أو "تطبيق على موقف" */
+  angle?: string;
+  question: string;
+  scenario?: string;
+  /** 4 اختيارات بترتيب ثابت مخلوط وقت البناء */
+  options: string[];
+  correctAnswer: number;
+  /** توضيح مبسط يظهر عند الخطأ */
+  explanation?: string;
+  pages?: number[];
+}
+
+/** public/data/<part>/storyline-checks/<lessonId>.json */
+export interface StorylineChecks {
+  lessonId: string;
+  steps: Record<string, StepCheckQuestion[]>;
 }
 
 export interface LessonStoryline {

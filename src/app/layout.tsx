@@ -7,7 +7,7 @@ import { PWARegister } from "@/components/pwa/PWARegister";
 import { PWAProvider } from "@/context/PWAContext";
 import { getNavCatalog } from "@/content";
 import { pageMetadata } from "@/lib/seo";
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { GOOGLE_SITE_VERIFICATION, SITE_AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -53,6 +53,7 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
+  ...(GOOGLE_SITE_VERIFICATION ? { verification: { google: GOOGLE_SITE_VERIFICATION } } : {}),
   authors: [{ name: SITE_AUTHOR.name }],
   creator: SITE_AUTHOR.name,
   keywords: ["المناهج المصرية", "كتب الوزارة", "الثانوية العامة", "مصر", "شرح الدروس", "بنك الأسئلة"],
