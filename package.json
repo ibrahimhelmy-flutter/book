@@ -16,6 +16,7 @@
     "test": "node scripts/run-unit-tests.mjs && node scripts/verify-pwa-and-offline.mjs",
     "verify:pwa": "node scripts/verify-pwa-and-offline.mjs",
     "build:data": "node scripts/prepare-assets.mjs && tsx scripts/data/build-data.ts",
+    "presentation:plan": "tsx scripts/data/draft-presentation-plan.ts",
     "sources:validate": "node scripts/generate-source-manifest.mjs",
     "verify:content": "node scripts/verify-content-gate.mjs",
     "validate:schemas": "node scripts/validate-content-schemas.mjs",

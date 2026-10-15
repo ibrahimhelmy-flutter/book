@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo } from "next/font/google";
+import { Cairo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { ActivePartProvider } from "@/components/layout/PartProvider";
@@ -14,6 +14,14 @@ const cairo = Cairo({
   variable: "--font-cairo",
   display: "swap",
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+// Body font for reading lessons (headings and UI stay on Cairo)
+const plexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  variable: "--font-reading",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const viewport: Viewport = {
@@ -72,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" className={`dark ${cairo.variable}`} suppressHydrationWarning>
+    <html lang="ar" dir="rtl" className={`dark ${cairo.variable} ${plexArabic.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${cairo.className} min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col selection:bg-indigo-600 selection:text-white`}

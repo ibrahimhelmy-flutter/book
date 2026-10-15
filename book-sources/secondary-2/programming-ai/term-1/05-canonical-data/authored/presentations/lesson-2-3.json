@@ -1,0 +1,12 @@
+{
+  "lessonId": "lesson-2-3",
+  "slides": [
+    {"section":"sec-2-3-1","blocks":[0,1],"table":true,"terms":["concept-2-3-01"]},
+    {"section":"sec-2-3-2","blocks":[0],"table":true,"terms":["concept-2-3-02","concept-2-3-03","concept-2-3-04","concept-2-3-05"]},
+    {"section":"sec-2-3-2","blocks":[1],"figure":true},
+    {"section":"sec-2-3-3","blocks":[0],"terms":["concept-2-3-06"]},
+    {"section":"sec-2-3-3","blocks":[1,2,3,4],"table":true,"terms":["concept-2-3-07","concept-2-3-08"]},
+    {"section":"sec-2-3-3","blocks":[5],"figure":true},
+    {"note":"callout-2-3-2"}
+  ]
+}

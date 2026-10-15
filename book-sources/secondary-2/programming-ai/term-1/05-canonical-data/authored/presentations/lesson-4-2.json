@@ -1,0 +1,14 @@
+{
+  "lessonId": "lesson-4-2",
+  "slides": [
+    {"section":"sec-4-2-1","blocks":[0],"figure":true,"terms":["concept-4-2-01"]},
+    {"section":"sec-4-2-1","blocks":[1]},
+    {"section":"sec-4-2-2","blocks":[0],"terms":["concept-4-2-02"]},
+    {"section":"sec-4-2-2","blocks":[1],"figure":true},
+    {"section":"sec-4-2-3","blocks":[0],"table":true,"figure":true,"terms":["concept-4-2-03"]},
+    {"section":"sec-4-2-4","blocks":[0],"figure":true,"terms":["concept-4-2-04"]},
+    {"section":"sec-4-2-4","blocks":[1]},
+    {"section":"sec-4-2-4","blocks":[2],"terms":["concept-4-2-05","concept-4-2-06"]},
+    {"note":"callout-4-2-4"}
+  ]
+}

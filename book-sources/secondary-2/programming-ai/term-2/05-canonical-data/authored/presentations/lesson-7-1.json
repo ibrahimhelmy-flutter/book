@@ -1,0 +1,24 @@
+{
+  "lessonId": "lesson-7-1",
+  "slides": [
+    {"section":"sec-7-1-1","blocks":[0],"figure":true,"terms":["concept-7-1-01"]},
+    {"section":"sec-7-1-1","blocks":[1],"table":true},
+    {"section":"sec-7-1-1","blocks":[2,3]},
+    {"section":"sec-7-1-1","blocks":[4],"terms":["concept-7-1-02","concept-7-1-03","concept-7-1-14"]},
+    {"section":"sec-7-1-2","blocks":[0],"figure":true,"table":true,"terms":["concept-7-1-07","concept-7-1-04","concept-7-1-05"]},
+    {"section":"sec-7-1-3","blocks":[0],"table":true,"terms":["concept-7-1-06"]},
+    {"section":"sec-7-1-4","blocks":[0],"terms":["concept-7-1-08"]},
+    {"section":"sec-7-1-4","blocks":[1],"figure":true,"table":true},
+    {"section":"sec-7-1-5","blocks":[0],"figure":true,"terms":["concept-7-1-09"]},
+    {"section":"sec-7-1-5","blocks":[1]},
+    {"section":"sec-7-1-6","blocks":[0],"terms":["concept-7-1-10"]},
+    {"section":"sec-7-1-6","blocks":[1],"table":true,"terms":["concept-7-1-13"]},
+    {"section":"sec-7-1-6","blocks":[2],"figure":true},
+    {"section":"sec-7-1-6","blocks":[3]},
+    {"section":"sec-7-1-7","blocks":[0],"terms":["concept-7-1-11"]},
+    {"section":"sec-7-1-7","blocks":[1],"table":true,"terms":["concept-7-1-12"]},
+    {"section":"sec-7-1-7","blocks":[2]},
+    {"section":"sec-7-1-7","blocks":[3]},
+    {"note":"callout-7-1-2"}
+  ]
+}

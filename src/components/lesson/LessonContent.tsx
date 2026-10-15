@@ -523,7 +523,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
 
       {/* Main Lesson View */}
       {activeTab === "lesson" && (
-        <div className={`space-y-8 lesson-font-${fontSize}`} data-font-size={fontSize}>
+        <div className={`space-y-8 font-reading lesson-font-${fontSize}`} data-font-size={fontSize}>
 
 
           {/* Detailed Sections with In-Section Notes Button */}
@@ -553,11 +553,8 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
                   id={sec.id}
                   className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 md:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
                 >
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
+                  <div className="font-ui flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                        القسم {secIdx + 1} من {lesson.sections.length}
-                      </span>
                       <h3
                         className={`font-bold text-white leading-snug transition-all duration-200 ${
                           fontSize === "5xlarge"
@@ -577,15 +574,10 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
                       >
                         {sec.title}
                       </h3>
-                      {sec.origin === "explanation" ? (
+                      {sec.origin === "explanation" && (
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
                           <span>💡</span>
                           <span>شرح وتوضيح إثرائي</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-                          <span>📘</span>
-                          <span>نص كتاب الوزارة المعتمد</span>
                         </span>
                       )}
                     </div>
@@ -630,7 +622,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
                         ? "text-base sm:text-lg md:text-xl text-slate-100 leading-loose font-medium"
                         : fontSize === "large"
                         ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
-                        : "text-sm sm:text-base text-slate-300 leading-relaxed"
+                        : "text-[1.0625rem] sm:text-lg text-slate-200 leading-[1.95]"
                     }`}
                   >
                     <EyeComfortText
@@ -643,7 +635,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
 
                   {/* Section Diagram / Image with Compact Size & Lightbox */}
                   {sec.image && (
-                    <SectionImageViewer image={sec.image} fontSize={fontSize} />
+                    <SectionImageViewer image={sec.image} />
                   )}
 
                   {/* Section Table if present */}

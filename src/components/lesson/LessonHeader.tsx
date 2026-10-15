@@ -151,16 +151,16 @@ export function LessonHeader({
             </button>
           )}
 
-          {/* Optional Compact Presentation Launcher */}
+          {/* Presentation launcher: classroom projector use, so desktop widths only */}
           {onOpenPresentation && (
             <button
               type="button"
               onClick={onOpenPresentation}
-              className="p-1.5 px-2 rounded-lg border border-blue-500/40 bg-blue-950/30 hover:bg-blue-900/50 text-blue-300 hover:text-white text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5"
+              className="hidden lg:flex p-1.5 px-2 rounded-lg border border-blue-500/40 bg-blue-950/30 hover:bg-blue-900/50 text-blue-300 hover:text-white text-xs font-medium transition-all cursor-pointer items-center gap-1.5"
               title="بدء العرض التقديمي (شرائح البروجيكتور)"
             >
               <Presentation className="w-3.5 h-3.5 text-blue-400" />
-              <span className="hidden sm:inline">عرض تقديمي</span>
+              <span>عرض تقديمي</span>
             </button>
           )}
 

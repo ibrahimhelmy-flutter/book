@@ -96,6 +96,22 @@
   text-align: left;
 }
 
+/* Lesson reading font; .font-ui puts headings and controls back on Cairo */
+.font-reading {
+  font-family: var(--font-reading), var(--font-cairo), system-ui, sans-serif;
+}
+.font-ui {
+  font-family: var(--font-cairo), system-ui, sans-serif;
+}
+
+/* Textbook images on the dark theme (tone picked by src/lib/image-tone.ts) */
+.img-tone-diagram {
+  filter: invert(0.9) hue-rotate(180deg);
+}
+.img-tone-picture {
+  filter: brightness(0.85) contrast(0.95);
+}
+
 /* Dynamic Lesson Body Font Scaling */
 .lesson-font-large {
   --lesson-body-size: 1.25rem;

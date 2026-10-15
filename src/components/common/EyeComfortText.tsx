@@ -421,7 +421,7 @@ export function EyeComfortText({
               ? "text-base sm:text-lg md:text-xl leading-loose font-medium"
               : fontSize === "large"
                 ? "text-base sm:text-lg md:text-xl leading-loose"
-                : "text-sm sm:text-base leading-relaxed";
+                : "text-[1.0625rem] sm:text-lg leading-[1.95]";
 
   // ============================================================
   // Split by code blocks
@@ -604,8 +604,8 @@ export function EyeComfortText({
                     <div
                       className={
                         theme === "light"
-                          ? "flex-1 space-y-2 text-slate-700 leading-relaxed"
-                          : "flex-1 space-y-2 text-slate-200/95 leading-relaxed"
+                          ? "flex-1 space-y-2 text-slate-700"
+                          : "flex-1 space-y-2 text-slate-200/95"
                       }
                     >
                       {sentences.map((sent, sIdx) => {
@@ -639,7 +639,7 @@ export function EyeComfortText({
                                 مثال
                               </span>
 
-                              <div className="flex-1 leading-relaxed">
+                              <div className="flex-1">
                                 {renderInlineTokens(
                                   exampleBody,
                                   theme,
@@ -652,7 +652,7 @@ export function EyeComfortText({
                         }
 
                         return (
-                          <p key={sIdx} className="leading-relaxed">
+                          <p key={sIdx}>
                             {renderInlineTokens(
                               sent,
                               theme,
@@ -703,8 +703,8 @@ export function EyeComfortText({
                     <div
                       className={
                         theme === "light"
-                          ? "flex-1 leading-relaxed text-slate-700"
-                          : "flex-1 leading-relaxed text-slate-200/95"
+                          ? "flex-1 text-slate-700"
+                          : "flex-1 text-slate-200/95"
                       }
                     >
                       {renderInlineTokens(
@@ -743,7 +743,7 @@ export function EyeComfortText({
                       مثال
                     </span>
 
-                    <div className="flex-1 leading-relaxed">
+                    <div className="flex-1">
                       {renderInlineTokens(
                         exampleText,
                         theme,
@@ -767,7 +767,7 @@ export function EyeComfortText({
                 return (
                   <div
                     key={lineIdx}
-                    className="flex items-start gap-3 pr-1 leading-relaxed"
+                    className="flex items-start gap-3 pr-1"
                   >
                     <span
                       className={`rounded-full flex items-center justify-center font-bold font-mono shrink-0 border mt-0.5 ${theme === "light"
@@ -812,7 +812,7 @@ export function EyeComfortText({
                 return (
                   <div
                     key={lineIdx}
-                    className={`flex items-start gap-2.5 leading-relaxed ${isSubBullet ? "pr-6" : "pr-2"
+                    className={`flex items-start gap-2.5 ${isSubBullet ? "pr-6" : "pr-2"
                       }`}
                   >
                     <span
@@ -854,7 +854,7 @@ export function EyeComfortText({
                   className={`${fontClass} ${theme === "light"
                       ? "text-slate-700"
                       : "text-slate-200/95"
-                    } font-normal leading-relaxed transition-colors duration-200`}
+                    } font-normal transition-colors duration-200`}
                 >
                   {renderInlineTokens(
                     trimmed,

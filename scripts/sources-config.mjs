@@ -105,6 +105,7 @@ export function getSources(keyOrAlias = 'term-1') {
     committeeQuestionsFile: path.join(authoredRoot, 'committee-questions.json'),
     simulatorsFile: path.join(authoredRoot, 'simulators.json'),
     storylinesDir: path.join(authoredRoot, 'storylines'),
+    presentationsDir: path.join(authoredRoot, 'presentations'),
     companions,
     buildModules: path.join(root, '06-build-modules'),
     validation: path.join(root, '07-validation'),
