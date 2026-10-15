@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   DownloadCloud,
+  RefreshCw,
   Smartphone,
   CheckCircle,
   Library,
@@ -80,9 +81,11 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
     isInstalled,
     promptInstall,
     isOfflinePackReady,
+    offlinePackState,
     isOfflinePackModalOpen,
     setIsOfflinePackModalOpen,
   } = usePWA();
+  const isOfflinePackStale = offlinePackState === "stale";
 
   // Automatically scroll to the very top on every screen navigation
   React.useEffect(() => {
@@ -191,18 +194,30 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
               <button
                 type="button"
                 onClick={() => setIsOfflinePackModalOpen(true)}
-                className={`hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95 ${
-                  isOfflinePackReady
-                    ? "bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/40 text-emerald-300"
-                    : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400 hover:text-emerald-300"
+                className={`relative hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer items-center gap-1.5 shadow-xs hover:scale-105 active:scale-95 ${
+                  isOfflinePackStale
+                    ? "bg-amber-500/15 hover:bg-amber-500/25 border-amber-500/50 text-amber-300"
+                    : isOfflinePackReady
+                      ? "bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/40 text-emerald-300"
+                      : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400 hover:text-emerald-300"
                 }`}
-                title="تحميل المنهج كاملاً للعمل بدون إنترنت (~7.2 MB)"
-                aria-label="تحميل المنهج بدون إنترنت"
+                title={isOfflinePackStale ? "يوجد تحديث للنسخة المحفوظة محلياً — اضغط لتحميله" : "تحميل المنهج كاملاً للعمل بدون إنترنت"}
+                aria-label={isOfflinePackStale ? "تحديث متاح للنسخة المحفوظة محلياً" : "تحميل المنهج بدون إنترنت"}
               >
-                <DownloadCloud className="w-3.5 h-3.5 text-emerald-400" />
+                {isOfflinePackStale ? (
+                  <RefreshCw className="w-3.5 h-3.5 text-amber-400" />
+                ) : (
+                  <DownloadCloud className="w-3.5 h-3.5 text-emerald-400" />
+                )}
                 <span className="hidden lg:inline">
-                  {isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت"}
+                  {isOfflinePackStale ? "تحديث متاح 🔄" : isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت"}
                 </span>
+                {isOfflinePackStale && (
+                  <span className="absolute -top-1 -left-1 flex h-2.5 w-2.5" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-400" />
+                  </span>
+                )}
               </button>
 
               </>)}
@@ -224,15 +239,23 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
               <button
                 type="button"
                 onClick={() => setIsOfflinePackModalOpen(true)}
-                className={`sm:hidden p-2 rounded-lg border transition-colors cursor-pointer ${
-                  isOfflinePackReady
-                    ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
-                    : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                className={`relative sm:hidden p-2 rounded-lg border transition-colors cursor-pointer ${
+                  isOfflinePackStale
+                    ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
+                    : isOfflinePackReady
+                      ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300"
+                      : "bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
                 }`}
-                title="تحميل المنهج بدون إنترنت"
-                aria-label="تحميل المنهج بدون إنترنت"
+                title={isOfflinePackStale ? "تحديث متاح للنسخة المحفوظة محلياً" : "تحميل المنهج بدون إنترنت"}
+                aria-label={isOfflinePackStale ? "تحديث متاح للنسخة المحفوظة محلياً" : "تحميل المنهج بدون إنترنت"}
               >
-                <DownloadCloud className="w-4 h-4" />
+                {isOfflinePackStale ? <RefreshCw className="w-4 h-4" /> : <DownloadCloud className="w-4 h-4" />}
+                {isOfflinePackStale && (
+                  <span className="absolute -top-1 -left-1 flex h-2.5 w-2.5" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-400" />
+                  </span>
+                )}
               </button>
 
               </>)}
@@ -273,13 +296,23 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
                 setIsMobileMenuOpen(false);
                 setIsOfflinePackModalOpen(true);
               }}
-              className="w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-right cursor-pointer"
+              className={`w-full p-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors text-right cursor-pointer border ${
+                isOfflinePackStale
+                  ? "text-amber-300 bg-amber-950/40 hover:bg-amber-900/50 border-amber-500/40"
+                  : "text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border-emerald-500/30"
+              }`}
             >
-              <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              {isOfflinePackStale ? (
+                <RefreshCw className="w-4 h-4 text-amber-400" />
+              ) : (
+                <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              )}
               <span>
-                {isOfflinePackReady
-                  ? "المنهج محفوظ محلياً بدون إنترنت ✓"
-                  : "تحميل المنهج بدون إنترنت (Offline Pack) ⚡"}
+                {isOfflinePackStale
+                  ? "تحديث متاح للنسخة المحفوظة محلياً — اضغط للتحميل 🔄"
+                  : isOfflinePackReady
+                    ? "المنهج محفوظ محلياً بدون إنترنت ✓"
+                    : "تحميل المنهج بدون إنترنت (Offline Pack) ⚡"}
               </span>
             </button>
 

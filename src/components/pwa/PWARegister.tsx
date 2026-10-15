@@ -10,7 +10,44 @@ import { PWAInstallBanner } from "./PWAInstallBanner";
 export function PWARegister() {
   const { isOffline, isInstallModalOpen, setIsInstallModalOpen } = usePWA();
   const [updateWaitingWorker, setUpdateWaitingWorker] = useState<ServiceWorker | null>(null);
+  const [newBuildAvailable, setNewBuildAvailable] = useState(false);
   const [offlineBannerDismissed, setOfflineBannerDismissed] = useState(false);
+
+  // A newer deploy than the one this page was built from (out/version.json, see scripts/build.mjs):
+  // checked on load, when the app returns to the foreground or comes online, and every 15 minutes.
+  useEffect(() => {
+    // The build this page came from (src/app/layout.tsx metadata); not inlined here, so a new commit
+    // alone does not change this chunk (and with it every offline pack's packVersion)
+    const currentBuildId = document.querySelector<HTMLMetaElement>('meta[name="app-build-id"]')?.content;
+    if (!currentBuildId || process.env.NODE_ENV === "development") return;
+
+    let lastCheck = 0;
+    const check = async () => {
+      if (navigator.onLine === false || Date.now() - lastCheck < 60_000) return;
+      lastCheck = Date.now();
+      try {
+        const res = await fetch(getAssetPath("/version.json"), { cache: "no-store" });
+        if (!res.ok) return;
+        const { buildId } = await res.json();
+        if (buildId && buildId !== currentBuildId) setNewBuildAvailable(true);
+      } catch {
+        /* offline */
+      }
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") check();
+    };
+
+    check();
+    const timer = setInterval(check, 15 * 60_000);
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("online", check);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("online", check);
+    };
+  }, []);
 
   // Show the offline banner again the next time the connection drops
   useEffect(() => {
@@ -83,16 +120,21 @@ export function PWARegister() {
   }, []);
 
   const handleApplyUpdate = () => {
-    if (updateWaitingWorker) {
-      updateWaitingWorker.postMessage({ type: "SKIP_WAITING" });
+    if (!updateWaitingWorker || !navigator.serviceWorker?.controller) {
+      window.location.reload();
+      return;
     }
-    window.location.reload();
+    // Reload once the new service worker controls the page, so the reload goes through it
+    const reload = () => window.location.reload();
+    navigator.serviceWorker.addEventListener("controllerchange", reload, { once: true });
+    setTimeout(reload, 3000);
+    updateWaitingWorker.postMessage({ type: "SKIP_WAITING" });
   };
 
   return (
     <>
       {/* Update Available Polite Banner */}
-      {updateWaitingWorker && (
+      {(updateWaitingWorker || newBuildAvailable) && (
         <div
           role="status"
           aria-live="polite"

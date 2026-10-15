@@ -1,4 +1,5 @@
 import { spawnSync } from 'child_process';
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
@@ -38,11 +39,36 @@ export function writeOfflineAssets(outDir) {
   return assets;
 }
 
+/** The Next build id of the export in `outDir` (from .next/BUILD_ID), or null. */
+export function readBuildId(outDir) {
+  const file = path.join(path.dirname(outDir), '.next', 'BUILD_ID');
+  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8').trim() || null : null;
+}
+
+/**
+ * Version of the files a pack stores: it changes whenever any of them changes (content, pages, code,
+ * images), so the client can flag a downloaded pack as outdated after any deploy that touches it.
+ * The Next build id (embedded in every page, and the `_next/static/<buildId>/` folder) is left out, so
+ * a deploy that changes nothing in the pack does not mark it outdated.
+ */
+function packVersionOf(fileOf, urls, buildId) {
+  const hash = crypto.createHash('sha256');
+  for (const url of urls) {
+    if (buildId && url.startsWith(`/_next/static/${buildId}/`)) continue;
+    const file = fileOf(url);
+    if (!fs.existsSync(file)) continue;
+    let bytes = fs.readFileSync(file);
+    if (buildId && /\.(html|txt)$/.test(file)) bytes = Buffer.from(bytes.toString('utf8').split(buildId).join(''));
+    hash.update(url).update('\0').update(bytes).update('\0');
+  }
+  return hash.digest('hex').slice(0, 16);
+}
+
 /**
  * Builds the offline list for one part by walking out/. URLs are root-relative WITHOUT the basePath
  * (the client prefixes them); pages use the trailing-slash directory form plus their RSC `index.txt`.
  */
-export function buildPartOfflineList(outDir, partKey) {
+export function buildPartOfflineList(outDir, partKey, buildId = readBuildId(outDir)) {
   const manifestFile = path.join(outDir, 'data', ...partKey.split('/'), 'manifest.json');
   if (!fs.existsSync(manifestFile)) throw new Error(`Missing ${path.relative(outDir, manifestFile)}`);
   const manifest = readJson(manifestFile);
@@ -82,14 +108,16 @@ export function buildPartOfflineList(outDir, partKey) {
   const pages = [...pageUrls].sort();
   const groups = [pages, dataUrls, imageUrls, assetUrls];
   const urls = [...new Set(groups.flat())];
+  const fileOf = (url) => path.join(outDir, ...url.split('/').filter(Boolean), ...(url.endsWith('/') ? ['index.html'] : []));
   const bytes = urls.reduce((sum, url) => {
-    const file = path.join(outDir, ...url.split('/').filter(Boolean), ...(url.endsWith('/') ? ['index.html'] : []));
+    const file = fileOf(url);
     return sum + (fs.existsSync(file) ? fs.statSync(file).size : 0);
   }, 0);
 
   return {
     partKey,
     contentHash: manifest.contentHash,
+    packVersion: packVersionOf(fileOf, urls, buildId),
     urls,
     counts: { pages: pages.length, data: dataUrls.length, images: imageUrls.length, assets: assetUrls.length },
     bytes,
@@ -106,15 +134,29 @@ export function writeOfflineLists(outDir) {
   );
   const offlineDir = path.join(outDir, 'offline');
   fs.mkdirSync(offlineDir, { recursive: true });
+  const buildId = readBuildId(outDir);
   return partKeys.map((partKey) => {
-    const list = buildPartOfflineList(outDir, partKey);
+    const list = buildPartOfflineList(outDir, partKey, buildId);
     const file = path.join(offlineDir, offlineListName(partKey));
     fs.writeFileSync(file, JSON.stringify(list, null, 2));
     return { file, list };
   });
 }
 
+/**
+ * Writes out/version.json with the build id the pages were built with (<meta name="app-build-id">, see
+ * next.config.ts). An open tab polls it and offers a reload when a newer deploy is live.
+ */
+export function writeVersionFile(outDir) {
+  const buildId = readBuildId(outDir);
+  if (!buildId) return null;
+  fs.writeFileSync(path.join(outDir, 'version.json'), JSON.stringify({ buildId }, null, 2));
+  return buildId;
+}
+
 function writeOfflineArtifacts(outDir) {
+  const buildId = writeVersionFile(outDir);
+  if (buildId) console.log(`✓ Wrote out/version.json (build ${buildId})`);
   const assets = writeOfflineAssets(outDir);
   if (assets) console.log(`✓ Wrote out/offline-assets.json (${assets.length} static assets for the offline pack)`);
   for (const { file, list } of writeOfflineLists(outDir)) {

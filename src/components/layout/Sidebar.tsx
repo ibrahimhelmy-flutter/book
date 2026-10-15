@@ -30,6 +30,7 @@ export function Sidebar() {
     isInstalled,
     promptInstall,
     isOfflinePackReady,
+    offlinePackState,
     setIsOfflinePackModalOpen,
   } = usePWA();
   const [completedList, setCompletedList] = useState<string[]>([]);
@@ -289,8 +290,8 @@ export function Sidebar() {
                   <Smartphone className="w-3.5 h-3.5 text-indigo-400" />
                   تطبيق المنصة (PWA)
                 </span>
-                <span className="text-[10px] text-emerald-400 font-bold font-mono">
-                  {isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت ⚡"}
+                <span className={`text-[10px] font-bold font-mono ${offlinePackState === "stale" ? "text-amber-400" : "text-emerald-400"}`}>
+                  {offlinePackState === "stale" ? "تحديث متاح 🔄" : isOfflinePackReady ? "محفوظ محلياً ✓" : "بدون إنترنت ⚡"}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-1.5">

@@ -19,8 +19,8 @@ import {
 import type { PartManifest } from "@/types/catalog";
 import {
   deletePack,
+  fetchLiveOfflineList,
   getPackStatus,
-  offlineListPath,
   packCacheName,
   savePack,
   type OfflinePackList,
@@ -83,33 +83,28 @@ export function OfflinePackModal({ part, isOpen, onClose }: Props) {
   const packTitle = `${part.bookTitle} — ${part.partShortTitle}`;
 
   const loadList = useCallback(async (): Promise<OfflinePackList | null> => {
-    try {
-      const res = await fetch(getAssetPath(offlineListPath(part.key)), { cache: "no-store" });
-      if (!res.ok) return null;
-      const list: OfflinePackList = await res.json();
-      if (!Array.isArray(list.urls) || list.urls.length === 0) return null;
-      setPackList(list);
-      return list;
-    } catch {
-      // Offline, or `next dev` (the list is written by scripts/build.mjs after the export)
-      return null;
-    }
+    // null when offline, or under `next dev` (the list is written by scripts/build.mjs after the export)
+    const list = await fetchLiveOfflineList(part.key);
+    if (list) setPackList(list);
+    return list;
   }, [part.key]);
 
-  const checkStatus = useCallback(async () => {
-    const { state, record: rec } = await getPackStatus(part);
-    setRecord(rec);
-    setStatus(state === "ready" ? "ready" : state === "stale" ? "stale" : "idle");
-    await refreshOfflinePackStatus();
-  }, [part, refreshOfflinePackStatus]);
+  const checkStatus = useCallback(
+    async (liveList?: OfflinePackList | null) => {
+      const { state, record: rec } = await getPackStatus(part, liveList);
+      setRecord(rec);
+      setStatus(state === "ready" ? "ready" : state === "stale" ? "stale" : "idle");
+      await refreshOfflinePackStatus();
+    },
+    [part, refreshOfflinePackStatus]
+  );
 
   useEffect(() => {
     if (!isOpen || busyRef.current) return;
     setPackList(null);
     setFailedUrls([]);
     setErrorMessage("");
-    checkStatus();
-    loadList();
+    loadList().then(checkStatus);
   }, [isOpen, checkStatus, loadList]);
 
   // Detach service-worker listeners / timers if the modal unmounts mid-download
@@ -152,7 +147,8 @@ export function OfflinePackModal({ part, isOpen, onClose }: Props) {
     if (audit.ok && reportedFailed.length === 0) {
       const rec: OfflinePackRecord = {
         partKey: part.key,
-        contentHash: part.contentHash,
+        contentHash: list.contentHash || part.contentHash,
+        packVersion: list.packVersion,
         downloadedAt: new Date().toISOString(),
         fileCount: allRequiredUrls.length,
         counts: list.counts,
@@ -163,7 +159,7 @@ export function OfflinePackModal({ part, isOpen, onClose }: Props) {
       setProgress(100);
       setCurrentStep("اكتمل التحقق بنجاح! كافة ملفات هذا الجزء جاهزة للعمل بدون إنترنت 🚀");
       setTimeout(() => {
-        checkStatus();
+        checkStatus(list);
       }, 800);
     } else {
       const missing = Array.from(new Set([...reportedFailed, ...audit.missingUrls]));
@@ -487,7 +483,7 @@ export function OfflinePackModal({ part, isOpen, onClose }: Props) {
               <div>
                 <div className="text-xs font-bold text-amber-300">تحديث متاح</div>
                 <p className="text-[11px] text-slate-300 mt-0.5">
-                  تغيّر محتوى هذا الجزء منذ آخر تنزيل. حدّث الحزمة لتحصل على أحدث نسخة بدون إنترنت.
+                  نُشر تحديث للمنصة أو لمحتوى هذا الجزء منذ آخر تنزيل. حدّث الحزمة لتحصل على أحدث نسخة بدون إنترنت.
                 </p>
                 {downloadedDate && <div className="text-[10px] text-slate-400">آخر تنزيل: {downloadedDate}</div>}
               </div>

@@ -94,7 +94,7 @@ check("sw.js handles per-part CACHE_OFFLINE_PACK / DELETE_OFFLINE_PACK with per-
   assert.ok(sw.includes("DELETE_OFFLINE_PACK"), "sw.js must handle DELETE_OFFLINE_PACK");
   assert.ok(sw.includes("ai-curriculum-pack-${CACHE_VERSION}::"), "Pack caches must be named ai-curriculum-pack-v<APP_VERSION>::<partKey>");
   assert.ok(/key\.startsWith\(PACK_CACHE_PREFIX\)/.test(sw), "activate must keep this version's pack caches");
-  assert.ok(sw.includes("url.pathname.includes('/data/')"), "sw.js must serve /data/*.json stale-while-revalidate");
+  assert.ok(sw.includes("url.pathname.includes('/data/')"), "sw.js must serve /data/*.json network first (cache when offline)");
   for (const legacy of ["'./exams/'", "'./glossary/'", "'./simulators/'"]) {
     assert.ok(!sw.includes(legacy), `PRECACHE_ASSETS must not include legacy route ${legacy}`);
   }

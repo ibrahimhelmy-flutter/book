@@ -19,7 +19,7 @@ interface PWAContextType {
   setIsOfflinePackModalOpen: (open: boolean) => void;
   /** The active part (useActivePart()) has a downloaded pack whose contentHash matches its manifest. */
   isOfflinePackReady: boolean;
-  /** "none" | "ready" | "stale" (downloaded, but the part changed since) for the active part. */
+  /** "none" | "ready" | "stale" (downloaded, but a deploy changed the part's files since) for the active part. */
   offlinePackState: OfflinePackState;
   refreshOfflinePackStatus: () => Promise<void>;
 }
@@ -67,9 +67,19 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
     if (latestPartKey.current === activePartKey) setOfflinePackState(state);
   }, [activePartKey, activePartHash]);
 
-  // Re-check whenever the active part (or its content) changes
+  // Re-check whenever the active part (or its content) changes, and when the app comes back to the
+  // foreground or online (an installed app is resumed, not reloaded, so a deploy may have happened since)
   useEffect(() => {
     refreshOfflinePackStatus();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refreshOfflinePackStatus();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("online", refreshOfflinePackStatus);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("online", refreshOfflinePackStatus);
+    };
   }, [refreshOfflinePackStatus]);
 
   const isOfflinePackReady = offlinePackState === "ready";

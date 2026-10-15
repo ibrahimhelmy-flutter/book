@@ -7,6 +7,7 @@
  * No student / user tracking data is stored here.
  */
 import type { PartKey, PartManifest } from "@/types/catalog";
+import { getAssetPath } from "@/lib/utils";
 
 const DB_NAME = "EgyptianAICurriculumDB";
 const DB_VERSION = 2;
@@ -17,7 +18,7 @@ const LEGACY_STORES = ["curriculum", "questions", "contentMetadata"];
 /** Must equal APP_VERSION in public/sw.js (cache names derive from it). */
 export const APP_VERSION = "2.0.0";
 /** Must equal CONTENT_VERSION in public/sw.js. Bump both together, or neither. */
-export const CURRENT_CONTENT_VERSION = "2026.10.12";
+export const CURRENT_CONTENT_VERSION = "2026.10.15";
 /** Prefix of every per-part pack cache; sw.js keeps caches with this prefix on activate. */
 export const PACK_CACHE_PREFIX = `ai-curriculum-pack-v${APP_VERSION}::`;
 
@@ -41,6 +42,8 @@ export interface OfflinePackCounts {
 export interface OfflinePackList {
   partKey: PartKey;
   contentHash: string;
+  /** Hash of every file in the pack (build id left out): changes on any deploy that changes the pack. */
+  packVersion?: string;
   /** Root-relative URLs without basePath; pages use the trailing-slash form plus their index.txt. */
   urls: string[];
   counts: OfflinePackCounts;
@@ -51,6 +54,8 @@ export interface OfflinePackList {
 export interface OfflinePackRecord {
   partKey: PartKey;
   contentHash: string;
+  /** OfflinePackList.packVersion at download time (missing on packs saved before it existed). */
+  packVersion?: string;
   downloadedAt: string;
   fileCount: number;
   counts: OfflinePackCounts;
@@ -127,23 +132,51 @@ export async function listPacks(): Promise<OfflinePackRecord[]> {
   return (await run<OfflinePackRecord[]>("readonly", (s) => s.getAll())) ?? [];
 }
 
-/** "ready" when the record matches the manifest's contentHash, "stale" when the hash differs. */
-export function packStateOf(record: OfflinePackRecord | null, contentHash: string): OfflinePackState {
+/**
+ * "ready" when the record is up to date, "stale" when not. With the live list's `packVersion` (online)
+ * any deploy that changed a file of the pack counts; without it, only a different contentHash does.
+ */
+export function packStateOf(
+  record: OfflinePackRecord | null,
+  contentHash: string,
+  packVersion?: string | null
+): OfflinePackState {
   if (!record) return "none";
   if (record.appVersion && record.appVersion !== APP_VERSION) return "stale";
+  if (packVersion) return record.packVersion === packVersion ? "ready" : "stale";
   return record.contentHash === contentHash ? "ready" : "stale";
+}
+
+/**
+ * The part's offline list as currently deployed, bypassing every cache (the page itself may be an
+ * older cached copy). null when offline, or under `next dev` (the lists are written after the export).
+ */
+export async function fetchLiveOfflineList(partKey: PartKey): Promise<OfflinePackList | null> {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return null;
+  try {
+    const res = await fetch(getAssetPath(offlineListPath(partKey)), { cache: "no-store" });
+    if (!res.ok) return null;
+    const list: OfflinePackList = await res.json();
+    return Array.isArray(list.urls) && list.urls.length > 0 ? list : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
  * Pack state of a part on this device. Besides the IndexedDB record it checks that the pack cache
  * still exists (the browser may evict it, and an APP_VERSION bump makes sw.js delete it).
+ * Online, the record is compared with the deployed offline list (`liveList`, fetched when not given),
+ * so an update is detected even when the current page was served from an older cache.
  */
 export async function getPackStatus(
-  part: Pick<PartManifest, "key" | "contentHash">
+  part: Pick<PartManifest, "key" | "contentHash">,
+  liveList?: OfflinePackList | null
 ): Promise<{ state: OfflinePackState; record: OfflinePackRecord | null }> {
   try {
     const record = await getPack(part.key);
-    let state = packStateOf(record, part.contentHash);
+    const live = record ? (liveList === undefined ? await fetchLiveOfflineList(part.key) : liveList) : null;
+    let state = packStateOf(record, live?.contentHash ?? part.contentHash, live?.packVersion);
     if (state !== "none" && typeof caches !== "undefined") {
       const hasCache = await caches.has(packCacheName(part.key)).catch(() => true);
       if (!hasCache) state = "stale";

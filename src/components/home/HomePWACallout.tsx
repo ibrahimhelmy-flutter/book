@@ -76,12 +76,14 @@ export function HomePWACallout() {
               type="button"
               onClick={() => setIsOfflinePackModalOpen(true)}
               className={`py-3 px-6 rounded-2xl border text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-105 active:scale-95 ${
-                isOfflinePackReady
-                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
-                  : "bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200"
+                offlinePackState === "stale"
+                  ? "bg-amber-500/20 border-amber-500/50 text-amber-300 hover:bg-amber-500/30"
+                  : isOfflinePackReady
+                    ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30"
+                    : "bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200"
               }`}
             >
-              <DownloadCloud className="w-4 h-4 text-emerald-400" />
+              <DownloadCloud className={`w-4 h-4 ${offlinePackState === "stale" ? "text-amber-400" : "text-emerald-400"}`} />
               <span>
                 {isOfflinePackReady
                   ? `${activePart.partShortTitle} محفوظ محلياً بالكامل ✓`

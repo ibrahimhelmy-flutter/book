@@ -5,13 +5,16 @@
 
 // Keep in sync with APP_VERSION / CURRENT_CONTENT_VERSION in src/lib/offline-db.ts (bump together).
 const APP_VERSION = '2.0.0';
-const CONTENT_VERSION = '2026.10.12';
+const CONTENT_VERSION = '2026.10.15';
 const CACHE_VERSION = `v${APP_VERSION}`;
 const APP_SHELL_CACHE = `ai-curriculum-shell-${CACHE_VERSION}`;
 // One cache per downloaded part: `${PACK_CACHE_PREFIX}<grade>/<book>/<part>` (see packCacheName in offline-db.ts)
 const PACK_CACHE_PREFIX = `ai-curriculum-pack-${CACHE_VERSION}::`;
 const packCacheName = (partKey) => `${PACK_CACHE_PREFIX}${partKey}`;
 const PACK_FETCH_CONCURRENCY = 6;
+// Online, pages / RSC payloads / data are fetched fresh first; past this delay (slow or flaky
+// connection) the cached copy is served instead and the network answer still refreshes the cache.
+const NETWORK_TIMEOUT_MS = 4000;
 
 // Pre-cached App Shell assets
 const PRECACHE_ASSETS = [
@@ -69,6 +72,47 @@ async function refreshCachedEverywhere(cacheKey, response) {
   }
 }
 
+/**
+ * Network first: a fresh copy (`no-cache` revalidates the HTTP cache, so a new deploy is never hidden
+ * behind GitHub Pages' max-age) when online; the cached copy when offline, on a network error, a 5xx,
+ * or after NETWORK_TIMEOUT_MS. `store` receives every 200 response, even one that arrives too late.
+ */
+function networkFirst(event, request, { lookup, store, fallback }) {
+  // A navigate-mode request cannot be re-issued with options; rebuild it (redirects stay manual,
+  // as for the navigation itself, so an opaque redirect can be handed straight back)
+  const fresh =
+    request.mode === 'navigate'
+      ? new Request(request.url, { cache: 'no-cache', credentials: request.credentials, redirect: 'manual' })
+      : new Request(request, { cache: 'no-cache' });
+  const network = fetch(fresh).then(async (response) => {
+    if (response && response.status === 200) await store(response.clone()).catch(() => {});
+    return response;
+  });
+  event.waitUntil(network.catch(() => {}));
+
+  const fromCache = async () => (await lookup()) || fallback();
+  if (self.navigator && self.navigator.onLine === false) return fromCache();
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve(value);
+    };
+    const timer = setTimeout(async () => {
+      // Too slow: answer from the cache if there is a copy, otherwise keep waiting for the network
+      const cached = await lookup();
+      if (cached) finish(cached);
+    }, NETWORK_TIMEOUT_MS);
+    network.then(
+      async (response) => finish(response && response.status >= 500 ? (await lookup()) || response : response),
+      () => finish(fromCache())
+    );
+  });
+}
+
 // Fetch Event: Intelligent Offline Caching
 self.addEventListener('fetch', (event) => {
   const request = event.request;
@@ -84,33 +128,17 @@ self.addEventListener('fetch', (event) => {
   const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
 
   // Strategy 0: Generated content data (`/data/**/*.json`, fetched as `?v=<contentHash>`).
-  // Stale-while-revalidate keyed without the query: serve any cached copy (shell or pack cache)
-  // immediately and refresh it in the background; go to the network only when nothing is cached.
+  // Network first, keyed without the query; the fresh copy replaces it in every cache that holds it
+  // (shell or pack cache). Offline, any cached copy is served.
   if (url.pathname.includes('/data/') && url.pathname.endsWith('.json')) {
     const cacheKey = `${url.origin}${url.pathname}`;
-    const offlineData = () => new Response('', { status: 504, statusText: 'Offline Data Unavailable' });
-    const networkUpdate = fetch(request).then(async (networkResponse) => {
-      if (networkResponse && networkResponse.status === 200) {
-        await refreshCachedEverywhere(cacheKey, networkResponse.clone()).catch(() => {});
-      }
-      return networkResponse;
-    });
-
-    if (isLocalhost) {
-      // Development: network first so regenerated data is visible immediately, cache when offline
-      event.respondWith(
-        networkUpdate.catch(async () => (await caches.match(cacheKey, { ignoreSearch: true })) || offlineData())
-      );
-      return;
-    }
-
     event.respondWith(
-      caches.match(cacheKey, { ignoreSearch: true }).then(
-        (cachedResponse) => cachedResponse || networkUpdate.catch(offlineData)
-      )
+      networkFirst(event, request, {
+        lookup: () => caches.match(cacheKey, { ignoreSearch: true }),
+        store: (response) => refreshCachedEverywhere(cacheKey, response),
+        fallback: () => new Response('', { status: 504, statusText: 'Offline Data Unavailable' }),
+      })
     );
-    // Revalidate in the background (keeps the SW alive until the refreshed copy is stored)
-    event.waitUntil(networkUpdate.catch(() => {}));
     return;
   }
 
@@ -187,26 +215,18 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.endsWith('.txt') && request.mode !== 'navigate') {
     const cacheKey = `${url.origin}${url.pathname}`;
     event.respondWith(
-      fetch(request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(APP_SHELL_CACHE).then((cache) => {
-            cache.put(cacheKey, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(async () => {
-        const cachedPayload = await caches.match(cacheKey, { ignoreSearch: true });
-        if (cachedPayload) return cachedPayload;
+      networkFirst(event, request, {
+        lookup: () => caches.match(cacheKey, { ignoreSearch: true }),
+        store: (response) => caches.open(APP_SHELL_CACHE).then((cache) => cache.put(cacheKey, response)),
         // A non-OK response (not a network error) makes Next.js fall back to a full navigation
         // to the page URL with `/index.txt` stripped, which Strategy 3 can serve from cache.
-        return new Response('', { status: 504, statusText: 'Offline RSC Payload Unavailable' });
+        fallback: () => new Response('', { status: 504, statusText: 'Offline RSC Payload Unavailable' }),
       })
     );
     return;
   }
 
-  // Strategy 3: Navigation & HTML Pages -> Stale-While-Revalidate with Offline Fallback
+  // Strategy 3: Navigation & HTML Pages -> Network First with Offline Fallback
   if (request.mode === 'navigate' || request.destination === 'document') {
     // 1. Direct match with ignoreSearch, then trailing-slash/index.html variations
     const findCachedPage = async () => {
@@ -248,28 +268,15 @@ self.addEventListener('fetch', (event) => {
       );
     };
 
-    const networkUpdate = fetch(request).then((networkResponse) => {
-      if (networkResponse && networkResponse.status === 200) {
-        const responseToCache = networkResponse.clone();
-        caches.open(APP_SHELL_CACHE).then((cache) => {
-          cache.put(request, responseToCache);
-        });
-      }
-      return networkResponse;
-    });
-
-    if (isLocalhost) {
-      // Development: network first so regenerated pages are visible immediately
-      event.respondWith(networkUpdate.catch(async () => (await findCachedPage()) || offlineFallback()));
-      return;
-    }
-
-    // Production: serve any cached copy instantly (no waiting on a network timeout while
-    // offline/flaky), and refresh it in the background so online users still get updates.
+    // Network first while online, so a new deploy shows up on the next page load; offline (or on a
+    // connection too slow to answer in NETWORK_TIMEOUT_MS) the cached page is served right away.
     event.respondWith(
-      findCachedPage().then((cachedPage) => cachedPage || networkUpdate.catch(offlineFallback))
+      networkFirst(event, request, {
+        lookup: findCachedPage,
+        store: (response) => caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, response)),
+        fallback: offlineFallback,
+      })
     );
-    event.waitUntil(networkUpdate.catch(() => {}));
     return;
   }
 

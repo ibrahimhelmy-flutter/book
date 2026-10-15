@@ -92,13 +92,25 @@ it("sw.js handles per-part CACHE_OFFLINE_PACK and DELETE_OFFLINE_PACK messages",
   assert.ok(!sw.includes("OFFLINE_PACK_CACHE"), "Single global pack cache must be gone");
 });
 
-it("sw.js serves /data/*.json stale-while-revalidate, ignoring the query string", () => {
+it("sw.js serves /data/*.json network first, ignoring the query string", () => {
   const start = sw.indexOf("url.pathname.includes('/data/') && url.pathname.endsWith('.json')");
   assert.ok(start > -1, "Must have a /data/ JSON branch");
   const branch = sw.slice(start, sw.indexOf("// Strategy 1:", start));
+  assert.ok(branch.includes("networkFirst(event, request"), "Must fetch fresh data first while online");
   assert.ok(branch.includes("caches.match(cacheKey, { ignoreSearch: true })"), "Must look up all caches ignoring search");
-  assert.ok(branch.includes("event.waitUntil(networkUpdate"), "Must revalidate in the background when cached");
   assert.ok(branch.includes("refreshCachedEverywhere"), "Must store refreshed data");
+});
+
+it("sw.js serves pages and RSC payloads network first, revalidating the HTTP cache", () => {
+  const helper = sw.slice(sw.indexOf("function networkFirst"), sw.indexOf("// Fetch Event"));
+  assert.ok(helper.includes("cache: 'no-cache'"), "A deploy must not hide behind the HTTP cache");
+  assert.ok(helper.includes("self.navigator.onLine === false"), "Offline must answer from the cache at once");
+  assert.ok(helper.includes("NETWORK_TIMEOUT_MS"), "A slow connection must fall back to the cache");
+  for (const marker of ["// Strategy 2:", "// Strategy 3:"]) {
+    const start = sw.indexOf(marker);
+    const branch = sw.slice(start, sw.indexOf("// Strategy", start + marker.length) > -1 ? sw.indexOf("// Strategy", start + marker.length) : sw.indexOf("// Default:", start));
+    assert.ok(branch.includes("networkFirst(event, request"), `${marker} must be network first`);
+  }
 });
 
 it("sw.js precaches the catalog shell, not legacy single-book routes", () => {
@@ -135,6 +147,12 @@ it("Pack state is ready only when the stored contentHash matches the manifest", 
   assert.strictEqual(packStateOf(rec, manifest.contentHash), "ready");
   assert.strictEqual(packStateOf(rec, "different-hash"), "stale");
   assert.strictEqual(packStateOf({ ...rec, appVersion: "0.0.1" }, manifest.contentHash), "stale");
+
+  // Online, the deployed list's packVersion decides (it also changes on code-only deploys)
+  const withVersion = { ...rec, packVersion: "abc" };
+  assert.strictEqual(packStateOf(withVersion, manifest.contentHash, "abc"), "ready");
+  assert.strictEqual(packStateOf(withVersion, manifest.contentHash, "def"), "stale");
+  assert.strictEqual(packStateOf(rec, manifest.contentHash, "abc"), "stale", "A pack saved before packVersion existed is outdated");
 });
 
 // Suite 6: Offline client code no longer bundles the curriculum

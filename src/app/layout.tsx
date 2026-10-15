@@ -73,6 +73,9 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: SITE_NAME,
   },
+  // Read by PWARegister to spot a newer deploy (out/version.json). Kept in the HTML, not in a JS
+  // chunk, so a new commit alone does not change the code an offline pack stores.
+  ...(process.env.APP_BUILD_ID ? { other: { "app-build-id": process.env.APP_BUILD_ID } } : {}),
 };
 
 export default function RootLayout({
