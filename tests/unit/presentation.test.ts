@@ -31,7 +31,7 @@ function leafStrings(value: unknown, out: string[] = []): string[] {
 const paragraphs = (lesson: Lesson) => lesson.sections.flatMap((s) => splitBlocks(s.content));
 
 /** Structural values in a deck that are not text shown as content. */
-const STRUCTURAL = new Set(["cover", "objectives", "path", "introduction", "idea", "note", "summary", "answer", "previous", "current", "next"]);
+const STRUCTURAL = new Set(["cover", "path", "idea", "note", "summary", "answer", "previous", "current", "next"]);
 
 describe("Lesson presentation decks", () => {
   it("every lesson has a deck", () => {
@@ -56,16 +56,11 @@ describe("Lesson presentation decks", () => {
     }
   });
 
-  it("shows every figure, table, key term and «الفكرة الرئيسة» once", () => {
+  it("shows every figure, table and «الفكرة الرئيسة» once", () => {
     for (const { key, lesson } of lessons) {
       const ideas = readDeck(key, lesson.id).slides.flatMap((s) => (s.kind === "idea" ? [s] : []));
       assert.equal(ideas.filter((s) => s.figure).length, lesson.sections.filter((s) => s.image).length, `${lesson.id} figures`);
       assert.equal(ideas.filter((s) => s.table).length, lesson.sections.filter((s) => s.table).length, `${lesson.id} tables`);
-      assert.deepEqual(
-        ideas.flatMap((s) => s.terms.map((t) => t.termAr)).sort(),
-        lesson.keyConcepts.map((c) => c.termAr).sort(),
-        `${lesson.id} terms`
-      );
       const notes = readDeck(key, lesson.id).slides.flatMap((s) => (s.kind === "note" ? [s.text] : []));
       for (const c of lesson.callouts.filter((c) => c.type === "important_note" && !paragraphs(lesson).includes(c.content))) {
         assert.equal(notes.filter((t) => t === c.content).length, 1, `${lesson.id} note ${c.id}`);
@@ -112,6 +107,21 @@ describe("Lesson presentation decks", () => {
       assert.ok(cover.kind === "cover" && cover.keyQuestion === lesson.keyQuestion, lesson.id);
       const last = slides[slides.length - 1];
       assert.ok(last.kind === "answer" && last.answer === lesson.mainQuestionAnswer, lesson.id);
+    }
+  });
+
+  it("has no key-terms panel", () => {
+    for (const { key, lesson } of lessons) {
+      for (const s of readDeck(key, lesson.id).slides) assert.ok(!("terms" in s), `${lesson.id}: a slide lists key terms`);
+    }
+  });
+
+  it("leaves out the learning objectives and the lesson introduction", () => {
+    for (const { key, lesson } of lessons) {
+      const deckText = leafStrings(readDeck(key, lesson.id)).join(" ");
+      for (const t of [...(lesson.learningObjectives || []), lesson.introduction || ""].filter((t) => t.length > 20)) {
+        assert.ok(!deckText.includes(t), `${lesson.id}: deck contains "${t.slice(0, 60)}"`);
+      }
     }
   });
 
@@ -162,15 +172,13 @@ describe("auditPresentationPlan", () => {
     assert.ok(auditPresentationPlan(lesson, plan).some((e) => e.includes("unexpected fields")));
   });
 
-  it("rejects a missing figure and an unplaced key term", () => {
+  it("rejects a missing figure and a key-terms field", () => {
     const plan = valid();
-    for (const s of plan.slides) if ("section" in s) {
-      delete s.figure;
-      s.terms = [];
-    }
+    for (const s of plan.slides) if ("section" in s) delete s.figure;
+    (plan.slides[0] as unknown as Record<string, unknown>).terms = ["concept-1"];
     const errors = auditPresentationPlan(lesson, plan);
     assert.ok(errors.some((e) => e.startsWith("figure of")));
-    assert.ok(errors.some((e) => e.startsWith("key term")));
+    assert.ok(errors.some((e) => e.includes("unexpected fields: terms")));
   });
 
   it("rejects a note that repeats a paragraph, and a second coreIdea note", () => {

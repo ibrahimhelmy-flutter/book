@@ -52,7 +52,7 @@ function printPlan(found: Found) {
     }
     const sec = lesson.sections.find((x) => x.id === s.section);
     const blocks = splitBlocks(sec?.content || "");
-    const extras = [s.figure && "figure", s.table && "table", s.terms?.length && `terms ${s.terms.join(",")}`].filter(Boolean);
+    const extras = [s.figure && "figure", s.table && "table"].filter(Boolean);
     console.log(`\n[${n + 1}] ${s.section} ${sec?.title ?? "?"} ¶${s.blocks.join(",")}${extras.length ? `  (+ ${extras.join("; ")})` : ""}`);
     for (const b of s.blocks) console.log(`     ${b}: ${blocks[b] ?? "?"}`);
     if (s.figure && sec?.image) console.log(`     🖼  ${sec.image.caption}`);

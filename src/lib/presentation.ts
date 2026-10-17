@@ -4,13 +4,12 @@
  * view. See src/types/presentation.ts.
  *
  * A plan holds no text. Every string in a deck is copied from the lesson, so the audit only has to
- * prove that the plan covers each paragraph, figure, table, key term and "الفكرة الرئيسة" note
+ * prove that the plan covers each paragraph, figure, table and "الفكرة الرئيسة" note
  * exactly once and in the book's order.
  */
 import type { CalloutBox, Lesson, LessonSection } from "../types";
 import type {
   DeckSlide,
-  DeckTerm,
   PlanIdeaSlide,
   PlanNoteSlide,
   PlanSlide,
@@ -76,9 +75,6 @@ const LONG_SLIDE = 320;
 /** A short paragraph without closing punctuation, e.g. "(4) معايير الحكم" — a lead-in to a table. */
 const isHeadingLike = (b: string) => !LIST_ITEM.test(b) && b.length < 60 && !/[.:؛؟!]$/.test(b);
 
-/** "(2) (التعلّم الآلي - Machine Learning)... فرع" or "(1) الاستدلال الإحصائي: استخدام" → the paragraph defines `key`. */
-const definesTerm = (block: string, key: string) => norm(block.replace(PARAGRAPH_MARKER, "").replace(/^[①-⑳]\s*/, "")).startsWith(key);
-
 function tokens(text: string): Set<string> {
   return new Set(norm(text).split(" ").filter((w) => w.length >= 3 && !/^\d+$/.test(w)));
 }
@@ -90,18 +86,14 @@ function overlap(a: string, b: string): number {
   return n;
 }
 
-const termKeys = (c: { termAr: string; termEn?: string }) =>
-  [c.termAr, (c.termEn || "").split(" - ")[0]].map(norm).filter((k) => k.length >= 2);
-
 /**
  * Mechanical first draft: one slide per numbered paragraph "(n)", short list items stay with their
- * lead-in, figures/tables go to the paragraph that points at them, each key term to the first slide
- * that names it. Used for lessons without a reviewed plan and as the starting point for one.
+ * lead-in, figures/tables go to the paragraph that points at them. Used for lessons without a
+ * reviewed plan and as the starting point for one.
  */
 export function draftPresentationPlan(lesson: Lesson): PresentationPlan {
   const bySection: PlanIdeaSlide[][] = [];
   const slideText = new Map<PlanIdeaSlide, string>();
-  const blocksOf = new Map<PlanIdeaSlide, string[]>();
 
   for (const sec of lesson.sections || []) {
     const blocks = splitBlocks(sec.content);
@@ -143,26 +135,6 @@ export function draftPresentationPlan(lesson: Lesson): PresentationPlan {
       target.figure = true;
     }
     bySection.push(slides);
-    for (const s of slides) {
-      blocksOf.set(s, s.blocks.map((i) => blocks[i]));
-      const extra = [s.table && sec.table ? sec.table.rows.flat().join(" ") : "", s.figure && sec.image ? sec.image.caption : ""];
-      slideText.set(s, [slideText.get(s)!, ...extra].join(" "));
-    }
-  }
-
-  // Key terms go to the slide that defines them, else the first slide that names them.
-  const ideaSlides = bySection.flat();
-  for (const concept of lesson.keyConcepts || []) {
-    if (!concept.id || ideaSlides.length === 0) continue;
-    const keys = termKeys(concept);
-    const sectionOf = (s: PlanIdeaSlide) => lesson.sections.find((x) => x.id === s.section)!;
-    const target =
-      ideaSlides.find((s) => blocksOf.get(s)!.some((b) => keys.some((k) => definesTerm(b, k)))) ||
-      ideaSlides.find((s) => keys.some((k) => norm(slideText.get(s)!).includes(k))) ||
-      ideaSlides.find((s) => keys.some((k) => norm(sectionOf(s).title).includes(k))) ||
-      bestMatch(ideaSlides, slideText, `${concept.termAr} ${concept.definition}`) ||
-      ideaSlides[ideaSlides.length - 1];
-    (target.terms ||= []).push(concept.id);
   }
 
   const slides: PlanSlide[] = [];
@@ -188,7 +160,7 @@ function bestMatch(slides: PlanIdeaSlide[], text: Map<PlanIdeaSlide, string>, pr
   return best;
 }
 
-const IDEA_KEYS = new Set(["section", "blocks", "figure", "table", "terms"]);
+const IDEA_KEYS = new Set(["section", "blocks", "figure", "table"]);
 
 /**
  * Returns every reason the plan is not a faithful, complete, in-order presentation of the lesson.
@@ -207,9 +179,7 @@ export function auditPresentationPlan(lesson: Lesson, plan: PresentationPlan): s
   const covered: string[] = [];
   const figures = new Map<string, number>();
   const tables = new Map<string, number>();
-  const terms = new Map<string, number>();
   const notes = new Map<string, number>();
-  const conceptIds = new Set((lesson.keyConcepts || []).map((c) => c.id).filter(Boolean) as string[]);
   const noteIds = new Set(presentedCallouts(lesson).map((c) => c.id));
   const bump = (m: Map<string, number>, k: string) => m.set(k, (m.get(k) || 0) + 1);
 
@@ -253,10 +223,6 @@ export function auditPresentationPlan(lesson: Lesson, plan: PresentationPlan): s
       if (!sec.table) errors.push(`${at}: ${sec.id} has no table`);
       bump(tables, sec.id);
     }
-    for (const t of slide.terms || []) {
-      if (!conceptIds.has(t)) errors.push(`${at}: unknown key term "${t}"`);
-      bump(terms, t);
-    }
   });
 
   // Coverage + order: the covered paragraphs must be exactly the book's paragraphs, in order.
@@ -275,16 +241,8 @@ export function auditPresentationPlan(lesson: Lesson, plan: PresentationPlan): s
     if (sec.image && figures.get(sec.id) !== 1) errors.push(`figure of ${sec.id} must appear exactly once (found ${figures.get(sec.id) || 0})`);
     if (sec.table && tables.get(sec.id) !== 1) errors.push(`table of ${sec.id} must appear exactly once (found ${tables.get(sec.id) || 0})`);
   }
-  for (const id of conceptIds) if (terms.get(id) !== 1) errors.push(`key term ${id} must be placed exactly once (found ${terms.get(id) || 0})`);
   for (const id of noteIds) if (notes.get(id) !== 1) errors.push(`note ${id} must appear exactly once (found ${notes.get(id) || 0})`);
   return errors;
-}
-
-/** Definition sentences that the slide does not already say. */
-function remainingDefinition(definition: string, slideText: string): string | undefined {
-  const said = norm(slideText);
-  const rest = splitSentences(definition).filter((s) => !said.includes(norm(s)));
-  return rest.length ? rest.join(" ") : undefined;
 }
 
 /** Resolves an audited plan into the deck the presentation view renders. All text comes from `lesson`. */
@@ -299,7 +257,6 @@ export function buildPresentationDeck(lesson: Lesson, plan: PresentationPlan, re
     pageRange: lesson.pageRange,
     keyQuestion: lesson.keyQuestion,
   });
-  if (lesson.learningObjectives?.length) slides.push({ kind: "objectives", items: lesson.learningObjectives });
   const lp = lesson.learningPath;
   if (lp) {
     const items = (["previous", "current", "next"] as const)
@@ -307,13 +264,11 @@ export function buildPresentationDeck(lesson: Lesson, plan: PresentationPlan, re
       .map((label) => ({ label, text: lp[label]! }));
     if (items.length) slides.push({ kind: "path", items });
   }
-  if (lesson.introduction) slides.push({ kind: "introduction", sentences: splitSentences(lesson.introduction) });
 
   const sections = lesson.sections || [];
   const ideaCount = new Map<string, number>();
   for (const s of plan.slides) if (!isNoteSlide(s)) ideaCount.set(s.section, (ideaCount.get(s.section) || 0) + 1);
   const ideaSeen = new Map<string, number>();
-  const concepts = new Map((lesson.keyConcepts || []).map((c) => [c.id, c]));
   const callouts = new Map((lesson.callouts || []).map((c) => [c.id, c]));
 
   for (const s of plan.slides) {
@@ -330,11 +285,6 @@ export function buildPresentationDeck(lesson: Lesson, plan: PresentationPlan, re
     const sec = sections[secIndex];
     const all = splitBlocks(sec.content);
     const blocks = s.blocks.map((i) => all[i]);
-    const text = [...blocks, s.table && sec.table ? sec.table.rows.flat().join(" ") : ""].join(" ");
-    const terms: DeckTerm[] = (s.terms || []).map((id) => {
-      const c = concepts.get(id)!;
-      return { termAr: c.termAr, termEn: c.termEn || undefined, definition: remainingDefinition(c.definition, text) };
-    });
     ideaSeen.set(sec.id, (ideaSeen.get(sec.id) || 0) + 1);
     slides.push({
       kind: "idea",
@@ -347,7 +297,6 @@ export function buildPresentationDeck(lesson: Lesson, plan: PresentationPlan, re
       blocks,
       figure: s.figure && sec.image ? { src: sec.image.src, caption: sec.image.caption } : undefined,
       table: s.table && sec.table ? { headers: sec.table.headers, rows: sec.table.rows } : undefined,
-      terms,
     });
   }
 
@@ -364,13 +313,9 @@ export function slideStepCount(slide: DeckSlide): number {
     case "cover":
     case "answer":
       return 2;
-    case "objectives":
     case "summary":
-      return slide.items.length;
     case "path":
       return slide.items.length;
-    case "introduction":
-      return slide.sentences.length;
     case "idea":
       return Math.max(1, slide.blocks.length + (slide.table?.rows.length || 0));
     case "note":

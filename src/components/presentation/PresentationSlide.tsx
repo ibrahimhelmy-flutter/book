@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import type { DeckFigure, DeckSlide, DeckTable, DeckTerm } from "@/types/presentation";
+import type { DeckFigure, DeckSlide, DeckTable } from "@/types/presentation";
 import { formatInlineText } from "../common/EyeComfortText";
 import { getAssetPath } from "@/lib/utils";
 import { classifyImage, imageToneClass, type ImageTone } from "@/lib/image-tone";
-import { ArrowLeft, BookOpen, HelpCircle, History, Lightbulb, ListChecks, MapPin, Tags, Target, ZoomIn } from "lucide-react";
+import { ArrowLeft, HelpCircle, History, Lightbulb, ListChecks, MapPin, ZoomIn } from "lucide-react";
 
 export type PresentationTheme = "dark" | "light";
 
@@ -20,7 +20,6 @@ const PALETTE = {
     question: "bg-sky-500/10 border-sky-400/40 text-sky-50",
     note: "bg-amber-400/10 border-amber-300/40",
     noteTitle: "text-amber-300",
-    term: "text-teal-300",
     tableHead: "bg-slate-800 text-sky-200",
     tableRow: "border-slate-700/70",
     tableFocus: "bg-sky-400/15",
@@ -35,7 +34,6 @@ const PALETTE = {
     question: "bg-sky-50 border-sky-300 text-sky-950",
     note: "bg-amber-50 border-amber-300",
     noteTitle: "text-amber-700",
-    term: "text-teal-700",
     tableHead: "bg-sky-50 text-sky-900",
     tableRow: "border-slate-200",
     tableFocus: "bg-sky-100",
@@ -84,12 +82,8 @@ export function PresentationSlide(props: SlideProps) {
   switch (props.slide.kind) {
     case "cover":
       return <CoverSlide {...props} slide={props.slide} />;
-    case "objectives":
-      return <ListSlide {...props} items={props.slide.items} title="أهداف التعلم" icon={<Target className="w-7 h-7" />} />;
     case "path":
       return <PathSlide {...props} slide={props.slide} />;
-    case "introduction":
-      return <IntroductionSlide {...props} slide={props.slide} />;
     case "idea":
       return <IdeaSlide {...props} slide={props.slide} />;
     case "note":
@@ -189,33 +183,8 @@ function PathSlide({ slide, step, focus, theme }: SlideProps & { slide: Extract<
   );
 }
 
-function IntroductionSlide({ slide, step, focus, theme }: SlideProps & { slide: Extract<DeckSlide, { kind: "introduction" }> }) {
-  return (
-    <div className="max-w-6xl mx-auto">
-      <SlideHeading icon={<BookOpen className="w-7 h-7" />} title="مقدمة الدرس" theme={theme} />
-      <p className={textSize(slide.sentences.join(" ").length, false)}>
-        {slide.sentences.map((s, i) => {
-          const r = reveal(i, step, focus);
-          return (
-            <React.Fragment key={i}>
-              <span
-                className={`transition-all duration-300 rounded-md ${r.shown ? "opacity-100" : "invisible"} ${
-                  r.current ? "bg-sky-400/15 underline decoration-sky-500/60 decoration-2 underline-offset-[10px]" : ""
-                }`}
-              >
-                {formatInlineText(s, theme)}
-              </span>{" "}
-            </React.Fragment>
-          );
-        })}
-      </p>
-    </div>
-  );
-}
-
 function IdeaSlide({ slide, step, focus, theme, onZoom }: SlideProps & { slide: Extract<DeckSlide, { kind: "idea" }> }) {
   const p = PALETTE[theme];
-  const termNames = slide.terms.map((t) => t.termAr);
   const chars = slide.blocks.join("").length;
   const size = textSize(chars, Boolean(slide.figure));
 
@@ -231,7 +200,7 @@ function IdeaSlide({ slide, step, focus, theme, onZoom }: SlideProps & { slide: 
               isItem ? "ms-8" : ""
             }`}
           >
-            <div className={size}>{formatInlineText(block, theme, termNames)}</div>
+            <div className={size}>{formatInlineText(block, theme)}</div>
           </div>
         );
       })}
@@ -256,46 +225,17 @@ function IdeaSlide({ slide, step, focus, theme, onZoom }: SlideProps & { slide: 
 
       {slide.figure ? (
         <div className="grid grid-cols-12 gap-8 items-start">
-          <div className="col-span-7 space-y-6">
-            {text}
-            {slide.terms.length > 0 && <TermsPanel terms={slide.terms} theme={theme} />}
-          </div>
+          <div className="col-span-7">{text}</div>
           <div className="col-span-5">
             <Figure figure={slide.figure} theme={theme} onZoom={onZoom} />
           </div>
         </div>
       ) : (
-        <>
-          {text}
-          {slide.terms.length > 0 && <TermsPanel terms={slide.terms} theme={theme} />}
-        </>
+        text
       )}
 
       {slide.table && <Table table={slide.table} firstStep={slide.blocks.length} step={step} focus={focus} theme={theme} />}
     </div>
-  );
-}
-
-function TermsPanel({ terms, theme }: { terms: DeckTerm[]; theme: PresentationTheme }) {
-  const p = PALETTE[theme];
-  return (
-    <aside className={`rounded-2xl border p-5 space-y-3 ${p.card}`}>
-      <p className={`flex items-center gap-2 text-base font-black ${p.muted}`}>
-        <Tags className="w-5 h-5" />
-        مصطلحات أساسية
-      </p>
-      {terms.map((t) => (
-        <div key={t.termAr} className="text-xl leading-relaxed">
-          <span className={`font-black ${p.term}`}>{t.termAr}</span>
-          {t.termEn && (
-            <span className={`ms-2 text-lg font-medium ${p.muted}`} dir="ltr">
-              ({t.termEn})
-            </span>
-          )}
-          {t.definition && <span className={p.soft}> — {t.definition}</span>}
-        </div>
-      ))}
-    </aside>
   );
 }
 
@@ -392,12 +332,8 @@ export function slideLabel(slide: DeckSlide): string {
   switch (slide.kind) {
     case "cover":
       return "الغلاف والسؤال الرئيسي";
-    case "objectives":
-      return "أهداف التعلم";
     case "path":
       return "مسار التعلّم";
-    case "introduction":
-      return "مقدمة الدرس";
     case "idea":
       return `${sectionHeading(slide.sectionTitle)}${slide.partCount > 1 ? ` (${slide.part} من ${slide.partCount})` : ""}`;
     case "note":

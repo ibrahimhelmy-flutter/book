@@ -4,7 +4,7 @@
  * الخطة (`PresentationPlan`) ملف مؤلف في
  * `book-sources/<part>/05-canonical-data/authored/presentations/<lessonId>.json`
  * لا يحتوي أي نص: يحدد فقط كيف تُقسم فقرات الكتاب على الشرائح، وأين يظهر الشكل
- * والجدول وتعريف كل مصطلح. `npm run build:data` يتحقق منها (`auditPresentationPlan`)
+ * والجدول. `npm run build:data` يتحقق منها (`auditPresentationPlan`)
  * ثم يحولها إلى عرض جاهز (`PresentationDeck`) كل نصوصه منقولة من الدرس نفسه.
  * الدرس الذي ليس له خطة يأخذ مسودة آلية (`draftPresentationPlan`) تمر بالتحقق نفسه.
  */
@@ -18,8 +18,6 @@ export interface PlanIdeaSlide {
   figure?: boolean;
   /** يظهر جدول القسم في هذه الشريحة */
   table?: boolean;
-  /** معرفات المصطلحات (`keyConcepts[].id`) التي تُعرّف في هذه الشريحة */
-  terms?: string[];
 }
 
 /**
@@ -34,15 +32,8 @@ export type PlanSlide = PlanIdeaSlide | PlanNoteSlide;
 
 export interface PresentationPlan {
   lessonId: string;
-  /** جسم العرض فقط؛ الغلاف والأهداف والمقدمة والخلاصة والإجابة ثابتة */
+  /** جسم العرض فقط؛ الغلاف ومسار التعلّم والخلاصة والإجابة ثابتة */
   slides: PlanSlide[];
-}
-
-export interface DeckTerm {
-  termAr: string;
-  termEn?: string;
-  /** يُحذف إذا كان التعريف مكتوبًا بالفعل في نص الشريحة */
-  definition?: string;
 }
 
 export interface DeckTable {
@@ -65,9 +56,7 @@ export type DeckSlide =
       pageRange: string;
       keyQuestion: string;
     }
-  | { kind: "objectives"; items: string[] }
   | { kind: "path"; items: { label: "previous" | "current" | "next"; text: string }[] }
-  | { kind: "introduction"; sentences: string[] }
   | {
       kind: "idea";
       sectionId: string;
@@ -81,7 +70,6 @@ export type DeckSlide =
       blocks: string[];
       figure?: DeckFigure;
       table?: DeckTable;
-      terms: DeckTerm[];
     }
   /** title is absent for the coreIdea note; the view then shows the book's label «الفكرة الرئيسة». */
   | { kind: "note"; title?: string; text: string }

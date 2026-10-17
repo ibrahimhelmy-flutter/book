@@ -1,14 +1,14 @@
 {
   "lessonId": "lesson-3-3",
   "slides": [
-    {"section":"sec-3-3-1","blocks":[0],"table":true,"terms":["concept-3-3-01","concept-3-3-02","concept-3-3-03"]},
+    {"section":"sec-3-3-1","blocks":[0],"table":true},
     {"section":"sec-3-3-1","blocks":[1],"figure":true},
-    {"section":"sec-3-3-2","blocks":[0],"terms":["concept-3-3-04"]},
-    {"section":"sec-3-3-2","blocks":[1,2,3],"terms":["concept-3-3-07","concept-3-3-08"]},
-    {"section":"sec-3-3-3","blocks":[0],"figure":true,"terms":["concept-3-3-05"]},
+    {"section":"sec-3-3-2","blocks":[0]},
+    {"section":"sec-3-3-2","blocks":[1,2,3]},
+    {"section":"sec-3-3-3","blocks":[0],"figure":true},
     {"section":"sec-3-3-3","blocks":[1]},
     {"section":"sec-3-3-3","blocks":[2]},
-    {"section":"sec-3-3-4","blocks":[0],"terms":["concept-3-3-06"]},
+    {"section":"sec-3-3-4","blocks":[0]},
     {"section":"sec-3-3-4","blocks":[1]},
     {"section":"sec-3-3-4","blocks":[2],"figure":true,"table":true},
     {"note":"callout-3-3-3"}
