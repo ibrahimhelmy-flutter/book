@@ -10,17 +10,23 @@ import { listParts, getSources } from './sources-config.mjs';
  */
 console.log('🚀 Preparing static image assets per part...');
 
+const IMAGE_RE = /\.(png|jpe?g|svg|webp|gif|avif)$/i;
+
 function syncDir(srcDir, destDir) {
   if (fs.existsSync(destDir) && fs.lstatSync(destDir).isSymbolicLink()) {
     fs.rmSync(destDir, { recursive: true, force: true });
   }
   fs.mkdirSync(destDir, { recursive: true });
+  const images = fs.readdirSync(srcDir).filter((f) => IMAGE_RE.test(f) && fs.statSync(path.join(srcDir, f)).isFile());
+  // Drop files no longer in the source (e.g. a figure re-exported under a new extension)
+  for (const file of fs.readdirSync(destDir)) {
+    if (!images.includes(file)) fs.rmSync(path.join(destDir, file), { recursive: true, force: true });
+  }
   let copied = 0;
   let total = 0;
-  for (const file of fs.readdirSync(srcDir)) {
+  for (const file of images) {
     const src = path.join(srcDir, file);
     const st = fs.statSync(src);
-    if (!st.isFile()) continue;
     total++;
     const dest = path.join(destDir, file);
     if (fs.existsSync(dest) && fs.statSync(dest).size === st.size) continue;

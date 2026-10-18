@@ -1,10 +1,10 @@
 [
-  {"file": "5-1-primary-secondary-data.webp", "pdfPage": 6, "box": {"left": 360, "top": 531, "width": 402, "height": 269}, "caption": "البيانات الأولية تُجمع مباشرة للسؤال الحالي؛ والثانوية بيانات موجودة مسبقًا يعاد استخدامها."},
-  {"file": "5-1-sampling-population-sample.webp", "pdfPage": 7, "box": {"left": 355, "top": 529, "width": 403, "height": 266}, "caption": "الشكل 5.1.1 — أخذ العينات: من المجتمع الإحصائي إلى العينة"},
-  {"file": "5-2-raw-to-analysis.webp", "pdfPage": 13, "box": {"left": 288, "top": 451, "width": 547, "height": 297}, "caption": "الشكل 5.2.1 — من البيانات الخام إلى التحليل: الجمع، التنظيف، التحويل، التحليل"},
-  {"file": "5-2-missing-values.webp", "pdfPage": 13, "box": {"left": 360, "top": 862, "width": 402, "height": 270}, "caption": "عالج القيم الفارغة وقيّم القيم الشاذة قبل التحليل."},
-  {"file": "5-2-scaling.webp", "pdfPage": 15, "box": {"left": 355, "top": 105, "width": 404, "height": 269}, "caption": "التحجيم يغيّر مقياس المتغيرات عندما تكون الخوارزمية حساسة للمقياس."},
-  {"file": "5-2-pivot.webp", "pdfPage": 16, "box": {"left": 355, "top": 70, "width": 404, "height": 267}, "caption": "الشكل 5.2.2 — تحويل المحور: إعادة تشكيل البيانات ذات الصيغة الطويلة إلى جدول متقاطع"},
-  {"file": "5-3-api-request-response.webp", "pdfPage": 22, "box": {"left": 355, "top": 625, "width": 404, "height": 267}, "caption": "الشكل 5.3.1 — استرجاع البيانات عبر واجهة برمجة التطبيقات: الطلب، والاستجابة، والاستخدام"},
-  {"file": "5-3-attribution.webp", "pdfPage": 23, "box": {"left": 355, "top": 105, "width": 404, "height": 269}, "caption": "استخدم البيانات بمسؤولية وأشر إلى مصدرها."}
+  {"file":"5-1-primary-secondary-data.webp","pdfPage":6,"image":"1800x1200","caption":"البيانات الأولية تُجمع مباشرة للسؤال الحالي؛ والثانوية بيانات موجودة مسبقًا يعاد استخدامها."},
+  {"file":"5-1-sampling-population-sample.webp","pdfPage":7,"image":"760x500","caption":"الشكل 5.1.1 — أخذ العينات: من المجتمع الإحصائي إلى العينة"},
+  {"file":"5-2-raw-to-analysis.webp","pdfPage":13,"box":{"left":288,"top":451,"width":547,"height":297},"caption":"الشكل 5.2.1 — من البيانات الخام إلى التحليل: الجمع، التنظيف، التحويل، التحليل"},
+  {"file":"5-2-missing-values.webp","pdfPage":13,"image":"1800x1200","caption":"عالج القيم الفارغة وقيّم القيم الشاذة قبل التحليل."},
+  {"file":"5-2-scaling.webp","pdfPage":15,"image":"1800x1200","caption":"التحجيم يغيّر مقياس المتغيرات عندما تكون الخوارزمية حساسة للمقياس."},
+  {"file":"5-2-pivot.webp","pdfPage":16,"image":"760x500","caption":"الشكل 5.2.2 — تحويل المحور: إعادة تشكيل البيانات ذات الصيغة الطويلة إلى جدول متقاطع"},
+  {"file":"5-3-api-request-response.webp","pdfPage":22,"image":"760x500","caption":"الشكل 5.3.1 — استرجاع البيانات عبر واجهة برمجة التطبيقات: الطلب، والاستجابة، والاستخدام"},
+  {"file":"5-3-attribution.webp","pdfPage":23,"image":"1800x1200","caption":"استخدم البيانات بمسؤولية وأشر إلى مصدرها."}
 ]
