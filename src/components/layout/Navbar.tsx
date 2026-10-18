@@ -262,6 +262,8 @@ export function Navbar({ catalog }: { catalog: NavCatalog }) {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="القائمة"
+                aria-expanded={isMobileMenuOpen}
                 className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

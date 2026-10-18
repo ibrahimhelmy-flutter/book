@@ -80,7 +80,13 @@ const dataFiles = fs.existsSync(OUT_DATA_DIR)
 const violations = [];
 for (const r of routes) if (r.firstLoadGzip > r.budget) violations.push(`route ${r.entry}: ${kb(r.firstLoadGzip)} gzip > ${kb(r.budget)}`);
 for (const c of chunks) if (c.raw > budgets.chunkRaw) violations.push(`chunk ${c.file}: ${kb(c.raw)} raw > ${kb(budgets.chunkRaw)}`);
-for (const d of dataFiles) if (d.raw > budgets.dataFileRaw) violations.push(`data ${d.file}: ${kb(d.raw)} > ${kb(budgets.dataFileRaw)}`);
+// dataFileRawOverrides: { "<regex on the out/ path>": bytes } for files fetched on demand that are larger by design
+const dataBudget = (file) =>
+  Object.entries(budgets.dataFileRawOverrides || {}).find(([re]) => new RegExp(re).test(file))?.[1] ?? budgets.dataFileRaw;
+for (const d of dataFiles) {
+  const limit = dataBudget(d.file);
+  if (d.raw > limit) violations.push(`data ${d.file}: ${kb(d.raw)} > ${kb(limit)}`);
+}
 
 console.log('\n📊 First-load JS per route (gzip)');
 for (const r of routes) {

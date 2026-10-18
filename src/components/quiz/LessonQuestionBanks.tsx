@@ -16,7 +16,7 @@ import { DeepComprehensionViewer } from "./DeepComprehensionViewer";
  * learner opens the matching quiz tab — they never ship in the lesson page's JS.
  */
 
-function BankStatus<T>({ state, children }: { state: JsonState<T>; children: (data: T) => React.ReactNode }) {
+export function BankStatus<T>({ state, children }: { state: JsonState<T>; children: (data: T) => React.ReactNode }) {
   if (state.status === "ready") return <>{children(state.data)}</>;
   if (state.status === "error") {
     return (

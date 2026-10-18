@@ -164,12 +164,13 @@ describe("Unified Questions & Exams - Filtering & Exam Generation", () => {
     }
   });
 
-  it("Test 10: Filtering with unitReviewOnly returns all 90 unit review MCQs from chapter1.json", () => {
+  it("Test 10: Filtering with unitReviewOnly returns all 74 unit review MCQs", () => {
     const unitReviewQuestions = filterEnrichedQuestions(allQuestions, {
       unitReviewOnly: true,
+      chapterIds: ["chapter-1"],
     });
 
-    assert.equal(unitReviewQuestions.length, 90, "Must return all 90 unit review MCQs from chapter1.json");
+    assert.equal(unitReviewQuestions.length, 74, "Must return all 74 unit review MCQs");
     assert.ok(
       unitReviewQuestions.every((q) => q.isUnitReview === true),
       "All returned questions must have isUnitReview: true"
@@ -178,6 +179,9 @@ describe("Unified Questions & Exams - Filtering & Exam Generation", () => {
       unitReviewQuestions.every((q) => q.chapterId === "chapter-1"),
       "All unit 1 review questions must belong to chapter-1"
     );
+    // Only the mcq items of the mixed chapter-2 bank become practice questions.
+    const unit2 = filterEnrichedQuestions(allQuestions, { unitReviewOnly: true, chapterIds: ["chapter-2"] });
+    assert.equal(unit2.length, 80, "Unit 2 review contributes its 80 mcq items");
   });
 
   it("Test 11: Unit review questions have 4 options, valid answers, explanations, and generate valid exam", () => {

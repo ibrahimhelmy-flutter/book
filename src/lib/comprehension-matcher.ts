@@ -9,6 +9,7 @@ export interface QuestionWithSection extends DeepChallengingQuestion {
 
 /**
  * Matches a single question to the most relevant lesson section based on:
+ * 0. An explicit section id in `sourceBlockIds` (authored, exact)
  * 1. Primary page number match (highest precision)
  * 2. Key concept ID alignment
  * 3. Title & keyword semantic overlap
@@ -23,6 +24,16 @@ export function matchQuestionToSection(
 ): { sectionId: string; sectionTitle: string; sectionIndex: number } {
   if (!sections || sections.length === 0) {
     return { sectionId: "default", sectionTitle: "الدرس العام", sectionIndex: 0 };
+  }
+
+  // 0. Explicit section id (section page numbers are not reliable for every lesson)
+  const blockIdx = sections.findIndex((s) => question.sourceBlockIds?.includes(s.id));
+  if (blockIdx !== -1) {
+    return {
+      sectionId: sections[blockIdx].id,
+      sectionTitle: sections[blockIdx].title,
+      sectionIndex: blockIdx,
+    };
   }
 
   // 1. Match by Primary Page (highest precision)

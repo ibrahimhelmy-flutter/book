@@ -21,6 +21,7 @@ import { getStoredProgress } from "@/lib/storage";
 import { usePWA } from "@/context/PWAContext";
 import { lessonHref } from "@/content/paths";
 import { usePart } from "./PartProvider";
+import { UnitBankLink } from "@/components/common/UnitBankLink";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -229,9 +230,10 @@ export function Sidebar() {
 
               return (
                 <div key={chapter.id} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden">
+                  <div className="flex items-center">
                   <button
                     onClick={() => toggleChapter(chapter.id)}
-                    className="w-full p-3.5 text-right flex items-center justify-between gap-2 hover:bg-slate-900 transition-colors cursor-pointer"
+                    className="flex-1 min-w-0 p-3.5 text-right flex items-center justify-between gap-2 hover:bg-slate-900 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2 text-right truncate">
                       <span className="w-5 h-5 rounded-md bg-indigo-500/20 text-indigo-400 text-xs font-mono font-bold flex items-center justify-center shrink-0">
@@ -246,6 +248,18 @@ export function Sidebar() {
                     </div>
                     {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
                   </button>
+                  {part.deepQuestionCounts[`${chapter.number}-review`] > 0 && (
+                    <div className="pl-2.5">
+                      <UnitBankLink
+                        partKey={part.key}
+                        chapterId={chapter.id}
+                        chapterNumber={chapter.number}
+                        count={part.deepQuestionCounts[`${chapter.number}-review`]}
+                        iconOnly
+                      />
+                    </div>
+                  )}
+                  </div>
 
                   {isExpanded && (
                     <div className="p-2 pt-0 space-y-1">

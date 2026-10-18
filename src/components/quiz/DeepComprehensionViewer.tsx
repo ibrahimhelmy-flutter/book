@@ -20,6 +20,16 @@ import {
 } from "lucide-react";
 import { fireConfetti } from "@/lib/confetti";
 import { mapAllQuestionsToSections, QuestionWithSection } from "@/lib/comprehension-matcher";
+import {
+  KIND_LABELS,
+  KIND_ORDER,
+  essayStatus,
+  fillBlankStatus,
+  questionKind,
+  type AnswerStatus,
+  type DeepQuestionKind,
+} from "@/lib/deep-question-kinds";
+import { EssayChecklist, EssayDraft, FillBlankActions, FillBlankSentence, TrueFalseButtons } from "./DeepAnswerPanels";
 
 interface Props {
   lesson: Lesson;
@@ -27,6 +37,9 @@ interface Props {
   questions: DeepChallengingQuestion[];
   targetSectionId?: string | null;
   onClearTargetSection?: () => void;
+  /** Header title and section-strip label (a chapter bank filters by lesson instead of section). */
+  heading?: string;
+  sectionFilterLabel?: string;
 }
 
 type SimpleDifficulty = "easy" | "medium" | "hard";
@@ -116,7 +129,14 @@ function formatExplanationContent(text: string) {
   return <div className="space-y-2 leading-relaxed">{formatParagraphs(text)}</div>;
 }
 
-export function DeepComprehensionViewer({ lesson, questions: allQuestions, targetSectionId, onClearTargetSection }: Props) {
+export function DeepComprehensionViewer({
+  lesson,
+  questions: allQuestions,
+  targetSectionId,
+  onClearTargetSection,
+  heading = "أسئلة وتدريبات الفهم للدرس",
+  sectionFilterLabel = "تصفية الأسئلة بحسب أقسام الشرح:",
+}: Props) {
 
   // Map each question to its corresponding section in the lesson
   const mappedQuestions = useMemo<QuestionWithSection[]>(() => {
@@ -168,8 +188,19 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
   // Current question index in the filtered list
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  // User selected answers: map of questionIndex/identifier -> selectedOptionText
+  // Question kind filter: "all" or one DeepQuestionKind
+  const [selectedKind, setSelectedKind] = useState<"all" | DeepQuestionKind>("all");
+
+  // User selected answers (mcq / true_false): map of questionIndex/identifier -> selectedOptionText
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+  // fill_blank: typed text per gap, whether the question was checked, and whether its answer was shown instead
+  const [blankInputs, setBlankInputs] = useState<Record<number, string[]>>({});
+  const [checkedBlanks, setCheckedBlanks] = useState<Record<number, boolean>>({});
+  const [revealedBlanks, setRevealedBlanks] = useState<Record<number, boolean>>({});
+  // essay: draft answer, model answer revealed, and the key points the learner ticked
+  const [essayDrafts, setEssayDrafts] = useState<Record<number, string>>({});
+  const [essayRevealed, setEssayRevealed] = useState<Record<number, boolean>>({});
+  const [essayCovered, setEssayCovered] = useState<Record<number, number[]>>({});
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -193,11 +224,42 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
       return {
         ...q,
         originalIndex: idx,
+        kind: questionKind(q),
         difficulty: diff,
         answer: answerText || q.options[0] || "",
       };
     });
   }, [mappedQuestions]);
+
+  // Kinds present in this bank (the kind filter and badges only show when there is more than one)
+  const kindCounts = useMemo(() => {
+    const counts: Partial<Record<DeepQuestionKind, number>> = {};
+    normalizedQuestions.forEach((q) => {
+      counts[q.kind] = (counts[q.kind] || 0) + 1;
+    });
+    return counts;
+  }, [normalizedQuestions]);
+  const presentKinds = KIND_ORDER.filter((k) => kindCounts[k]);
+  const isMixedBank = presentKinds.length > 1;
+
+  type NormalizedQuestion = (typeof normalizedQuestions)[number];
+
+  // Result of a question: null while unanswered, "reviewed" for an essay revealed but not self-assessed yet,
+  // "revealed" for a fill_blank whose answer was shown without checking (not counted as wrong)
+  const statusOf = (q: NormalizedQuestion): AnswerStatus | "reviewed" | "revealed" | null => {
+    const key = q.originalIndex;
+    if (q.kind === "fill_blank") {
+      if (!checkedBlanks[key]) return null;
+      return revealedBlanks[key] ? "revealed" : fillBlankStatus(blankInputs[key] || [], q.blanks || []);
+    }
+    if (q.kind === "essay") {
+      if (!essayRevealed[key]) return null;
+      const covered = essayCovered[key]?.length || 0;
+      return covered > 0 ? essayStatus(covered, q.keyPoints?.length || 0) : "reviewed";
+    }
+    if (userAnswers[key] === undefined) return null;
+    return userAnswers[key] === q.answer ? "correct" : "wrong";
+  };
 
   // Question counts per section ID
   const sectionCounts = useMemo(() => {
@@ -213,9 +275,10 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
     return normalizedQuestions.filter((q) => {
       const matchDiff = selectedDifficulty === "all" || q.difficulty === selectedDifficulty;
       const matchSec = selectedSectionId === "all" || q.assignedSectionId === selectedSectionId;
-      return matchDiff && matchSec;
+      const matchKind = selectedKind === "all" || q.kind === selectedKind;
+      return matchDiff && matchSec && matchKind;
     });
-  }, [normalizedQuestions, selectedDifficulty, selectedSectionId]);
+  }, [normalizedQuestions, selectedDifficulty, selectedSectionId, selectedKind]);
 
   const totalFiltered = filteredQuestions.length;
   const safeIndex = Math.min(currentIndex, Math.max(0, totalFiltered - 1));
@@ -244,14 +307,56 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
     }
   };
 
+  const handleBlankChange = (gap: number, value: string) => {
+    if (!currentQ) return;
+    const qKey = currentQ.originalIndex;
+    setBlankInputs((prev) => {
+      const next = [...(prev[qKey] || [])];
+      next[gap] = value;
+      return { ...prev, [qKey]: next };
+    });
+  };
+
+  const handleCheckBlanks = () => {
+    if (!currentQ) return;
+    const qKey = currentQ.originalIndex;
+    setCheckedBlanks((prev) => ({ ...prev, [qKey]: true }));
+    if (fillBlankStatus(blankInputs[qKey] || [], currentQ.blanks || []) === "correct") {
+      fireConfetti();
+    }
+  };
+
+  const handleRevealBlanks = () => {
+    if (!currentQ) return;
+    const qKey = currentQ.originalIndex;
+    setCheckedBlanks((prev) => ({ ...prev, [qKey]: true }));
+    setRevealedBlanks((prev) => ({ ...prev, [qKey]: true }));
+  };
+
+  const handleToggleKeyPoint = (point: number) => {
+    if (!currentQ) return;
+    const qKey = currentQ.originalIndex;
+    setEssayCovered((prev) => {
+      const list = prev[qKey] || [];
+      return { ...prev, [qKey]: list.includes(point) ? list.filter((p) => p !== point) : [...list, point] };
+    });
+  };
+
   const handleResetCurrent = () => {
     if (!currentQ) return;
     const qKey = currentQ.originalIndex;
-    setUserAnswers((prev) => {
+    const without = <T,>(prev: Record<number, T>) => {
       const copy = { ...prev };
       delete copy[qKey];
       return copy;
-    });
+    };
+    setUserAnswers(without);
+    setBlankInputs(without);
+    setCheckedBlanks(without);
+    setRevealedBlanks(without);
+    setEssayDrafts(without);
+    setEssayRevealed(without);
+    setEssayCovered(without);
   };
 
   const handleNavigate = (newIdx: number) => {
@@ -282,6 +387,7 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
       const isHidden =
         thinkFirstMode &&
         currentQ &&
+        currentQ.kind === "mcq" &&
         userAnswers[currentQ.originalIndex] === undefined &&
         !revealedQuestions[currentQ.originalIndex];
 
@@ -321,11 +427,28 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
   }
 
   const selectedAnswer = currentQ ? userAnswers[currentQ.originalIndex] : undefined;
-  const hasInteracted = selectedAnswer !== undefined;
-  const isCorrect = hasInteracted && selectedAnswer === currentQ?.answer;
+  const currentStatus = currentQ ? statusOf(currentQ) : null;
+  const hasInteracted = currentStatus !== null;
+  const isCorrect = currentStatus === "correct";
   const isOptionsHidden = currentQ
-    ? thinkFirstMode && !hasInteracted && !revealedQuestions[currentQ.originalIndex]
+    ? currentQ.kind === "mcq" && thinkFirstMode && !hasInteracted && !revealedQuestions[currentQ.originalIndex]
     : false;
+
+  const FEEDBACK_STYLE: Record<AnswerStatus | "reviewed" | "revealed", { box: string; icon: string; mark: string; title: string }> = {
+    correct: { box: "bg-emerald-950/40 border-emerald-500/40 text-emerald-200", icon: "bg-emerald-500/20 text-emerald-300", mark: "✓", title: "إجابة صحيحة! أحسنت 👏" },
+    partial: { box: "bg-amber-950/40 border-amber-500/40 text-amber-200", icon: "bg-amber-500/20 text-amber-300", mark: "½", title: "إجابة صحيحة جزئيًا" },
+    wrong: { box: "bg-rose-950/40 border-rose-500/40 text-rose-200", icon: "bg-rose-500/20 text-rose-300", mark: "✕", title: "إجابة غير صحيحة" },
+    reviewed: { box: "bg-indigo-950/40 border-indigo-500/40 text-indigo-200", icon: "bg-indigo-500/20 text-indigo-300", mark: "✎", title: "قارن إجابتك بالإجابة النموذجية" },
+    revealed: { box: "bg-slate-900/60 border-slate-600/50 text-slate-200", icon: "bg-slate-700/40 text-slate-300", mark: "👁", title: "تم عرض الإجابة" },
+  };
+  const feedback = FEEDBACK_STYLE[currentStatus || "reviewed"];
+
+  const KIND_HINTS: Record<DeepQuestionKind, string> = {
+    mcq: "اختر إحدى الإجابات للتحقق الفوري، وستظهر النتيجة والشرح هنا بالأسفل دون التأثير على مكان الأزرار.",
+    true_false: "حدد هل العبارة صواب أم خطأ، وإن كانت خطأ فكّر في تصحيحها قبل أن ترى الإجابة.",
+    fill_blank: "اكتب الكلمة أو العبارة الناقصة في كل فراغ، ثم اضغط «تحقق من إجابتي».",
+    essay: "اكتب إجابتك أو صُغها في ذهنك، ثم اعرض الإجابة النموذجية وعلّم النقاط التي ذكرتها.",
+  };
 
   const diffConf = currentQ ? DIFFICULTY_CONFIG[currentQ.difficulty] || DIFFICULTY_CONFIG.medium : DIFFICULTY_CONFIG.medium;
 
@@ -338,11 +461,11 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
             <Brain className="w-5 h-5 text-indigo-400" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white leading-snug">
-              أسئلة وتدريبات الفهم للدرس
-            </h3>
+            <h3 className="text-base font-bold text-white leading-snug">{heading}</h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              أسئلة مبسطة (سؤال، اختيارات، وإجابة) مع التحقق الفوري عند الحل
+              {isMixedBank
+                ? `${presentKinds.map((k) => KIND_LABELS[k]).join("، ")} — مع التحقق الفوري والشرح`
+                : "أسئلة مبسطة (سؤال، اختيارات، وإجابة) مع التحقق الفوري عند الحل"}
             </p>
           </div>
         </div>
@@ -451,13 +574,43 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
         </div>
       </div>
 
+      {/* 1.25. Question Kind Strip (only for banks that mix kinds) */}
+      {isMixedBank && (
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar p-2 bg-slate-900/80 border border-slate-800 rounded-2xl">
+          {(["all", ...presentKinds] as const).map((k) => {
+            const isSelected = selectedKind === k;
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => {
+                  setSelectedKind(k);
+                  setCurrentIndex(0);
+                }}
+                aria-pressed={isSelected}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 flex items-center gap-1.5 ${
+                  isSelected
+                    ? "bg-cyan-600 text-white shadow-md shadow-cyan-600/30 ring-1 ring-cyan-400/40"
+                    : "bg-slate-950 text-slate-400 hover:text-white border border-slate-800"
+                }`}
+              >
+                <span>{k === "all" ? "كل الأنواع" : KIND_LABELS[k]}</span>
+                <span className="font-mono text-[10px] opacity-80">
+                  ({k === "all" ? normalizedQuestions.length : kindCounts[k]})
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       {/* 1.5. Section Filter Strip (if lesson has sections) */}
       {lesson.sections && lesson.sections.length > 1 && (
         <div className="p-3 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-2">
           <div className="flex items-center justify-between text-xs px-1">
             <span className="font-bold text-slate-300 flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-purple-400" />
-              <span>تصفية الأسئلة بحسب أقسام الشرح:</span>
+              <span>{sectionFilterLabel}</span>
             </span>
             {selectedSectionId !== "all" && (
               <button
@@ -524,17 +677,22 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
       {totalFiltered > 0 && (
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar p-2 bg-slate-900/60 border border-slate-800 rounded-2xl">
           {filteredQuestions.map((q, idx) => {
-            const isAnswered = userAnswers[q.originalIndex] !== undefined;
-            const isAnsCorrect = isAnswered && userAnswers[q.originalIndex] === q.answer;
+            const status = statusOf(q);
             const isCurrent = idx === safeIndex;
 
             let btnClass = "bg-slate-800 text-slate-400 hover:bg-slate-700";
             if (isCurrent) {
               btnClass = "bg-indigo-600 text-white ring-2 ring-indigo-400 font-bold shadow-md";
-            } else if (isAnswered) {
-              btnClass = isAnsCorrect
-                ? "bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-bold"
-                : "bg-rose-600/30 text-rose-300 border border-rose-500/40 font-bold";
+            } else if (status === "correct") {
+              btnClass = "bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-bold";
+            } else if (status === "partial") {
+              btnClass = "bg-amber-600/30 text-amber-300 border border-amber-500/40 font-bold";
+            } else if (status === "wrong") {
+              btnClass = "bg-rose-600/30 text-rose-300 border border-rose-500/40 font-bold";
+            } else if (status === "reviewed") {
+              btnClass = "bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 font-bold";
+            } else if (status === "revealed") {
+              btnClass = "bg-slate-700/40 text-slate-300 border border-slate-500/40 font-bold";
             }
 
             return (
@@ -567,6 +725,12 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
                 <span className={`w-1.5 h-1.5 rounded-full ${diffConf.dotClass}`} />
                 <span>{diffConf.label}</span>
               </span>
+
+              {isMixedBank && (
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">
+                  {KIND_LABELS[currentQ.kind]}
+                </span>
+              )}
 
               {currentQ.assignedSectionTitle && (
                 <span
@@ -612,15 +776,51 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
             </div>
           </div>
 
-          {/* Question Text */}
+          {/* Question Text (a fill_blank sentence carries its own inputs) */}
           <div>
-            <p className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
-              {currentQ.question}
-            </p>
+            {currentQ.kind === "true_false" && (
+              <p className="text-xs font-bold text-cyan-300 mb-1.5">هل العبارة التالية صواب أم خطأ؟</p>
+            )}
+            {currentQ.kind === "fill_blank" ? (
+              <FillBlankSentence
+                text={currentQ.question}
+                blanks={currentQ.blanks || []}
+                inputs={blankInputs[currentQ.originalIndex] || []}
+                checked={!!checkedBlanks[currentQ.originalIndex]}
+                revealed={!!revealedBlanks[currentQ.originalIndex]}
+                onChange={handleBlankChange}
+              />
+            ) : (
+              <p className="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">
+                {currentQ.question}
+              </p>
+            )}
           </div>
 
-          {/* 4 Options OR Active Recall Thinking Station */}
-          {isOptionsHidden ? (
+          {/* Answer area by kind: True/False, fill-blank check, essay draft, or 4 Options / Active Recall Thinking Station */}
+          {currentQ.kind === "true_false" ? (
+            <TrueFalseButtons
+              options={currentQ.options}
+              selected={selectedAnswer}
+              answer={currentQ.answer}
+              onSelect={handleSelectOption}
+            />
+          ) : currentQ.kind === "fill_blank" ? (
+            hasInteracted ? null : (
+              <FillBlankActions
+                canCheck={(blankInputs[currentQ.originalIndex] || []).some((v) => v && v.trim())}
+                onCheck={handleCheckBlanks}
+                onReveal={handleRevealBlanks}
+              />
+            )
+          ) : currentQ.kind === "essay" ? (
+            <EssayDraft
+              value={essayDrafts[currentQ.originalIndex] || ""}
+              revealed={!!essayRevealed[currentQ.originalIndex]}
+              onChange={(v) => setEssayDrafts((prev) => ({ ...prev, [currentQ.originalIndex]: v }))}
+              onReveal={() => setEssayRevealed((prev) => ({ ...prev, [currentQ.originalIndex]: true }))}
+            />
+          ) : isOptionsHidden ? (
             <div className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-indigo-950/30 via-slate-950/70 to-slate-950/90 border border-indigo-500/30 shadow-xl text-center space-y-4 sm:space-y-5 animate-fadeIn">
               <div className="max-w-md mx-auto space-y-2.5">
                 <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center mx-auto shadow-inner">
@@ -764,35 +964,50 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
               appearance expands downward and NEVER moves the buttons!
               ======================================================== */}
           {hasInteracted ? (
-            <div
-              className={`p-4 sm:p-5 rounded-2xl border transition-all animate-fadeIn ${
-                isCorrect
-                  ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"
-                  : "bg-rose-950/40 border-rose-500/40 text-rose-200"
-              }`}
-            >
+            <div className={`p-4 sm:p-5 rounded-2xl border transition-all animate-fadeIn ${feedback.box}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 flex-1">
                   <div className="shrink-0 mt-0.5">
-                    {isCorrect ? (
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold">
-                        ✓
-                      </div>
-                    ) : (
-                      <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center font-bold">
-                        ✕
-                      </div>
-                    )}
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold ${feedback.icon}`}>
+                      {feedback.mark}
+                    </div>
                   </div>
                   <div className="text-xs sm:text-sm leading-relaxed space-y-2 flex-1">
-                    <div className="font-black text-sm sm:text-base">
-                      {isCorrect ? "إجابة صحيحة! أحسنت 👏" : "إجابة غير صحيحة"}
-                    </div>
-                    {!isCorrect && (
+                    <div className="font-black text-sm sm:text-base">{feedback.title}</div>
+                    {!isCorrect && (currentQ.kind === "mcq" || currentQ.kind === "true_false") && (
                       <div className="text-slate-300">
                         <span className="font-bold text-white">الإجابة الصحيحة: </span>
                         <span className="text-emerald-300 font-medium">{currentQ.answer}</span>
                       </div>
+                    )}
+                    {currentQ.kind === "true_false" && currentQ.correction && (
+                      <div className="p-3 rounded-xl bg-slate-950/60 border border-emerald-500/25 text-slate-200">
+                        <span className="font-bold text-emerald-300">تصحيح العبارة: </span>
+                        <span>{currentQ.correction}</span>
+                      </div>
+                    )}
+                    {currentQ.kind === "fill_blank" && !isCorrect && (
+                      <div className="text-slate-300">
+                        <span className="font-bold text-white">الإجابة: </span>
+                        <span className="text-emerald-300 font-medium">
+                          {(currentQ.blanks || []).map((b) => b.answer).join(" — ")}
+                        </span>
+                      </div>
+                    )}
+                    {currentQ.kind === "essay" && (
+                      <>
+                        <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-emerald-500/25 text-slate-200">
+                          <div className="font-bold text-emerald-300 mb-1.5">الإجابة النموذجية:</div>
+                          {formatExplanationContent(currentQ.modelAnswer || currentQ.answer)}
+                        </div>
+                        {currentQ.keyPoints && currentQ.keyPoints.length > 0 && (
+                          <EssayChecklist
+                            keyPoints={currentQ.keyPoints}
+                            covered={essayCovered[currentQ.originalIndex] || []}
+                            onToggle={handleToggleKeyPoint}
+                          />
+                        )}
+                      </>
                     )}
                     {(currentQ.depthExplanation || (currentQ as any).explanation) && (
                       <div className="mt-3 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-indigo-500/20 text-xs sm:text-sm text-slate-200 leading-relaxed shadow-inner">
@@ -832,7 +1047,7 @@ export function DeepComprehensionViewer({ lesson, questions: allQuestions, targe
             <div className="pt-1 text-center sm:text-right">
               <p className="text-xs text-slate-500 flex items-center justify-center sm:justify-start gap-1.5">
                 <HelpCircle className="w-3.5 h-3.5 text-indigo-400/70" />
-                <span>اختر إحدى الإجابات للتحقق الفوري، وستظهر النتيجة والشرح هنا بالأسفل دون التأثير على مكان الأزرار.</span>
+                <span>{KIND_HINTS[currentQ.kind]}</span>
               </p>
             </div>
           )}

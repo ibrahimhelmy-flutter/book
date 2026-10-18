@@ -43,9 +43,16 @@ export interface CurriculumEvidenceItem {
   conceptId?: string;
 }
 
+/** One gap of a fill_blank question (marked `____` in the question text, in order). */
+export interface FillBlank {
+  answer: string;
+  /** Other spellings/forms accepted as correct (compared after Arabic normalization). */
+  accept?: string[];
+}
+
 export interface DeepChallengingQuestion {
   question: string;
-  options: string[]; // 4 options
+  options: string[]; // mcq: 4 options; true_false: ["صواب", "خطأ"]; fill_blank / essay: []
   answer: string;
   difficulty: QuestionDifficulty;
   id?: string;
@@ -53,7 +60,13 @@ export interface DeepChallengingQuestion {
   lessonId?: string;
   lessonNumber?: string; // e.g. "1-1", "1-2", "4-4"
   index?: number; // 1 to 50
-  type?: "mcq" | "true_false" | "scenario" | "essay";
+  type?: "mcq" | "true_false" | "fill_blank" | "scenario" | "essay";
+  /** true_false whose statement is false: the corrected statement («صحّح الخطأ»). */
+  correction?: string;
+  /** fill_blank: one entry per `____` in the question. */
+  blanks?: FillBlank[];
+  /** essay: the points a complete answer must cover (the learner self-checks them). */
+  keyPoints?: string[];
   title?: string;
   modelAnswer?: string;
   cognitiveLevel?: CognitiveLevel;

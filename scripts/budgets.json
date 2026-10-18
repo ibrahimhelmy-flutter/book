@@ -2,6 +2,9 @@
   "firstLoadGzip": 184320,
   "chunkRaw": 307200,
   "dataFileRaw": 409600,
+  "dataFileRawOverrides": {
+    "/deep/\\d+-review\\.json$": 614400
+  },
   "routes": {
     "/page": 153600
   }

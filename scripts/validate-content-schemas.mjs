@@ -124,37 +124,87 @@ let totalLessonFiles = 0;
 if (chapterDirs.length > 0) {
   for (const chDir of chapterDirs) {
     const chPath = path.join(sources.deepQuestionsDir, chDir);
-    const lessonFiles = fs.readdirSync(chPath).filter(f => /^lesson-\d+-\d+\.json$/.test(f)).sort();
+    // lesson-X-Y.json (one lesson) and unit-X-review.json (whole chapter: concepts of any of its lessons)
+    const lessonFiles = fs.readdirSync(chPath).filter(f => /^(lesson-\d+-\d+|unit-\d+-review)\.json$/.test(f)).sort();
 
     for (const lFile of lessonFiles) {
       totalLessonFiles++;
-      const match = lFile.match(/^lesson-(\d+-\d+)\.json$/);
-      const lessonNum = match[1];
-      const lessonId = `lesson-${lessonNum}`;
-      if (!validLessonIds.has(lessonId)) {
-        logError(`Deep question file '${lFile}' references unknown lesson '${lessonId}'`);
+      const reviewMatch = lFile.match(/^unit-(\d+)-review\.json$/);
+      let lessonNum;
+      let availableLessonConcepts;
+      if (reviewMatch) {
+        lessonNum = `${reviewMatch[1]}-review`;
+        const chapter = book.chapters.find(c => c.number === Number(reviewMatch[1]));
+        if (!chapter) logError(`Deep question file '${lFile}' references unknown chapter ${reviewMatch[1]}`);
+        availableLessonConcepts = new Set((chapter?.lessons || []).flatMap(l => [...(lessonConceptMap.get(l.id) || [])]));
+      } else {
+        lessonNum = lFile.match(/^lesson-(\d+-\d+)\.json$/)[1];
+        const lessonId = `lesson-${lessonNum}`;
+        if (!validLessonIds.has(lessonId)) {
+          logError(`Deep question file '${lFile}' references unknown lesson '${lessonId}'`);
+        }
+        availableLessonConcepts = lessonConceptMap.get(lessonId) || new Set();
       }
-
-      const availableLessonConcepts = lessonConceptMap.get(lessonId) || new Set();
       const filePath = path.join(chPath, lFile);
       const questions = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       questions.forEach((q, qIdx) => {
         totalDeepQuestions++;
+        const unknownConcepts = (q.conceptIds || []).filter(cid => !availableLessonConcepts.has(cid));
+        if (unknownConcepts.length > 0) {
+          logError(`Deep question ${q.id || `#${qIdx + 1}`} in ${lessonNum} references concepts outside it: ${unknownConcepts.join(', ')}`);
+        }
         if (!q.question || typeof q.question !== 'string' || !q.question.trim()) {
           logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing question text.`);
-        }
-        if (!Array.isArray(q.options) || q.options.length !== 4) {
-          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} must have exactly 4 options!`);
         }
         if (!['easy', 'medium', 'hard', 'very-hard', 'expert'].includes(q.difficulty)) {
           logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has invalid difficulty: '${q.difficulty}'`);
         }
-        const hasValidAnswer =
-          (typeof q.answer === 'string' && Array.isArray(q.options) && q.options.includes(q.answer)) ||
-          (typeof q.correctAnswer === 'number' && q.correctAnswer >= 0 && q.correctAnswer < 4);
-        if (!hasValidAnswer) {
-          logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing or invalid answer.`);
+        const where = `Deep question ${q.id || `#${qIdx + 1}`} in lesson ${lessonNum}`;
+        const nonEmpty = (s) => typeof s === 'string' && s.trim().length > 0;
+        if (q.type === 'true_false') {
+          // options ["صواب", "خطأ"]; a false statement must carry its correction
+          if (!Array.isArray(q.options) || q.options.join('|') !== 'صواب|خطأ') {
+            logError(`${where} (true_false) must have options ["صواب", "خطأ"].`);
+          }
+          if (q.correctAnswer !== 0 && q.correctAnswer !== 1) {
+            logError(`${where} (true_false) correctAnswer must be 0 (صواب) or 1 (خطأ).`);
+          } else {
+            if (q.answer !== q.options?.[q.correctAnswer] || q.correctAnswerText !== q.answer) {
+              logError(`${where} (true_false) answer/correctAnswerText must match options[correctAnswer].`);
+            }
+            if (q.correctAnswer === 1 && !nonEmpty(q.correction)) {
+              logError(`${where} (true_false) is false but has no correction.`);
+            }
+          }
+        } else if (q.type === 'fill_blank') {
+          const gaps = (q.question.match(/_{3,}/g) || []).length;
+          if (!Array.isArray(q.blanks) || q.blanks.length === 0 || q.blanks.length !== gaps) {
+            logError(`${where} (fill_blank) needs one blanks[] entry per ____ gap (gaps: ${gaps}).`);
+          } else if (!q.blanks.every((b) => nonEmpty(b.answer) && (b.accept === undefined || (Array.isArray(b.accept) && b.accept.every(nonEmpty))))) {
+            logError(`${where} (fill_blank) has a blank without an answer or with an invalid accept list.`);
+          }
+          if (!Array.isArray(q.options) || q.options.length !== 0) {
+            logError(`${where} (fill_blank) must have options: [].`);
+          }
+        } else if (q.type === 'essay') {
+          if (!nonEmpty(q.modelAnswer)) logError(`${where} (essay) has no modelAnswer.`);
+          if (!Array.isArray(q.keyPoints) || q.keyPoints.length < 2 || !q.keyPoints.every(nonEmpty)) {
+            logError(`${where} (essay) needs at least 2 keyPoints.`);
+          }
+          if (!Array.isArray(q.options) || q.options.length !== 0) {
+            logError(`${where} (essay) must have options: [].`);
+          }
+        } else {
+          if (!Array.isArray(q.options) || q.options.length !== 4) {
+            logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} must have exactly 4 options!`);
+          }
+          const hasValidAnswer =
+            (typeof q.answer === 'string' && Array.isArray(q.options) && q.options.includes(q.answer)) ||
+            (typeof q.correctAnswer === 'number' && q.correctAnswer >= 0 && q.correctAnswer < 4);
+          if (!hasValidAnswer) {
+            logError(`Deep question #${qIdx + 1} in lesson ${lessonNum} has missing or invalid answer.`);
+          }
         }
       });
     }

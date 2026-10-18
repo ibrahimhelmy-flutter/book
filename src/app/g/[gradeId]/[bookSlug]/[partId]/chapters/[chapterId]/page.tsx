@@ -6,6 +6,7 @@ import { ArrowLeft, Layers } from "lucide-react";
 import { chapterHref, getLesson, lessonHref, partHref, requirePart, staticParams, type PartRouteParams } from "@/content";
 import { Breadcrumbs } from "@/components/catalog/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { ChapterQuestionBank } from "@/components/quiz/ChapterQuestionBank";
 import { breadcrumbJsonLd, pageMetadata, partTrail } from "@/lib/seo";
 
 interface Props {
@@ -34,6 +35,7 @@ export default async function ChapterOverviewPage({ params }: Props) {
   const chapter = part.chapters.find((c) => c.id === chapterId);
   if (!chapter) notFound();
   const lessons = chapter.lessons.map((l) => getLesson(part.key, l.id)!).filter(Boolean);
+  const reviewCount = part.deepQuestionCounts[`${chapter.number}-review`] || 0;
 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 py-8">
@@ -94,6 +96,17 @@ export default async function ChapterOverviewPage({ params }: Props) {
           </Link>
         ))}
       </div>
+
+      {reviewCount > 0 && (
+        <div className="mt-8">
+          <ChapterQuestionBank
+            partKey={part.key}
+            chapterNumber={chapter.number}
+            lessons={lessons.map((l) => ({ id: l.id, number: l.number, title: l.title }))}
+            count={reviewCount}
+          />
+        </div>
+      )}
     </div>
   );
 }

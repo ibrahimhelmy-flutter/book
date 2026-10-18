@@ -17,6 +17,7 @@ import {
 import { getStoredProgress } from "@/lib/storage";
 import type { PartManifest } from "@/types/catalog";
 import { lessonHref, partHref } from "@/content/paths";
+import { UnitBankLink } from "./UnitBankLink";
 
 interface Props {
   part: PartManifest;
@@ -155,11 +156,12 @@ export function LessonsIndexDrawer({ part, isOpen, onClose }: Props) {
                 key={chapter.id}
                 className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden transition-all"
               >
-                {/* Chapter Header Button */}
+                {/* Chapter Header Button (+ unit question bank icon) */}
+                <div className="flex items-center">
                 <button
                   type="button"
                   onClick={() => toggleChapter(chapter.id)}
-                  className="w-full p-3.5 text-right flex items-center justify-between gap-2 hover:bg-slate-900 transition-colors cursor-pointer"
+                  className="flex-1 min-w-0 p-3.5 text-right flex items-center justify-between gap-2 hover:bg-slate-900 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 border border-indigo-500/30">
@@ -181,6 +183,18 @@ export function LessonsIndexDrawer({ part, isOpen, onClose }: Props) {
                     <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
                   )}
                 </button>
+                {part.deepQuestionCounts[`${chapter.number}-review`] > 0 && (
+                  <div className="pl-3">
+                    <UnitBankLink
+                      partKey={part.key}
+                      chapterId={chapter.id}
+                      chapterNumber={chapter.number}
+                      count={part.deepQuestionCounts[`${chapter.number}-review`]}
+                      onNavigate={onClose}
+                    />
+                  </div>
+                )}
+                </div>
 
                 {/* Lessons List in Chapter */}
                 {isExpanded && (
