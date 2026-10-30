@@ -2,8 +2,10 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import type { AcronymTerm } from "@/types";
-import type { PartManifest } from "@/types/catalog";
+import type { PartKey, PartManifest } from "@/types/catalog";
 import { registerAcronyms } from "@/lib/acronyms";
+import { dataUrl } from "@/content/paths";
+import { fetchJson } from "@/lib/fetch-json";
 
 const PartContext = createContext<PartManifest | null>(null);
 
@@ -17,10 +19,35 @@ const LAST_PART_KEY = "last_part_key";
 
 /**
  * Root-level holder of the most recently visited part, so UI that lives outside the part layout
- * (Navbar search / index / offline pack) can act on it.
+ * (Navbar search / index / offline pack) can act on it. On catalog pages it restores the part saved in
+ * localStorage (or the first available part for a new visitor) so those buttons are always present.
  */
-export function ActivePartProvider({ children }: { children: React.ReactNode }) {
+export function ActivePartProvider({
+  availablePartKeys,
+  children,
+}: {
+  availablePartKeys: PartKey[];
+  children: React.ReactNode;
+}) {
   const [manifest, setManifest] = useState<PartManifest | null>(null);
+  const fallbackKeys = availablePartKeys.join("|");
+
+  useEffect(() => {
+    const keys = fallbackKeys ? fallbackKeys.split("|") : [];
+    const last = getLastPartKey();
+    const key = last && keys.includes(last) ? last : keys[0];
+    if (!key) return;
+    let alive = true;
+    fetchJson<PartManifest>(dataUrl(key, "manifest.json")).then(
+      // A part page may have set its own manifest meanwhile; never replace it
+      (m) => alive && setManifest((cur) => cur ?? m),
+      () => {}
+    );
+    return () => {
+      alive = false;
+    };
+  }, [fallbackKeys]);
+
   return <ActivePartContext.Provider value={{ manifest, setManifest }}>{children}</ActivePartContext.Provider>;
 }
 
@@ -59,7 +86,7 @@ export function usePartOptional(): PartManifest | null {
   return useContext(PartContext);
 }
 
-/** The part being viewed, or the last part visited in this session (null on a fresh catalog page). */
+/** The part being viewed, or the last part visited (null until it is restored on a catalog page). */
 export function useActivePart(): PartManifest | null {
   const inPart = useContext(PartContext);
   const { manifest } = useContext(ActivePartContext);

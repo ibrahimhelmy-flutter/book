@@ -83,13 +83,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const navCatalog = getNavCatalog();
+  const availablePartKeys = navCatalog.grades.flatMap((g) =>
+    g.books.flatMap((b) => b.parts.filter((p) => p.status === "available").map((p) => p.key))
+  );
+
   return (
     <html lang="ar" dir="rtl" className={`dark ${cairo.variable} ${plexArabic.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${cairo.className} min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col selection:bg-indigo-600 selection:text-white`}
       >
-        <ActivePartProvider>
+        <ActivePartProvider availablePartKeys={availablePartKeys}>
         <PWAProvider>
           <a
             href="#main-content"
@@ -97,7 +102,7 @@ export default function RootLayout({
           >
             تخطي إلى المحتوى الرئيسي
           </a>
-          <Navbar catalog={getNavCatalog()} />
+          <Navbar catalog={navCatalog} />
           <main id="main-content" className="flex-1 flex flex-col w-full min-w-0">
             {children}
           </main>
