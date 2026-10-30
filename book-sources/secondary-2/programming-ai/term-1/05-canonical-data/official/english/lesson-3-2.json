@@ -1,0 +1,151 @@
+{
+  "lessonId": "lesson-3-2",
+  "number": "3-2",
+  "title": "Web Application Communication Methods",
+  "learningObjectives": [
+    "Explain the client and server model and the difference between HTTP and HTTPS.",
+    "Describe how HTTP requests and responses work, and explain the role of an API in exchanging data."
+  ],
+  "guidingQuestion": "How do the client and server communicate to make a web application work, and what rules and messages do they use?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. Client and Server",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Client)…the side that requests data or processing from the server. Web browsers and smartphone apps fall into this category."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Server)…the side that receives requests from clients, processes them, and returns responses."
+        },
+        {
+          "type": "p",
+          "text": "(3) A web application operates by the client sending a request and the server returning a response."
+        },
+        {
+          "type": "caption",
+          "text": "Client-Server Communication"
+        }
+      ],
+      "pdfPages": [
+        64
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. HTTP and HTTPS",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (HTTP (HyperText Transfer Protocol))…a communication protocol for exchanging data between clients (browsers and apps) and servers."
+        },
+        {
+          "type": "p",
+          "text": "(2) (HTTPS (HTTP Secure))…a communication protocol that adds TLS encryption to HTTP. Because communication content is encrypted, the risk of its being read by third parties is reduced."
+        },
+        {
+          "type": "p",
+          "text": "(3) Websites whose URLs begin with “https://” use HTTPS communication."
+        }
+      ],
+      "pdfPages": [
+        64
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. HTTP Requests and Responses",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Requests sent from the client to the server include information called an HTTP method that indicates “what kind of operation is desired.”"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Method",
+              "Role",
+              "Examples"
+            ],
+            [
+              "GET",
+              "Retrieve data from the server",
+              "Displaying a web page, retrieving search results"
+            ],
+            [
+              "POST",
+              "Send data to the server",
+              "Sending login information, submitting form contents"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Responses returned from the server to the client include a number indicating the result of processing, called a status code. Some typical examples are as follows."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Status code",
+              "Meaning"
+            ],
+            [
+              "200",
+              "Success (the request was processed successfully)"
+            ],
+            [
+              "404",
+              "Page not found (the specified URL does not exist)"
+            ],
+            [
+              "500",
+              "Server error (a problem occurred on the server side)"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        64,
+        65
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. API (Application Programming Interface)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (API)…a system for exchanging data between different pieces of software."
+        },
+        {
+          "type": "p",
+          "text": "(2) In web applications, the frontend often sends requests to the backend through an API and receives data."
+        },
+        {
+          "type": "p",
+          "text": "(3) Data exchanged through an API is often described in a format called (JSON (JavaScript Object Notation)). JSON is a data format that is both easy for humans to read and for computers to process."
+        }
+      ],
+      "pdfPages": [
+        65
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      63,
+      64,
+      65,
+      66,
+      67,
+      68
+    ]
+  }
+}

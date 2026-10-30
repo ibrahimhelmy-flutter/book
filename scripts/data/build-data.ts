@@ -16,6 +16,7 @@
  *     exams-index.json               counts for the exams page
  *     glossary.json  acronyms.json  simulators.json  search-lessons.json
  *     storylines/<lessonId>.json
+ *     english/<lessonId>.json        official English text, keyed by Arabic section id
  *     presentations/<lessonId>.json  lesson presentation deck (audited plan, or a mechanical draft)
  *
  * Canonical files are never modified. Writes are skipped when content is unchanged (OneDrive).
@@ -38,6 +39,7 @@ import type {
 import type { OfficialLessonAssessments } from "../../src/types/assessments";
 import type { DeepChallengingQuestion } from "../../src/types/deep-questions";
 import type { LessonStoryline } from "../../src/types/storyline";
+import type { EnglishLesson, EnglishLessonSource } from "../../src/types/english";
 import type { PresentationDeck, PresentationPlan } from "../../src/types/presentation";
 import { auditPresentationPlan, buildPresentationDeck, draftPresentationPlan } from "../../src/lib/presentation";
 
@@ -327,6 +329,31 @@ function buildPart(entry: { key: string; grade: any; book: any; part: any }): Pa
     }
   }
 
+  // Official English text, paired with the Arabic sections by heading number ("1. …")
+  const englishLessonIds: string[] = [];
+  if (fs.existsSync(sources.englishLessonsDir)) {
+    for (const f of fs.readdirSync(sources.englishLessonsDir).filter((x: string) => x.endsWith(".json")).sort()) {
+      const en = readJson<EnglishLessonSource>(path.join(sources.englishLessonsDir, f), null as never);
+      const lesson = lessonsById.get(en.lessonId);
+      if (!lesson) throw new Error(`${key}: English text for unknown lesson ${en.lessonId}`);
+      const sections: EnglishLesson["sections"] = {};
+      for (const sec of en.sections) {
+        const target = lesson.sections.find(
+          (s) => s.origin !== "explanation" && Number((s.title.match(/^(\d+)\.\s/) || [])[1]) === sec.number
+        );
+        if (target) sections[target.id] = sec;
+      }
+      writeJson(`${key}/english/${en.lessonId}.json`, {
+        lessonId: en.lessonId,
+        title: en.title,
+        learningObjectives: en.learningObjectives,
+        guidingQuestion: en.guidingQuestion,
+        sections,
+      } satisfies EnglishLesson);
+      englishLessonIds.push(en.lessonId);
+    }
+  }
+
   // Lesson search records (glossary/acronyms are searched from their own files)
   const searchLessons: SearchLesson[] = chapters.flatMap((ch) =>
     ch.lessons.map((l) => ({
@@ -361,6 +388,7 @@ function buildPart(entry: { key: string; grade: any; book: any; part: any }): Pa
     companions,
     deepQuestionCounts,
     storylineLessonIds,
+    englishLessonIds,
   };
   writeJson(`${key}/manifest.json`, manifest);
 

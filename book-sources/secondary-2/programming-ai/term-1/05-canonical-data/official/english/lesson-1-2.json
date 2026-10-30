@@ -1,0 +1,93 @@
+{
+  "lessonId": "lesson-1-2",
+  "number": "1-2",
+  "title": "How AI Works",
+  "learningObjectives": [
+    "Explain what AI is.",
+    "Explain how generative AI is positioned within AI technologies."
+  ],
+  "guidingQuestion": "What is AI, and how are machine learning, deep learning, and generative AI related?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. What is Artificial Intelligence (AI)?",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (AI (Artificial Intelligence))…a general term for technologies that reproduce or perform intelligent human behavior (learning, reasoning, judgment, etc.) on a computer."
+        },
+        {
+          "type": "p",
+          "text": "e.g., speech recognition, image recognition, translation"
+        }
+      ],
+      "pdfPages": [
+        14
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. The Relationship between AI and Machine Learning",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Within AI technologies, there is machine learning; within machine learning, there is deep learning; and within deep learning, there is generative AI. The broad field of AI includes increasingly specialized technologies as a series of nested categories."
+        },
+        {
+          "type": "caption",
+          "text": "Hierarchy of AI Technologies"
+        },
+        {
+          "type": "p",
+          "text": "(2) (Machine Learning)…one of the learning technologies that makes AI work. It learns patterns from data to make predictions and judgments."
+        },
+        {
+          "type": "p",
+          "text": "e.g., spam filters, product recommendations"
+        },
+        {
+          "type": "p",
+          "text": "(3) (Deep Learning)…an advanced technology within machine learning that uses neural networks. It learns complex patterns using large-scale data. e.g., image analysis for autonomous driving, speech synthesis"
+        },
+        {
+          "type": "p",
+          "text": "(4) (Neural network)…a system modeled after the workings of the nerve cells (neurons) of the human brain. By connecting many components, it learns from data and becomes capable of making complex judgments. It is the core technology supporting recent advances in AI."
+        },
+        {
+          "type": "caption",
+          "text": "A neural network connects many simple components."
+        },
+        {
+          "type": "p",
+          "text": "(5) (Generative AI)…AI technology that uses deep learning to generate new data (text, images, audio, programs, etc.)."
+        },
+        {
+          "type": "p",
+          "text": "e.g., ChatGPT, image generation AIs"
+        },
+        {
+          "type": "caption",
+          "text": "Generative AI creates new text, images, and audio."
+        }
+      ],
+      "pdfPages": [
+        14,
+        15
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "lessonId": "lesson-6-2",
+  "number": "6-2",
+  "title": "Use and Evaluation of Regression Analysis",
+  "learningObjectives": [
+    "Explain the difference between simple and multiple regression, and what a regression model represents.",
+    "Evaluate a regression model using R², RMSE, and MAE, and explain why a good fit does not prove causation."
+  ],
+  "guidingQuestion": "How does regression turn data into a prediction, and how do we judge whether that prediction can be trusted?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Regression Analysis Stage",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Regression analysis)…a method that expresses the relationship between variables in the data as an equation, and uses it for prediction and simulation. For example, from past data on temperature and sales, one can express how sales change when temperature rises as an equation, and put tomorrow's forecast temperature into that equation to predict sales."
+        },
+        {
+          "type": "p",
+          "text": "(2) In regression analysis, the variable that is the result is called the (response variable) (dependent variable), and the variable used to explain or predict it is called the (explanatory variable). In the temperature‑and‑sales example, sales are the response variable and temperature is the explanatory variable."
+        },
+        {
+          "type": "p",
+          "text": "(3) The equation obtained from data in regression analysis is called the (model). A model is a simplified representation of a real relationship—for example, putting the trend “the higher the temperature, the higher the sales” into a format that can be calculated."
+        },
+        {
+          "type": "p",
+          "text": "(4) Both creating a model and evaluating whether the model can actually be used are important. A model that is only created is not useful; only by confirming its accuracy and limitations does it lead to practical use."
+        }
+      ],
+      "pdfPages": [
+        41
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Simple and Multiple Regression",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Simple regression analysis)…a method of predicting the response variable using one explanatory variable."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Predict ice cream sales (y) from temperature (x) alone. The prediction equation is expressed as a straight line in the format y = ax + b, and this line is called the (regression line). a and b are determined by the (least‑squares method) (a method that determines the line so as to minimize the sum of the squares of the discrepancies between the actual values and the regression line, each called a (residual))."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Multiple regression analysis)…a method of predicting the response variable using multiple explanatory variables. In real data, results are rarely determined by a single cause, and multiple regression analysis, which can consider several factors simultaneously, is suited to more realistic prediction. e.g., Predict housing prices from a house's size, age, and distance from a transit station (multiple factors). The prediction equation is expressed as the sum of multiple explanatory variables, each multiplied by a coefficient (a numerical value representing the strength of its influence), plus an intercept. For example, when there are two explanatory variables, the format becomes y = a1x1 + a2x2 + b (x1 and x2 are the explanatory variables, a1 and a2 are their coefficients, and b is the intercept). When there are three or more explanatory variables, terms are added in the same way."
+        },
+        {
+          "type": "p",
+          "text": "(3) The following differences exist between simple and multiple regression."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Aspect",
+              "Simple regression",
+              "Multiple regression"
+            ],
+            [
+              "Number of explanatory variables",
+              "One",
+              "Two or more"
+            ],
+            [
+              "Characteristics of the model",
+              "Simple and easy to interpret",
+              "Can express complex relationships"
+            ],
+            [
+              "Suitable situations",
+              "When you want to capture the relationship between two variables concisely",
+              "When the response variable is influenced by multiple factors"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        41,
+        42
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Evaluation Indicators for Models",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) To judge how useful a model created by regression analysis is, (evaluation indicators) are used. Three typical indicators are as follows."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Indicator",
+              "Description (concept of calculation)",
+              "Interpretation"
+            ],
+            [
+              "(R² (coefficient of determination))",
+              "Expresses, on a 0–1 scale, how well the model explains the variability in the data",
+              "The closer to 1, the better the variation in the data is explained"
+            ],
+            [
+              "(RMSE (root mean square error))",
+              "The square root of the mean of the squared discrepancies between predicted and actual values",
+              "The smaller the value, the higher the prediction accuracy; expressed in the same units as the response variable"
+            ],
+            [
+              "(MAE (mean absolute error))",
+              "The mean of the absolute values of the discrepancies between predicted and actual values",
+              "The smaller the value, the higher the prediction accuracy; less affected by extremely large discrepancies"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Both RMSE and MAE indicate the size of prediction errors, but RMSE tends to weight large discrepancies more heavily. On the other hand, MAE evaluates discrepancies on average, so it is less affected by outliers. They are used differently according to the purpose of the analysis."
+        }
+      ],
+      "pdfPages": [
+        42
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Cautions When Using Regression Models",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Regression analysis is a widely applicable method, but misuse can lead to incorrect conclusions. Pay particular attention to the following points."
+        },
+        {
+          "type": "p",
+          "text": "① Do not confuse correlation with causation: a prediction equation that fits does not establish it. Causation needs temporal precedence, exclusion of other factors' influence, and theoretical support."
+        },
+        {
+          "type": "p",
+          "text": "② A model is not finished once created: Confirm accuracy with evaluation indicators, verify validity in light of the purpose, and do not apply it outside the range of the data it was fitted to."
+        },
+        {
+          "type": "p",
+          "text": "③ Do not judge a model by R² alone: Make judgments together with other indicators."
+        },
+        {
+          "type": "p",
+          "text": "④ Adding more explanatory variables does not necessarily improve a model: Appropriate variables must be chosen according to the purpose."
+        },
+        {
+          "type": "p",
+          "text": "(2) The results of regression analysis should not be treated as absolute truth as is, but as one perspective that the data offers. Interpreting results appropriately and using them in real-world judgment is important."
+        }
+      ],
+      "pdfPages": [
+        42,
+        43
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ]
+  }
+}

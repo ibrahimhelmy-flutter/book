@@ -1,0 +1,174 @@
+{
+  "lessonId": "lesson-4-1",
+  "number": "4-1",
+  "title": "Types and Characteristics of Media",
+  "learningObjectives": [
+    "Compare the characteristics of different media, and explain the strengths and constraints of websites.",
+    "Choose suitable media for a given purpose and audience, and justify the choice."
+  ],
+  "guidingQuestion": "What are the strengths and constraints of different media, and how do you choose the right one for a purpose and audience?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. Comparison of the Characteristics of Different Media",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Each medium for conveying information has different characteristics. When planning a website, it is important to understand the differences from other media."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Medium",
+              "Information conveyed",
+              "Characteristics"
+            ],
+            [
+              "TV",
+              "Video + audio",
+              "Reaches many people simultaneously. Appeals to sight and hearing. One-way, from sender to receiver."
+            ],
+            [
+              "Radio",
+              "Audio",
+              "Appeals only to hearing. Can be received almost anywhere and alongside other tasks. One-way."
+            ],
+            [
+              "Newspaper",
+              "Text + images",
+              "Remains physically as a printed medium. Can be read without an Internet connection. One-way."
+            ],
+            [
+              "Website",
+              "Text + images + video + audio",
+              "Diverse information can be combined. Can be updated at any time. Basically one-way, but two-way interaction is also possible through forms, comments, etc."
+            ],
+            [
+              "SNS",
+              "Text + images + video + audio",
+              "Highly effective at spreading information rapidly. Users can post and share information. Two-way."
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        77
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Strengths and Constraints of Websites",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Strengths of websites"
+        },
+        {
+          "type": "p",
+          "text": "① Diverse information such as text, images, and video can be combined and presented."
+        },
+        {
+          "type": "p",
+          "text": "② Information can be updated at any time."
+        },
+        {
+          "type": "p",
+          "text": "③ Can be accessed from almost anywhere in the world."
+        },
+        {
+          "type": "p",
+          "text": "④ Two-way interaction with users is possible through forms, comments, etc."
+        },
+        {
+          "type": "p",
+          "text": "⑤ Can be used with just a browser; no dedicated app installation is required."
+        },
+        {
+          "type": "p",
+          "text": "(2) Constraints of websites"
+        },
+        {
+          "type": "p",
+          "text": "① Normally requires an Internet connection (unless the page is cached)."
+        },
+        {
+          "type": "p",
+          "text": "② Information does not reach users unless they actively access it."
+        },
+        {
+          "type": "p",
+          "text": "③ Display and loading speed may differ depending on the user's device and network environment."
+        }
+      ],
+      "pdfPages": [
+        77,
+        78
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Choosing Media According to Purpose",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) When conveying information, it is important to choose the most suitable medium according to the purpose and target audience."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Purpose",
+              "Examples of suitable media",
+              "Reason"
+            ],
+            [
+              "Inform many people at once",
+              "TV, SNS ads",
+              "Wide reach"
+            ],
+            [
+              "Provide detailed information",
+              "Website",
+              "No limit on information volume; can be viewed at any time"
+            ],
+            [
+              "Deliver information directly to specific people",
+              "Email, direct messages",
+              "Can be delivered individually"
+            ],
+            [
+              "Spread by word of mouth",
+              "SNS",
+              "Users can voluntarily share and spread information"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) In practice, multiple media are often used in combination."
+        },
+        {
+          "type": "p",
+          "text": "e.g., A TV commercial directs viewers to a website, and the website encourages spreading information through SNS."
+        }
+      ],
+      "pdfPages": [
+        78
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      76,
+      77,
+      78,
+      79,
+      80,
+      81
+    ]
+  }
+}

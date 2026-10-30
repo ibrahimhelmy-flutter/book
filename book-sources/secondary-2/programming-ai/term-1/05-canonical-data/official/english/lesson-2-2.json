@@ -1,0 +1,162 @@
+{
+  "lessonId": "lesson-2-2",
+  "number": "2-2",
+  "title": "Network Security Design",
+  "learningObjectives": [
+    "Explain the roles of firewalls, VPNs, and DMZs in protecting a network.",
+    "Describe defense in depth and zero trust, and explain why layered, verified access is stronger than a single barrier."
+  ],
+  "guidingQuestion": "How can an organization design its network so that, even if one defense is breached, the system stays protected?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Role of Firewalls",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Firewall)…a system installed at the entry/exit point of a network that allows or denies communication based on rules set in advance."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Allow access to the web server, but deny direct external access to the database server."
+        }
+      ],
+      "pdfPages": [
+        43
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. VPN (Virtual Private Network)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (VPN)…a technology that creates an encrypted virtual private line (tunnel) over the Internet, allowing safe connection to a network from a remote location."
+        },
+        {
+          "type": "p",
+          "text": "(2) Main uses of VPN"
+        },
+        {
+          "type": "p",
+          "text": "① Remote work…connecting safely to an organization's network from home or while away."
+        },
+        {
+          "type": "p",
+          "text": "② Connecting branches…connecting offices in different locations safely."
+        },
+        {
+          "type": "p",
+          "text": "(3) Because communication content is encrypted when using a VPN, the risk of eavesdropping is reduced even when using public Wi-Fi."
+        }
+      ],
+      "pdfPages": [
+        43
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. DMZ (Demilitarized Zone)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (DMZ)…an area where servers exposed to the external network (web servers, mail servers, etc.) are placed separately from the internal network."
+        },
+        {
+          "type": "p",
+          "text": "(2) By providing a DMZ, even if a public-facing server is attacked, damage to the internal network can be prevented."
+        },
+        {
+          "type": "caption",
+          "text": "DMZ Network Configuration"
+        }
+      ],
+      "pdfPages": [
+        43,
+        44
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Defense in Depth",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Defense in depth)…the concept of layering multiple security measures so that, even if one measure is breached, the next can still protect the system."
+        },
+        {
+          "type": "p",
+          "text": "(2) In network security, multiple measures are combined as follows."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Layer",
+              "Examples of measures"
+            ],
+            [
+              "Layer 1: Network entry",
+              "Block unauthorized communication using a firewall"
+            ],
+            [
+              "Layer 2: Communication path",
+              "Encrypt communication using a VPN"
+            ],
+            [
+              "Layer 3: Server placement",
+              "Separate public-facing servers from the internal network using a DMZ"
+            ],
+            [
+              "Layer 4: Endpoints",
+              "Install antivirus software and keep the OS updated"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        44
+      ]
+    },
+    {
+      "number": 5,
+      "title": "5. The Concept of Zero Trust",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Zero trust)…a security concept that means the system does not trust any communication, including from within the organization's network, and always verifies it."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Even for access from inside the organization, identity verification and access permission checks are performed every time."
+        },
+        {
+          "type": "p",
+          "text": "(2) Conventional network security was designed mainly around protecting a perimeter, based on the premise that \"inside the organization's network is safe, and outside is dangerous.\" However, with the spread of cloud services and remote work, the boundary between \"inside\" and \"outside\" has become blurred, and designs that protect only the perimeter have become insufficient."
+        },
+        {
+          "type": "caption",
+          "text": "Traditional vs. Zero Trust"
+        }
+      ],
+      "pdfPages": [
+        44,
+        45
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ]
+  }
+}

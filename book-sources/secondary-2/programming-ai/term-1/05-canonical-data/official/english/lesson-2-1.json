@@ -1,0 +1,195 @@
+{
+  "lessonId": "lesson-2-1",
+  "number": "2-1",
+  "title": "Cryptographic Technologies and Authentication",
+  "learningObjectives": [
+    "Explain how HTTPS secures communication: how the TLS handshake uses public-key cryptography to share a key safely, and how common-key cryptography then protects the data that follows.",
+    "Describe how authentication, including multi-factor authentication, is used in real services, and explain why security technologies are combined."
+  ],
+  "guidingQuestion": "How do cryptographic technologies and authentication work together to keep online communication and services secure?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. How HTTPS Communication Works",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (HTTPS (HTTP Secure))…a communication protocol that adds TLS encryption to HTTP. By providing encryption, detection of tampering, and verification of the communication partner, it protects users from threats such as eavesdropping, tampering, and impersonation. The procedure for establishing a secure communication is called the TLS handshake."
+        },
+        {
+          "type": "p",
+          "text": "(2) HTTPS combines common-key (symmetric-key) cryptography and public-key cryptography as follows, taking advantage of the strengths of both methods."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "What happens",
+              "Cryptographic method used"
+            ],
+            [
+              "① Connection",
+              "The web server sends a digital certificate and a public key to the browser. The browser verifies the server's authenticity through a certificate authority (CA).",
+              "Public-key cryptography"
+            ],
+            [
+              "② Key exchange",
+              "The browser creates a common key for communication, encrypts it with the server's public key, and sends it. The server decrypts it with its private key to obtain the common key.",
+              "Public-key cryptography"
+            ],
+            [
+              "③ Data communication",
+              "Data is encrypted and exchanged using the shared common key.",
+              "Common-key cryptography"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Note: the exchange above shows one way a common key can be shared. Current versions of TLS use Diffie-Hellman key agreement instead."
+        },
+        {
+          "type": "caption",
+          "text": "HTTPS Communication Flow"
+        },
+        {
+          "type": "p",
+          "text": "(3) Public-key cryptography is used to \"share keys safely,\" and common-key cryptography is used to \"exchange large amounts of data quickly.\" This division of roles makes it possible to achieve both security and communication speed."
+        }
+      ],
+      "pdfPages": [
+        35,
+        36
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Use of Authentication in Real Services",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Many services adopt (multi-factor authentication), in which two or more of the three factors of authentication (knowledge, possession, biometric) are combined."
+        },
+        {
+          "type": "p",
+          "text": "(2) When only one factor is used, an unauthorized party can gain access if that factor is broken. By combining multiple factors, even if one is broken, another can still prevent access."
+        },
+        {
+          "type": "p",
+          "text": "e.g., If only a password (knowledge) is used, an unauthorized login is possible once the password is leaked. However, if a notification to a smartphone (possession) is also required, an attacker cannot log in without the device, even if the password is leaked."
+        },
+        {
+          "type": "p",
+          "text": "(3) The following examples of multi-factor authentication are used in various services."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Service",
+              "Examples of authentication used"
+            ],
+            [
+              "Online banking",
+              "Password (knowledge) + one-time password (possession)"
+            ],
+            [
+              "SNS login",
+              "Password (knowledge) + SMS authentication (possession)"
+            ],
+            [
+              "Company laptop login",
+              "Smart card (possession) + fingerprint authentication (biometric)"
+            ],
+            [
+              "Online shopping",
+              "Password (knowledge) + one-time code from 3-D Secure (possession)"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        36
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Combinations of Security Technologies",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Safe communication and services are achieved not by a single technology, but by combining multiple security technologies."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Technology",
+              "Effect"
+            ],
+            [
+              "Encryption (common- key, public-key)",
+              "Prevents communication content from being read by third parties"
+            ],
+            [
+              "Digital signature",
+              "Detects data tampering or impersonation of the sender, and makes it impossible for the sender to deny having sent the data afterward (non-repudiation)"
+            ],
+            [
+              "Digital certificate",
+              "Verifies that the communication partner is authentic"
+            ],
+            [
+              "Multi-factor authentication",
+              "Prevents unauthorized logins"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2 ) For example, when purchasing a product through online shopping, these technologies are combined and used as follows."
+        },
+        {
+          "type": "p",
+          "text": "① When you access the site, HTTPS communication begins, and (encryption) prevents communication content from being read by third parties."
+        },
+        {
+          "type": "p",
+          "text": "② The browser checks the (digital certificate) to confirm that the destination is the genuine shopping site."
+        },
+        {
+          "type": "p",
+          "text": "③ For account login, (multi-factor authentication) combining a password and SMS authentication, etc., prevents unauthorized logins."
+        },
+        {
+          "type": "p",
+          "text": "④ When sending order details, a (digital signature) can also be used so that tampering during communication can be detected."
+        },
+        {
+          "type": "p",
+          "text": "(3) By combining multiple technologies in this way, various threats such as \"eavesdropping,\" \"tampering,\" \"impersonation,\" and \"unauthorized login\" can be addressed simultaneously."
+        }
+      ],
+      "pdfPages": [
+        36,
+        37
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41
+    ]
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "lessonId": "lesson-2-3",
+  "number": "2-3",
+  "title": "Incident Response and Risk Management",
+  "learningObjectives": [
+    "Explain what a security incident is and describe the stages of incident response in the correct order.",
+    "Apply the idea of risk assessment by prioritizing risks according to their impact and likelihood."
+  ],
+  "guidingQuestion": "When a security incident happens, how should an organization respond in order — and how does it decide which risks to address first?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. What is a Security Incident",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Security incident)…a situation in which actual damage occurs due to an information security problem."
+        },
+        {
+          "type": "p",
+          "text": "(2) Typical examples of security incidents"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Type",
+              "Description"
+            ],
+            [
+              "Information leak",
+              "Personal information or confidential information is leaked to the outside"
+            ],
+            [
+              "Data tampering",
+              "Data within a system is altered without authorization"
+            ],
+            [
+              "Service outage",
+              "A service becomes unavailable due to attacks on the server, etc."
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        50
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. The Flow of Incident Response",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) When a security incident occurs, response proceeds through the following six stages."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "Description"
+            ],
+            [
+              "① Preparation",
+              "Establish response procedures and structures in advance, in preparation for incidents"
+            ],
+            [
+              "② Detection",
+              "Discover and confirm that an incident has occurred"
+            ],
+            [
+              "③ Containment",
+              "Limit the scope of impact so that damage does not spread further"
+            ],
+            [
+              "④ Eradication",
+              "Remove the cause of the incident (e.g., remove malware)"
+            ],
+            [
+              "⑤ Recovery",
+              "Return systems and services to their normal state"
+            ],
+            [
+              "⑥ Prevention of recurrence",
+              "Analyze the cause and take measures so that the same incident does not occur again"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Incident Response: 6 Phases"
+        },
+        {
+          "type": "p",
+          "text": "(2) It is important to proceed through the six stages of incident response in order. For example, if recovery is performed without identifying the cause, the same incident may occur again."
+        }
+      ],
+      "pdfPages": [
+        50,
+        51
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. The Concept of Risk Assessment",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Risk)…the possibility of an information security problem occurring in the future, and its impact."
+        },
+        {
+          "type": "p",
+          "text": "(2) The size of a risk is determined by the following two factors."
+        },
+        {
+          "type": "p",
+          "text": "Risk size = Impact × Likelihood"
+        },
+        {
+          "type": "p",
+          "text": "① (Impact)…how much damage occurs if the risk actually materializes."
+        },
+        {
+          "type": "p",
+          "text": "② (Likelihood)…how high the probability is that the risk will actually materialize."
+        },
+        {
+          "type": "caption",
+          "text": "Risk Evaluation Matrix"
+        },
+        {
+          "type": "p",
+          "text": "(3) Risks with both high impact and high likelihood should be addressed first. Since it is difficult to address all risks at the same time, it is important to set priorities and take measures systematically."
+        }
+      ],
+      "pdfPages": [
+        51
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55
+    ]
+  }
+}

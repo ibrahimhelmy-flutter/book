@@ -1,0 +1,154 @@
+{
+  "lessonId": "lesson-4-4",
+  "number": "4-4",
+  "title": "The Iterative Improvement Process for Websites",
+  "learningObjectives": [
+    "Explain the PDCA cycle and the steps of design thinking as ways of improving a website.",
+    "Describe how A/B testing compares two options using real data, and explain why improvement is repeated in cycles."
+  ],
+  "guidingQuestion": "Why is improving a website a repeated loop rather than a one-time job, and how do teams decide what to change?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The PDCA Cycle",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (PDCA cycle)…a method that continuously advances improvement by repeating the following four steps. It is used widely in fields such as business improvement and quality management, not just websites."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "Description",
+              "Example in website improvement"
+            ],
+            [
+              "Plan",
+              "Set goals and create a plan for improvement",
+              "Set the goal “reduce bounce rate by 10%” and plan a redesign of the homepage"
+            ],
+            [
+              "Do",
+              "Execute according to the plan",
+              "Change the design of the homepage"
+            ],
+            [
+              "Check",
+              "Measure results and evaluate the level of goal achievement",
+              "Measure the bounce rate after the change and evaluate whether the goal (10% reduction) was achieved"
+            ],
+            [
+              "Act",
+              "Based on the evaluation, consider the next improvement measures",
+              "If the effect is sufficient, continue; if not, consider next steps such as revising headings or image placement"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "The PDCA cycle as a continuous improvement loop"
+        },
+        {
+          "type": "p",
+          "text": "(2) The important point of the PDCA cycle is not to aim for completion in one round, but to gradually improve through repetition."
+        }
+      ],
+      "pdfPages": [
+        97,
+        98
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Design Thinking",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Design thinking)…a way of thinking that leads to discovering problems and generating solutions from the perspective of the user. It proceeds through the following five steps."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Step",
+              "Description"
+            ],
+            [
+              "① Empathize",
+              "Put yourself in the user's position and understand their challenges and needs"
+            ],
+            [
+              "② Define",
+              "Based on the information gleaned from empathy, clarify the problem to be solved"
+            ],
+            [
+              "③ Ideate",
+              "Generate many ideas to solve the problem"
+            ],
+            [
+              "④ Prototype",
+              "Quickly create a prototype based on the ideas"
+            ],
+            [
+              "⑤ Test",
+              "Have users try the prototype and obtain feedback from them"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Based on test results, one may go back to the empathize or define stage. Improvement proceeds back and forth, not one-way."
+        }
+      ],
+      "pdfPages": [
+        98
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. A/B Testing",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (A/B testing)…a method in which two patterns (option A and option B) are prepared, each is shown to actual users, and data is examined to determine which is more effective."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Compare option A with a red purchase button and option B with a blue purchase button to see which gets clicked more."
+        },
+        {
+          "type": "p",
+          "text": "(2) Key points of A/B testing"
+        },
+        {
+          "type": "p",
+          "text": "① Change only one element at a time (if multiple elements are changed, it is unclear which change produced the effect)."
+        },
+        {
+          "type": "p",
+          "text": "② Make decisions only after collecting a sufficient amount of data."
+        }
+      ],
+      "pdfPages": [
+        98,
+        99
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102
+    ]
+  }
+}

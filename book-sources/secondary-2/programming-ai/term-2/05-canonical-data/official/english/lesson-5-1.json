@@ -1,0 +1,158 @@
+{
+  "lessonId": "lesson-5-1",
+  "number": "5-1",
+  "title": "Methods of Data Collection",
+  "learningObjectives": [
+    "Distinguish primary from secondary data and explain when each is appropriate.",
+    "Explain how sampling works, and describe how sampling bias can lead to confident but wrong conclusions."
+  ],
+  "guidingQuestion": "How do you collect data you can trust, and how can a small sample fairly represent a whole population?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Data Collection Stage",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Data analysis progresses through the flow of “collection → organization → analysis,” after the purpose has been clarified. In (data collection), the first stage, it is necessary to plan what data will be gathered and how, in line with the purpose of the analysis."
+        },
+        {
+          "type": "p",
+          "text": "(2) If data that does not match the purpose is collected, it is impossible to draw appropriate conclusions, no matter how carefully later organization and analysis are carried out. For this reason, data collection is an important stage that determines the quality of the entire analysis."
+        }
+      ],
+      "pdfPages": [
+        6
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Primary Data and Secondary Data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Primary data)…data that is newly collected to fit a specific purpose. e.g., surveys, interviews, observations, experiments. Strength: the items collected can be designed to match the purpose, providing excellent originality and reliability. Constraint: collection takes time, effort, and cost."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Secondary data)…data that has already been collected and made public by others, and is used in analysis. e.g., open datasets, existing statistics, industry reports. Strength: large amounts of data can be obtained in a short time. Constraints: it may not perfectly match one's purpose; bias or omissions may have arisen during editing or summarizing."
+        },
+        {
+          "type": "p",
+          "text": "(3) Primary data, since it can be collected to match one's own purpose, has excellent reliability and originality, making it a high-value type of data that can serve as the core of analysis. On the other hand, the value of secondary data lies in being able to easily make use of large-scale data and existing statistics that cannot be obtained from primary data alone. In actual analysis, the two are appropriately combined depending on the purpose and constraints."
+        }
+      ],
+      "pdfPages": [
+        6
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Sampling",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) The entire group that is the target of analysis is called the (population), and the part of the population that is actually surveyed is called the (sample). Surveying the entire population is called a (complete survey), also called a census, and surveying a chosen sample is called a (sample survey)."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Sampling)…selecting a sample from the population. Depending on the sampling method, the reliability of the conclusions obtained varies greatly."
+        },
+        {
+          "type": "caption",
+          "text": "Sampling: from population to sample"
+        },
+        {
+          "type": "p",
+          "text": "(3) A typical sampling technique is (random sampling), as described below. Random sampling makes it likely that the sample represents the population, allowing the analysis results to be applied to the population as a whole."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Method",
+              "Description"
+            ],
+            [
+              "(Simple random sampling)",
+              "Choose a sample from the population purely by chance, without bias"
+            ],
+            [
+              "(Stratified sampling)",
+              "Divide the population into strata such as gender or age group, and randomly choose from each stratum"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(4) Simple random sampling is the most basic method and can be used even when little is known about the population. Stratified sampling can reflect the composition of the population (such as the ratios of gender and age group) in the sample, making it easier to reduce bias when differences between strata affect the analysis."
+        }
+      ],
+      "pdfPages": [
+        7
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Bias in Surveys",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Sampling bias)…this occurs when the method of selecting a sample is biased and does not correctly reflect the actual state of the population. When sampling bias is present, the conclusions obtained cannot be applied to the population as a whole."
+        },
+        {
+          "type": "p",
+          "text": "(2) Typical examples of bias. Self‑selection and time/location bias concern who is surveyed (selection bias); response bias concerns how those surveyed answer (measurement error)."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Type of bias",
+              "Description",
+              "Example"
+            ],
+            [
+              "(Self-selection bias)",
+              "Bias caused by only those who want to respond actually responding",
+              "In a web survey, only people with high interest respond"
+            ],
+            [
+              "(Response bias)",
+              "Not a selection problem: people already surveyed give answers that look desirable rather than accurate",
+              "Reporting a “study time” longer than it really was"
+            ],
+            [
+              "(Time/location bias)",
+              "Bias caused by the timing or location of the survey being limited",
+              "Surveying in front of a station on weekday afternoons, missing office workers and students"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) It is difficult to eliminate sampling bias completely, but bias can be reduced by carefully designing the survey: how subjects are chosen, how questions are worded, and how the survey is conducted."
+        }
+      ],
+      "pdfPages": [
+        7,
+        8
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+}

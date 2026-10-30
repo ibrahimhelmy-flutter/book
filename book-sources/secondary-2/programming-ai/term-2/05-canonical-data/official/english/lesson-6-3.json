@@ -1,0 +1,154 @@
+{
+  "lessonId": "lesson-6-3",
+  "number": "6-3",
+  "title": "Data Visualization and Communication",
+  "learningObjectives": [
+    "Explain the role of data visualization and select suitable graphs, including for multiple variables.",
+    "Apply data storytelling to communicate a clear and honest message from data."
+  ],
+  "guidingQuestion": "How do we choose a visualization that reveals a pattern honestly, and how do we turn a chart into a message others understand?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Role of Data Visualization",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Data visualization)…representing data as graphs or figures so that features that are hard to read from numbers alone can be grasped visually."
+        },
+        {
+          "type": "p",
+          "text": "(2) Data visualization broadly has two roles."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Role",
+              "Description",
+              "Example"
+            ],
+            [
+              "Deepen the analyst's own understanding",
+              "Visually grasp the distribution, trends, outliers, etc. of data and gain insight",
+              "When training records or study time are shown as a line graph, changes and trends that are hard to notice when numbers are merely listed in a table become easier to see"
+            ],
+            [
+              "Communicate data to others",
+              "Convey the analysis results or claims to others in an easy-to- understand way",
+              "When the average test score of each class is shown as a bar graph, even someone seeing the data for the first time can compare differences between classes at a glance"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) In either role, it is important to choose a graph that fits the content to be conveyed and to use representations that do not invite misunderstanding. The appropriate visualization method differs depending on the number and type of variables and the purpose of the analysis. When information that cannot be handled by familiar graphs needs to be shown, more advanced visualization techniques are used."
+        }
+      ],
+      "pdfPages": [
+        50
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Visualization Handling Multiple Variables",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Common graphs such as bar graphs, line graphs, and scatter plots are suited to representing the relationship between one or two variables. On the other hand, in analysis, situations often arise in which three or more variables, or many combinations of information, need to be handled at once. Heatmaps and mosaic plots are advanced visualization methods used for such cases."
+        },
+        {
+          "type": "p",
+          "text": "(1) (Heatmap)…a graph in which items are arranged on two axes, and the size of a (third value) — a numerical value — corresponding to each combination is represented by the gradation of color or differences in hue. e.g., Grasp the number of customers visiting at a glance by day of week × time slot; compare trends in average temperature for city × month."
+        },
+        {
+          "type": "caption",
+          "text": "A heatmap: color intensity shows the value for each row × column combination"
+        },
+        {
+          "type": "p",
+          "text": "In a scatter plot, since the relationship between two quantitative variables is represented by points, when the number of points becomes large, they overlap and the density of data becomes hard to see (overplotting). Also, scatter plots are not suited to handling combinations of categorical variables. In such cases, a heatmap has the advantage of allowing the density and patterns of the data to be grasped at a glance."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Mosaic plot)…a graph that represents the relationship between two categorical variables by the size of rectangular areas. e.g., Compare the distribution of gender × subject preference; grasp differences in purchase ratios for age group × product category."
+        },
+        {
+          "type": "caption",
+          "text": "A mosaic plot: each rectangle's area shows the proportion of that category combination"
+        },
+        {
+          "type": "p",
+          "text": "The widths of row and column divisions correspond to the proportions of frequencies, and the area of each rectangle represents the proportion of frequency for that combination of categories. Even when the overall picture is hard to grasp from a numerical table (cross-tabulation), a mosaic plot visually shows differences in proportions as areas, making it easier to grasp relationships between categories intuitively."
+        }
+      ],
+      "pdfPages": [
+        50,
+        51,
+        52
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Data Storytelling",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Data storytelling)…using data and visualization to convey the message you want to convey, structured like a story."
+        },
+        {
+          "type": "p",
+          "text": "(2) The following are the three basic elements of storytelling."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Element",
+              "Description",
+              "Example"
+            ],
+            [
+              "Clarification of the message",
+              "Make it possible to express in one sentence what you want to convey through the graph",
+              "Make the title of a graph showing class test results contain the claim, such as “The class scored highly overall on the math test”"
+            ],
+            [
+              "Selection of elements",
+              "Remove elements unrelated to the message and emphasize the parts you want to draw attention to",
+              "Make only the elements you want to draw attention to stand out in color, while keeping other elements in faded colors"
+            ],
+            [
+              "Provision of supporting information",
+              "Properly arrange the title, axis labels, units, and notes",
+              "Make the graph title, such as “Average math test scores by class,” express the content at a glance, and clearly indicate units and item names like “points” on the vertical axis and “class” on the horizontal axis"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) The depth of an audience's understanding can change greatly with how the same analysis result is conveyed. After visualizing data, it is important to put yourself in the audience's position and verify whether the message is conveyed."
+        }
+      ],
+      "pdfPages": [
+        52
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ]
+  }
+}

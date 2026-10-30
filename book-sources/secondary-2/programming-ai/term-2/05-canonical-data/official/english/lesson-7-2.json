@@ -1,0 +1,234 @@
+{
+  "lessonId": "lesson-7-2",
+  "number": "7-2",
+  "title": "Neural Networks and Deep Learning",
+  "learningObjectives": [
+    "Describe the structure of a neural network and explain how a single neuron processes its inputs.",
+    "Explain what deep learning is, and why stacking many hidden layers brought a leap in AI performance."
+  ],
+  "guidingQuestion": "How is a neural network built and trained, and what does making it “deep” add?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Structure of Neural Networks",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) A neural network has a structure in which many (nodes), also called neurons, are connected. Nodes are arranged together in (layers), and the nodes of adjacent layers are connected to each other."
+        },
+        {
+          "type": "p",
+          "text": "(2) Layers are divided by role into the following three types."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Type of layer",
+              "Role"
+            ],
+            [
+              "Input layer",
+              "Receives data from outside"
+            ],
+            [
+              "Hidden layer (middle layer)",
+              "Processes the input information and extracts features"
+            ],
+            [
+              "Output layer",
+              "Outputs the result of processing as an answer"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "A neural network: input layer, hidden layers, and output layer"
+        },
+        {
+          "type": "p",
+          "text": "(3) Data enters at the input layer, is processed as it passes through the hidden layers, and reaches the output layer in this flow. e.g., In a network that judges whether the animal in a photograph is a dog or a cat, the input layer receives the pixel information of the photograph, the hidden layers extract features such as shape and pattern, and the output layer outputs the judgment of “dog” or “cat.”"
+        },
+        {
+          "type": "p",
+          "text": "(4) The number of hidden layers and the number of nodes in each layer are designed according to the difficulty of the problem to be handled. The more complex the problem, the more layers and nodes are needed."
+        }
+      ],
+      "pdfPages": [
+        70,
+        71
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. How a Neuron Works",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Each neuron receives multiple inputs, multiplies them by weights and sums them, then passes the sum through an (activation function), which lets the network learn relationships that are not simply proportional, before passing the result to the next layer."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Weight)…a numerical value that represents how much each input is emphasized. Weights can be negative as well as positive, and the larger a weight is in size, the more strongly that input influences the neuron's result."
+        },
+        {
+          "type": "caption",
+          "text": "A neuron weights its inputs, sums them, applies an activation function,"
+        },
+        {
+          "type": "caption",
+          "text": "and passes the result on"
+        },
+        {
+          "type": "p",
+          "text": "(3) (Training) is the process of gradually adjusting the weights between neurons using a large amount of data."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "What happens"
+            ],
+            [
+              "Before training",
+              "The weights are set to arbitrary values, and correct predictions cannot be made"
+            ],
+            [
+              "During training",
+              "Data is given, and the weights are gradually adjusted based on the difference between the prediction and the correct answer"
+            ],
+            [
+              "After training",
+              "With the adjusted weights, correct predictions can be made even on new data"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(4) As training progresses, a combination of weights that allows the network as a whole to produce correct answers is found. Even though the function of each individual neuron is simple, complex judgments become possible by combining many neurons."
+        }
+      ],
+      "pdfPages": [
+        71
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Deep Learning",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Deep learning) is a technology that uses neural networks with many hidden layers stacked deeply. “Deep” refers to having many hidden layers."
+        },
+        {
+          "type": "p",
+          "text": "(2) When the hidden layers are made deeper, features of data can be built up step by step and captured. e.g., In an image-recognition network, features are built up from shallow to deep layers as follows."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Layer position",
+              "Examples of features extracted"
+            ],
+            [
+              "Shallow layers",
+              "Simple features such as lines and changes in color"
+            ],
+            [
+              "Middle layers",
+              "Shapes of parts such as eyes, nose, and ears"
+            ],
+            [
+              "Deep layers",
+              "Structure of the whole face or object"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Deep learning builds features step by step, from edges to whole objects"
+        },
+        {
+          "type": "p",
+          "text": "(3) Through this hierarchical building of features, deep learning can recognize complex patterns with high accuracy."
+        },
+        {
+          "type": "p",
+          "text": "(4) Deep learning became practical as a result of large amounts of data and high computational power (in particular, specialized processors well suited to AI computation, such as GPUs and TPUs) becoming available. Before that, it was technically difficult to advance learning sufficiently even when layers were made deeper."
+        }
+      ],
+      "pdfPages": [
+        72
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Why Deep Learning Brought a Leap in AI",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) With the availability of deep learning, accuracy close to or surpassing humans has become achievable in many tasks that were previously considered difficult for computers."
+        },
+        {
+          "type": "p",
+          "text": "(2) The fields in which there has been particularly great progress include the following."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Field",
+              "Examples"
+            ],
+            [
+              "(Image recognition)",
+              "Face recognition systems, diagnostic support for medical images, object detection for self-driving cars"
+            ],
+            [
+              "(Speech recognition)",
+              "Voice operation of smart speakers, transcription from speech, speech translation"
+            ],
+            [
+              "(Natural language processing)",
+              "Machine translation, summarization of text, answering questions"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) Before deep learning, features had to be designed by humans one by one and given to the computer. With deep learning, features can be learned"
+        },
+        {
+          "type": "p",
+          "text": "automatically from data, allowing the limitations of human design to be exceeded."
+        },
+        {
+          "type": "p",
+          "text": "(4) As a result of accumulating these capabilities, the foundation has been laid for AI that newly creates text and images."
+        }
+      ],
+      "pdfPages": [
+        72,
+        73
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77
+    ]
+  }
+}

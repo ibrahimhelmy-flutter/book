@@ -1,0 +1,141 @@
+{
+  "lessonId": "lesson-1-4",
+  "number": "1-4",
+  "title": "Ethical Issues with AI",
+  "learningObjectives": [
+    "Explain what algorithmic bias is and describe its main causes.",
+    "Connect the basic principles of AI ethics (fairness, transparency, privacy protection, and accountability) to specific situations."
+  ],
+  "guidingQuestion": "What ethical issues arise as AI spreads, and what principles should guide how we use it?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. Algorithmic Bias",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Algorithmic bias)…bias in AI judgments caused by bias in the training data. e.g., a hiring AI unfairly evaluating a particular gender; a face-recognition AI being more likely to misidentify particular ethnic groups"
+        },
+        {
+          "type": "p",
+          "text": "(2) Main causes of bias"
+        },
+        {
+          "type": "p",
+          "text": "Training data is biased (e.g., insufficient data on certain attributes; past discriminatory tendencies are reflected in the data). Bias can also enter through the way the system is built — for example, an inappropriate choice of variables, a proxy variable that indirectly stands in for a protected attribute, or the design of the model itself."
+        },
+        {
+          "type": "caption",
+          "text": "Biased training data leads to biased AI judgments"
+        }
+      ],
+      "pdfPages": [
+        28,
+        29
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Privacy Issues",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) The development of AI technology has given rise to new issues concerning (privacy)."
+        },
+        {
+          "type": "p",
+          "text": "① Surveillance through face-recognition technology…cameras in public spaces can identify and track individuals."
+        },
+        {
+          "type": "p",
+          "text": "② Mass collection of personal data…large amounts of online behavior data are collected and analyzed."
+        }
+      ],
+      "pdfPages": [
+        29
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Explainable AI (XAI) and Responsibility",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Explainable AI (XAI))…technology that makes it possible for humans to understand why an AI made a particular judgment."
+        },
+        {
+          "type": "p",
+          "text": "When an AI's decision-making process is opaque (a black box), it is difficult to verify whether the result is correct."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Responsibility)…the question of who is responsible when an AI makes an incorrect judgment."
+        },
+        {
+          "type": "p",
+          "text": "Views on responsibility differ depending on whether one is the developer, the user, the operator, etc."
+        }
+      ],
+      "pdfPages": [
+        29
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Basic Principles of AI Ethics",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) The following basic principles are considered important for using AI appropriately."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Principle",
+              "Description"
+            ],
+            [
+              "Fairness",
+              "Not unjustly discriminating against any particular person or group"
+            ],
+            [
+              "Transparency",
+              "Showing the AI's decision-making process and inner workings clearly"
+            ],
+            [
+              "Privacy protection",
+              "Handling personal information appropriately and protecting privacy"
+            ],
+            [
+              "Accountability",
+              "Being answerable for the AI's decisions"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "The four principles of AI ethics"
+        }
+      ],
+      "pdfPages": [
+        29,
+        30
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33
+    ]
+  }
+}

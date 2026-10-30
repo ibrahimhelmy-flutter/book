@@ -29,7 +29,8 @@
               "edition": {
                 "academicYear": "2026 - 2027",
                 "pdfFile": "Programming-ArtificialIntelligence-Ar-EB-part1.pdf",
-                "rawFullTextFile": "Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json"
+                "rawFullTextFile": "Programming-ArtificialIntelligence-Ar-EB-part1_full_text.json",
+                "englishPdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf"
               },
               "assetsBase": "/images/extracted",
               "companions": [
@@ -54,7 +55,8 @@
                 "pdfFile": "Programming-ArtificialIntelligence-Ar-EB-part2.pdf",
                 "rawFullTextFile": "Programming-ArtificialIntelligence-Ar-EB-part2_full_text.json",
                 "pageOffset": 1,
-                "totalPages": 77
+                "totalPages": 77,
+                "englishPdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf"
               },
               "assetsBase": "/images/p/secondary-2/programming-ai/term-2",
               "companions": [

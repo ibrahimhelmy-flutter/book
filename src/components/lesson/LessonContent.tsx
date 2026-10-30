@@ -3,8 +3,11 @@
 import React, { useState } from "react";
 import type { Lesson, CalloutBox, GlossaryTerm, SimulatorMeta } from "@/types";
 import type { NavLesson } from "@/types/catalog";
-import { lessonHref } from "@/content/paths";
+import { dataUrl, lessonHref } from "@/content/paths";
 import { usePart } from "@/components/layout/PartProvider";
+import { useJson } from "@/lib/fetch-json";
+import type { EnglishLesson } from "@/types/english";
+import { EnglishSectionText } from "./EnglishSectionText";
 import type { CompanionLink } from "../quiz/LessonQuestionBanks";
 import dynamic from "next/dynamic";
 import { LessonHeader, type LessonFontSize } from "./LessonHeader";
@@ -180,8 +183,26 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
 }
 
 export function LessonContent({ lesson, nextLesson, prevLesson, simulators: lessonSimulators, glossary, quiz }: Props) {
-  const { key: partKey } = usePart();
+  const { key: partKey, englishLessonIds } = usePart();
   const [activeTab, setActiveTab] = useState<"lesson" | "quiz">("lesson");
+
+  // Lesson language: Arabic only (default) or Arabic + the official English text, for language schools
+  const hasEnglish = (englishLessonIds ?? []).includes(lesson.id);
+  const [bilingual, setBilingual] = useState<boolean>(false);
+  React.useEffect(() => {
+    try {
+      setBilingual(localStorage.getItem("lesson_language") === "ar-en");
+    } catch {}
+  }, []);
+  const handleLanguageChange = (next: boolean) => {
+    setBilingual(next);
+    try {
+      localStorage.setItem("lesson_language", next ? "ar-en" : "ar");
+    } catch {}
+  };
+  const english = useJson<EnglishLesson>(
+    bilingual && hasEnglish ? dataUrl(partKey, `english/${lesson.id}.json`) : null
+  );
   const [quizSubTab, setQuizSubTab] = useState<"official" | "textbook" | "essay" | "comprehension">("official");
   const [isPresentationOpen, setIsPresentationOpen] = useState<boolean>(false);
   const [isLessonHeaderOpen, setIsLessonHeaderOpen] = useState<boolean>(false);
@@ -528,13 +549,47 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
 
           {/* Detailed Sections with In-Section Notes Button */}
           <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3 px-1">
-              <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3 px-1">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
                 <h2 className="text-base sm:text-lg font-bold text-white">أقسام وشرح الدرس</h2>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 font-mono">
                   ({lesson.sections.length} أقسام)
                 </span>
+                {hasEnglish && (
+                  <div
+                    role="radiogroup"
+                    aria-label="لغة الشرح"
+                    title="النص الإنجليزي منقول من نسخة الوزارة لمدارس اللغات، ويظهر تحت القسم المقابل له"
+                    className="font-ui inline-flex rounded-lg border border-slate-700 bg-slate-900 p-0.5"
+                  >
+                    {[
+                      { value: false, label: "عربي" },
+                      { value: true, label: "عربي + EN" },
+                    ].map((opt) => (
+                      <button
+                        key={opt.label}
+                        type="button"
+                        role="radio"
+                        aria-checked={bilingual === opt.value}
+                        onClick={() => handleLanguageChange(opt.value)}
+                        className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                          bilingual === opt.value
+                            ? "bg-indigo-600 text-white"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {bilingual && english.status === "loading" && (
+                  <span className="text-[11px] text-slate-500">جارٍ التحميل…</span>
+                )}
+                {bilingual && english.status === "error" && (
+                  <span className="text-[11px] text-rose-400">تعذر تحميل النص الإنجليزي</span>
+                )}
               </div>
               <span className="text-xs text-slate-500">النص المعتمد من كتاب الوزارة</span>
             </div>
@@ -632,6 +687,10 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
                       keyConcepts={lesson.keyConcepts}
                     />
                   </div>
+
+                  {bilingual && english.status === "ready" && english.data.sections[sec.id] && (
+                    <EnglishSectionText section={english.data.sections[sec.id]} fontSize={fontSize} />
+                  )}
 
                   {/* Section Diagram / Image with Compact Size & Lightbox */}
                   {sec.image && (

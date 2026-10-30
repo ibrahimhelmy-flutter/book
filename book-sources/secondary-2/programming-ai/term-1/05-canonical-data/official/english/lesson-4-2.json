@@ -1,0 +1,133 @@
+{
+  "lessonId": "lesson-4-2",
+  "number": "4-2",
+  "title": "Information Design and User Experience for We",
+  "learningObjectives": [
+    "Explain how personas and wireframes are used to plan a website before designing its appearance.",
+    "Apply the four principles of design (contrast, repetition, alignment, proximity) and explain the idea of user-centered design."
+  ],
+  "guidingQuestion": "How do designers plan a website around its users, and what principles make a page clear and easy to use?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. Persona",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Persona)…a typical user image of those who will use the website, set up as a concrete person. Details such as age, occupation, purpose, and challenges are selected."
+        },
+        {
+          "type": "p",
+          "text": "(2) By setting up a persona, designers can think specifically about “what this user needs,” and the direction of the design becomes less likely to drift. e.g., Person in their 30s, an office worker, wants to compare products on a smartphone during commute, wants to obtain information in a short time."
+        }
+      ],
+      "pdfPages": [
+        83
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Wireframe",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Wireframe)…a rough blueprint of the layout of a web page. It does not include color or design decoration; it is created to determine the placement and priority of information."
+        },
+        {
+          "type": "p",
+          "text": "(2) By using a wireframe, “what information to place where” can be considered separately from visual design. If decorations such as colors and fonts are decided first, discussions tend to drift toward personal preferences in appearance, so finalizing the placement and priority of information first makes it easier for stakeholders to reach agreement."
+        },
+        {
+          "type": "caption",
+          "text": "Wireframe Example"
+        }
+      ],
+      "pdfPages": [
+        83
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. The Four Principles of Design (CRAP Principles)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Designs that are easy to view and understand follow these four principles."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Principle",
+              "Description (purpose)",
+              "Specific techniques and examples"
+            ],
+            [
+              "(Contrast)",
+              "Make the priority of information clear and immediately highlight the most important elements",
+              "• Make headings large and bold to differentiate them from body text • Use accent colors for important buttons (e.g., purchase)"
+            ],
+            [
+              "(Repetition)",
+              "Repeat specific characteristics so that the whole design has consistency, allowing users to navigate without getting lost",
+              "• Standardize the color, size, and font of headings on each page • Match the design of bullet point icons"
+            ],
+            [
+              "(Alignment)",
+              "Align the position of each element to a common baseline, giving order to the entire screen",
+              "• Align the left edges of text and images precisely • Make a consistent rule for whether to use center or left alignment"
+            ],
+            [
+              "(Proximity)",
+              "Place related information close together so that it can be perceived as a single group at a glance",
+              "• Group product images, names, and prices together • Leave appropriate spacing (margins) between items"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "CRAP Design Principles"
+        }
+      ],
+      "pdfPages": [
+        84
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. User-Centered Design (UCD)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (User-Centered Design (UCD))…a design approach that designs websites and services from the perspective of the user, rather than the convenience of the creator."
+        },
+        {
+          "type": "p",
+          "text": "(2) In UCD, design begins from “what the user needs” and “in what situation it will be used.” Setting up a persona is one specific way of practicing UCD; by clarifying the user image, design decisions can be kept consistently aligned with the user's perspective."
+        },
+        {
+          "type": "p",
+          "text": "(3) Improving usability for users and accessibility for a wide range of people are important goals of UCD."
+        }
+      ],
+      "pdfPages": [
+        84,
+        85
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88
+    ]
+  }
+}

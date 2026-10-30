@@ -1,0 +1,170 @@
+{
+  "lessonId": "lesson-1-1",
+  "number": "1-1",
+  "title": "Development of Information Technology and Social Transformation",
+  "learningObjectives": [
+    "Explain the major stages in the development of information technology and their impact on society.",
+    "Give examples of social changes and emerging technologies brought about by information technology, and explain their characteristics."
+  ],
+  "guidingQuestion": "How has information technology developed through its major stages, and how has each stage changed society?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The History of Information Technology (IT)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) The major stages in the development of information technology are summarized in the table below."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Time period",
+              "Major technologies and events",
+              "Impact on society"
+            ],
+            [
+              "1940s-60s",
+              "Birth of the computer (ENIAC, vacuum tubes)",
+              "Mainly used for military and scientific computation"
+            ],
+            [
+              "1970s-80s",
+              "Spread of personal computers (PCs)",
+              "Beginning of personal computer use"
+            ],
+            [
+              "1990s",
+              "Commercialization of the Internet; the Web",
+              "Globalization of information; spread of email"
+            ],
+            [
+              "2000s",
+              "Rise of smartphones (iPhone, etc.)",
+              "Explosive spread of mobile Internet"
+            ],
+            [
+              "2010s onward",
+              "Spread of cloud computing",
+              "Large-scale data analysis and AI; \"IT as a service\" becomes widespread"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) (Moore's Law)...the empirical observation that \"the number of transistors on an integrated circuit doubles approximately every two years.\" This remained largely accurate for many years, and computing power increased dramatically."
+        },
+        {
+          "type": "p",
+          "text": "However, in recent years, miniaturization of transistors has been approaching a physical limit. If circuits are made any smaller, problems arise such as the quantum tunneling effect, in which electrons slip through barriers, and leakage current, in which current escapes unintentionally, making it difficult to achieve both higher performance and lower power consumption at the same time. In response, new directions for performance improvement are being pursued, such as parallel processing using multiple processor cores, and quantum computers based on the principles of quantum mechanics."
+        },
+        {
+          "type": "caption",
+          "text": "Moore's Law: transistor count over time"
+        }
+      ],
+      "pdfPages": [
+        6,
+        7
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Social Changes Resulting from Information Technology",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (SNS (Social Networking Service))...services that allow users to connect with each other and post and share information. They are highly effective at spreading information rapidly."
+        },
+        {
+          "type": "p",
+          "text": "(2) (E-commerce (EC))...buying and selling goods and services through the Internet."
+        },
+        {
+          "type": "p",
+          "text": "e.g., online shops such as Amazon and eBay"
+        },
+        {
+          "type": "p",
+          "text": "(3) (Remote work)...a working style in which work is performed from home or other remote locations using the Internet."
+        },
+        {
+          "type": "p",
+          "text": "(4) (Online learning)...a learning style in which classes and study materials are delivered using the Internet."
+        },
+        {
+          "type": "p",
+          "text": "(5) (Cashless payment)...a system for making payments using electronic money, QR codes, etc., without using cash."
+        },
+        {
+          "type": "p",
+          "text": "e.g., credit cards, debit cards, mobile payment apps"
+        },
+        {
+          "type": "caption",
+          "text": "Five social changes driven by information technology."
+        }
+      ],
+      "pdfPages": [
+        7
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Notable Emerging Technologies",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Autonomous driving)...a technology that uses AI to drive a vehicle without human operation. It uses cameras and sensors to recognize the surroundings, makes driving decisions, and controls a vehicle. Because a delay of even 0.1 seconds can lead to an accident, edge computing, in which processing is performed instantly on the vehicle itself rather than sending data to the cloud for judgment, is used."
+        },
+        {
+          "type": "caption",
+          "text": "A self-driving car decides on board (edge computing), without waiting for the cloud."
+        },
+        {
+          "type": "p",
+          "text": "(2) AR / VR"
+        },
+        {
+          "type": "p",
+          "text": "① (AR (Augmented Reality))...a technology that overlays digital information on real-world images."
+        },
+        {
+          "type": "p",
+          "text": "② (VR (Virtual Reality))...a technology that allows users to immerse themselves in a virtual space generated by a computer."
+        },
+        {
+          "type": "caption",
+          "text": "AR adds digital layers to the real world; VR replaces it with a virtual one."
+        },
+        {
+          "type": "p",
+          "text": "(3) (Quantum computing)...a technology expected to dramatically speed up computations that are difficult or impossible for traditional computers, by using the principles of quantum mechanics."
+        },
+        {
+          "type": "caption",
+          "text": "A classical bit holds one state; a qubit uses superposition."
+        }
+      ],
+      "pdfPages": [
+        8
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+}

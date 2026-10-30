@@ -1,0 +1,290 @@
+{
+  "lessonId": "lesson-7-1",
+  "number": "7-1",
+  "title": "The Basics of Machine Learning",
+  "learningObjectives": [
+    "Explain the idea of machine learning and distinguish supervised, unsupervised, and reinforcement learning.",
+    "Describe classification, clustering, and reinforcement learning with examples, and explain the limits caused by data bias and the black-box problem."
+  ],
+  "guidingQuestion": "How does machine learning solve problems differently from ordinary programming, and what are its main types and limits?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Idea of Machine Learning",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Machine learning)…a technology that learns patterns and regularities from large amounts of data so that judgments and predictions can be made on new data. It is the most common method used to make AI work."
+        },
+        {
+          "type": "p",
+          "text": "(2) Conventional programming and machine learning differ greatly in how they solve problems."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Approach",
+              "What humans provide",
+              "What the computer does"
+            ],
+            [
+              "Conventional programming",
+              "Decision rules (procedures) and input data",
+              "Produces answers by following the rules"
+            ],
+            [
+              "Machine learning",
+              "Large amounts of data (with correct answers, where available)",
+              "Finds the decision rules from the data on its own"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) Machine learning is used for problems where it is difficult for humans to express the rules in words. e.g., judging whether a photo shows a dog or a cat; distinguishing whether an email is spam; transcribing audio into text"
+        },
+        {
+          "type": "p",
+          "text": "(4) For such problems, the rules are too complex for humans to write out completely, so the approach of letting the computer learn from examples (data) becomes effective."
+        },
+        {
+          "type": "p",
+          "text": "(5) However, machine learning is not a panacea. Because the quality and bias of the training data affect the results, biased data leads to biased judgments (bias). There is also the black-box problem, in which the basis for the model's judgments becomes hard for humans to see. Given these limitations, it is important to use machine learning not as a replacement for human judgment, but as a tool that supports human judgment."
+        }
+      ],
+      "pdfPages": [
+        59
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Three Types of Learning Methods",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Machine learning is broadly divided into the following three types, depending on the form of data given and the method of learning."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Learning method",
+              "Data given",
+              "What is learned"
+            ],
+            [
+              "(Supervised learning)",
+              "Pairs of input and the correct answer (label)",
+              "Rules for predicting the correct answer from the input"
+            ],
+            [
+              "(Unsupervised learning)",
+              "Input only (no correct answers)",
+              "Hidden structure or groups in the data"
+            ],
+            [
+              "(Reinforcement learning)",
+              "Actions and their results (rewards)",
+              "How to choose actions to obtain better results"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "The three types of machine learning and the data each uses"
+        },
+        {
+          "type": "p",
+          "text": "(2) Which learning method to use is determined by the type of data at hand and the nature of the problem to be solved."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Situation",
+              "Suitable learning method"
+            ],
+            [
+              "Past data has correct answers, and you want to predict the correct answer for new data",
+              "Supervised learning"
+            ],
+            [
+              "Data is available but without correct answers, and you want to find tendencies or groups in the data",
+              "Unsupervised learning"
+            ],
+            [
+              "You want the system to learn how to choose actions for better results through trial and error",
+              "Reinforcement learning"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        59,
+        60
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Classification (A Representative Example of Supervised Learning)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Classification)…a method of predicting which type (class) the input data belongs to. It is a representative example of supervised learning. e.g., sorting emails into “spam” or “normal”; sorting medical images into “abnormal” or “normal”; classifying animals in photos as “dog,” “cat,” or “bird”"
+        },
+        {
+          "type": "p",
+          "text": "(2) In classification, large amounts of data with correct answers (labels) attached are given in advance for learning. After training is complete, the model can predict which class new data without known labels belongs to."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Stage",
+              "What is done"
+            ],
+            [
+              "(Training)",
+              "Find rules for classification from pairs of input data and correct answers (labels)"
+            ],
+            [
+              "(Prediction)",
+              "Use the learned rules to determine which class new data belongs to"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Classification: learn a boundary from labeled data, then classify new data"
+        },
+        {
+          "type": "p",
+          "text": "(3) Information in the training data that serves as a clue useful for prediction is called a (feature). e.g., In spam classification, the types of words contained in the email, the sender's address, and the length of the body are features."
+        },
+        {
+          "type": "p",
+          "text": "(4) The choice of features greatly affects the accuracy of classification. Choosing features that match the purpose is important for building a good classification model."
+        }
+      ],
+      "pdfPages": [
+        60,
+        61
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Clustering (A Representative Example of Unsupervised Learning)",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Clustering)…a method that groups similar items together into groups (clusters) within data. It is a representative example of unsupervised learning. e.g., grouping users of an online shop by similar purchase tendencies; grouping users with similar listening patterns on a music streaming service for recommendations; automatically grouping news articles with similar content"
+        },
+        {
+          "type": "caption",
+          "text": "Clustering: without labels, similar items are automatically grouped"
+        },
+        {
+          "type": "p",
+          "text": "(2) The difference between clustering and classification lies in whether the correct answers (labels) are given."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Method",
+              "Correct answers (labels)",
+              "Purpose"
+            ],
+            [
+              "Classification",
+              "Given in advance",
+              "Predict which class new data belongs to"
+            ],
+            [
+              "Clustering",
+              "Not given",
+              "Find natural groups within the data"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) In clustering, the computer itself finds “what is similar.” Even when the names or number of groups are not known in advance, grouping can be done automatically based on the features of the data."
+        },
+        {
+          "type": "p",
+          "text": "(4) Clustering is used when one wants to grasp the overall picture of the data or when one wants to look at the data from a new perspective. Humans interpret the results of grouping and use them in marketing, product development, and so on."
+        }
+      ],
+      "pdfPages": [
+        61,
+        62
+      ]
+    },
+    {
+      "number": 5,
+      "title": "5. Reinforcement Learning",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Reinforcement learning)…a method in which actions are chosen in a certain situation, and how to choose better actions is learned based on the reward obtained as a result. e.g., learning how to obtain a high score in a game through trial and error; a robot learning to walk without falling by trying movements; a self-driving car learning safe driving operations"
+        },
+        {
+          "type": "p",
+          "text": "(2) In reinforcement learning, learning is accomplished by repeatedly trying combinations of actions and results."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Element",
+              "Description"
+            ],
+            [
+              "(State)",
+              "The situation in which the agent (the learning side) is placed"
+            ],
+            [
+              "(Action)",
+              "The choices that can be selected in that situation"
+            ],
+            [
+              "(Reward)",
+              "The evaluation given as a result of the action (a numerical value indicating goodness or badness)"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) What distinguishes reinforcement learning from the other two learning types is that it learns from the consequences of its own actions. Unlike supervised learning, where there is a correspondence of “this input has this correct answer,” reinforcement learning gradually learns better choices from the rewards obtained for the actions it tries."
+        },
+        {
+          "type": "p",
+          "text": "(4) Reinforcement learning is suited to problems where the correct answer is not known in advance, but the goodness of the result can be judged. It is often used in combination with environments where trial and error can be repeated (simulators or games)."
+        }
+      ],
+      "pdfPages": [
+        62
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68
+    ]
+  }
+}

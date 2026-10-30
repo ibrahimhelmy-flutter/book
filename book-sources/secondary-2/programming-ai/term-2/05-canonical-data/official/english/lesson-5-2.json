@@ -1,0 +1,252 @@
+{
+  "lessonId": "lesson-5-2",
+  "number": "5-2",
+  "title": "Data Cleaning and Transformation",
+  "learningObjectives": [
+    "Explain how missing values, outliers, and duplicate data are handled when cleaning a dataset.",
+    "Describe data type conversion, normalization and standardization, and the reshaping of data to fit a purpose."
+  ],
+  "guidingQuestion": "Why must data be cleaned and transformed before analysis, and what choices does each fix involve?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Data Cleaning and Transformation Stages",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Collected data often cannot be used for analysis as is. Adjusting issues such as missing values, outliers, and duplicate data, and arranging the data into a format that fits the purpose of the analysis, is called (data cleaning) and (data transformation)."
+        },
+        {
+          "type": "caption",
+          "text": "From raw data to analysis: collect, clean, transform, analyze"
+        },
+        {
+          "type": "p",
+          "text": "(2) If issues are left unaddressed during analysis, incorrect conclusions may be drawn. For this reason, cleaning and transformation are important stages that support the accuracy and reliability of the analysis."
+        }
+      ],
+      "pdfPages": [
+        14
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Handling Missing Values",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Using data containing missing values (values where data is absent) directly in analysis can prevent calculations from being performed correctly or cause biased results. For missing values, one of the following three responses is chosen."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Response",
+              "Description",
+              "When to apply"
+            ],
+            [
+              "Deletion",
+              "Remove rows or columns containing missing values from the data",
+              "When there are few missing values and the impact on the whole is small"
+            ],
+            [
+              "Imputation",
+              "Fill in the missing parts with values such as the mean, median, or surrounding values",
+              "When missing values are scattered without bias, and replacing them with representative values from other data does not significantly change the overall trend"
+            ],
+            [
+              "Flagging",
+              "Leave a marker indicating that the value was missing, and analyze the data as is",
+              "When the missingness itself has meaning (e.g., the fact that someone refused to answer)"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Which response to choose is determined by the proportion and pattern of missing values, and the purpose of the analysis. For example, imputing the mean for an item where missing values account for a large proportion of all data may produce values that are far from reality. There is no single correct response; judgment according to the purpose is required."
+        }
+      ],
+      "pdfPages": [
+        14,
+        15
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Handling Outliers and Duplicate Data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Outliers (values that deviate significantly from other data) are not necessarily errors. They may be (abnormal values) caused by input or measurement errors, or they may be values that reflect reality. e.g., If the sales data of a certain store shows that one day has remarkably high sales, it may be an input error, or it may genuinely reflect a sale or event on that day."
+        },
+        {
+          "type": "p",
+          "text": "(2) Handling outliers begins with identifying the cause."
+        },
+        {
+          "type": "p",
+          "text": "① When the cause is an input or measurement error…correct or delete the value"
+        },
+        {
+          "type": "p",
+          "text": "② When it is a value that reflects reality…in principle, keep it and decide how to handle it based on the purpose of the analysis"
+        },
+        {
+          "type": "p",
+          "text": "(3) Duplicate data (a state in which the same content exists in multiple records) affects the results of aggregation and is, in principle, removed. However, it is important to confirm that the data is genuinely duplicated. Even if records appear identical, they may include data that should be retained as separate records. e.g., If the same customer purchases the same product twice on the same day, the records are separate transactions; combining them into one would make the sales aggregation incorrect."
+        }
+      ],
+      "pdfPages": [
+        15
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Data Type Conversion",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Collected data is sometimes difficult to handle in its original format. Arranging the format to make data usable for analysis is called (data type conversion). Typical examples include the following."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Type of conversion",
+              "Description",
+              "Example"
+            ],
+            [
+              "Conversion from string to numeric",
+              "Convert numbers stored as strings into numeric values that can be used in calculations",
+              "“123” → 123"
+            ],
+            [
+              "Unification of date format",
+              "Align dates with different notations into a single format",
+              "“2026/4/1,” “2026-04-01,” “01 Apr 2026” → 2026-04-01"
+            ],
+            [
+              "Unification of notation",
+              "Combine values with the same meaning into a single notation",
+              "A mix of “Male/Female” and “M/F” → standardized to “Male/Female”"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) If formats are not aligned, data cannot be aggregated correctly. For example, if numbers are stored as strings, sums and means cannot be calculated; if date notations are not unified, data from the same day will be treated as belonging to different days. For this reason, data type conversion is a step that must be checked before analysis."
+        }
+      ],
+      "pdfPages": [
+        15,
+        16
+      ]
+    },
+    {
+      "number": 5,
+      "title": "5. Normalization and Standardization",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) When the units or ranges (scales) of data differ greatly between variables, variables with larger values may strongly influence the analysis results. To prevent this, processing is performed to align the scale of data. Typical methods are (normalization) and (standardization)."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Method",
+              "Description",
+              "Main purpose"
+            ],
+            [
+              "Normalization",
+              "Convert data to a range from 0 to 1",
+              "Align data with different units into a comparable form"
+            ],
+            [
+              "Standardization",
+              "Convert data to a form with mean 0 and standard deviation 1",
+              "Position values relative to the spread of the data"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) For example, when analyzing variables with different units and scales together, such as height (cm) and weight (kg), normalization can align both into the range from 0 to 1, making them easier to compare. Specifically, if height data ranges from 160 cm to 180 cm, normalizing converts 160 cm → 0, 170 cm → 0.5, 180 cm → 1, so the minimum becomes 0 and the maximum becomes 1."
+        },
+        {
+          "type": "p",
+          "text": "(3) Standardization aligns data based on how far each value is from the mean. For example, when test scores from multiple subjects are standardized, even if the mean and spread differ between subjects, the position of each student can be compared."
+        }
+      ],
+      "pdfPages": [
+        16
+      ]
+    },
+    {
+      "number": 6,
+      "title": "6. Reshaping Data According to Purpose",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Processing that changes the arrangement or grouping of data according to the purpose of the analysis is called (data reshaping). The following three operations are typical."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Operation",
+              "Description",
+              "Example"
+            ],
+            [
+              "(Pivot)",
+              "Reshape vertically arranged data into a table of row × column combinations",
+              "Reshape data with date, product, and sales arranged vertically into a “date × product” table"
+            ],
+            [
+              "(Join)",
+              "Connect multiple datasets via a common item",
+              "Connect a student roster and a grade sheet by “student ID” into a single table"
+            ],
+            [
+              "(Aggregation)",
+              "Calculate sums, means, etc. for each group and summarize",
+              "Compute monthly totals from daily sales"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Pivoting: reshaping long-format data into a cross-tabulated table"
+        },
+        {
+          "type": "p",
+          "text": "(2) Which operation to perform depends on the purpose of the analysis. For example, if you want to see “monthly sales trends,” you need to aggregate daily sales data by month. It is important to clarify the purpose of the analysis first, and then plan how to reshape the data."
+        }
+      ],
+      "pdfPages": [
+        16,
+        17
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  }
+}

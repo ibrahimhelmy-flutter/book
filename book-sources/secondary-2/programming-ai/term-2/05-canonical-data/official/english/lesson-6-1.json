@@ -1,0 +1,293 @@
+{
+  "lessonId": "lesson-6-1",
+  "number": "6-1",
+  "title": "Statistical Inference",
+  "learningObjectives": [
+    "Explain the difference between point estimation and interval estimation, including the meaning of a confidence level.",
+    "Describe the procedure of hypothesis testing, and explain the cautions needed when interpreting its results."
+  ],
+  "guidingQuestion": "How can we reason from a sample to a whole population, and how do we measure the uncertainty in that reasoning?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Statistical Inference Stage",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) A sample is drawn from the entire group that is the target of analysis (the population) and surveyed, and the properties of the population are then inferred from the results of the sample. Inferring the properties of the population from the sample in this way is called (statistical inference)."
+        },
+        {
+          "type": "p",
+          "text": "(2) Statistical inference can be broadly divided into the following two approaches."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Approach",
+              "Description",
+              "Example"
+            ],
+            [
+              "(Estimation)",
+              "Infer the properties of the population in numerical terms",
+              "Infer the population mean height from the sample mean height"
+            ],
+            [
+              "(Hypothesis testing)",
+              "Determine whether a hypothesis about the population is correct",
+              "Determine whether a new learning method is more effective than the conventional one"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) In either case, since the sample is only part of the population, inference always involves uncertainty. In statistical inference, judgment is made while considering the degree of that uncertainty."
+        }
+      ],
+      "pdfPages": [
+        31
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Point Estimation and Interval Estimation",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Point estimation)…estimating the properties of the population as a single value calculated from the sample. e.g., If the sample mean height is 168 cm, then the population mean height is also estimated to be 168 cm."
+        },
+        {
+          "type": "p",
+          "text": "(2) (Interval estimation)…estimating that the properties of the population fall within a certain range (interval). e.g., The population mean height is estimated to be in the range of 166 cm to 170 cm."
+        },
+        {
+          "type": "p",
+          "text": "(3) The interval used in interval estimation is called the (confidence interval), and how often such intervals contain the population value over repeated surveys is called the (confidence level). Levels of 95% or 99% are common. e.g., Suppose the population mean height is estimated by sample survey, and a confidence interval of “166 cm to 170 cm” is obtained at a 95% confidence level. The “95%” means that if the same survey method is repeated 100 times, about 95 of the resulting confidence intervals will contain the true population mean height."
+        },
+        {
+          "type": "p",
+          "text": "(4) Point estimation is easy to understand because it is shown as a single value, but the uncertainty of the estimate is invisible. Interval estimation has width, so care is needed in interpreting the result, but it has the advantage of also showing the degree of uncertainty."
+        }
+      ],
+      "pdfPages": [
+        31,
+        32
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. The Idea of Hypothesis Testing",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Hypothesis testing…a procedure for determining whether a hypothesis about the population is acceptable based on the data at hand."
+        },
+        {
+          "type": "p",
+          "text": "(2) In hypothesis testing, the following two hypotheses are set up."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Hypothesis",
+              "Description"
+            ],
+            [
+              "(Null hypothesis) (H0)",
+              "A hypothesis serving as the starting point of the test, such as “no difference” or “no relationship”"
+            ],
+            [
+              "(Alternative hypothesis) (H1)",
+              "The hypothesis adopted when the null hypothesis is rejected, such as “there is a difference” or “there is a relationship”"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(3) In hypothesis testing, the probability that data collection could result in the data at hand is evaluated under the assumption that “there is no difference or relationship.” The reason for first assuming the hypothesis one wants to deny (the null hypothesis) is that, rather than directly showing “there is a difference or relationship,” it is logically easier to judge this by showing that, under the assumption “there is no difference or relationship,” the data at hand would be unlikely to be obtained. e.g., It is difficult to directly show “the new learning method is effective.” Instead, one assumes “there is no effect” and then examines how low the probability is of obtaining a difference like the experimental result at hand, and if that probability is sufficiently small, one judges that “no effect” is unlikely."
+        },
+        {
+          "type": "p",
+          "text": "(4) Based on the evaluation, the null hypothesis is judged to be either (rejected (denied)) or (not rejected)."
+        }
+      ],
+      "pdfPages": [
+        32
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. The Procedure of Hypothesis Testing",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Hypothesis testing follows this flow."
+        },
+        {
+          "type": "p",
+          "text": "① Set the null hypothesis H0 and the alternative hypothesis H1"
+        },
+        {
+          "type": "p",
+          "text": "② Decide the (significance level) (5% = 0.05 and 1% = 0.01 are commonly used)"
+        },
+        {
+          "type": "p",
+          "text": "③ Compute the (p-value) from the data at hand"
+        },
+        {
+          "type": "p",
+          "text": "④ Compare the p-value with the significance level and make a judgment"
+        },
+        {
+          "type": "p",
+          "text": "(2) p-value…assuming the null hypothesis is correct, the probability of obtaining a result as extreme as, or more extreme than, the data at hand. The smaller the p-value, the less likely it is that the data would be obtained under the null hypothesis."
+        },
+        {
+          "type": "p",
+          "text": "(3) Significance level…the threshold value used to decide whether to reject the null hypothesis."
+        },
+        {
+          "type": "p",
+          "text": "(4) Criteria for judgment"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Condition",
+              "Judgment"
+            ],
+            [
+              "p-value < significance level",
+              "Reject the null hypothesis and adopt the alternative hypothesis (statistically significant)"
+            ],
+            [
+              "p-value ≥ significance level",
+              "Do not reject the null hypothesis (cannot be said to be statistically significant)"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "The hypothesis testing procedure worked through an example"
+        }
+      ],
+      "pdfPages": [
+        32,
+        33
+      ]
+    },
+    {
+      "number": 5,
+      "title": "5. Major Hypothesis Testing Methods",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) The test method used differs depending on the purpose of the analysis and the type of data. Major examples include the following."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Test",
+              "Main use",
+              "Example"
+            ],
+            [
+              "(t-test)",
+              "Examine whether there is a difference in the means of two groups",
+              "Examine whether students' average test scores differ between a certain learning method and the conventional method"
+            ],
+            [
+              "(Chi- squared test)",
+              "Examine whether there is a relationship between two categorical variables (data expressed by classification, such as gender, occupation, or preference)",
+              "Examine, from survey results, whether there is a relationship between gender and subject preference"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        33
+      ]
+    },
+    {
+      "number": 6,
+      "title": "6. Cautions Regarding Inference",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) In statistical inference, there is always a possibility of judgment errors. There are two types of errors."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Type of error",
+              "Description"
+            ],
+            [
+              "(Type I error)",
+              "Rejecting the null hypothesis when it is actually correct"
+            ],
+            [
+              "(Type II error)",
+              "Not rejecting the null hypothesis when it is actually incorrect"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Lowering the significance level reduces the Type I error, but tends to increase the Type II error. The two have a (trade-off relationship)."
+        },
+        {
+          "type": "p",
+          "text": "(3) Care is needed in interpreting the p-value. The following misunderstandings must be avoided."
+        },
+        {
+          "type": "p",
+          "text": "① The p-value is not “the probability that the null hypothesis is correct.”"
+        },
+        {
+          "type": "p",
+          "text": "② A small p-value does not mean “the effect is large.”"
+        },
+        {
+          "type": "p",
+          "text": "③ The comparison of the p-value with the significance level is not an absolute correctness criterion but a guide for judgment. The significance level (e.g., 0.05 or 0.01) is a value chosen according to the purpose of the analysis or the conventions of the field; falling below this value does not mean the result is certainly correct."
+        },
+        {
+          "type": "p",
+          "text": "(4) Being statistically significant and being practically important are different. e.g., Suppose an experiment compares two designs of a website, with click‑rate data from 100,000 people split evenly. The old design is clicked by 0.4% of visitors, the new one by 0.5% — only 0.1 percentage points higher. Because the data set is large, this difference is likely to be statistically significant. However, whether that 0.1‑point difference leads to actual profit or better user experience needs to be judged from a separate perspective."
+        },
+        {
+          "type": "p",
+          "text": "(5) Statistical inference is a powerful means of drawing conclusions from data, but it is important to understand that it is a tool for judgment that includes uncertainty, and the results should be interpreted appropriately."
+        }
+      ],
+      "pdfPages": [
+        33,
+        34
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-2-2026-2027.pdf",
+    "pdfPages": [
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ]
+  }
+}

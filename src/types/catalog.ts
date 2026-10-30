@@ -118,6 +118,8 @@ export interface PartManifest {
   /** lessonKey ("1-1", "1-review") → deep question count; empty when a lesson has no authored set. */
   deepQuestionCounts: Record<string, number>;
   storylineLessonIds: string[];
+  /** Lessons with the official English text (language-schools edition) for the "عربي + English" view. */
+  englishLessonIds: string[];
 }
 
 /** Precomputed counts for the exams page (rendered before any question bank is fetched). */

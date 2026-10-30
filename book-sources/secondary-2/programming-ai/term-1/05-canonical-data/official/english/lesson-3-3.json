@@ -1,0 +1,164 @@
+{
+  "lessonId": "lesson-3-3",
+  "number": "3-3",
+  "title": "Fundamentals of Frontend Technology",
+  "learningObjectives": [
+    "Explain the distinct roles of HTML, CSS, and JavaScript in building a web page.",
+    "Describe how semantic HTML, responsive design, and frameworks improve a modern frontend."
+  ],
+  "guidingQuestion": "How do HTML, CSS, and JavaScript work together to build a web page, and what makes a modern frontend meaningful, adaptable, and efficient to build?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. The Roles of HTML, CSS, and JavaScript",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Web pages are mainly based on the following three technologies."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Technology",
+              "Role",
+              "Analogy"
+            ],
+            [
+              "HTML",
+              "Defines the structure (skeleton) of a web page. Describes elements such as headings, paragraphs, images, and links.",
+              "The frame of a building"
+            ],
+            [
+              "CSS",
+              "Specifies the appearance of a web page (colors, layout, size, fonts, etc.).",
+              "The interior and exterior of a building"
+            ],
+            [
+              "JavaScript",
+              "Adds behavior and interactivity to a web page. Activates responses when buttons are pressed and updates only part of the screen.",
+              "The electrical and plumbing systems of a building"
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Roles of HTML, CSS, and JavaScript"
+        },
+        {
+          "type": "p",
+          "text": "(2) These three technologies each have independent roles, and a web page is created using all of them in combination."
+        }
+      ],
+      "pdfPages": [
+        70
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Semantic HTML",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Semantic HTML)…the concept of describing each part of a web page using element names (tags) that indicate their meaning."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Use <header> at the top of the page, <nav> for navigation, <main> for the body, and <footer> at the bottom of the page."
+        },
+        {
+          "type": "p",
+          "text": "(2) Benefits of using semantic HTML"
+        },
+        {
+          "type": "p",
+          "text": "① Improved (accessibility)…screen reader software can correctly understand the structure of the page. Information becomes easier to convey to users with visual impairments."
+        },
+        {
+          "type": "p",
+          "text": "② Improved (SEO (Search Engine Optimization))…search engines can more easily understand the content of a web page correctly, making it more likely to be displayed appropriately in search results."
+        }
+      ],
+      "pdfPages": [
+        71
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Responsive Design",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Responsive design)…a design concept in which the layout is automatically adjusted according to different screen sizes such as PCs, smartphones, and tablets."
+        },
+        {
+          "type": "p",
+          "text": "(2) With a single web page, a display that is easy to view from any device can be achieved."
+        },
+        {
+          "type": "p",
+          "text": "(3) As of 2026, websites are frequently accessed from smartphones, and support for responsive design is widely required. Against this backdrop, the (mobile-first) concept—prioritizing small screens such as smartphones from the design stage—has also become widespread."
+        }
+      ],
+      "pdfPages": [
+        71
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Frameworks",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Framework)…a structure that provides commonly used functions and components in advance, in order to make web application development more efficient."
+        },
+        {
+          "type": "p",
+          "text": "(2) By using a framework, developers do not need to write all code from scratch and can develop more efficiently."
+        },
+        {
+          "type": "p",
+          "text": "(3) Major frontend frameworks"
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Framework name",
+              "Characteristics"
+            ],
+            [
+              "React",
+              "Developed by Meta (formerly Facebook). It can efficiently update only part of the screen and is suited to large-scale web applications."
+            ],
+            [
+              "Vue",
+              "Has a simple structure and allows web applications to be built incrementally from small features."
+            ],
+            [
+              "Next.js",
+              "In addition to React's features, includes mechanisms to speed up page display."
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        71
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75
+    ]
+  }
+}

@@ -37,6 +37,7 @@
     "ingest:text": "node scripts/extract-pdf-text.mjs",
     "ingest:pages": "node scripts/render-pdf-pages.mjs",
     "ingest:figures": "node scripts/crop-figures.mjs",
+    "ingest:english": "node scripts/extract-english-text.mjs",
     "ingest:book": "node scripts/generate-book-json.mjs",
     "ingest:official": "node scripts/generate-official-curriculum.mjs",
     "audit:source-text": "node scripts/audit-source-text.mjs"

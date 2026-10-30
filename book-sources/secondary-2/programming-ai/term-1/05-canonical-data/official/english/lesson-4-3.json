@@ -1,0 +1,131 @@
+{
+  "lessonId": "lesson-4-3",
+  "number": "4-3",
+  "title": "Methods for Evaluating Websites",
+  "learningObjectives": [
+    "Distinguish qualitative from quantitative evaluation, and explain the major indicators used in web analytics.",
+    "Explain how heuristic evaluation works, and why combining both approaches gives a clearer picture of a website."
+  ],
+  "guidingQuestion": "How can a website be evaluated, and why is it useful to combine numbers with users' voices?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. Qualitative and Quantitative Evaluation",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) Methods for evaluation generally fall into two main categories: (qualitative evaluation) and (quantitative evaluation). These evaluation methods are used in a wide range of applications, and the same concepts apply to website evaluation."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Evaluation method",
+              "Description (purpose)",
+              "Specific techniques"
+            ],
+            [
+              "Qualitative evaluation",
+              "Explore in depth the “reasons” behind users' psychology and behavior, and evaluate qualitative aspects that cannot be expressed in numbers.",
+              "• Usability testing: observe actual operations to identify points that are hard to use. • Interviews: hear users' direct voices to understand their needs and dissatisfactions."
+            ],
+            [
+              "Quantitative evaluation",
+              "Use numerical data such as access counts and time, and evaluate the current state objectively and statistically.",
+              "• Web analytics: analyze metrics such as PV count and time spent. • A/B testing: compare two options to verify which leads to better results."
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "(2) Qualitative evaluation is suited to exploring the cause of “why is it hard to use,” while quantitative evaluation is suited to grasping the overall trend of “how much is it being used.” By combining both, more accurate evaluation is possible."
+        }
+      ],
+      "pdfPages": [
+        90
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. Major Indicators in Web Analytics",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Web analytics)…a technique for analyzing how a website is accessed using numerical values; it is the central method of quantitative evaluation for websites. The following indicators are commonly used."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Indicator",
+              "Meaning",
+              "Description"
+            ],
+            [
+              "(PV (Page View))",
+              "The total number of times a page has been viewed.",
+              "A basic indicator that measures how widely the site is seen and how much exposure it gets."
+            ],
+            [
+              "(Bounce rate)",
+              "The proportion of visits that ended after viewing only the first page.",
+              "An indicator of whether the page content matched the user's expectations and whether further actions were prompted."
+            ],
+            [
+              "(Conversion rate (CVR))",
+              "The proportion of visits that achieved a target action (purchase, registration, etc.).",
+              "A very important indicator that measures how much the site contributes to business results (profits)."
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        90,
+        91
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. Heuristic Evaluation",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Heuristic evaluation)…a method in which experts identify problems in a website's UI (user interface) based on rules of thumb (heuristics). It is a form of qualitative evaluation, used along with usability testing and other methods to investigate the causes of usability problems."
+        },
+        {
+          "type": "p",
+          "text": "(2) Major evaluation perspectives"
+        },
+        {
+          "type": "p",
+          "text": "① Consistency…whether the design and operations are unified across the site."
+        },
+        {
+          "type": "p",
+          "text": "② Error prevention…whether the design makes it hard for users to make mistakes."
+        },
+        {
+          "type": "p",
+          "text": "③ Visibility of system status…whether system status is clearly indicated to users (e.g., processing indicators, input error messages)."
+        }
+      ],
+      "pdfPages": [
+        91
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95
+    ]
+  }
+}

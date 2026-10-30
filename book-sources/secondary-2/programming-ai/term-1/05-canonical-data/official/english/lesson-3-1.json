@@ -1,0 +1,173 @@
+{
+  "lessonId": "lesson-3-1",
+  "number": "3-1",
+  "title": "The Overall Structure of Web Applications",
+  "learningObjectives": [
+    "Explain what a web application is and describe the roles of its three tiers: frontend, backend, and database.",
+    "Trace how the three tiers cooperate to turn a user's action into a result, using familiar services as examples."
+  ],
+  "guidingQuestion": "How is a web application structured, and how do its three tiers work together to respond to what a user does?",
+  "sections": [
+    {
+      "number": 1,
+      "title": "1. What is a Web Application?",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) (Web application)…an application used through a web browser. It can be used as long as you have a browser, without needing to install dedicated software."
+        },
+        {
+          "type": "p",
+          "text": "e.g., YouTube, Amazon, Gmail, Google Maps"
+        }
+      ],
+      "pdfPages": [
+        57
+      ]
+    },
+    {
+      "number": 2,
+      "title": "2. The Three Tiers of a Web Application",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) A web application is broadly composed of the following three tiers."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Tier",
+              "Role",
+              "Examples"
+            ],
+            [
+              "Frontend",
+              "The screen component that users see directly. It runs on the browser and accepts user input.",
+              "Search screen, product listing pages, input forms, etc."
+            ],
+            [
+              "Backend",
+              "The server-side processing that users do not see. It processes data and makes decisions.",
+              "Searching for products that match search criteria, login authentication, etc."
+            ],
+            [
+              "Database",
+              "A system that organizes, stores, and manages data. It retrieves data when needed and records new data.",
+              "Product information, user information, order history, etc."
+            ]
+          ]
+        },
+        {
+          "type": "caption",
+          "text": "Three-Tier Web Application Architecture"
+        }
+      ],
+      "pdfPages": [
+        57
+      ]
+    },
+    {
+      "number": 3,
+      "title": "3. The Flow of How the Three Tiers Cooperate",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) When a user operates a web application, the three tiers cooperate to perform the processing to make it work."
+        },
+        {
+          "type": "p",
+          "text": "e.g., Searching for a product on an online shopping site"
+        },
+        {
+          "type": "p",
+          "text": "① The frontend receives the search keywords entered by the user."
+        },
+        {
+          "type": "p",
+          "text": "② The frontend sends the search keywords to the backend."
+        },
+        {
+          "type": "p",
+          "text": "③ The backend searches the database for products that match the criteria."
+        },
+        {
+          "type": "p",
+          "text": "④ The database returns the data of matching products to the backend."
+        },
+        {
+          "type": "p",
+          "text": "⑤ The backend organizes the search results and returns them to the frontend."
+        },
+        {
+          "type": "p",
+          "text": "⑥ The frontend displays the search results on the user's screen."
+        },
+        {
+          "type": "caption",
+          "text": "How the Three Layers Work Together"
+        }
+      ],
+      "pdfPages": [
+        57,
+        58
+      ]
+    },
+    {
+      "number": 4,
+      "title": "4. Familiar Web Application Configurations",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "(1) All familiar web applications also operate on this three-tier architecture."
+        },
+        {
+          "type": "table",
+          "rows": [
+            [
+              "Service",
+              "Frontend (display and interaction)",
+              "Backend (processing and control)",
+              "Database (storage and management)"
+            ],
+            [
+              "Video sharing site",
+              "Display of video playback and search screens; reception of user operations",
+              "Selection of recommended videos; aggregation of view counts",
+              "Storage of video data, user information, and viewing history"
+            ],
+            [
+              "SNS",
+              "Display of timelines and post screens; sending of input content",
+              "Determining the audience for posts; control of push notifications",
+              "Storage of post data, follow relationships, and messages"
+            ],
+            [
+              "E- commerce site",
+              "Display of product listings and cart screens; reception of order operations",
+              "Stock checking; execution of payment systems",
+              "Storage of product information, order history, and customer information"
+            ]
+          ]
+        }
+      ],
+      "pdfPages": [
+        58
+      ]
+    }
+  ],
+  "contentOrigin": "official",
+  "source": {
+    "edition": "english",
+    "pdfFile": "grade-11-programming-ai-english-book-term-1-2026-2027.pdf",
+    "pdfPages": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62
+    ]
+  }
+}
