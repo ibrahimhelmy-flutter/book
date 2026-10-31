@@ -459,6 +459,7 @@ export const chapter3 = {
         {
           id: "sec-3-2-4",
           title: "رموز حالة HTTP",
+          parentId: "sec-3-2-3",
           content: "(2) تتضمن الاستجابات المرسلة من الخادم إلى العميل رقمًا يشير إلى نتيجة المعالجة، يسمى رمز حالة HTTP:",
           table: {
             headers: ["رمز حالة HTTP", "المعنى"],

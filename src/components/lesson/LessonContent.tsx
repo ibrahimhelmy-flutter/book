@@ -16,6 +16,7 @@ import { SolvedExampleAccordion } from "./SolvedExampleAccordion";
 import { LessonConceptMap } from "./LessonConceptMap";
 import { SectionImageViewer } from "./SectionImageViewer";
 import { ComponentErrorBoundary } from "../common/ComponentErrorBoundary";
+import { topLevelSections } from "@/lib/sections";
 
 // Helper for resilient chunk loading with automatic retry on network hiccup or build cache shifts
 const retryDynamicImport = <T,>(fn: () => Promise<T>, retries = 2, delay = 500): Promise<T> => {
@@ -181,6 +182,26 @@ function SectionNoteButton({ note }: { note: CalloutBox }) {
     </div>
   );
 }
+
+const headingSize: Record<LessonFontSize, string> = {
+  "5xlarge": "text-4xl sm:text-5xl md:text-6xl",
+  "4xlarge": "text-3xl sm:text-4xl md:text-5xl",
+  "3xlarge": "text-3xl sm:text-4xl",
+  "2xlarge": "text-2xl sm:text-3xl",
+  xlarge: "text-2xl sm:text-3xl",
+  large: "text-xl sm:text-2xl",
+  normal: "text-lg sm:text-xl",
+};
+
+const subHeadingSize: Record<LessonFontSize, string> = {
+  "5xlarge": "text-3xl sm:text-4xl md:text-5xl",
+  "4xlarge": "text-3xl sm:text-4xl",
+  "3xlarge": "text-2xl sm:text-3xl",
+  "2xlarge": "text-xl sm:text-2xl",
+  xlarge: "text-xl sm:text-2xl",
+  large: "text-lg sm:text-xl",
+  normal: "text-base sm:text-lg",
+};
 
 export function LessonContent({ lesson, nextLesson, prevLesson, simulators: lessonSimulators, glossary, quiz }: Props) {
   const { key: partKey, englishLessonIds } = usePart();
@@ -554,7 +575,7 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
                 <h2 className="text-base sm:text-lg font-bold text-white">أقسام وشرح الدرس</h2>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 font-mono">
-                  ({lesson.sections.length} أقسام)
+                  ({topLevelSections(lesson.sections).length} أقسام)
                 </span>
                 {hasEnglish && (
                   <div
@@ -594,178 +615,178 @@ export function LessonContent({ lesson, nextLesson, prevLesson, simulators: less
               <span className="text-xs text-slate-500">النص المعتمد من كتاب الوزارة</span>
             </div>
 
-            {lesson.sections.map((sec, secIdx) => {
-              const sectionNotes = [
-                ...(sec.notes || []),
-                ...(lesson.callouts || []).filter(
-                  (c) => c.sectionId === sec.id || (!c.sectionId && secIdx === 0)
-                ),
-              ];
+            {topLevelSections(lesson.sections).map((top) => (
+              <section
+                key={top.id}
+                id={top.id}
+                className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 md:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
+              >
+                {/* A heading and the numbered items the book prints under it (kept as their own sections in the data) */}
+                {[top, ...lesson.sections.filter((s) => s.parentId === top.id)].map((sec) => {
+                  const isSub = sec !== top;
+                  const sectionNotes = [
+                    ...(sec.notes || []),
+                    ...(lesson.callouts || []).filter(
+                      (c) => c.sectionId === sec.id || (!c.sectionId && sec.id === lesson.sections[0]?.id)
+                    ),
+                  ];
 
-              return (
-                <section
-                  key={sec.id}
-                  id={sec.id}
-                  className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 md:p-8 text-white space-y-4 shadow-lg relative scroll-mt-24"
-                >
-                  <div className="font-ui flex items-center justify-between border-b border-slate-800 pb-3 gap-3">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <h3
-                        className={`font-bold text-white leading-snug transition-all duration-200 ${
+                  return (
+                    <div
+                      key={sec.id}
+                      id={isSub ? sec.id : undefined}
+                      className={isSub ? "space-y-4 pt-5 border-t border-dashed border-slate-700 scroll-mt-24" : "space-y-4"}
+                    >
+                      <div className={`font-ui flex items-center justify-between gap-3 ${isSub ? "" : "border-b border-slate-800 pb-3"}`}>
+                        <div className="flex flex-wrap items-center gap-2.5">
+                          {isSub ? (
+                            <h4 className={`font-bold text-indigo-200 leading-snug transition-all duration-200 ${subHeadingSize[fontSize]}`}>
+                              {sec.title}
+                            </h4>
+                          ) : (
+                            <h3 className={`font-bold text-white leading-snug transition-all duration-200 ${headingSize[fontSize]}`}>
+                              {sec.title}
+                            </h3>
+                          )}
+                          {sec.origin === "explanation" && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
+                              <span>💡</span>
+                              <span>شرح وتوضيح إثرائي</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Header Actions: Simple Comprehension Icon + Section Notes */}
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {/* Simple Minimalist Icon Button for Section Comprehension Questions */}
+                          {(sectionQuestionsCount[sec.id] || 0) > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleJumpToSectionQuestions(sec.id)}
+                              className="p-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/25 text-purple-300 hover:text-white border border-purple-500/30 hover:border-purple-400/50 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold shadow-sm hover:scale-105 active:scale-95"
+                              title={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
+                              aria-label={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
+                            >
+                              <Brain className="w-4 h-4 text-purple-400" />
+                              <span className="text-[11px] font-mono font-bold hidden sm:inline">
+                                {sectionQuestionsCount[sec.id]}
+                              </span>
+                            </button>
+                          )}
+
+                          {sectionNotes.length > 0 && (
+                            sectionNotes.map((note) => (
+                              <SectionNoteButton key={note.id} note={note} />
+                            ))
+                          )}
+                        </div>
+                      </div>
+
+                      <div
+                        className={`transition-all duration-200 ${
                           fontSize === "5xlarge"
-                            ? "text-4xl sm:text-5xl md:text-6xl"
+                            ? "text-3xl sm:text-4xl md:text-5xl text-white leading-loose font-bold"
                             : fontSize === "4xlarge"
-                            ? "text-3xl sm:text-4xl md:text-5xl"
+                            ? "text-2xl sm:text-3xl md:text-4xl text-slate-100 leading-loose font-semibold"
                             : fontSize === "3xlarge"
-                            ? "text-3xl sm:text-4xl"
+                            ? "text-xl sm:text-2xl md:text-3xl text-slate-100 leading-loose font-medium"
                             : fontSize === "2xlarge"
-                            ? "text-2xl sm:text-3xl"
+                            ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
                             : fontSize === "xlarge"
-                            ? "text-2xl sm:text-3xl"
+                            ? "text-base sm:text-lg md:text-xl text-slate-100 leading-loose font-medium"
                             : fontSize === "large"
-                            ? "text-xl sm:text-2xl"
-                            : "text-lg sm:text-xl"
+                            ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
+                            : "text-[1.0625rem] sm:text-lg text-slate-200 leading-[1.95]"
                         }`}
                       >
-                        {sec.title}
-                      </h3>
-                      {sec.origin === "explanation" && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/25">
-                          <span>💡</span>
-                          <span>شرح وتوضيح إثرائي</span>
-                        </span>
-                      )}
-                    </div>
+                        <EyeComfortText
+                          content={sec.content}
+                          theme="dark"
+                          fontSize={fontSize}
+                          keyConcepts={lesson.keyConcepts}
+                        />
+                      </div>
 
-                    {/* Header Actions: Simple Comprehension Icon + Section Notes */}
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {/* Simple Minimalist Icon Button for Section Comprehension Questions */}
-                      {(sectionQuestionsCount[sec.id] || 0) > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => handleJumpToSectionQuestions(sec.id)}
-                          className="p-2 rounded-xl bg-purple-500/10 hover:bg-purple-500/25 text-purple-300 hover:text-white border border-purple-500/30 hover:border-purple-400/50 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold shadow-sm hover:scale-105 active:scale-95"
-                          title={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
-                          aria-label={`أسئلة الفهم الخاصة بهذا القسم (${sectionQuestionsCount[sec.id]} أسئلة)`}
-                        >
-                          <Brain className="w-4 h-4 text-purple-400" />
-                          <span className="text-[11px] font-mono font-bold hidden sm:inline">
-                            {sectionQuestionsCount[sec.id]}
-                          </span>
-                        </button>
+                      {/* Section Diagram / Image with Compact Size & Lightbox */}
+                      {sec.image && (
+                        <SectionImageViewer image={sec.image} />
                       )}
 
-                      {sectionNotes.length > 0 && (
-                        sectionNotes.map((note) => (
-                          <SectionNoteButton key={note.id} note={note} />
-                        ))
-                      )}
-                    </div>
-                  </div>
-
-                  <div
-                    className={`transition-all duration-200 ${
-                      fontSize === "5xlarge"
-                        ? "text-3xl sm:text-4xl md:text-5xl text-white leading-loose font-bold"
-                        : fontSize === "4xlarge"
-                        ? "text-2xl sm:text-3xl md:text-4xl text-slate-100 leading-loose font-semibold"
-                        : fontSize === "3xlarge"
-                        ? "text-xl sm:text-2xl md:text-3xl text-slate-100 leading-loose font-medium"
-                        : fontSize === "2xlarge"
-                        ? "text-lg sm:text-xl md:text-2xl text-slate-100 leading-loose font-medium"
-                        : fontSize === "xlarge"
-                        ? "text-base sm:text-lg md:text-xl text-slate-100 leading-loose font-medium"
-                        : fontSize === "large"
-                        ? "text-base sm:text-lg md:text-xl text-slate-200 leading-loose"
-                        : "text-[1.0625rem] sm:text-lg text-slate-200 leading-[1.95]"
-                    }`}
-                  >
-                    <EyeComfortText
-                      content={sec.content}
-                      theme="dark"
-                      fontSize={fontSize}
-                      keyConcepts={lesson.keyConcepts}
-                    />
-                  </div>
-
-                  {bilingual && english.status === "ready" && english.data.sections[sec.id] && (
-                    <EnglishSectionText section={english.data.sections[sec.id]} fontSize={fontSize} />
-                  )}
-
-                  {/* Section Diagram / Image with Compact Size & Lightbox */}
-                  {sec.image && (
-                    <SectionImageViewer image={sec.image} />
-                  )}
-
-                  {/* Section Table if present */}
-                  {sec.table && (
-                    <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950 custom-scrollbar">
-                      <table
-                        className={`w-full min-w-[420px] text-right transition-all duration-200 ${
-                          fontSize === "5xlarge"
-                            ? "text-2xl sm:text-3xl"
-                            : fontSize === "4xlarge"
-                            ? "text-xl sm:text-2xl"
-                            : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
-                            ? "text-base sm:text-lg"
-                            : fontSize === "large"
-                            ? "text-sm sm:text-base"
-                            : "text-xs"
-                        }`}
-                      >
-                        <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
-                          <tr>
-                            {sec.table.headers.map((h, i) => (
-                              <th
-                                key={i}
-                                className={`font-semibold text-slate-200 ${
-                                  fontSize === "5xlarge"
-                                    ? "p-6"
-                                    : fontSize === "4xlarge"
-                                    ? "p-5"
-                                    : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
-                                    ? "p-4"
-                                    : fontSize === "large"
-                                    ? "p-3.5"
-                                    : "p-3"
-                                }`}
-                              >
-                                {formatInlineText(h, "dark")}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                          {sec.table.rows.map((row, rIdx) => (
-                            <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
-                              {row.map((cell, cIdx) => (
-                                <td
-                                  key={cIdx}
-                                  className={`leading-relaxed ${
-                                    fontSize === "5xlarge"
-                                      ? "p-6"
-                                      : fontSize === "4xlarge"
-                                      ? "p-5"
-                                      : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
-                                      ? "p-4"
-                                      : fontSize === "large"
-                                      ? "p-3.5"
-                                      : "p-3"
-                                  }`}
-                                >
-                                  {formatInlineText(cell, "dark")}
-                                </td>
+                      {/* Section Table if present */}
+                      {sec.table && (
+                        <div className="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950 custom-scrollbar">
+                          <table
+                            className={`w-full min-w-[420px] text-right transition-all duration-200 ${
+                              fontSize === "5xlarge"
+                                ? "text-2xl sm:text-3xl"
+                                : fontSize === "4xlarge"
+                                ? "text-xl sm:text-2xl"
+                                : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
+                                ? "text-base sm:text-lg"
+                                : fontSize === "large"
+                                ? "text-sm sm:text-base"
+                                : "text-xs"
+                            }`}
+                          >
+                            <thead className="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
+                              <tr>
+                                {sec.table.headers.map((h, i) => (
+                                  <th
+                                    key={i}
+                                    className={`font-semibold text-slate-200 ${
+                                      fontSize === "5xlarge"
+                                        ? "p-6"
+                                        : fontSize === "4xlarge"
+                                        ? "p-5"
+                                        : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
+                                        ? "p-4"
+                                        : fontSize === "large"
+                                        ? "p-3.5"
+                                        : "p-3"
+                                    }`}
+                                  >
+                                    {formatInlineText(h, "dark")}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                              {sec.table.rows.map((row, rIdx) => (
+                                <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
+                                  {row.map((cell, cIdx) => (
+                                    <td
+                                      key={cIdx}
+                                      className={`leading-relaxed ${
+                                        fontSize === "5xlarge"
+                                          ? "p-6"
+                                          : fontSize === "4xlarge"
+                                          ? "p-5"
+                                          : fontSize === "3xlarge" || fontSize === "2xlarge" || fontSize === "xlarge"
+                                          ? "p-4"
+                                          : fontSize === "large"
+                                          ? "p-3.5"
+                                          : "p-3"
+                                      }`}
+                                    >
+                                      {formatInlineText(cell, "dark")}
+                                    </td>
+                                  ))}
+                                </tr>
                               ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                            </tbody>
+                          </table>
 
+                        </div>
+                      )}
                     </div>
-                  )}
-                </section>
-              );
-            })}
+                  );
+                })}
+
+                {bilingual && english.status === "ready" && english.data.sections[top.id] && (
+                  <EnglishSectionText section={english.data.sections[top.id]} fontSize={fontSize} />
+                )}
+              </section>
+            ))}
           </div>
 
           {/* Interactive Lesson Schematic & Concept Map */}

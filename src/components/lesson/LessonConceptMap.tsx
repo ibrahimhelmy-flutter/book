@@ -13,6 +13,7 @@ import {
   BookOpen,
   List,
 } from "lucide-react";
+import { sectionNumbers } from "@/lib/sections";
 
 interface Props {
   lesson: Lesson;
@@ -22,6 +23,7 @@ interface Props {
 
 export function LessonConceptMap({ lesson, glossary }: Props) {
   const [viewMode, setViewMode] = useState<"tree" | "flow" | "list">("tree");
+  const numbers = sectionNumbers(lesson.sections);
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
 
   // Unified list of verified lesson terms from lesson.keyConcepts and GLOSSARY_DATA
@@ -213,7 +215,7 @@ export function LessonConceptMap({ lesson, glossary }: Props) {
       {viewMode === "tree" && (
         <div className="relative z-10 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {lesson.sections.map((sec, idx) => {
+            {lesson.sections.map((sec) => {
               const concepts = sectionMap[sec.id] || [];
               const isSelected = selectedSectionId === sec.id;
 
@@ -231,7 +233,7 @@ export function LessonConceptMap({ lesson, glossary }: Props) {
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300">
-                        المحور {idx + 1}
+                        المحور {numbers.get(sec.id)}
                       </span>
                       <button
                         type="button"
@@ -310,7 +312,7 @@ export function LessonConceptMap({ lesson, glossary }: Props) {
       {viewMode === "flow" && (
         <div className="relative z-10 space-y-3">
           <div className="relative border-r-2 border-indigo-500/30 mr-4 pr-6 space-y-6">
-            {lesson.sections.map((sec, idx) => {
+            {lesson.sections.map((sec) => {
               const concepts = sectionMap[sec.id] || [];
 
               return (
@@ -322,7 +324,7 @@ export function LessonConceptMap({ lesson, glossary }: Props) {
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-indigo-400">
-                          الخطوة {idx + 1}:
+                          الخطوة {numbers.get(sec.id)}:
                         </span>
                         <h4 className="text-xs sm:text-sm font-bold text-white">{sec.title}</h4>
                       </div>

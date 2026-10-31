@@ -37,6 +37,8 @@ export interface KeyConcept {
 export interface LessonSection {
   id: string;
   title: string;
+  /** Set when the book prints this block as a numbered item under another section's heading, not as a heading of its own. */
+  parentId?: string;
   content: string;
   origin?: ContentOrigin;
   provenance?: ContentProvenance;

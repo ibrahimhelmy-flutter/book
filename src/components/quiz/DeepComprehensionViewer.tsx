@@ -30,6 +30,7 @@ import {
   type DeepQuestionKind,
 } from "@/lib/deep-question-kinds";
 import { EssayChecklist, EssayDraft, FillBlankActions, FillBlankSentence, TrueFalseButtons } from "./DeepAnswerPanels";
+import { sectionNumbers } from "@/lib/sections";
 
 interface Props {
   lesson: Lesson;
@@ -261,6 +262,7 @@ export function DeepComprehensionViewer({
     return userAnswers[key] === q.answer ? "correct" : "wrong";
   };
 
+  const sectionNums = useMemo(() => sectionNumbers(lesson.sections || []), [lesson.sections]);
   // Question counts per section ID
   const sectionCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -645,7 +647,7 @@ export function DeepComprehensionViewer({
               <span className="font-mono text-[10px] opacity-80">({normalizedQuestions.length})</span>
             </button>
 
-            {lesson.sections.map((sec, sIdx) => {
+            {lesson.sections.map((sec) => {
               const count = sectionCounts[sec.id] || 0;
               const isSelected = selectedSectionId === sec.id;
               return (
@@ -663,7 +665,7 @@ export function DeepComprehensionViewer({
                   }`}
                   title={sec.title}
                 >
-                  <span className="font-mono text-[11px] opacity-75 shrink-0">#{sIdx + 1}</span>
+                  <span className="font-mono text-[11px] opacity-75 shrink-0">#{sectionNums.get(sec.id)}</span>
                   <span className="truncate">{sec.title.replace(/^[0-9.]+\s*/, "")}</span>
                   <span className="font-mono text-[10px] opacity-80 shrink-0">({count})</span>
                 </button>
